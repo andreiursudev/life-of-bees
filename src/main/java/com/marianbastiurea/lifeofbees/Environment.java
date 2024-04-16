@@ -1,5 +1,12 @@
 package com.marianbastiurea.lifeofbees;
 
+/*
+>10Celsius degree
+wind speed<5m/
+no rain
+
+ */
+
 public class Environment {
     private Weather weather;
 
