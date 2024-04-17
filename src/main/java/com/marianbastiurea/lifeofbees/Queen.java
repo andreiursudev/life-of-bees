@@ -19,8 +19,6 @@ In the summer, she can lay up to 2000 eggs a day!
 A drone is a male bee. Unlike the female worker bee, a drone has no stinger.
  */
 
-
-
 public class Queen {
 
     public double makeEggs(Hive hive, Environment environment) {
