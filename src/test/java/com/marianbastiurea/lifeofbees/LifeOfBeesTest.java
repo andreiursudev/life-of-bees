@@ -53,4 +53,5 @@ public class LifeOfBeesTest {
 
         assertEquals(10000, eggsFrames.get(1).getNumberOfEggs());
     }
+
 }

@@ -8,7 +8,7 @@ import java.util.List;
 public class Hive {
     private double honeyFrames;
     private static double eggsFrames;
-    private static int cellsForEggs=6400;
+    private static int cellsForEggs=12800   ;
 
     private List<EggsBatch> eggs =new ArrayList<>();
 
