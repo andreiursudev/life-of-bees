@@ -31,7 +31,7 @@ public class Queen {
 
         hive.addEggs(numberOfEggs) ;
     }
-    public  double ageOfQueenIndex(int ageOfQueen) {
+    public double ageOfQueenIndex(int ageOfQueen) {
         /* a queen lives 3-5 years. We will consider 1 years old for our queen. At age 5,
     beekeper will have to replace this queen with new one.Depending on age of queen will choose an fertility index
      between 0 and 1. When index is 0, queen is too old to lay eggs and she have to be replaced. Whenn index is 1,
