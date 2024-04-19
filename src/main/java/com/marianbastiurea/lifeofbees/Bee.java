@@ -11,4 +11,11 @@ workers
 
 
 public class Bee {
+
+
+    //method bring honey to the hive
+
+    //they age
+
+    //they die/ dissapear
 }

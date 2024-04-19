@@ -14,9 +14,16 @@ public class LifeOfBees {
                 if (square != null) {
                     Queen queen = square.getQueen();
                     if (queen != null) {
-                        double eggs = queen.makeEggs(square.getHive(), environment);
-                        square.getHive().addEggFrames(eggs);
+                        queen.makeEggs(square.getHive(), environment);
                     }
+                    Hive hive = square.getHive();
+                    if(hive!=null){
+                        for (EggsBatch eggsBatch : hive.getEggs()) {
+                            //eggsBatch does soemthing
+                        }
+
+                    }
+                    //beekeeper does action
                 }
             }
         }

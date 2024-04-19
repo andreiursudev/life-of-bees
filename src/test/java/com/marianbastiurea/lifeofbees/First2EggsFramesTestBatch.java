@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.time.Month;
 
-public class First2EggsFramesTest {
+public class First2EggsFramesTestBatch {
 
     @Test
     void given2FramesForLayingEggsShouldReturn13March() {

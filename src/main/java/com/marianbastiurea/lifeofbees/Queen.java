@@ -20,8 +20,19 @@ A drone is a male bee. Unlike the female worker bee, a drone has no stinger.
  */
 
 public class Queen {
+    private int ageOfQueen;
+    /* a queen lives 3-5 years. We will consider 1 years old for our queen. At age 5,
+    beekeper will have to replace this queen with new one.
 
-    public double makeEggs(Hive hive, Environment environment) {
-        return hive.getHoneyFrames() * environment.getWeather().getTemperature()* 0.15 ;
+     */
+
+    public int getAgeOfQueen() {
+        return ageOfQueen;
+    }
+
+    public void makeEggs(Hive hive, Environment environment) {
+        int numberOfEggs = 2000 */* honeyIndex * */environment.getWeather().getTemperature();
+
+        hive.addEggs(numberOfEggs) ;
     }
 }
