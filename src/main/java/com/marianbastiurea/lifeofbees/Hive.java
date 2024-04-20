@@ -2,11 +2,15 @@ package com.marianbastiurea.lifeofbees;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Hive {
     private double honeyFrames;
     private static double eggsFrames;
-    private static int cellsForEggs=6400;
+    private static int cellsForEggs=12800   ;
+
+    private List<EggsBatch> eggs =new ArrayList<>();
 
     public Hive(double honeyFrames, double eggsFrames) {
         this.honeyFrames = honeyFrames;
@@ -41,6 +45,11 @@ public class Hive {
                     return 2000;
                 }
                 break;
+            case JUNE:
+                if (dayOfMonth >= 1 && dayOfMonth <= 20) {
+                    return 2000;
+                }
+                break;
             default:
                 break;
         }
@@ -55,6 +64,14 @@ public class Hive {
         System.out.println(" Today is "+startDate.plusDays(daysToFill - 1));
         System.out.println("You have to decide if you add another one frames or wait few days");
         return startDate.plusDays( daysToFill- 1);
+    }
+
+    public void addEggs(int numberOfEggs) {
+        eggs.add(new EggsBatch(numberOfEggs));
+    }
+
+    public List<EggsBatch> getEggs() {
+        return eggs;
     }
 }
 

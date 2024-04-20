@@ -1,10 +1,10 @@
-package com.marianbastiurea.lifeofbees;
+package com.marianbastiurea.lifeofbees.weather;
 
-public class Weather {
+public class StableWeather implements Weather {
     private int temperature;
     private int precipitation;
 
-    public Weather(int temperature, int precipitation) {
+    public StableWeather(int temperature, int precipitation) {
         this.temperature = temperature;
         this.precipitation = precipitation;
     }
@@ -15,5 +15,10 @@ public class Weather {
 
     public int getPrecipitation() {
         return precipitation;
+    }
+
+    @Override
+    public int getWindSpeed() {
+        return 0;
     }
 }

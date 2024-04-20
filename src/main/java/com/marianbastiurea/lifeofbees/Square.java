@@ -9,21 +9,14 @@ Honey production:
  white clover 100-120 kg/ha
  */
 
-import java.util.List;
-
 public class Square {
     private final int x;
     private final int y;
-    private Queen queen;
-    private List<Bee> bees;
-    private Hive hive;
 
-    public Square(int x, int y, Hive hive, Queen queen, List<Bee> bees) {
+
+    public Square(int x, int y) {
         this.x = x;
         this.y = y;
-        this.hive = hive;
-        this.queen = queen;
-        this.bees = bees;
     }
 
     public int getX() {
@@ -32,17 +25,5 @@ public class Square {
 
     public int getY() {
         return y;
-    }
-
-    public Queen getQueen() {
-        return queen;
-    }
-
-    public List<Bee> getBees() {
-        return bees;
-    }
-
-    public Hive getHive() {
-        return hive;
     }
 }

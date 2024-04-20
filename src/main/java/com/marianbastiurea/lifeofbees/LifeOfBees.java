@@ -1,8 +1,25 @@
 package com.marianbastiurea.lifeofbees;
 
+import java.util.List;
+
 public class LifeOfBees {
 
     private final Environment environment;
+    private Queen queen;
+    private List<Bee> bees;
+    private Hive hive;
+
+    public Queen getQueen() {
+        return queen;
+    }
+
+    public List<Bee> getBees() {
+        return bees;
+    }
+
+    public Hive getHive() {
+        return hive;
+    }
 
     public LifeOfBees(Environment environment) {
         this.environment = environment;
@@ -12,11 +29,18 @@ public class LifeOfBees {
         for (Square[] columns : environment.getTerrain()) {
             for (Square square : columns) {
                 if (square != null) {
-                    Queen queen = square.getQueen();
+                    Queen queen = getQueen();
                     if (queen != null) {
-                        double eggs = queen.makeEggs(square.getHive(), environment);
-                        square.getHive().addEggFrames(eggs);
+                        queen.makeEggs(getHive(), environment);
                     }
+                    Hive hive = getHive();
+                    if (hive != null) {
+                        for (EggsBatch eggsBatch : hive.getEggs()) {
+                            //eggsBatch does soemthing
+                        }
+
+                    }
+                    //beekeeper does action
                 }
             }
         }
