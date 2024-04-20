@@ -45,5 +45,22 @@ public class Honey {
         }
         return honeyType=""; // Default value if month and day combination doesn't match any condition
     }
-
+    public static int honeyProductivity(String honeyType){
+        int kgOnHa=1;
+        switch (honeyType){
+            case "Acacia":
+                return kgOnHa=1600;
+            case "Rapeseed":
+                return  kgOnHa=50;
+            case "WildFlower":
+                return kgOnHa=40;
+            case "Linden":
+                return kgOnHa=1200;
+            case "SunFlower":
+                return kgOnHa=60;
+            case "FalseIndigo":
+                return kgOnHa=70;
+        }
+        return kgOnHa;
+    }
 }
