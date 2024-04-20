@@ -1,4 +1,5 @@
 package com.marianbastiurea.lifeofbees;
+
 import java.util.Scanner;
 /*
 When the honeybee colony senses that it needs a new queen, perhaps because the queen is ailing or is preparing to
@@ -59,7 +60,6 @@ public class Queen {
                 do {
                     System.out.print("Your choice (1 or 2): ");
                     answer = scanner.nextLine();
-
                     if (answer.equals("1") || answer.equals("2")) {
                         isValidAnswer = true;
                     } else {
@@ -69,11 +69,12 @@ public class Queen {
 
                 System.out.println("Thank you for your response!");
                 scanner.close();
-                if(answer.equals("1")){
-                    ageOfQueen=0;
+                if (answer.equals("1")) {
+                    ageOfQueen = 0;
                     return 1;
-                }else if (answer.equals("2")){
-                return 0.75;}
+                } else if (answer.equals("2")) {
+                    return 0.75;
+                }
             case 5:
                 return 0.25;
             default:
@@ -81,5 +82,5 @@ public class Queen {
         }
         return 0;
     }
-
 }
+
