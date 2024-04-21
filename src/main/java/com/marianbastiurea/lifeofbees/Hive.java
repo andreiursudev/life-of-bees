@@ -8,13 +8,14 @@ import java.util.List;
 public class Hive {
     private double honeyFrames;
     private static double eggsFrames;
-    private static int cellsForEggs=12800   ;
+    private static int cellsForEggs = 12800;
+    private int HiveNumber;
+    private List<EggsBatch> eggs = new ArrayList<>();
 
-    private List<EggsBatch> eggs =new ArrayList<>();
-
-    public Hive(double honeyFrames, double eggsFrames) {
+    public Hive(double honeyFrames, double eggsFrames, int hiveNumber) {
         this.honeyFrames = honeyFrames;
         this.eggsFrames = eggsFrames;
+        HiveNumber = hiveNumber;
     }
 
     public double getEggsFrames() {
@@ -57,13 +58,13 @@ public class Hive {
     }
 
     public static LocalDate layEggs(int eggsPerDay, int eggsFrames) {
-        int daysToFill=(int)eggsFrames*cellsForEggs/eggsPerDay+1;
+        int daysToFill = (int) eggsFrames * cellsForEggs / eggsPerDay + 1;
         System.out.println("Queen start laying eggs on 1st of March");
-        System.out.println(" Queen finish to fill up first "+eggsFrames+" frames in "+daysToFill+" days");
+        System.out.println(" Queen finish to fill up first " + eggsFrames + " frames in " + daysToFill + " days");
         LocalDate startDate = LocalDate.of(LocalDate.now().getYear(), 3, 1);
-        System.out.println(" Today is "+startDate.plusDays(daysToFill - 1));
+        System.out.println(" Today is " + startDate.plusDays(daysToFill - 1));
         System.out.println("You have to decide if you add another one frames or wait few days");
-        return startDate.plusDays( daysToFill- 1);
+        return startDate.plusDays(daysToFill - 1);
     }
 
     public void addEggs(int numberOfEggs) {
