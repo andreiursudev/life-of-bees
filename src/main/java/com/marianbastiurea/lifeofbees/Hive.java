@@ -1,78 +1,57 @@
 package com.marianbastiurea.lifeofbees;
 
-import java.time.LocalDate;
-import java.time.Month;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Random;
+public  class Hive {
+    private int id;
+    private int totalFrame;
+    private int honeyFrame;
+    private int eggsFrame;
+    private int ageOfQueen;
 
-public class Hive {
-    private double honeyFrames;
-    private static double eggsFrames;
-    private static int cellsForEggs = 12800;
-    private int HiveNumber;
-    private List<EggsBatch> eggs = new ArrayList<>();
-
-    public Hive(double honeyFrames, double eggsFrames, int hiveNumber) {
-        this.honeyFrames = honeyFrames;
-        this.eggsFrames = eggsFrames;
-        HiveNumber = hiveNumber;
+    public Hive(int id, int totalFrame, int honeyFrame, int ageOfQueen) {
+        this.id = id;
+        this.totalFrame = totalFrame;
+        this.honeyFrame = honeyFrame;
+        this.ageOfQueen = ageOfQueen;
+        this.eggsFrame=eggsFrame;
     }
 
-    public double getEggsFrames() {
-        return eggsFrames;
+    public int getId() {
+        return id;
     }
 
-    public double getHoneyFrames() {
-        return honeyFrames;
+    public int getTotalFrame() {
+        return totalFrame;
     }
 
-    public void addEggFrames(double eggs) {
-        eggsFrames += eggs;
+    public int getHoneyFrame() {
+        return honeyFrame;
     }
 
-    public static int getDailyEggProduction(Month month, int dayOfMonth) {
-        switch (month) {
-            case MARCH:
-                return 1000;
-            case APRIL:
-                if (dayOfMonth >= 1 && dayOfMonth <= 20) {
-                    return 2000;
-                } else if (dayOfMonth >= 21 && dayOfMonth <= 30) {
-                    return 1000;
-                }
-                break;
-            case MAY:
-                if (dayOfMonth >= 1 && dayOfMonth <= 20) {
-                    return 2000;
-                }
-                break;
-            case JUNE:
-                if (dayOfMonth >= 1 && dayOfMonth <= 20) {
-                    return 2000;
-                }
-                break;
-            default:
-                break;
-        }
-        return 0; // Default value if month and day combination doesn't match any condition
+    public  int getAgeOfQueen() {
+        return ageOfQueen;
     }
 
-    public static LocalDate layEggs(int eggsPerDay, int eggsFrames) {
-        int daysToFill = (int) eggsFrames * cellsForEggs / eggsPerDay + 1;
-        System.out.println("Queen start laying eggs on 1st of March");
-        System.out.println(" Queen finish to fill up first " + eggsFrames + " frames in " + daysToFill + " days");
-        LocalDate startDate = LocalDate.of(LocalDate.now().getYear(), 3, 1);
-        System.out.println(" Today is " + startDate.plusDays(daysToFill - 1));
-        System.out.println("You have to decide if you add another one frames or wait few days");
-        return startDate.plusDays(daysToFill - 1);
+    public void setAgeOfQueen(int ageOfQueen) {
+        this.ageOfQueen = ageOfQueen;
     }
 
-    public void addEggs(int numberOfEggs) {
-        eggs.add(new EggsBatch(numberOfEggs));
+    public int getEggsFrame() {
+        return eggsFrame;
     }
 
-    public List<EggsBatch> getEggs() {
-        return eggs;
+    public void setEggsFrame(int eggsFrame) {
+        this.eggsFrame = eggsFrame;
+    }
+
+    @Override
+    public String toString() {
+        return "Hive{" +
+                "id=" + id +
+                ", totalFrame=" + totalFrame +
+                ", honeyFrame=" + honeyFrame +
+                ", ageOfQueen=" + ageOfQueen +
+                '}';
     }
 }
 

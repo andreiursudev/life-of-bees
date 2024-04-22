@@ -1,54 +1,47 @@
 package com.marianbastiurea.lifeofbees;
 
-import java.util.List;
+import java.util.Random;
 
 public class LifeOfBees {
 
-    private final Environment environment;
-    private Queen queen;
-    private List<Bee> bees;
-    private Hive hive;
+    private static final int MAX_YEARS = 5;
 
-    public Queen getQueen() {
-        return queen;
-    }
+    public static void main(String[] args) {
+        Hive[] hives = new Hive[1];
 
-    public List<Bee> getBees() {
-        return bees;
-    }
-
-    public Hive getHive() {
-        return hive;
-    }
-
-    public LifeOfBees(Environment environment) {
-        this.environment = environment;
-    }
-
-    public LifeOfBees iterate() {
-        for (Square[] columns : environment.getTerrain()) {
-            for (Square square : columns) {
-                if (square != null) {
-                    Queen queen = getQueen();
-                    if (queen != null) {
-                        queen.makeEggs(getHive(), environment);
-                    }
-                    Hive hive = getHive();
-                    if (hive != null) {
-                        for (EggsBatch eggsBatch : hive.getEggs()) {
-                            //eggsBatch does soemthing
-                        }
-
-                    }
-                    //beekeeper does action
-                }
-            }
+        // Creating 1 hives with IDs from 1
+        for (int i = 0; i < hives.length; i++) {
+            hives[i] = new Hive(i + 1, 3, 3, 0); // Sample values for totalFrame, honeyFrame, ageOfQueen
         }
 
-        return new LifeOfBees(environment);
+        // Simulating life of bees for each hive
+        for (int year = 0; year <= MAX_YEARS; year++) {
+            System.out.println("Year: " + year);
+            for (Hive hive : hives) {
+                ageOfQueen(hive);
+                System.out.println(hive);
+            }
+            System.out.println();
+        }
     }
 
-    public Environment getEnvironment() {
-        return environment;
+    private static void ageOfQueen(Hive hive) {
+        int ageOfQueen = hive.getAgeOfQueen();
+        Random random = new Random();
+
+        if (ageOfQueen == 4) {
+            double randomNumber = random.nextDouble();
+            if (randomNumber < 0.5) {
+                // Reset age of queen to 0
+                hive.setAgeOfQueen(0);
+                System.out.println("Age of Queen is " + hive.getAgeOfQueen());
+            } else {
+                // Delete the hive
+                hive = null;
+            }
+        } else {
+            hive.setAgeOfQueen(ageOfQueen + 1);
+        }
+        System.out.println("Age of Queen is at the end; " + hive.getAgeOfQueen());
     }
 }
