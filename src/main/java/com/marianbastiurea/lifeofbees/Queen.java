@@ -29,58 +29,45 @@ public class Queen {
         return ageOfQueen;
     }
 
-    public void makeEggs(Hive hive, Environment environment) {
-        int numberOfEggs = (int) (2000 */* honeyIndex * */environment.getWeather().getTemperature() * ageOfQueenIndex(ageOfQueen));
+//    public void makeEggs(Hive hive, Environment environment) {
+//        int numberOfEggs = (int) (2000 */* honeyIndex * */environment.getWeather().getTemperature() * ageOfQueenIndex(ageOfQueen));
+//
+//        hive.addEggs(numberOfEggs);
+//    }
 
-        hive.addEggs(numberOfEggs);
-    }
+    public double ageOfQueenIndex(Hive hive) {
 
-    public static double ageOfQueenIndex(int ageOfQueen) {
         /* a queen lives 3-5 years. We will consider 1 years old for our queen. At age 5,
     beekeper will have to replace this queen with new one.Depending on age of queen will choose an fertility index
      between 0 and 1. When index is 0, queen is too old to lay eggs and she have to be replaced. Whenn index is 1,
      fertility of queen is at maximum and she can lay upon 2000 eggs daily
          */
-        Scanner scanner = new Scanner(System.in);
-        String answer;
-        boolean isValidAnswer = false;
-
+        int ageOfQueen = hive.getAgeOfQueen();
+        double numberRandom = Math.random();
         switch (ageOfQueen) {
             case 0, 1, 2, 3:
                 return 1;
             case 4:
-                System.out.println("""
-                        Your queen is 4 years old.
-                        You have to change hive's queen this year or next year at last.
-                        Please choose one option from bellow:
-                        1) You want to change this year?
-                        2) You want to let the bees to decide when it's right time to change?
-                        That means your hive population of bees will decrease and honey productivity will go down.
-                        """);
-                do {
-                    System.out.print("Your choice (1 or 2): ");
-                    answer = scanner.nextLine();
-                    if (answer.equals("1") || answer.equals("2")) {
-                        isValidAnswer = true;
-                    } else {
-                        System.out.println("Invalid input. Please enter '1' or '2'.");
-                    }
-                } while (!isValidAnswer);
-
-                System.out.println("Thank you for your response!");
-                scanner.close();
-                if (answer.equals("1")) {
-                    ageOfQueen = 0;
+                if (numberRandom < 0.5) {
+                    hive.setAgeOfQueen(0);
                     return 1;
-                } else if (answer.equals("2")) {
+                } else
                     return 0.75;
-                }
             case 5:
+                hive.setAgeOfQueen(0);
                 return 0.25;
             default:
                 break;
         }
         return 0;
+    }
+
+        public void makeEggs(Hive hive, Honey honey, Queen queen) {
+            int numberOfEggs = (int) (2000 * queen.ageOfQueenIndex(hive));
+            // have to add another index, a  honeyIndex which will depend by quantity of honey made it
+        do{
+            hive.getEggsFrame()+=numberOfEggs;
+        }
     }
 }
 
