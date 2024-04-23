@@ -1,56 +1,57 @@
 package com.marianbastiurea.lifeofbees;
 
-import java.util.Random;
 public  class Hive {
     private int id;
-    private int totalFrame;
-    private int honeyFrame;
-    private int eggsFrame;
-    private int ageOfQueen;
+    private int numberOfHoneyFrame;
+    private int numberOfEggsFrame;
+    private Queen queen;
 
-    public Hive(int id, int totalFrame, int honeyFrame, int ageOfQueen) {
+    public Hive(int id, Queen queen) {
         this.id = id;
-        this.totalFrame = totalFrame;
-        this.honeyFrame = honeyFrame;
-        this.ageOfQueen = ageOfQueen;
-        this.eggsFrame=eggsFrame;
+        this.queen = queen;
+    }
+
+    public Hive(int id) {
+        this.id = id;
+    }
+
+    public Hive(int id, int numberOfHoneyFrame, int numberOfEggsFrame, Queen queen) {
+        this.id = id;
+        this.numberOfHoneyFrame = numberOfHoneyFrame;
+        this.numberOfEggsFrame = numberOfEggsFrame;
+        this.queen = queen;
+    }
+
+    public Hive() {
     }
 
     public int getId() {
         return id;
     }
 
-    public int getTotalFrame() {
-        return totalFrame;
-    }
 
     public int getHoneyFrame() {
-        return honeyFrame;
+        return numberOfHoneyFrame;
     }
 
-    public  int getAgeOfQueen() {
-        return ageOfQueen;
+    public int getNumberOfEggsFrame() {
+        return numberOfEggsFrame;
+    }
+    public Queen getQueen() {
+        return queen;
     }
 
-    public void setAgeOfQueen(int ageOfQueen) {
-        this.ageOfQueen = ageOfQueen;
-    }
-
-    public int getEggsFrame() {
-        return eggsFrame;
-    }
-
-    public void setEggsFrame(int eggsFrame) {
-        this.eggsFrame = eggsFrame;
+    public void setNumberOfEggsFrame(int numberOfEggsFrame) {
+        this.numberOfEggsFrame = numberOfEggsFrame;
     }
 
     @Override
     public String toString() {
         return "Hive{" +
                 "id=" + id +
-                ", totalFrame=" + totalFrame +
-                ", honeyFrame=" + honeyFrame +
-                ", ageOfQueen=" + ageOfQueen +
+                ", numberOfHoneyFrame=" + numberOfHoneyFrame +
+                ", numberOfEggsFrame=" + numberOfEggsFrame +
+                ", queen=" + queen +
                 '}';
     }
 }
