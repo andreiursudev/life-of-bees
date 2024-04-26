@@ -49,6 +49,15 @@ public class Apiary {
     public void addHoney(Honey honey) {
         honeys.add(honey);
     }
+
+    @Override
+    public String toString() {
+        return "Apiary{" +
+                "hives=" + hives +
+                ", honeys=" + honeys +
+                '}';
+    }
+
     private void splitHive(Hive hive) {
         // Create a new hive with half of the honey frames and half of the eggs frames
         Hive newHive = new Hive();

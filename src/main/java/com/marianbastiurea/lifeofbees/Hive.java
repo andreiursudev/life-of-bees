@@ -19,11 +19,10 @@ public class Hive {
     private Bees bees;
     private List<EggsBatch> eggsBatches;
 
-    public Hive(int id) {
+    public Hive(int id, int ageOfQueen) {
         this.id = id;
+        this.ageOfQueen = ageOfQueen;
     }
-
-
 
     public Bees getBees() {
         return bees;

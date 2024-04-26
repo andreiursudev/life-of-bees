@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class LifeOfBees {
     private Apiary apiary;// apiary is the place where it will be stored all hives
-
+    private int hiveIdCounter;
     public LifeOfBees() {
         this.apiary = new Apiary();
     }
@@ -24,6 +24,7 @@ public class LifeOfBees {
     private Hive createHive() {
         Random random = new Random();
         Hive hive = new Hive();
+        hive.setId(hiveIdCounter++);
         hive.setAgeOfQueen(random.nextInt(1, 5)); // Random age for the queen
         hive.setNumberOfHoneyFrame(random.nextInt(3, 6)); // Random number of honey frames
         hive.setNumberOfEggsFrame(random.nextInt(3, 6)); // Random number of eggs frames
@@ -49,7 +50,7 @@ public class LifeOfBees {
         // each hive will have a random number of bees for each frame
         int numberOfBees = random.nextInt(2000, 2500) * hive.getNumberOfHoneyFrame() * hive.getNumberOfEggsFrame();
         hive.setNumberOfBees(numberOfBees);
-
+        System.out.println("Hive is :" + hive);
         return hive;
     }
 
@@ -62,6 +63,7 @@ public class LifeOfBees {
         calendar.set(Calendar.DAY_OF_MONTH, 1);
 
 
+
         // Iterate over 2 years
         for (int year = 0; year < 1; year++) {// Use only one for debug purposes
             while (calendar.get(Calendar.MONTH) != Calendar.OCTOBER) {
@@ -71,8 +73,9 @@ public class LifeOfBees {
 
 
                 for (Hive hive : apiary.getHives()) {
-                    Queen queen = new Queen();
-                    hive.addEggsBatches(queen.makeBatchOfEggs(queen.makeEggs(), currentDate));
+                   Queen queen = new Queen();
+                    hive.addEggsBatches(queen.makeBatchOfEggs(queen.makeEggs(hive), currentDate));
+
                     // Add eggs batches for the current day
                     hive.checkAndAddEggsToBees(); // Check and add eggs to the number of bees
                     System.out.println("Hive ID: " + hive.getId());
