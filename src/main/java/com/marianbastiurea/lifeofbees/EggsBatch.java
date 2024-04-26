@@ -1,18 +1,27 @@
 package com.marianbastiurea.lifeofbees;
-
+import java.util.Date;
 public class EggsBatch {
-    private final int numberOfEggs;
+    private int numberOfEggs;
+    private Date creationDate;
 
-    public EggsBatch(int numberOfEggs) {
-
+    public EggsBatch(int numberOfEggs, Date creationDate) {
         this.numberOfEggs = numberOfEggs;
+        this.creationDate = creationDate;
     }
 
     public int getNumberOfEggs() {
         return numberOfEggs;
     }
 
-    //method : increase age on each iteration
+    public Date getCreationDate() {
+        return creationDate;
+    }
 
-    //method: at age 21 they eclozeaza
+    @Override
+    public String toString() {
+        return "EggsBatch{" +
+                "numberOfEggs=" + numberOfEggs +
+                ", creationDate=" + creationDate +
+                '}';
+    }
 }

@@ -1,5 +1,9 @@
 package com.marianbastiurea.lifeofbees;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Calendar;
 /*
 When the honeybee colony senses that it needs a new queen, perhaps because the queen is ailing or is preparing to
 swarm, the worker bees will begin the process of raising new queen bees.
@@ -22,6 +26,12 @@ A drone is a male bee. Unlike the female worker bee, a drone has no stinger.
 public class Queen {
     private int ageOfQueen;
 
+    public Queen(int ageOfQueen) {
+        this.ageOfQueen = ageOfQueen;
+    }
+
+    public Queen() {
+    }
 
     public int getAgeOfQueen() {
         return ageOfQueen;
@@ -30,34 +40,30 @@ public class Queen {
     public void setAgeOfQueen(int ageOfQueen) {
         this.ageOfQueen = ageOfQueen;
     }
-    //    public void makeEggs(Hive hive, Environment environment) {
-//        int numberOfEggs = (int) (2000 */* honeyIndex * */environment.getWeather().getTemperature() * ageOfQueenIndex(ageOfQueen));
-//
-//        hive.addEggs(numberOfEggs);
-//    }
 
     public double ageOfQueenIndex() {
-        Queen queen = new Queen();
+        Apiary apiary=new Apiary();
 
-        /* a queen lives 3-5 years. We will consider 1 years old for our queen. At age 5,
-    beekeper will have to replace this queen with new one.Depending on age of queen will choose an fertility index
-     between 0 and 1. When index is 0, queen is too old to lay eggs and she have to be replaced. Whenn index is 1,
+        /* a queen lives 3-5 years. When will build first 10 hives in apiary will use random to generate ageOfQueen
+         between 1  and 5 years old for our queen. At age 5, will have to replace this queen with new one.
+         Depending on age of queen will choose an fertility index between 0 and 1. When index is 0, queen is too old
+         to lay eggs and she have to be replaced. Whenn index is 1,
      fertility of queen is at maximum and she can lay upon 2000 eggs daily
          */
 
-        int ageOfQueen = queen.getAgeOfQueen();
+        int ageOfQueen = apiary.getHives().getAgeOfQueen();
         double numberRandom = Math.random();
         switch (ageOfQueen) {
             case 0, 1, 2, 3:
                 return 1;
             case 4:
                 if (numberRandom < 0.5) {
-                    queen.setAgeOfQueen(0);
+                    hive.setAgeOfQueen(0);
                     return 1;
                 } else
                     return 0.75;
             case 5:
-                queen.setAgeOfQueen(0);
+                hive.setAgeOfQueen(0);
                 return 0.25;
             default:
                 break;
@@ -65,11 +71,29 @@ public class Queen {
         return 0;
     }
 
-    public static int makeEggs() {
+    public int makeEggs() {
         Queen queen = new Queen();
-        int numberOfEggs = (int) (2000 * queen.ageOfQueenIndex());
-        // have to add another index, a  honeyIndex which will depend on quantity of honey made it
+        int numberOfEggs = (int) (2000 * queen.ageOfQueenIndex());//*Whether.geWhetherIndex());
+        // have to add another index, a  whetherIndex which will depend on quantity of honey made it
+        System.out.println("eggs number is: "+numberOfEggs);
         return numberOfEggs;
     }
+
+    // Method to make eggs and create a list of EggsBatch, which store daily
+    // numberOfEggs and date from calendar when eggs are made
+    public List<EggsBatch> makeBatchOfEggs(int numberOfEggs, Date date) {
+        Hive hive = new Hive();
+        List<EggsBatch> eggsBatches = new ArrayList<>();
+        EggsBatch eggsBatch = new EggsBatch(numberOfEggs, date);
+        eggsBatches.add(eggsBatch);
+        return eggsBatches;
+    }
+
+    public void checkAgeOfQueen() {
+    }
 }
+
+
+
+
 
