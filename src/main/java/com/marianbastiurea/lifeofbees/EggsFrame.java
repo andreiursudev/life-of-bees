@@ -1,17 +1,35 @@
 package com.marianbastiurea.lifeofbees;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 public class EggsFrame {
 
-private int eggs;
+    private int numberOfEggs;
+    private int numberOfEggsFrame;
 
-    public int getEggs() {
-        return eggs;
+    public EggsFrame(int numberOfEggsFrame,int numberOfEggs) {
+        this.numberOfEggsFrame = numberOfEggsFrame;
+        this.numberOfEggs = numberOfEggs;
     }
 
-    public void setEggs(int eggs) {
-        this.eggs = eggs;
+    public int getNumberOfEggs() {
+        return numberOfEggs;
     }
 
-//    public int fillUpWithEggs(){
-//   }
+    public int getNumberOfEggsFrame() {
+        return numberOfEggsFrame;
+    }
+
+    @Override
+    public String toString() {
+        return "EggsFrame{" +
+                "numberOfEggs=" + numberOfEggs +
+                ", numberOfEggsFrame=" + numberOfEggsFrame +
+                '}';
+    }
 }
+
+
+

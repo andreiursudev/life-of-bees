@@ -1,11 +1,13 @@
 package com.marianbastiurea.lifeofbees;
 
+import java.awt.*;
 import java.util.*;
 import java.util.Date;
+import java.util.List;
 
 public class LifeOfBees {
     private Apiary apiary;// apiary is the place where it will be stored all hives
-    private int hiveIdCounter;
+    private int hiveIdCounter=1;
     public LifeOfBees() {
         this.apiary = new Apiary();
     }
@@ -13,7 +15,7 @@ public class LifeOfBees {
     // Method to create 10 hives and store them in the apiary
     public void createHives() {
         List<Hive> hives = new ArrayList<>();
-        for (int i = 1; i < 11; i++) {
+        for (int i = 1; i < 2; i++) {
             Hive hive = createHive();
             hives.add(hive);
         }
@@ -24,19 +26,24 @@ public class LifeOfBees {
     private Hive createHive() {
         Random random = new Random();
         Hive hive = new Hive();
+        hive.setEggsBatches(new ArrayList<>());
+        hive.setEggsFrames(new ArrayList<>());
         hive.setId(hiveIdCounter++);
         hive.setAgeOfQueen(random.nextInt(1, 5)); // Random age for the queen
         hive.setNumberOfHoneyFrame(random.nextInt(3, 6)); // Random number of honey frames
         hive.setNumberOfEggsFrame(random.nextInt(3, 6)); // Random number of eggs frames
 
         // Creating EggsFrame with a random number off eggs
-        List<EggsFrame> eggsFrames = new ArrayList<>();
-        for (int i = 0; i < hive.getNumberOfEggsFrame(); i++) {
-            EggsFrame eggsFrame = new EggsFrame();
-            eggsFrame.setEggs(random.nextInt(2000, 3000)); // Random number of eggs
-            eggsFrames.add(eggsFrame);
+
+        Queen queen=new Queen(hive.getAgeOfQueen());
+        for (int i = 1; i < hive.getNumberOfEggsFrame()+1; i++) {
+            hive.addEggsFrames(queen.fillUpWithEggs(i, random.nextInt(2000, 3000)));
         }
-        hive.setEggsFrames(eggsFrames);
+            System.out.println("Hive ID: " + hive.getId());
+            System.out.println("Eggs Frame: " + hive.getEggsFrames());
+            System.out.println();
+
+        //hive.setEggsFrames(eggsFrames);
         // Creating HoneyFrames
         List<HoneyFrame> honeyFrames = new ArrayList<>();
         for (int i = 0; i < hive.getNumberOfHoneyFrame(); i++) {
@@ -48,9 +55,10 @@ public class LifeOfBees {
 
 
         // each hive will have a random number of bees for each frame
-        int numberOfBees = random.nextInt(2000, 2500) * hive.getNumberOfHoneyFrame() * hive.getNumberOfEggsFrame();
+        int numberOfBees = random.nextInt(2000, 2500)*hive.getNumberOfHoneyFrame()*hive.getNumberOfEggsFrame();
         hive.setNumberOfBees(numberOfBees);
-        System.out.println("Hive is :" + hive);
+        System.out.println("Hive " + hive+" have a starting number of bees: "+hive.getNumberOfBees());
+
         return hive;
     }
 
@@ -66,7 +74,7 @@ public class LifeOfBees {
 
         // Iterate over 2 years
         for (int year = 0; year < 1; year++) {// Use only one for debug purposes
-            while (calendar.get(Calendar.MONTH) != Calendar.OCTOBER) {
+            while (calendar.get(Calendar.MONTH) != Calendar.APRIL) {
                 // Iterate until OCTOBER
                 Date currentDate = calendar.getTime();
                 System.out.println("Date: " + currentDate);

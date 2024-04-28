@@ -1,6 +1,7 @@
 package com.marianbastiurea.lifeofbees;
 
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -11,13 +12,27 @@ public class Hive {
     private int numberOfHoneyFrame;
     private int numberOfEggsFrame;
     private int ageOfQueen;
-    private EggsFrame eggsFrame;
+    private int numberOfEggs;
+    private List<EggsFrame> eggsFrames;
     private HoneyFrame honeyFrame;
     private int numberOfBees;
     private double honeyQuantity;
     private Queen queen;
     private Bees bees;
     private List<EggsBatch> eggsBatches;
+
+    public Hive(List<EggsBatch> eggsBatches, List<EggsFrame> eggsFrames) {
+        this.eggsBatches = new ArrayList<>(eggsBatches);
+        this.eggsFrames = new ArrayList<>(eggsFrames);
+    }
+
+    public void setEggsBatches(List<EggsBatch> eggsBatches) {
+        this.eggsBatches = eggsBatches;
+    }
+
+    public void setEggsFrames(List<EggsFrame> eggsFrames) {
+        this.eggsFrames = eggsFrames;
+    }
 
     public Hive(int id, int ageOfQueen) {
         this.id = id;
@@ -43,6 +58,7 @@ public class Hive {
     public Hive() {
     }
 
+
     public int getId() {
         return id;
     }
@@ -67,6 +83,14 @@ public class Hive {
         this.numberOfEggsFrame = numberOfEggsFrame;
     }
 
+    public int getNumberOfEggs() {
+        return numberOfEggs;
+    }
+
+    public void setNumberOfEggs(int numberOfEggs) {
+        this.numberOfEggs = numberOfEggs;
+    }
+
     public int getAgeOfQueen() {
         return ageOfQueen;
     }
@@ -75,13 +99,6 @@ public class Hive {
         this.ageOfQueen = ageOfQueen;
     }
 
-    public EggsFrame getEggsFrame() {
-        return eggsFrame;
-    }
-
-    public void setEggsFrame(EggsFrame eggsFrame) {
-        this.eggsFrame = eggsFrame;
-    }
 
     public HoneyFrame getHoneyFrame() {
         return honeyFrame;
@@ -114,14 +131,18 @@ public class Hive {
                 ", numberOfHoneyFrame=" + numberOfHoneyFrame +
                 ", numberOfEggsFrame=" + numberOfEggsFrame +
                 ", ageOfQueen=" + ageOfQueen +
+                ", eggsFrames=" + eggsFrames +
+                ", honeyFrame=" + honeyFrame +
                 ", numberOfBees=" + numberOfBees +
                 ", honeyQuantity=" + honeyQuantity +
+                ", queen=" + queen +
+                ", bees=" + bees +
+                ", eggsBatches=" + eggsBatches +
                 '}';
     }
 
-    public void setEggsFrames(List<EggsFrame> eggsFrames) {
 
-    }
+
 
     public void setHoneyFrames(List<HoneyFrame> honeyFrames) {
 
@@ -131,11 +152,26 @@ public class Hive {
         this.eggsBatches.addAll(eggsBatches);
     }
 
+    public void addEggsFrames(List<EggsFrame> eggsFrames) {
+        this.eggsFrames.addAll(eggsFrames);
+    }
+
+
     public List<EggsBatch> getEggsBatches() {
         return eggsBatches;
     }
 
+    public List<EggsFrame> getEggsFrames() {
+        return eggsFrames;
+    }
+
+
+
+
     public void checkAndAddEggsToBees() {
+        // after 21 days eggs hatch in bees. this method will check date when eggsBatch was laid
+        //and add the number of eggs to bee number from hive.
+
         Calendar calendar = Calendar.getInstance();
         Date currentDate = calendar.getTime(); // Get current date
 

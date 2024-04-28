@@ -11,7 +11,12 @@ public class HoneyFrame {
         this.kgOfHoney = kgOfHoney;
     }
 
-
+    @Override
+    public String toString() {
+        return "HoneyFrame{" +
+                "kgOfHoney=" + kgOfHoney +
+                '}';
+    }
 //    public double fillUpWithHoney() {
 //        Hive hive = new Hive();
 //        Bees bees = new Bees();
