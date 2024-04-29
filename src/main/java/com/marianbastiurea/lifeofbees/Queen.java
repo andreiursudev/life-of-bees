@@ -41,43 +41,11 @@ public class Queen {
         this.ageOfQueen = ageOfQueen;
     }
 
-    public double ageOfQueenIndex(Hive hive) {
-        /* a queen lives 3-5 years. When will build first 10 hives in apiary will use random to generate ageOfQueen
-         between 1  and 5 years old for our queen. At age 5, will have to replace this queen with new one.
-         Depending on age of queen will choose an fertility index between 0 and 1. When index is 0, queen is too old
-         to lay eggs and she have to be replaced. Whenn index is 1,
-     fertility of queen is at maximum and she can lay upon 2000 eggs daily
-         */
-
-        int ageOfQueen = hive.getAgeOfQueen();
-        double numberRandom = Math.random();
-        switch (ageOfQueen) {
-            case 0, 1, 2, 3:
-                return 1;
-            case 4:
-                if (numberRandom < 0.5) {
-                   hive.setAgeOfQueen(0);
-                    return 1;
-               } else
-                    return 0.75;
-            case 5:
-                hive.setAgeOfQueen(0);
-                return 0.25;
-            default:
-                break;
-        }
-        System.out.println("age of queen is "+ageOfQueen);
-        System.out.println("random number is "+numberRandom);
-        return 0;
-    }
 
     public int makeEggs(Hive hive) {
-        Queen queen = new Queen();
-
-        int numberOfEggs = (int) (2000 * queen.ageOfQueenIndex(hive));//*Whether.geWhetherIndex());
+       // Queen queen = new Queen();
+        int numberOfEggs = (int) (2000 * hive.ageOfQueenIndex(hive));//*Whether.geWhetherIndex());
         // have to add another index, a  whetherIndex which will depend on quantity of honey made it
-        System.out.println("eggs number is: " + numberOfEggs);
-        System.out.println(" index of age of queen is "+ageOfQueenIndex(hive));
         return numberOfEggs;
     }
 
@@ -88,16 +56,15 @@ public class Queen {
         EggsBatch eggsBatch = new EggsBatch(numberOfEggs, date);
         eggsBatches.add(eggsBatch);
         System.out.println("Eggs Batch are: " + eggsBatch);
-        System.out.println("number of eggs are: "+numberOfEggs);
+        System.out.println("number of eggs are: " + numberOfEggs);
         return eggsBatches;
 
     }
 
     public List<EggsFrame> fillUpWithEggs(int numberOfEggsFrame, int numberOfEggs) {
         List<EggsFrame> eggsFrames = new ArrayList<>();
-            EggsFrame eggsFrame = new EggsFrame(numberOfEggsFrame, numberOfEggs);
-            eggsFrames.add(eggsFrame);
-            System.out.println("Eggs Frame are: " + eggsFrame);
+        EggsFrame eggsFrame = new EggsFrame(numberOfEggsFrame, numberOfEggs);
+        eggsFrames.add(eggsFrame);
 
         return eggsFrames;
     }

@@ -7,7 +7,8 @@ import java.util.List;
 
 public class LifeOfBees {
     private Apiary apiary;// apiary is the place where it will be stored all hives
-    private int hiveIdCounter=1;
+    private int hiveIdCounter = 1;
+
     public LifeOfBees() {
         this.apiary = new Apiary();
     }
@@ -29,21 +30,28 @@ public class LifeOfBees {
         hive.setEggsBatches(new ArrayList<>());
         hive.setEggsFrames(new ArrayList<>());
         hive.setId(hiveIdCounter++);
-        hive.setAgeOfQueen(random.nextInt(1, 5)); // Random age for the queen
+        Queen queen = new Queen();
+        hive.setQueen(queen);
+        hive.getQueen().setAgeOfQueen(random.nextInt(1, 5));
         hive.setNumberOfHoneyFrame(random.nextInt(3, 6)); // Random number of honey frames
         hive.setNumberOfEggsFrame(random.nextInt(3, 6)); // Random number of eggs frames
 
         // Creating EggsFrame with a random number off eggs
-
-        Queen queen=new Queen(hive.getAgeOfQueen());
-        for (int i = 1; i < hive.getNumberOfEggsFrame()+1; i++) {
-            hive.addEggsFrames(queen.fillUpWithEggs(i, random.nextInt(2000, 3000)));
+        queen = new Queen(hive.getAgeOfQueen());
+        int totalNumberOfEggs = 0;
+        for (int i = 1; i < hive.getNumberOfEggsFrame() + 1; i++) {
+            int randomNumberOfEggs = random.nextInt(2000, 3000);
+            hive.addEggsFrames(queen.fillUpWithEggs(i, randomNumberOfEggs));
+            totalNumberOfEggs += randomNumberOfEggs;
         }
-            System.out.println("Hive ID: " + hive.getId());
-            System.out.println("Eggs Frame: " + hive.getEggsFrames());
-            System.out.println();
+        hive.setNumberOfEggs(totalNumberOfEggs);
+        System.out.println("Hive ID: " + hive.getId());
+        System.out.println("Eggs Frame: " + hive.getEggsFrames());
+        System.out.println("total number of Hive's eggs for start " + hive.getNumberOfEggs());
+        System.out.println();
 
-        //hive.setEggsFrames(eggsFrames);
+
+
         // Creating HoneyFrames
         List<HoneyFrame> honeyFrames = new ArrayList<>();
         for (int i = 0; i < hive.getNumberOfHoneyFrame(); i++) {
@@ -55,9 +63,9 @@ public class LifeOfBees {
 
 
         // each hive will have a random number of bees for each frame
-        int numberOfBees = random.nextInt(2000, 2500)*hive.getNumberOfHoneyFrame()*hive.getNumberOfEggsFrame();
+        int numberOfBees = random.nextInt(2000, 2500) * hive.getNumberOfHoneyFrame() * hive.getNumberOfEggsFrame();
         hive.setNumberOfBees(numberOfBees);
-        System.out.println("Hive " + hive+" have a starting number of bees: "+hive.getNumberOfBees());
+        System.out.println("Hive " + hive + " have a starting number of bees: " + hive.getNumberOfBees());
 
         return hive;
     }
@@ -71,7 +79,6 @@ public class LifeOfBees {
         calendar.set(Calendar.DAY_OF_MONTH, 1);
 
 
-
         // Iterate over 2 years
         for (int year = 0; year < 1; year++) {// Use only one for debug purposes
             while (calendar.get(Calendar.MONTH) != Calendar.APRIL) {
@@ -81,15 +88,17 @@ public class LifeOfBees {
 
 
                 for (Hive hive : apiary.getHives()) {
-                   Queen queen = new Queen();
+                    Queen queen = new Queen();
                     hive.addEggsBatches(queen.makeBatchOfEggs(queen.makeEggs(hive), currentDate));
-
+                   // hive.addEggsFrame(hive, hive.getEggsBatches());
                     // Add eggs batches for the current day
                     hive.checkAndAddEggsToBees(); // Check and add eggs to the number of bees
                     System.out.println("Hive ID: " + hive.getId());
                     System.out.println("Eggs Batches: " + hive.getEggsBatches());
                     System.out.println("Number of Bees: " + hive.getNumberOfBees());
                     System.out.println();
+
+
                 }
 
 

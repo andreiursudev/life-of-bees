@@ -1,10 +1,7 @@
 package com.marianbastiurea.lifeofbees;
 
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 public class Hive {
@@ -34,10 +31,10 @@ public class Hive {
         this.eggsFrames = eggsFrames;
     }
 
-    public Hive(int id, int ageOfQueen) {
-        this.id = id;
-        this.ageOfQueen = ageOfQueen;
-    }
+//    public Hive(int id, int ageOfQueen) {
+//        this.id = id;
+//        this.ageOfQueen = ageOfQueen;
+//    }
 
     public Bees getBees() {
         return bees;
@@ -92,12 +89,13 @@ public class Hive {
     }
 
     public int getAgeOfQueen() {
-        return ageOfQueen;
-    }
+       return ageOfQueen=getQueen().getAgeOfQueen();
+   }
 
     public void setAgeOfQueen(int ageOfQueen) {
-        this.ageOfQueen = ageOfQueen;
-    }
+        Random random = new Random();
+       this.queen.setAgeOfQueen(random.nextInt(1, 5));
+   }
 
 
     public HoneyFrame getHoneyFrame() {
@@ -135,13 +133,9 @@ public class Hive {
                 ", honeyFrame=" + honeyFrame +
                 ", numberOfBees=" + numberOfBees +
                 ", honeyQuantity=" + honeyQuantity +
-                ", queen=" + queen +
-                ", bees=" + bees +
                 ", eggsBatches=" + eggsBatches +
                 '}';
     }
-
-
 
 
     public void setHoneyFrames(List<HoneyFrame> honeyFrames) {
@@ -156,7 +150,6 @@ public class Hive {
         this.eggsFrames.addAll(eggsFrames);
     }
 
-
     public List<EggsBatch> getEggsBatches() {
         return eggsBatches;
     }
@@ -165,6 +158,33 @@ public class Hive {
         return eggsFrames;
     }
 
+    public double ageOfQueenIndex(Hive hive) {
+        /* a queen lives 3-5 years. When will build first 10 hives in apiary will use random to generate ageOfQueen
+         between 1  and 5 years old for our queen. At age 5, will have to replace this queen with new one.
+         Depending on age of queen will choose an fertility index between 0 and 1. When index is 0, queen is too old
+         to lay eggs and she have to be replaced. Whenn index is 1,
+     fertility of queen is at maximum and she can lay upon 2000 eggs daily
+         */
+        //int ageOfQueen =getQueen().get
+        int ageOfQueen = hive.getAgeOfQueen();
+        double numberRandom = Math.random();
+        switch (ageOfQueen) {
+            case 0, 1, 2, 3:
+                return 1;
+            case 4:
+                if (numberRandom < 0.5) {
+                    hive.setAgeOfQueen(0);
+                    return 1;
+                } else
+                    return 0.75;
+            case 5:
+                hive.setAgeOfQueen(0);
+                return 0.25;
+            default:
+                break;
+        }
+        return 0;
+    }
 
 
 
@@ -187,6 +207,41 @@ public class Hive {
                 numberOfBees += eggsBatch.getNumberOfEggs();
             }
         }
+
+    }
+
+    public void addEggsFrame(Hive hive, List<EggsBatch> eggsBatches) {
+        int maxEggPerFrame = 6400;
+        int totalNumberOfEggsPerHiveAtBeginning = hive.getNumberOfEggs();
+        System.out.println("Total number of eggs at beginning: " + totalNumberOfEggsPerHiveAtBeginning);
+        System.out.println("number of eggsFrame " + hive.getNumberOfEggsFrame());
+        System.out.println(" maximum number of eggs for initial eggs frame " + maxEggPerFrame * hive.getNumberOfEggsFrame());
+        int totalNumberOfEggsPerHive = totalNumberOfEggsPerHiveAtBeginning;
+        do {
+          //  for (EggsBatch eggsBatch : eggsBatches) {
+
+            System.out.println("egge batched is"+hive.getEggsBatches());
+               // totalNumberOfEggsPerHive +=hive.getEggsBatches()
+                System.out.println("Total number of eggs with eggsBatch: " + totalNumberOfEggsPerHive);
+              //  System.out.println("date when initial eggs frame are full"+eggsBatches.getNumberOfEggs());
+           // }
+        //    System.out.println("Total number of eggs with eggsBatch: " + totalNumberOfEggsPerHive);
+           // System.out.println("date when initial eggs frame are full"+eggsBatch.getCreationDate());
+        } while (totalNumberOfEggsPerHive < maxEggPerFrame * hive.getNumberOfEggsFrame());
+        if (hive.getNumberOfEggsFrame() < 6) {
+            int numberOfFramesToAdd = 6 - hive.getNumberOfEggsFrame();
+            System.out.println("you can insert another eggsFrame" + numberOfFramesToAdd);
+            Queen queen = new Queen(hive.getAgeOfQueen());
+            for (int i = 1; i < numberOfFramesToAdd+1; i++) {
+                hive.setNumberOfEggsFrame(hive.getNumberOfEggsFrame() + 1);
+                hive.addEggsFrames(queen.fillUpWithEggs(hive.getNumberOfEggsFrame(), 0));
+            }
+            System.out.println("Hive ID: " + hive.getId());
+            System.out.println("Eggs Frame: " + hive.getEggsFrames());
+            System.out.println("total number of Hive's eggs for start " + hive.getNumberOfEggs());
+        }
+
+
     }
 
 }
