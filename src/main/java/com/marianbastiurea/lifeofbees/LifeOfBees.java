@@ -1,6 +1,5 @@
 package com.marianbastiurea.lifeofbees;
 
-import java.awt.*;
 import java.util.*;
 import java.util.Date;
 import java.util.List;
@@ -90,13 +89,13 @@ public class LifeOfBees {
                 for (Hive hive : apiary.getHives()) {
                     Queen queen = new Queen();
                     hive.addEggsBatches(queen.makeBatchOfEggs(queen.makeEggs(hive), currentDate));
-                   // hive.addEggsFrame(hive, hive.getEggsBatches());
+                   hive.fillUpExistingEggsFrameFromHive(hive);
                     // Add eggs batches for the current day
                     hive.checkAndAddEggsToBees(); // Check and add eggs to the number of bees
-                    System.out.println("Hive ID: " + hive.getId());
-                    System.out.println("Eggs Batches: " + hive.getEggsBatches());
-                    System.out.println("Number of Bees: " + hive.getNumberOfBees());
-                    System.out.println();
+//                    System.out.println("Hive ID: " + hive.getId());
+//                    System.out.println("Eggs Batches: " + hive.getEggsBatches());
+//                    System.out.println("Number of Bees: " + hive.getNumberOfBees());
+//                    System.out.println();
 
 
                 }

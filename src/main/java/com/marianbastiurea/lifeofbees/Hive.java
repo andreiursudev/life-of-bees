@@ -1,6 +1,6 @@
 package com.marianbastiurea.lifeofbees;
 
-
+import java.util.Date;
 import java.util.*;
 
 
@@ -84,13 +84,13 @@ public class Hive {
     }
 
     public int getAgeOfQueen() {
-       return getQueen().getAgeOfQueen();
-   }
+        return getQueen().getAgeOfQueen();
+    }
 
     public void setAgeOfQueen() {
         Random random = new Random();
-       this.queen.setAgeOfQueen(random.nextInt(1, 5));
-   }
+        this.queen.setAgeOfQueen(random.nextInt(1, 5));
+    }
 
 
     public HoneyFrame getHoneyFrame() {
@@ -182,7 +182,6 @@ public class Hive {
     }
 
 
-
     public void checkAndAddEggsToBees() {
         // after 21 days eggs hatch in bees. this method will check date when eggsBatch was laid
         //and add the number of eggs to bee number from hive.
@@ -205,39 +204,53 @@ public class Hive {
 
     }
 
-    public void addEggsFrame(Hive hive, List<EggsBatch> eggsBatches) {
+    public void fillUpExistingEggsFrameFromHive(Hive hive) {
         int maxEggPerFrame = 6400;
         int totalNumberOfEggsPerHiveAtBeginning = hive.getNumberOfEggs();
-        System.out.println("Total number of eggs at beginning: " + totalNumberOfEggsPerHiveAtBeginning);
-        System.out.println("number of eggsFrame " + hive.getNumberOfEggsFrame());
+//        System.out.println("Total number of eggs at beginning: " + totalNumberOfEggsPerHiveAtBeginning);
+//        System.out.println("number of eggsFrame " + hive.getNumberOfEggsFrame());
         System.out.println(" maximum number of eggs for initial eggs frame " + maxEggPerFrame * hive.getNumberOfEggsFrame());
         int totalNumberOfEggsPerHive = totalNumberOfEggsPerHiveAtBeginning;
+        int count = 0;
+        Date getCreationDate = null;
+        List<EggsBatch> eggsBatches = hive.getEggsBatches();
         do {
-          //  for (EggsBatch eggsBatch : eggsBatches) {
-
-            System.out.println("egge batched is"+hive.getEggsBatches());
-               //totalNumberOfEggsPerHive +=hive.getEggsBatches();
-                System.out.println("Total number of eggs with eggsBatch: " + totalNumberOfEggsPerHive);
-              //  System.out.println("date when initial eggs frame are full"+eggsBatches.getNumberOfEggs());
-           // }
-        //    System.out.println("Total number of eggs with eggsBatch: " + totalNumberOfEggsPerHive);
-           // System.out.println("date when initial eggs frame are full"+eggsBatch.getCreationDate());
-        } while (totalNumberOfEggsPerHive < maxEggPerFrame * hive.getNumberOfEggsFrame());
-        if (hive.getNumberOfEggsFrame() < 6) {
-            int numberOfFramesToAdd = 6 - hive.getNumberOfEggsFrame();
-            System.out.println("you can insert another eggsFrame" + numberOfFramesToAdd);
-            Queen queen = new Queen(hive.getAgeOfQueen());
-            for (int i = 1; i < numberOfFramesToAdd+1; i++) {
-                hive.setNumberOfEggsFrame(hive.getNumberOfEggsFrame() + 1);
-                hive.addEggsFrames(queen.fillUpWithEggs(hive.getNumberOfEggsFrame(), 0));
+            for (EggsBatch eggsBatch : eggsBatches) {
+                count = eggsBatches.size();
+                int getEggsNumber = eggsBatch.getNumberOfEggs();
+                getCreationDate = eggsBatch.getCreationDate();
+                totalNumberOfEggsPerHive += getEggsNumber;
+                    System.out.println("Total number of eggs with eggsBatch: " + totalNumberOfEggsPerHive);
+                // System.out.println("date when initial eggs frame are full"+eggsBatch.getCreationDate());
+                count++;
             }
-            System.out.println("Hive ID: " + hive.getId());
-            System.out.println("Eggs Frame: " + hive.getEggsFrames());
-            System.out.println("total number of Hive's eggs for start " + hive.getNumberOfEggs());
+        }
+        while (count < eggsBatches.size());
+        if (totalNumberOfEggsPerHive > maxEggPerFrame * hive.getNumberOfEggsFrame()) {
+            if (hive.getNumberOfEggsFrame() < 6) {
+                int numberOfFramesToAdd = 6 - hive.getNumberOfEggsFrame();
+                System.out.println("today is " + getCreationDate);
+                System.out.println("you can insert another " + numberOfFramesToAdd+" eggsFrame");
+                //add others eggsFrame in hive
+            }
         }
 
+    }
+    // codul de mai jos nu e terminat.
+    public void fillUpNewAddedEggsFrameInHive(Hive hive){
+        int maxEggPerFrame = 6400;
+        int numberOfFramesToAdd = 6 - hive.getNumberOfEggsFrame();// value could be an input
+        Queen queen = new Queen(hive.getAgeOfQueen());
+        for (int i = 1; i < numberOfFramesToAdd + 1; i++) {
+            hive.setNumberOfEggsFrame(hive.getNumberOfEggsFrame() + 1);
+            hive.addEggsFrames(queen.fillUpWithEggs(hive.getNumberOfEggsFrame(), 0));
+        }
+        System.out.println("Hive ID: " + hive.getId());
+        System.out.println("Eggs Frame: " + hive.getEggsFrames());
+        // System.out.println("total number of Hive's eggs for start " + hive.getNumberOfEggs());
+        // now we calculate how many other eggsBatch it's needed to fill up new eggsFrames
+        int numbersOfEggsBatchedNeeded=(int)numberOfFramesToAdd*maxEggPerFrame;
 
     }
-
 }
 
