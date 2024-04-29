@@ -240,7 +240,7 @@ public class Hive {
     public void fillUpNewAddedEggsFrameInHive(Hive hive){
         int maxEggPerFrame = 6400;
         int numberOfFramesToAdd = 6 - hive.getNumberOfEggsFrame();// value could be an input
-        Queen queen = new Queen(hive.getAgeOfQueen());
+        Queen queen = hive.getQueen();
         for (int i = 1; i < numberOfFramesToAdd + 1; i++) {
             hive.setNumberOfEggsFrame(hive.getNumberOfEggsFrame() + 1);
             hive.addEggsFrames(queen.fillUpWithEggs(hive.getNumberOfEggsFrame(), 0));
