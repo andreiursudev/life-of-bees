@@ -31,11 +31,6 @@ public class Hive {
         this.eggsFrames = eggsFrames;
     }
 
-//    public Hive(int id, int ageOfQueen) {
-//        this.id = id;
-//        this.ageOfQueen = ageOfQueen;
-//    }
-
     public Bees getBees() {
         return bees;
     }
@@ -89,10 +84,10 @@ public class Hive {
     }
 
     public int getAgeOfQueen() {
-       return ageOfQueen=getQueen().getAgeOfQueen();
+       return getQueen().getAgeOfQueen();
    }
 
-    public void setAgeOfQueen(int ageOfQueen) {
+    public void setAgeOfQueen() {
         Random random = new Random();
        this.queen.setAgeOfQueen(random.nextInt(1, 5));
    }
@@ -166,19 +161,19 @@ public class Hive {
      fertility of queen is at maximum and she can lay upon 2000 eggs daily
          */
         //int ageOfQueen =getQueen().get
-        int ageOfQueen = hive.getAgeOfQueen();
+        int ageOfQueen = hive.getQueen().getAgeOfQueen();
         double numberRandom = Math.random();
         switch (ageOfQueen) {
             case 0, 1, 2, 3:
                 return 1;
             case 4:
                 if (numberRandom < 0.5) {
-                    hive.setAgeOfQueen(0);
+                    hive.getQueen().setAgeOfQueen(0);
                     return 1;
                 } else
                     return 0.75;
             case 5:
-                hive.setAgeOfQueen(0);
+                hive.getQueen().setAgeOfQueen(0);
                 return 0.25;
             default:
                 break;
@@ -221,7 +216,7 @@ public class Hive {
           //  for (EggsBatch eggsBatch : eggsBatches) {
 
             System.out.println("egge batched is"+hive.getEggsBatches());
-               // totalNumberOfEggsPerHive +=hive.getEggsBatches()
+               //totalNumberOfEggsPerHive +=hive.getEggsBatches();
                 System.out.println("Total number of eggs with eggsBatch: " + totalNumberOfEggsPerHive);
               //  System.out.println("date when initial eggs frame are full"+eggsBatches.getNumberOfEggs());
            // }

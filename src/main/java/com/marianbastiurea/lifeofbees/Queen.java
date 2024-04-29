@@ -3,7 +3,6 @@ package com.marianbastiurea.lifeofbees;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Calendar;
 /*
 When the honeybee colony senses that it needs a new queen, perhaps because the queen is ailing or is preparing to
 swarm, the worker bees will begin the process of raising new queen bees.
@@ -43,7 +42,7 @@ public class Queen {
 
 
     public int makeEggs(Hive hive) {
-       // Queen queen = new Queen();
+
         int numberOfEggs = (int) (2000 * hive.ageOfQueenIndex(hive));//*Whether.geWhetherIndex());
         // have to add another index, a  whetherIndex which will depend on quantity of honey made it
         return numberOfEggs;
