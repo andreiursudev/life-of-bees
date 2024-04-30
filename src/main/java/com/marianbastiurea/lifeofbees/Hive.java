@@ -154,7 +154,7 @@ public class Hive {
         return eggsFrames;
     }
 
-    public double ageOfQueenIndex(Hive hive) {
+    public double ageOfQueenIndex() {
         /* a queen lives 3-5 years. When will build first 10 hives in apiary will use random to generate ageOfQueen
          between 1  and 5 years old for our queen. At age 5, will have to replace this queen with new one.
          Depending on age of queen will choose an fertility index between 0 and 1. When index is 0, queen is too old

@@ -43,7 +43,7 @@ public class Queen {
 
     public int makeEggs(Hive hive) {
 
-        int numberOfEggs = (int) (2000 * hive.ageOfQueenIndex(hive));//*Whether.geWhetherIndex());
+        int numberOfEggs = (int) (2000 * hive.ageOfQueenIndex());//*Whether.geWhetherIndex());
         // have to add another index, a  whetherIndex which will depend on quantity of honey made it
         return numberOfEggs;
     }
