@@ -161,19 +161,19 @@ public class Hive {
      fertility of queen is at maximum and she can lay upon 2000 eggs daily
          */
 
-        int ageOfQueen = hive.getQueen().getAgeOfQueen();
+        int ageOfQueen = this.getQueen().getAgeOfQueen();
         double numberRandom = Math.random();
         switch (ageOfQueen) {
             case 0, 1, 2, 3:
                 return 1;
             case 4:
                 if (numberRandom < 0.5) {
-                    hive.getQueen().setAgeOfQueen(0);
+                    this.getQueen().setAgeOfQueen(0);
                     return 1;
                 } else
                     return 0.75;
             case 5:
-                hive.getQueen().setAgeOfQueen(0);
+                this.getQueen().setAgeOfQueen(0);
                 return 0.25;
             default:
                 break;
