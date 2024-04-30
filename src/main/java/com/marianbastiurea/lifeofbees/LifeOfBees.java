@@ -16,7 +16,7 @@ public class LifeOfBees {
     // Method to create 10 hives and store them in the apiary
     public void createHives( int numberOfStartingHives) {
         List<Hive> hives = new ArrayList<>();
-        for (int i = 1; i < numberOfStartingHives; i++) {
+        for (int i = 1; i < numberOfStartingHives+1; i++) {
             Hive hive = createHive();
             hives.add(hive);
         }
