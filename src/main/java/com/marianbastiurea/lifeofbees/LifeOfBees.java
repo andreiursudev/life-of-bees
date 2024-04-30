@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.Date;
 import java.util.List;
 
+
 public class LifeOfBees {
     private Apiary apiary;// apiary is the place where it will be stored all hives
     private int hiveIdCounter = 1;
@@ -13,13 +14,14 @@ public class LifeOfBees {
     }
 
     // Method to create 10 hives and store them in the apiary
-    public void createHives() {
+    public void createHives( int numberOfStartingHives) {
         List<Hive> hives = new ArrayList<>();
-        for (int i = 1; i < 2; i++) {
+        for (int i = 1; i < numberOfStartingHives; i++) {
             Hive hive = createHive();
             hives.add(hive);
         }
         apiary.setHives(hives);
+        System.out.println("First "+numberOfStartingHives+ " are "+hives);
     }
 
     // Method to create a single hive with all its components
@@ -48,7 +50,6 @@ public class LifeOfBees {
         System.out.println("Eggs Frame: " + hive.getEggsFrames());
         System.out.println("total number of Hive's eggs for start " + hive.getNumberOfEggs());
         System.out.println();
-
 
 
         // Creating HoneyFrames
@@ -89,7 +90,8 @@ public class LifeOfBees {
                 for (Hive hive : apiary.getHives()) {
                     Queen queen = new Queen();
                     hive.addEggsBatches(queen.makeBatchOfEggs(queen.makeEggs(hive), currentDate));
-                   hive.fillUpExistingEggsFrameFromHive(hive);
+                    hive.fillUpExistingEggsFrameFromHive(currentDate);
+                    //  hive.fillUpNewAddedEggsFrameInHive();
                     // Add eggs batches for the current day
                     hive.checkAndAddEggsToBees(); // Check and add eggs to the number of bees
 //                    System.out.println("Hive ID: " + hive.getId());
@@ -120,11 +122,10 @@ public class LifeOfBees {
         // You may need to instantiate the Honey object and add it to the list
     }
 
-    public static void main(String[] args) {
-        LifeOfBees lifeOfBees = new LifeOfBees();
-        lifeOfBees.createHives();
-        lifeOfBees.iterateOverTwoYears();
-    }
+//    public static void main(String[] args) {
+//        LifeOfBees lifeOfBees = new LifeOfBees();
+//        lifeOfBees.createHives();
+//        lifeOfBees.iterateOverTwoYears();
+//    }
+
 }
-
-
