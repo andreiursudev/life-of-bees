@@ -2,6 +2,7 @@ package com.marianbastiurea.lifeofbees;
 
 import java.util.Date;
 import java.util.*;
+import java.util.Scanner;
 
 
 public class Hive {
@@ -204,7 +205,8 @@ public class Hive {
 
     }
 
-    public Date fillUpExistingEggsFrameFromHive(Date currentDate) {
+    public void fillUpExistingEggsFrameFromHive(Date currentDate) {
+        Scanner scanner = new Scanner(System.in);
         int maxEggPerFrame = 6400;
         System.out.println(" maximum number of eggs for initial eggs frame " + maxEggPerFrame * this.getNumberOfEggsFrame());
         int totalNumberOfEggsPerHive = this.getNumberOfEggs();
@@ -221,23 +223,35 @@ public class Hive {
                 System.out.println("today is " + getCreationDate);
                 System.out.println();
             }
-            if (totalNumberOfEggsPerHive - maxEggPerFrame * this.getNumberOfEggsFrame() > random.nextInt(0, eggsBatch.getNumberOfEggs())) {
+            if (totalNumberOfEggsPerHive - maxEggPerFrame * this.getNumberOfEggsFrame() > random.nextInt(0, (int) eggsBatch.getNumberOfEggs() / 2)) {
                 if (this.getNumberOfEggsFrame() < 6) {
-                    int numberOfFramesToAdd = 6 - this.getNumberOfEggsFrame();
+                    int maximumNumberOfFramesToAdd = 6 - this.getNumberOfEggsFrame();
                     System.out.println("today is " + getCreationDate);
-                    System.out.println("you can insert another " + numberOfFramesToAdd + " eggsFrame");
-                    //add others eggsFrame in hive
+                    int numberOfFramesToAdd;
+                    do {
+                        System.out.println("you can insert another " + maximumNumberOfFramesToAdd + " eggsFrame");
+                        System.out.println("You have to insert a number lower than or equal with " + maximumNumberOfFramesToAdd);
+                        while (!scanner.hasNextInt()) {
+                            System.out.print("Invalid input. Please enter an integer: ");
+                            scanner.next();
+                        }
+                        numberOfFramesToAdd = scanner.nextInt();
+                        if (numberOfFramesToAdd > maximumNumberOfFramesToAdd) {
+                            System.out.println("Input should be lower than or equal with " + maximumNumberOfFramesToAdd + "Please try again.");
+                        }
+                    } while (numberOfFramesToAdd > maximumNumberOfFramesToAdd);
+
+                    fillUpNewAddedEggsFrameInHive(getCreationDate, numberOfFramesToAdd);
                 }
             }
         }
-        return getCreationDate;
     }
 
 
-    public void fillUpNewAddedEggsFrameInHive(Date getCreationDate) {
+    public void fillUpNewAddedEggsFrameInHive(Date getCreationDate, int numberOfFramesToAdd) {
         int maxEggPerFrame = 6400;
-        int totalNumberOfEggsPerHive = this.getNumberOfEggs();
-        int numberOfFramesToAdd = 6 - this.getNumberOfEggsFrame();// value could be an input
+        int totalNumberOfEggsToAdd = numberOfFramesToAdd * maxEggPerFrame;
+        int eggsAddedInNewFrame = 0;
         Date date = getCreationDate;
         Queen queen = this.getQueen();
         List<EggsBatch> eggsBatches = this.getEggsBatches();
@@ -246,22 +260,22 @@ public class Hive {
             this.setNumberOfEggsFrame(this.getNumberOfEggsFrame() + 1);
             this.addEggsFrames(queen.fillUpWithEggs(this.getNumberOfEggsFrame(), 0));
         }
-            System.out.println("Hive ID: " + this.getId());
-            System.out.println("Eggs Frame: " + this.getEggsFrames());
-
-//            for (EggsBatch eggsBatch : eggsBatches) {
-//                if (date.equals(eggsBatch.getCreationDate())) {
-//                    getCreationDate = eggsBatch.getCreationDate();
-//                    totalNumberOfEggsPerHive += eggsBatch.getNumberOfEggs();
-//                    this.setNumberOfEggs(totalNumberOfEggsPerHive);
-//                    System.out.println("Total number of eggs with eggsBatch: " + totalNumberOfEggsPerHive);
-//                    System.out.println("today is " + getCreationDate);
-//                    System.out.println();
-//                }
-
-
-
-
+        System.out.println("Hive ID: " + this.getId());
+        System.out.println("Eggs Frame: " + this.getEggsFrames());
+        System.out.println(" date is "+date);
+        System.out.println("maximum of eggs number to add in empty eggsFrame is " + totalNumberOfEggsToAdd);
+        for (EggsBatch eggsBatch : eggsBatches) {
+            if (date.equals(eggsBatch.getCreationDate())) {
+                getCreationDate = eggsBatch.getCreationDate();
+                eggsAddedInNewFrame += eggsBatch.getNumberOfEggs();
+                // this.setNumberOfEggs(totalNumberOfEggsPerHive);
+                System.out.println("Total number of eggs with eggsBatch: " + eggsAddedInNewFrame);
+            }
+        }
+        if (eggsAddedInNewFrame > totalNumberOfEggsToAdd) {
+            System.out.println("today is " + getCreationDate);
+            System.out.println("You can split the hive number " + this.getId());
+        }
     }
 }
 
