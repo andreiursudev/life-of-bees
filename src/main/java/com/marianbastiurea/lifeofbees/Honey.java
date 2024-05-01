@@ -1,16 +1,26 @@
 package com.marianbastiurea.lifeofbees;
 
-/*
-
-
- 1 beehive 20-50 kg honey/year
-
- */
-
 public class Honey {
     private String honeyType;
+    private double honeyKg;
 
-    public static String getHoneyTypes(HarvestingMonths month, int dayOfMonth) {
+    public String getHoneyType() {
+        return honeyType;
+    }
+
+    public void setHoneyType(String honeyType) {
+        this.honeyType = honeyType;
+    }
+
+    public double getHoneyKg() {
+        return honeyKg;
+    }
+
+    public void setHoneyKg(double honeyKg) {
+        this.honeyKg = honeyKg;
+    }
+
+    public static String honeyTypes(HarvestingMonths month, int dayOfMonth) {
         String honeyType;
         switch (month) {
             case MARCH:
@@ -63,4 +73,5 @@ public class Honey {
         }
         return kgOnHa;
     }
+
 }
