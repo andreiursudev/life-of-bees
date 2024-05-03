@@ -35,8 +35,8 @@ public class LifeOfBees {
         hive.setQueen(queen);
         hive.getQueen().setAgeOfQueen(random.nextInt(1, 5));
         hive.setNumberOfHoneyFrame(random.nextInt(3, 6)); // Random number of honey frames
-        //hive.setNumberOfEggsFrame(random.nextInt(3, 6)); // Random number of eggs frames
-hive.setNumberOfEggsFrame(2);
+        hive.setNumberOfEggsFrame(random.nextInt(3, 6)); // Random number of eggs frames
+
         // Creating EggsFrame with a random number off eggs
         queen = new Queen(hive.getAgeOfQueen());
         int totalNumberOfEggs = 0;
@@ -91,13 +91,9 @@ hive.setNumberOfEggsFrame(2);
                     Queen queen = new Queen();
                     hive.addEggsBatches(queen.makeBatchOfEggs(queen.makeEggs(hive), currentDate));
                     hive.fillUpExistingEggsFrameFromHive(currentDate);
-                    //  hive.fillUpNewAddedEggsFrameInHive();
                     // Add eggs batches for the current day
                     hive.checkAndAddEggsToBees(); // Check and add eggs to the number of bees
-//                    System.out.println("Hive ID: " + hive.getId());
-//                    System.out.println("Eggs Batches: " + hive.getEggsBatches());
-//                    System.out.println("Number of Bees: " + hive.getNumberOfBees());
-//                    System.out.println();
+                 System.out.println();
 
 
                 }
