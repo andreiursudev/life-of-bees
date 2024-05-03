@@ -325,8 +325,8 @@ public class Hive {
 
         for (int i = 1; i < numberOfFramesToAdd + 1; i++) {
             this.setNumberOfEggsFrame(this.getNumberOfEggsFrame() + 1);
-            this.addEggsFrames(createNewEggsFrame(numberOfFramesToAdd));
-            // de indexat numarul ramei
+            this.addEggsFrames(createNewEggsFrame(this.getNumberOfEggsFrame()));
+            // de modificat algoritmul pentru a continua umplerea ramelor si in zilele urmatoare;
         }
 
         List<EggsFrame> eggsFrames = this.getEggsFrames();
