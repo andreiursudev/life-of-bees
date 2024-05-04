@@ -9,29 +9,35 @@ public class Hive {
     private int id;
     private int numberOfHoneyFrame;
     private int numberOfEggsFrame;
-    private int numberOfEggs;
     private List<EggsFrame> eggsFrames;
-    private HoneyFrame honeyFrame;
     private int numberOfBees;
-    private double honeyQuantity;
     private Queen queen;
-    private Bees bees;
     private List<EggsBatch> eggsBatches;
     private Honey honey;
-    private  List<BeesBatch> beesBatches;
+    private List<BeesBatch> beesBatches;
+    private List<HoneyFrame> honeyFrames;
 
-    public Hive(List<EggsBatch> eggsBatches, List<EggsFrame> eggsFrames, List<BeesBatch> beesBatches) {
+    public Hive(List<EggsBatch> eggsBatches, List<EggsFrame> eggsFrames, List<BeesBatch> beesBatches, List<HoneyFrame> honeyFrames) {
         this.eggsBatches = new ArrayList<>(eggsBatches);
         this.eggsFrames = new ArrayList<>(eggsFrames);
-        this.beesBatches=new ArrayList<>(beesBatches);
+        this.beesBatches = new ArrayList<>(beesBatches);
+        this.honeyFrames = new ArrayList<>(honeyFrames);
     }
 
-    public Honey getHoney() {
-        return honey;
-    }
-
-    public void setHoney(Honey honey) {
-        this.honey = honey;
+    @Override
+    public String toString() {
+        return "Hive{" +
+                "id=" + id +
+                ", numberOfHoneyFrame=" + numberOfHoneyFrame +
+                ", numberOfEggsFrame=" + numberOfEggsFrame +
+                ", eggsFrames=" + eggsFrames +
+                ", numberOfBees=" + numberOfBees +
+                ", queen=" + queen +
+                ", eggsBatches=" + eggsBatches +
+                ", honey=" + honey +
+                ", beesBatches=" + beesBatches +
+                ", honeyFrames=" + honeyFrames +
+                '}';
     }
 
     public void setEggsBatches(List<EggsBatch> eggsBatches) {
@@ -46,12 +52,8 @@ public class Hive {
         this.beesBatches = beesBatches;
     }
 
-    public Bees getBees() {
-        return bees;
-    }
-
-    public void setBees(Bees bees) {
-        this.bees = bees;
+    public void setHoneyFrames(List<HoneyFrame> honeyFrames) {
+        this.honeyFrames = honeyFrames;
     }
 
     public Queen getQueen() {
@@ -65,6 +67,13 @@ public class Hive {
     public Hive() {
     }
 
+    public Honey getHoney() {
+        return honey;
+    }
+
+    public void setHoney(Honey honey) {
+        this.honey = honey;
+    }
 
     public int getId() {
         return id;
@@ -90,13 +99,6 @@ public class Hive {
         this.numberOfEggsFrame = numberOfEggsFrame;
     }
 
-    public int getNumberOfEggs() {
-        return numberOfEggs;
-    }
-
-    public void setNumberOfEggs(int numberOfEggs) {
-        this.numberOfEggs = numberOfEggs;
-    }
 
     public int getAgeOfQueen() {
         return getQueen().getAgeOfQueen();
@@ -108,15 +110,6 @@ public class Hive {
     }
 
 
-    public HoneyFrame getHoneyFrame() {
-        return honeyFrame;
-    }
-
-    public void setHoneyFrame(HoneyFrame honeyFrame) {
-        this.honeyFrame = honeyFrame;
-    }
-
-
     public int getNumberOfBees() {
         return numberOfBees;
     }
@@ -125,38 +118,18 @@ public class Hive {
         this.numberOfBees = numberOfBees;
     }
 
-    public double getHoneyQuantity() {
-        return honeyQuantity;
-    }
-
-    public void setHoneyQuantity(double honeyQuantity) {
-        this.honeyQuantity = honeyQuantity;
-    }
-
-    @Override
-    public String toString() {
-        return "Hive{" +
-                "id=" + id +
-                ", numberOfHoneyFrame=" + numberOfHoneyFrame +
-                ", numberOfEggsFrame=" + numberOfEggsFrame +
-                ", ageOfQueen=" + getQueen().getAgeOfQueen() +
-                ", eggsFrames=" + eggsFrames +
-                ", honeyFrame=" + honeyFrame +
-                ", numberOfBees=" + numberOfBees +
-                ", honeyQuantity=" + honeyQuantity +
-                ", eggsBatches=" + eggsBatches +
-                '}';
-    }
-
-
-    public void setHoneyFrames(List<HoneyFrame> honeyFrames) {
-
-    }
 
     public void addEggsBatches(List<EggsBatch> eggsBatches) {
         this.eggsBatches.addAll(eggsBatches);
     }
-    public void addBeesBatches(List<BeesBatch> beesBatches){this.beesBatches.addAll(beesBatches);}
+
+    public void addBeesBatches(List<BeesBatch> beesBatches) {
+        this.beesBatches.addAll(beesBatches);
+    }
+
+    public void addHoneyFrames(List<HoneyFrame> honeyFrames) {
+        this.honeyFrames.addAll(honeyFrames);
+    }
 
     public void addEggsFrames(List<EggsFrame> eggsFrames) {
         this.eggsFrames.addAll(eggsFrames);
@@ -166,10 +139,17 @@ public class Hive {
         return eggsBatches;
     }
 
+    public List<HoneyFrame> getHoneyFrames() {
+        return honeyFrames;
+    }
+
     public List<EggsFrame> getEggsFrames() {
         return eggsFrames;
     }
-    public List<BeesBatch> getBeesBatches(){return beesBatches;}
+
+    public List<BeesBatch> getBeesBatches() {
+        return beesBatches;
+    }
 
     public double ageOfQueenIndex() {
         /* a queen lives 3-5 years. When will build first 10 hives in apiary will use random to generate ageOfQueen
@@ -180,17 +160,17 @@ public class Hive {
          */
 
         int ageOfQueen = this.getQueen().getAgeOfQueen();
-        String honeyType=this.getHoney().getHoneyType();
+        String honeyType = this.getHoney().getHoneyType();
         double numberRandom = Math.random();
         switch (ageOfQueen) {
             case 0, 1, 2, 3:
                 return 1;
             case 4:
-                if (numberRandom < 0.5&&honeyType=="Acacia") {
+                if (numberRandom < 0.5 && honeyType == "Acacia") {
                     this.getQueen().setAgeOfQueen(0);
                     return 1;
                 } else
-                return 0.75;
+                    return 0.75;
             case 5:
                 this.getQueen().setAgeOfQueen(0);
                 return 0.25;
@@ -202,35 +182,34 @@ public class Hive {
 
 
     public void checkAndAddEggsToBees() {
-        // after 21 days eggs hatch in bees. this method will check date when eggsBatch was laid
-        //and add the number of eggs to bee number from hive.
-
         Calendar calendar = Calendar.getInstance();
-        Date currentDate = calendar.getTime(); // Get current date
+        Date currentDate = calendar.getTime();
 
-        // Set calendar to 21 days ago
         calendar.add(Calendar.DAY_OF_MONTH, -21);
         Date cutoffDate = calendar.getTime();
-
-        List<EggsFrame> eggsFrames = this.getEggsFrames();
         List<EggsBatch> eggsBatches = this.getEggsBatches();
+        List<EggsFrame> eggsFrames = this.getEggsFrames();
+        List<BeesBatch> beesBatches = new ArrayList<>();
 
         // Iterate over each eggs batch
         for (EggsBatch eggsBatch : eggsBatches) {
-            // Check if the batch date is before the cutoff date
             if (eggsBatch.getCreationDate().before(cutoffDate)) {
-                // Add the number of eggs to the number of bees
-                numberOfBees += eggsBatch.getNumberOfEggs();
-                for(EggsFrame eggsFrame: eggsFrames){
-                    eggsFrame.setNumberOfEggs(getNumberOfEggs()-(eggsBatch.getNumberOfEggs()/eggsFrames.size()));
-                    eggsBatch.
+                int numberOfEggs = eggsBatch.getNumberOfEggs();
+                numberOfBees += numberOfEggs; // Add eggs to bees
+                for (EggsFrame eggsFrame : eggsFrames) {
+                    eggsFrame.setNumberOfEggs(eggsFrame.getNumberOfEggs() - (int) (numberOfEggs / eggsFrame.getNumberOfEggsFrame())); // Subtract eggs from frame
+                    BeesBatch beesBatch = new BeesBatch(numberOfEggs, currentDate);
+                    beesBatches.add(beesBatch); // Create and add bees batch
                 }
-
-
             }
         }
 
+        // Remove old eggs batches
+        eggsBatches.clear();
+        // Add new bees batches
+        this.beesBatches.addAll(beesBatches);
     }
+
 
     public void fillUpExistingEggsFrameFromHive(Date currentDate) {
 
@@ -249,7 +228,6 @@ public class Hive {
                 boolean eggsAdded = false;
                 int eggsFrameFull = 0;
                 EggsFrame eggsFrame = eggsFrames.get(eggsFrameFull);
-                System.out.println("number of eggs in frame " + eggsFrame.getNumberOfEggsFrame() + " is " + eggsFrame.getNumberOfEggs());
                 for (int i = 0; i < eggsFrames.size(); i++) {
                     while (eggsFrame.getNumberOfEggs() == maxEggPerFrame && eggsFrameFull < eggsFrames.size()) {
                         eggsFrameFull += 1;
@@ -291,7 +269,7 @@ public class Hive {
         System.out.println("Hive ID: " + this.getId());
         System.out.println("Eggs Frame: " + this.getEggsFrames());
         System.out.println(" date is " + currentDate);
-        System.out.println(" your hive is :"+this);
+        System.out.println(" your hive is :" + this);
     }
 
 
@@ -373,8 +351,8 @@ public class Hive {
                         if (eggsFrameFull < eggsFrames.size()) {
                             eggsFrame = eggsFrames.get(eggsFrameFull);
                         } else {
-                            System.out.println("You hive is full");
-                            // splitHive
+                            System.out.println("You hive is full and will be split in two");
+                            splitHive();
                         }
                     }
 
@@ -409,7 +387,7 @@ public class Hive {
         System.out.println("Hive ID: " + this.getId());
         System.out.println("Eggs Frame: " + this.getEggsFrames());
         System.out.println(" date is " + date);
-        System.out.println(" your hive is :"+this);
+        System.out.println(" your hive is :" + this);
     }
 
     public List<EggsFrame> createNewEggsFrame(int numberOfEggsFrame) {
@@ -419,4 +397,21 @@ public class Hive {
         return eggsFrames;
     }
 
+    public void splitHive(Apiary apiary) {
+
+        // Check if the hive meets the splitting criteria
+        if (this.getNumberOfEggsFrame() == 6) {
+            // Create a new hive with 3 eggs frames and 3 honey frames
+            Hive newHive = new Hive();
+            newHive.setNumberOfEggsFrame(3);
+            newHive.setNumberOfHoneyFrame(3);
+            newHive.setNumberOfBees((int) this.getNumberOfBees() / 2); //
+            newHive.getQueen().setAgeOfQueen(0); // Set age of queen 0
+            newHive.setEggsFrames(this.getEggsFrames().subList(3, 5));
+            newHive.setHoneyFrames(this.getHoneyFrames().subList(3, 5));
+            this.getEggsFrames().subList(3, 5).clear();
+            this.getHoneyFrames().subList(3, 5).clear();
+            apiary.addHive(newHive);
+        }
+    }
 }
