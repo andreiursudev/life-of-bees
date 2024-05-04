@@ -22,6 +22,14 @@ public class EggsFrame {
         return numberOfEggsFrame;
     }
 
+    public void setNumberOfEggs(int numberOfEggs) {
+        this.numberOfEggs = numberOfEggs;
+    }
+
+    public void setNumberOfEggsFrame(int numberOfEggsFrame) {
+        this.numberOfEggsFrame = numberOfEggsFrame;
+    }
+
     @Override
     public String toString() {
         return "EggsFrame{" +
