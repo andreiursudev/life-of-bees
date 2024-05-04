@@ -2,6 +2,12 @@ package com.marianbastiurea.lifeofbees;
 
 public class HoneyFrame {
     private double kgOfHoney;
+    private String honeyType;
+
+    public HoneyFrame(double kgOfHoney, String honeyType) {
+        this.kgOfHoney = kgOfHoney;
+        this.honeyType = honeyType;
+    }
 
     public double getKgOfHoney() {
         return kgOfHoney;
@@ -11,21 +17,11 @@ public class HoneyFrame {
         this.kgOfHoney = kgOfHoney;
     }
 
-    @Override
-    public String toString() {
-        return "HoneyFrame{" +
-                "kgOfHoney=" + kgOfHoney +
-                '}';
+    public String getHoneyType() {
+        return honeyType;
     }
-//    public double fillUpWithHoney() {
-//        Hive hive = new Hive();
-//        Bees bees = new Bees();
-//        double maxKgOfHoneyPerFrame = 4;
-//        int frame = hive.getNumberOfHoneyFrame();
-//        double kgOfHoneyAddOnADay = bees.addHoney();
-//        if (kgOfHoneyAddOnADay < maxKgOfHoneyPerFrame) {
-//
-//        }
-//
-//    }
+
+    public void setHoneyType(String honeyType) {
+        this.honeyType = honeyType;
     }
+}
