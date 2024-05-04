@@ -58,20 +58,4 @@ public class Apiary {
                 '}';
     }
 
-    private void splitHive(Hive hive) {
-        // Create a new hive with half of the honey frames and half of the eggs frames
-        Hive newHive = new Hive();
-        newHive.setAgeOfQueen(); // Set age of the new queen to 0
-
-        int halfNumberOfHoneyFrame = hive.getNumberOfHoneyFrame() / 2;
-        int halfNumberOfEggsFrame = hive.getNumberOfEggsFrame() / 2;
-
-        newHive.setNumberOfHoneyFrame(halfNumberOfHoneyFrame);
-        newHive.setNumberOfEggsFrame(halfNumberOfEggsFrame);
-
-        // Transfer the new hive to the apiary
-        hives.add(newHive);
-    }
-
-
 }
