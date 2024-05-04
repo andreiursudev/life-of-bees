@@ -118,10 +118,6 @@ public class LifeOfBees {
         // You may need to instantiate the Honey object and add it to the list
     }
 
-//    public static void main(String[] args) {
-//        LifeOfBees lifeOfBees = new LifeOfBees();
-//        lifeOfBees.createHives();
-//        lifeOfBees.iterateOverTwoYears();
-//    }
+
 
 }
