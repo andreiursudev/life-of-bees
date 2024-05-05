@@ -32,13 +32,12 @@ public class Hive {
                 "id=" + id +
                 ", numberOfHoneyFrame=" + numberOfHoneyFrame +
                 ", numberOfEggsFrame=" + numberOfEggsFrame +
-                ", eggsFrames=" + eggsFrames +
-                ", numberOfBees=" + numberOfBees +
-                ", queen=" + queen +
-                ", eggsBatches=" + eggsBatches +
-                ", honey=" + honey +
-                ", beesBatches=" + beesBatches +
-                ", honeyFrames=" + honeyFrames +
+                ", eggsFrames=" + this.eggsFrames +
+                ", numberOfBees=" + this.numberOfBees +
+                ", queen=" + getQueen().getAgeOfQueen() +
+                ", eggsBatches=" + this.eggsBatches +
+                ", honey Frames=" + this.honeyFrames +
+                ", beesBatches=" + this.beesBatches +
                 '}';
     }
 
