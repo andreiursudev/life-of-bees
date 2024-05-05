@@ -24,4 +24,12 @@ public class HoneyFrame {
     public void setHoneyType(String honeyType) {
         this.honeyType = honeyType;
     }
+
+    @Override
+    public String toString() {
+        return "HoneyFrame{" +
+                "kgOfHoney=" + kgOfHoney +
+                ", honeyType='" + honeyType + '\'' +
+                '}';
+    }
 }
