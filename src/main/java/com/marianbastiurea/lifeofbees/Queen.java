@@ -68,7 +68,4 @@ public class Queen {
         return eggsFrames;
     }
 
-
-    public void checkAgeOfQueen() {
-    }
 }
