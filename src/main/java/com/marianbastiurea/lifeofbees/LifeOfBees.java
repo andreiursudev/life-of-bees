@@ -21,6 +21,7 @@ public class LifeOfBees {
             hives.add(hive);
         }
         apiary.setHives(hives);
+        apiary.setNumberOfHives(numberOfStartingHives);
         System.out.println("First " + numberOfStartingHives + " are " + hives);
     }
 
