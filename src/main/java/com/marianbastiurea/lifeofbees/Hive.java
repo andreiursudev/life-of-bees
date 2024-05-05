@@ -292,7 +292,7 @@ public class Hive {
                 break;
             case 6: {
                 System.out.println("You hive is full");
-                apiary.splitHive(this);
+                apiary.splitHive(apiary.getHive());
             }
             default:
                 break;
@@ -352,7 +352,7 @@ public class Hive {
                             eggsFrame = eggsFrames.get(eggsFrameFull);
                         } else {
                             System.out.println("You hive is full and will be split in two");
-                            apiary.splitHive(this);
+                            apiary.splitHive(apiary.getHive());
                         }
                     }
 
