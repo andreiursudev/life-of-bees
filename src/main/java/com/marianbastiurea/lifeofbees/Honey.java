@@ -23,8 +23,6 @@ public class Honey {
     public static String honeyTypes(HarvestingMonths month, int dayOfMonth) {
         String honeyType;
         switch (month) {
-            case MARCH:
-                return honeyType="";
             case APRIL:
                 if (dayOfMonth >= 1 && dayOfMonth <= 20) {
                     return honeyType="Rapeseed";
