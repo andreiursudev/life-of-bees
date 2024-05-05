@@ -15,10 +15,19 @@ public class Apiary {
 
     private List<Hive> hives;
     private List<Honey> honeys;
+    private Hive hive;
 
     public Apiary() {
         this.hives = new ArrayList<>();
         this.honeys=new ArrayList<>();
+    }
+
+    public Hive getHive() {
+        return hive;
+    }
+
+    public void setHive(Hive hive) {
+        this.hive = hive;
     }
 
     public Apiary(List<Hive> hives) {
@@ -56,6 +65,23 @@ public class Apiary {
                 "hives=" + hives +
                 ", honeys=" + honeys +
                 '}';
+    }
+
+    public void splitHive(Hive hive) {
+        // Check if the hive meets the splitting criteria
+        if (this.getHive().getNumberOfEggsFrame() == 6) {
+            // Create a new hive with 3 eggs frames and 3 honey frames
+            Hive newHive = new Hive();
+            newHive.setNumberOfEggsFrame(3);
+            newHive.setNumberOfHoneyFrame(3);
+            newHive.setNumberOfBees((int) this.getHive().getNumberOfBees() / 2); //
+            newHive.getQueen().setAgeOfQueen(0); // Set age of queen 0
+            newHive.setEggsFrames(this.getHive().getEggsFrames().subList(3, 5));
+            newHive.setHoneyFrames(this.getHive().getHoneyFrames().subList(3, 5));
+            this.getHive().getEggsFrames().subList(3, 5).clear();
+            this.getHive().getHoneyFrames().subList(3, 5).clear();
+            this.addHive(newHive);
+        }
     }
 
 }
