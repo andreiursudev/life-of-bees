@@ -31,6 +31,7 @@ public class LifeOfBees {
         hive.setEggsBatches(new ArrayList<>());
         hive.setEggsFrames(new ArrayList<>());
         hive.setHoneyFrames(new ArrayList<>());
+        hive.setBeesBatches(new ArrayList<>());
         hive.setId(hiveIdCounter++);
         Queen queen = new Queen();
         hive.setQueen(queen);
@@ -50,12 +51,16 @@ public class LifeOfBees {
 
 
         // Creating HoneyFrames
+        List<HoneyFrame> honeyFrames = new ArrayList<>(); // Create the list outside the loop
         for (int i = 0; i < hive.getNumberOfHoneyFrame(); i++) {
-            List<HoneyFrame> honeyFrames = new ArrayList<>();
             HoneyFrame honeyFrame = new HoneyFrame(random.nextDouble(2, 3), "Wildflower");
-            honeyFrames.add(honeyFrame);
-            hive.addHoneyFrames(honeyFrames);
+            honeyFrames.add(honeyFrame); // Add each HoneyFrame to the list
         }
+        hive.addHoneyFrames(honeyFrames);
+
+        System.out.println("Hive ID: " + hive.getId());
+        System.out.println("Honey Frame: " + hive.getHoneyFrames());
+        System.out.println();
 
         // each hive will have a random number of bees for each frame
         int numberOfBees = random.nextInt(2000, 2500) * (hive.getNumberOfHoneyFrame() + hive.getNumberOfEggsFrame());
@@ -88,7 +93,7 @@ public class LifeOfBees {
                 for (Hive hive : apiary.getHives()) {
                     Queen queen = new Queen();
                     double queenIndex = hive.ageOfQueenIndex(dayOfMonth, month);
-                    hive.addEggsBatches(queen.makeBatchOfEggs(queen.makeEggs(hive,dayOfMonth,month), currentDate));
+                    hive.addEggsBatches(queen.makeBatchOfEggs(queen.makeEggs(hive, dayOfMonth, month), currentDate));
                     hive.fillUpExistingEggsFrameFromHive(currentDate);
                     hive.checkAndAddEggsToBees();
                     // Add eggs batches for the current day
