@@ -14,14 +14,14 @@ public class LifeOfBees {
     }
 
     // Method to create 10 hives and store them in the apiary
-    public void createHives( int numberOfStartingHives) {
+    public void createHives(int numberOfStartingHives) {
         List<Hive> hives = new ArrayList<>();
-        for (int i = 1; i < numberOfStartingHives+1; i++) {
+        for (int i = 1; i < numberOfStartingHives + 1; i++) {
             Hive hive = createHive();
             hives.add(hive);
         }
         apiary.setHives(hives);
-        System.out.println("First "+numberOfStartingHives+ " are "+hives);
+        System.out.println("First " + numberOfStartingHives + " are " + hives);
     }
 
     // Method to create a single hive with all its components
@@ -52,7 +52,7 @@ public class LifeOfBees {
         // Creating HoneyFrames
         for (int i = 0; i < hive.getNumberOfHoneyFrame(); i++) {
             List<HoneyFrame> honeyFrames = new ArrayList<>();
-            HoneyFrame honeyFrame = new HoneyFrame(random.nextDouble(2,3), "Wildflower");
+            HoneyFrame honeyFrame = new HoneyFrame(random.nextDouble(2, 3), "Wildflower");
             honeyFrames.add(honeyFrame);
             hive.addHoneyFrames(honeyFrames);
         }
@@ -80,16 +80,20 @@ public class LifeOfBees {
                 // Iterate until OCTOBER
                 Date currentDate = calendar.getTime();
                 System.out.println("Date: " + currentDate);
+                // Extract day of month and month from the calendar
+                int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+                HarvestingMonths month = HarvestingMonths.values()[calendar.get(Calendar.MONTH)];
 
 
                 for (Hive hive : apiary.getHives()) {
                     Queen queen = new Queen();
-                    hive.addEggsBatches(queen.makeBatchOfEggs(queen.makeEggs(hive), currentDate));
+                    double queenIndex = hive.ageOfQueenIndex(dayOfMonth, month);
+                    hive.addEggsBatches(queen.makeBatchOfEggs(queen.makeEggs(hive,dayOfMonth,month), currentDate));
                     hive.fillUpExistingEggsFrameFromHive(currentDate);
                     hive.checkAndAddEggsToBees();
                     // Add eggs batches for the current day
                     hive.checkAndAddEggsToBees(); // Check and add eggs to the number of bees
-                 System.out.println();
+                    System.out.println();
 
 
                 }
