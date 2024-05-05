@@ -41,9 +41,9 @@ public class Queen {
     }
 
 
-    public int makeEggs(Hive hive) {
+    public int makeEggs(Hive hive, int dayOfMonth, HarvestingMonths month) {
 
-        int numberOfEggs = (int) (2000 * hive.ageOfQueenIndex());//*Whether.geWhetherIndex());
+        int numberOfEggs = (int) (2000 * hive.ageOfQueenIndex(dayOfMonth,month));//*Whether.geWhetherIndex());
         // have to add another index, a  whetherIndex which will depend on quantity of honey made it
         return numberOfEggs;
     }
