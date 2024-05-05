@@ -12,14 +12,23 @@ public class Apiary {
     and no honey from this two forest.
 
      */
-
+    private int numberOfHives;
     private List<Hive> hives;
     private List<Honey> honeys;
     private Hive hive;
 
     public Apiary() {
         this.hives = new ArrayList<>();
-        this.honeys=new ArrayList<>();
+        this.honeys = new ArrayList<>();
+        this.numberOfHives=numberOfHives;
+    }
+
+    public int getNumberOfHives() {
+        return numberOfHives;
+    }
+
+    public void setNumberOfHives(int numberOfHives) {
+        this.numberOfHives = numberOfHives;
     }
 
     public Hive getHive() {
@@ -54,6 +63,7 @@ public class Apiary {
     public void addHive(Hive hive) {
         hives.add(hive);
     }
+
     // Add a honey to the apiary
     public void addHoney(Honey honey) {
         honeys.add(honey);
@@ -62,16 +72,18 @@ public class Apiary {
     @Override
     public String toString() {
         return "Apiary{" +
-                "hives=" + hives +
+                "numberOfHives=" + numberOfHives +
+                ", hives=" + hives +
                 ", honeys=" + honeys +
+                ", hive=" + hive +
                 '}';
     }
 
     public void splitHive(Hive hive) {
-        // Check if the hive meets the splitting criteria
         if (this.getHive().getNumberOfEggsFrame() == 6) {
             // Create a new hive with 3 eggs frames and 3 honey frames
             Hive newHive = new Hive();
+            newHive.setId(this.getNumberOfHives() + 1); // Set ID to numberOfHives + 1
             newHive.setNumberOfEggsFrame(3);
             newHive.setNumberOfHoneyFrame(3);
             newHive.setNumberOfBees((int) this.getHive().getNumberOfBees() / 2); //
@@ -81,7 +93,7 @@ public class Apiary {
             this.getHive().getEggsFrames().subList(3, 5).clear();
             this.getHive().getHoneyFrames().subList(3, 5).clear();
             this.addHive(newHive);
+            this.setNumberOfHives(this.getNumberOfHives() + 1); // Increment numberOfHives
         }
     }
-
 }
