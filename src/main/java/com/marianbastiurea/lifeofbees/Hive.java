@@ -16,8 +16,10 @@ public class Hive {
     private Honey honey;
     private List<BeesBatch> beesBatches;
     private List<HoneyFrame> honeyFrames;
+    private Apiary apiary; // Add an Apiary field to store the associated apiary
 
-    public Hive(List<EggsBatch> eggsBatches, List<EggsFrame> eggsFrames, List<BeesBatch> beesBatches, List<HoneyFrame> honeyFrames) {
+    public Hive(Apiary apiary,List <EggsBatch> eggsBatches, List<EggsFrame> eggsFrames, List<BeesBatch> beesBatches, List<HoneyFrame> honeyFrames) {
+        this.apiary=apiary;
         this.eggsBatches = new ArrayList<>(eggsBatches);
         this.eggsFrames = new ArrayList<>(eggsFrames);
         this.beesBatches = new ArrayList<>(beesBatches);
@@ -195,7 +197,7 @@ public class Hive {
         for (EggsBatch eggsBatch : eggsBatches) {
             if (eggsBatch.getCreationDate().before(cutoffDate)) {
                 int numberOfEggs = eggsBatch.getNumberOfEggs();
-                numberOfBees += numberOfEggs; // Add eggs to bees
+                this.numberOfBees += numberOfEggs; // Add eggs to bees
                 for (EggsFrame eggsFrame : eggsFrames) {
                     eggsFrame.setNumberOfEggs(eggsFrame.getNumberOfEggs() - (int) (numberOfEggs / eggsFrame.getNumberOfEggsFrame())); // Subtract eggs from frame
                     BeesBatch beesBatch = new BeesBatch(numberOfEggs, currentDate);
@@ -235,7 +237,6 @@ public class Hive {
                             eggsFrame = eggsFrames.get(eggsFrameFull);
                         } else {
                             fillUpNewAddedEggsFrameInHive(getCreationDate);
-
                         }
                     }
 
@@ -292,7 +293,7 @@ public class Hive {
                 break;
             case 6: {
                 System.out.println("You hive is full");
-                // splitHive
+                apiary.splitHive(this);
             }
             default:
                 break;
@@ -352,7 +353,7 @@ public class Hive {
                             eggsFrame = eggsFrames.get(eggsFrameFull);
                         } else {
                             System.out.println("You hive is full and will be split in two");
-                            splitHive();
+                            apiary.splitHive(this);
                         }
                     }
 
@@ -397,21 +398,4 @@ public class Hive {
         return eggsFrames;
     }
 
-    public void splitHive(Apiary apiary) {
-
-        // Check if the hive meets the splitting criteria
-        if (this.getNumberOfEggsFrame() == 6) {
-            // Create a new hive with 3 eggs frames and 3 honey frames
-            Hive newHive = new Hive();
-            newHive.setNumberOfEggsFrame(3);
-            newHive.setNumberOfHoneyFrame(3);
-            newHive.setNumberOfBees((int) this.getNumberOfBees() / 2); //
-            newHive.getQueen().setAgeOfQueen(0); // Set age of queen 0
-            newHive.setEggsFrames(this.getEggsFrames().subList(3, 5));
-            newHive.setHoneyFrames(this.getHoneyFrames().subList(3, 5));
-            this.getEggsFrames().subList(3, 5).clear();
-            this.getHoneyFrames().subList(3, 5).clear();
-            apiary.addHive(newHive);
-        }
-    }
 }
