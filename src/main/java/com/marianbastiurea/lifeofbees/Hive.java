@@ -40,13 +40,13 @@ public class Hive {
     public String toString() {
         return "Hive{" +
                 "id=" + id +
-                ", numberOfHoneyFrame=" + numberOfHoneyFrame +
-                ", numberOfEggsFrame=" + numberOfEggsFrame +
+                ", numberOfHoneyFrame=" + this.numberOfHoneyFrame +
+                ", numberOfEggsFrame=" + this.numberOfEggsFrame +
                 ", eggsFrames=" + this.eggsFrames +
-                ", numberOfBees=" + numberOfBees +
+                ", numberOfBees=" + this.numberOfBees +
                 ", age of queen=" +this.queen.getAgeOfQueen() +
-                ", eggsBatches=" +eggsBatches +
-                ", beesBatches=" + beesBatches +
+                ", eggsBatches=" +this.eggsBatches +
+                ", beesBatches=" + this.beesBatches +
                 ", honeyFrames=" +this.honeyFrames +
                 '}';
     }

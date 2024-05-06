@@ -85,19 +85,18 @@ public class Apiary {
                 Queen queen = new Queen();
                 newHive.setQueen(queen);
                 newHive.getQueen().setAgeOfQueen(0);
-                newHive.setEggsFrames(hive.getEggsFrames().subList(3, 6));
+                newHive.setEggsFrames(hive.getEggsFrames().subList(3, 5));
                 newHive.setHoneyFrames(hive.getHoneyFrames().subList(0, 2));
                 newHive.setApiary(this);
-                newHive.setBeesBatches(hive.getBeesBatches().subList(0,0));
-                newHive.setEggsBatches(hive.getEggsBatches().subList(0,1));
-              //  hive.getEggsFrames().remove(3);
-                hive.setNumberOfEggsFrame(3);
-
-               // hive.getEggsFrames().subList(3, 5).clear();
-               // hive.getHoneyFrames().subList(3, 5).clear();
+                newHive.setBeesBatches(hive.getBeesBatches().subList(0, 0));
+                newHive.setEggsBatches(hive.getEggsBatches().subList(0, 1));
                 this.addHive(newHive);
                 this.setNumberOfHives(this.getNumberOfHives() + 1);
             }
+                hive.setNumberOfEggsFrame(3);
+               hive.getEggsFrames().subList(3, 5).clear();
+               hive.getHoneyFrames().subList(0, 2).clear();
+            }
         }
-    }
+
 }
