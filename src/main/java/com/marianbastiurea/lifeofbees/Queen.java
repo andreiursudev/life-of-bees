@@ -29,6 +29,7 @@ public class Queen {
         this.ageOfQueen = ageOfQueen;
     }
 
+
     public Queen() {
     }
 

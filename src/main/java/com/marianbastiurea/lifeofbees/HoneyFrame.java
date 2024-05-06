@@ -27,7 +27,7 @@ public class HoneyFrame {
 
     @Override
     public String toString() {
-        return "HoneyFrame{" +
+        return "{" +
                 "kgOfHoney=" + kgOfHoney +
                 ", honeyType='" + honeyType + '\'' +
                 '}';

@@ -28,6 +28,14 @@ public class Hive {
         this.honeyFrames = new ArrayList<>(honeyFrames);
     }
 
+    public Apiary getApiary() {
+        return apiary;
+    }
+
+    public void setApiary(Apiary apiary) {
+        this.apiary = apiary;
+    }
+
     @Override
     public String toString() {
         return "Hive{" +
@@ -35,11 +43,12 @@ public class Hive {
                 ", numberOfHoneyFrame=" + numberOfHoneyFrame +
                 ", numberOfEggsFrame=" + numberOfEggsFrame +
                 ", eggsFrames=" + this.eggsFrames +
-                ", numberOfBees=" + this.numberOfBees +
-                ", queen=" + getQueen().getAgeOfQueen() +
-                ", eggsBatches=" + this.eggsBatches +
-                ", honey Frames=" + this.honeyFrames +
-                ", beesBatches=" + this.beesBatches +
+                ", numberOfBees=" + numberOfBees +
+                ", age of queen=" +queen.getAgeOfQueen() +
+                ", eggsBatches=" +eggsBatches +
+                ", honey=" + honey +
+                ", beesBatches=" + beesBatches +
+                ", honeyFrames=" +this.honeyFrames +
                 '}';
     }
 

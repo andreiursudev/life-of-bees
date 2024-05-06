@@ -21,6 +21,7 @@ public class Apiary {
         this.hives = new ArrayList<>();
         this.honeys = new ArrayList<>();
         this.numberOfHives=numberOfHives;
+        this.hive=new Hive();
     }
 
     public int getNumberOfHives() {
