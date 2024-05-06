@@ -88,8 +88,6 @@ public class LifeOfBees {
         calendar.set(Calendar.MONTH, Calendar.MARCH); // Start the year on March 1st
         calendar.set(Calendar.DAY_OF_MONTH, 1);
 
-        System.out.println("your apiary is: "+apiary);
-
         // Iterate over 2 years
         for (int year = 0; year < 1; year++) {// Use only one for debug purposes
             while (calendar.get(Calendar.MONTH) != Calendar.APRIL) {
@@ -119,5 +117,6 @@ public class LifeOfBees {
             }
             calendar.set(Calendar.MONTH, Calendar.MARCH); // Reset month for the next year
         }
+        System.out.println("your apiary is: "+apiary);
     }
 }

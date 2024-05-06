@@ -15,13 +15,12 @@ public class Apiary {
     private int numberOfHives;
     private List<Hive> hives;
     private List<Honey> honeys;
-    private Hive hive;
+
 
     public Apiary() {
         this.hives = new ArrayList<>();
         this.honeys = new ArrayList<>();
-        this.numberOfHives=numberOfHives;
-        this.hive=new Hive();
+        this.numberOfHives = numberOfHives;
     }
 
     public int getNumberOfHives() {
@@ -32,13 +31,6 @@ public class Apiary {
         this.numberOfHives = numberOfHives;
     }
 
-    public Hive getHive() {
-        return hive;
-    }
-
-    public void setHive(Hive hive) {
-        this.hive = hive;
-    }
 
     public Apiary(List<Hive> hives) {
         this.hives = hives;
@@ -72,29 +64,35 @@ public class Apiary {
 
     @Override
     public String toString() {
-        return "Apiary{" +
-                "numberOfHives=" + numberOfHives +
-                ", hives=" + hives +
-                ", honeys=" + honeys +
-                ", hive=" + hive +
+        return "{" +
+                "numberOfHives=" + this.numberOfHives +
+                ", hives=" + this.hives +
+                ", honeys=" + this.honeys +
                 '}';
     }
 
-    public void splitHive(Hive hive) {
-        if (this.getHive().getNumberOfEggsFrame() == 6) {
-            // Create a new hive with 3 eggs frames and 3 honey frames
-            Hive newHive = new Hive();
-            newHive.setId(this.getNumberOfHives() + 1); // Set ID to numberOfHives + 1
-            newHive.setNumberOfEggsFrame(3);
-            newHive.setNumberOfHoneyFrame(3);
-            newHive.setNumberOfBees((int) this.getHive().getNumberOfBees() / 2); //
-            newHive.getQueen().setAgeOfQueen(0); // Set age of queen 0
-            newHive.setEggsFrames(this.getHive().getEggsFrames().subList(3, 5));
-            newHive.setHoneyFrames(this.getHive().getHoneyFrames().subList(3, 5));
-            this.getHive().getEggsFrames().subList(3, 5).clear();
-            this.getHive().getHoneyFrames().subList(3, 5).clear();
-            this.addHive(newHive);
-            this.setNumberOfHives(this.getNumberOfHives() + 1); // Increment numberOfHives
+    public void splitHive() {
+        for (Hive hive : hives) {
+            if (hive.getNumberOfEggsFrame() == 6) {
+                // Create a new hive with 3 eggs frames and 3 honey frames
+                Hive newHive = new Hive();
+                newHive.setId(this.getNumberOfHives() + 1);
+                newHive.setNumberOfEggsFrame(3);
+                newHive.setNumberOfHoneyFrame(3);
+                newHive.setNumberOfBees((int) hive.getNumberOfBees() / 2);
+                Queen queen = new Queen();
+                newHive.setQueen(queen);
+                newHive.getQueen().setAgeOfQueen(0);
+                newHive.setEggsFrames(hive.getEggsFrames().subList(3, 6));
+                newHive.setHoneyFrames(hive.getHoneyFrames().subList(0, 2));
+              //  hive.getEggsFrames().remove(3);
+                hive.setNumberOfEggsFrame(3);
+
+               // hive.getEggsFrames().subList(3, 5).clear();
+               // hive.getHoneyFrames().subList(3, 5).clear();
+                this.addHive(newHive);
+                this.setNumberOfHives(this.getNumberOfHives() + 1);
+            }
         }
     }
 }

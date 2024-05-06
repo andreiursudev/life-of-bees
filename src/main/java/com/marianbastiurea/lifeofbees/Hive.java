@@ -44,7 +44,7 @@ public class Hive {
                 ", numberOfEggsFrame=" + numberOfEggsFrame +
                 ", eggsFrames=" + this.eggsFrames +
                 ", numberOfBees=" + numberOfBees +
-                ", age of queen=" +queen.getAgeOfQueen() +
+                ", age of queen=" +this.queen.getAgeOfQueen() +
                 ", eggsBatches=" +eggsBatches +
                 ", honey=" + honey +
                 ", beesBatches=" + beesBatches +
@@ -301,8 +301,8 @@ public class Hive {
                     maximumNumberOfFramesToAdd = 2;
                     break;
                 case 6: {
-                    System.out.println("You hive is full");
-                    apiary.splitHive(this);
+                    System.out.println("You hive is full and will be split");
+                    apiary.splitHive();
                 }
                 default:
                     break;
@@ -362,7 +362,7 @@ public class Hive {
                                 eggsFrame = eggsFrames.get(eggsFrameFull);
                             } else {
                                 System.out.println("You hive is full and will be split in two");
-                                apiary.splitHive(apiary.getHive());
+                                apiary.splitHive();
                             }
                         }
 
