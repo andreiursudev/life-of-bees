@@ -1,6 +1,7 @@
 package com.marianbastiurea.lifeofbees;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -72,6 +73,7 @@ public class Apiary {
     }
 
     public void splitHive() {
+
         for (Hive hive : hives) {
             if (hive.getNumberOfEggsFrame() == 6) {
                 // Create a new hive with 3 eggs frames and 3 honey frames
@@ -85,6 +87,9 @@ public class Apiary {
                 newHive.getQueen().setAgeOfQueen(0);
                 newHive.setEggsFrames(hive.getEggsFrames().subList(3, 6));
                 newHive.setHoneyFrames(hive.getHoneyFrames().subList(0, 2));
+                newHive.setApiary(this);
+                newHive.setBeesBatches(hive.getBeesBatches().subList(0,0));
+                newHive.setEggsBatches(hive.getEggsBatches().subList(0,1));
               //  hive.getEggsFrames().remove(3);
                 hive.setNumberOfEggsFrame(3);
 

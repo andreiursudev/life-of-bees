@@ -46,7 +46,6 @@ public class Hive {
                 ", numberOfBees=" + numberOfBees +
                 ", age of queen=" +this.queen.getAgeOfQueen() +
                 ", eggsBatches=" +eggsBatches +
-                ", honey=" + honey +
                 ", beesBatches=" + beesBatches +
                 ", honeyFrames=" +this.honeyFrames +
                 '}';
