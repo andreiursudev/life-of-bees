@@ -293,7 +293,7 @@ public class Hive {
                     break;
                 case 6: {
                     System.out.println("You hive is full");
-                    apiary.splitHive(apiary.getHive());
+                    apiary.splitHive(this);
                 }
                 default:
                     break;

@@ -11,6 +11,15 @@ public class LifeOfBees {
 
     public LifeOfBees() {
         this.apiary = new Apiary();
+        createHives(apiary.getNumberOfHives());
+    }
+
+    @Override
+    public String toString() {
+        return "LifeOfBees{" +
+                "apiary=" + apiary +
+                ", hiveIdCounter=" + hiveIdCounter +
+                '}';
     }
 
     // Method to create 10 hives and store them in the apiary
@@ -79,6 +88,7 @@ public class LifeOfBees {
         calendar.set(Calendar.MONTH, Calendar.MARCH); // Start the year on March 1st
         calendar.set(Calendar.DAY_OF_MONTH, 1);
 
+        System.out.println("your apiary is: "+apiary);
 
         // Iterate over 2 years
         for (int year = 0; year < 1; year++) {// Use only one for debug purposes
