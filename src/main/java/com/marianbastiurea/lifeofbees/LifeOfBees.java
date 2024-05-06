@@ -96,9 +96,9 @@ public class LifeOfBees {
                     double queenIndex = hive.ageOfQueenIndex(dayOfMonth, month);
                     hive.addEggsBatches(queen.makeBatchOfEggs(queen.makeEggs(hive, dayOfMonth, month), currentDate));
                     hive.fillUpExistingEggsFrameFromHive(currentDate);
-                    hive.checkAndAddEggsToBees();
+                    hive.checkAndAddEggsToBees(currentDate);
                     // Add eggs batches for the current day
-                    hive.checkAndAddEggsToBees(); // Check and add eggs to the number of bees
+                    hive.checkAndAddEggsToBees(currentDate); // Check and add eggs to the number of bees
                     System.out.println();
 
 
