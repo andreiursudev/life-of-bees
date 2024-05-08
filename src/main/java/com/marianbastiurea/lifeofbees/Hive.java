@@ -238,7 +238,7 @@ public class Hive {
                 boolean eggsAdded = false;
                 int eggsFrameFull = 0;
                 EggsFrame eggsFrame = eggsFrames.get(eggsFrameFull);
-                for (int i = 0; i < eggsFrames.size(); i++) {
+                //for (int i = 0; i < eggsFrames.size(); i++) {
                     while (eggsFrame.getNumberOfEggs() == maxEggPerFrame && eggsFrameFull < eggsFrames.size()) {
                         eggsFrameFull += 1;
                         if (eggsFrameFull < eggsFrames.size()) {
@@ -272,7 +272,7 @@ public class Hive {
                             eggsAdded = true;
                         }
                     }
-                }
+                //}
             }
         }
         System.out.println("Hive ID: " + this.getId());

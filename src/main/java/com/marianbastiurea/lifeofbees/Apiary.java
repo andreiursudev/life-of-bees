@@ -76,7 +76,6 @@ public class Apiary {
         List<Hive> newHives = new ArrayList<>();
         for (Hive hive : hives) {
             if (hive.getNumberOfEggsFrame() == 6) {
-                // Create a new hive with 3 eggs frames and 3 honey frames
                 Hive newHive = new Hive();
                 newHive.setId(this.getNumberOfHives() + 1);
                 newHive.setNumberOfEggsFrame(3);
@@ -89,16 +88,28 @@ public class Apiary {
                 newHive.setHoneyFrames(hive.getHoneyFrames().subList(0, 2));
                 newHive.setApiary(this);
                 newHive.setBeesBatches(hive.getBeesBatches().subList(0, 0));
-                newHive.setEggsBatches(hive.getEggsBatches().subList(0, 1));
                 newHives.add(newHive);
                 this.setNumberOfHives(this.getNumberOfHives() + 1);
+
+                List<EggsBatch> hiveEggsBatches = hive.getEggsBatches();
+                List<EggsBatch> newHiveEggsBatches = new ArrayList<>();
+
+                for (EggsBatch eggsBatch : hiveEggsBatches) {
+                    int eggsToTransfer = eggsBatch.getNumberOfEggs() / 2;
+                    EggsBatch newHiveBatch = new EggsBatch(eggsToTransfer, eggsBatch.getCreationDate());
+                    newHiveEggsBatches.add(newHiveBatch);
+                    eggsBatch.setNumberOfEggs(eggsBatch.getNumberOfEggs() - eggsToTransfer);
+                }
+                newHive.setEggsBatches(newHiveEggsBatches);
+
+
             }
             hive.setNumberOfEggsFrame(3);
             hive.getEggsFrames().subList(4, 6).clear();
             hive.getHoneyFrames().subList(0, 2).clear();
         }
         hives.addAll(newHives);
-        System.out.println("your apiary contains "+this.getNumberOfHives()+" hives");
+        System.out.println("your apiary contains " + this.getNumberOfHives() + " hives");
     }
 
 

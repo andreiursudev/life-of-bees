@@ -18,6 +18,14 @@ public class EggsBatch {
         return creationDate;
     }
 
+    public void setNumberOfEggs(int numberOfEggs) {
+        this.numberOfEggs = numberOfEggs;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
     @Override
     public String toString() {
         return "EggsBatch{" +

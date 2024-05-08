@@ -99,7 +99,10 @@ public class LifeOfBees {
                 HarvestingMonths month = HarvestingMonths.values()[calendar.get(Calendar.MONTH)];
 
 
-                for (Hive hive : apiary.getHives()) {
+                List<Hive> hives=apiary.getHives();
+                ArrayList<Hive> oldHives=new ArrayList<>(hives);
+
+                for (Hive hive : oldHives) {
                     Queen queen = new Queen();
                     double queenIndex = hive.ageOfQueenIndex(dayOfMonth, month);
                     hive.addEggsBatches(queen.makeBatchOfEggs(queen.makeEggs(hive, dayOfMonth, month), currentDate));
