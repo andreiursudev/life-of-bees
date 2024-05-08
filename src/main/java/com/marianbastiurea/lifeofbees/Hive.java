@@ -300,8 +300,21 @@ public class Hive {
                 maximumNumberOfFramesToAdd = 2;
                 break;
             case 6: {
-                System.out.println("You hive is full and will be split");
-                apiary.splitHive();
+                boolean allFramesAreFull = true;
+                for (EggsFrame eggsFrame : this.eggsFrames) {
+                    if (eggsFrame.getNumberOfEggs() < maxEggPerFrame) {
+                        allFramesAreFull = false;
+                        break;
+                    }
+                }
+                if (allFramesAreFull) {
+                    System.out.println("Now old and new frames are full. Hive will be split in two hives.");
+                    apiary.splitHive();
+                } else {
+                    System.out.println("Not all frames are full. Filling up remaining frames.");
+                    fillUpExistingEggsFrameFromHive(date);
+                }
+                break;
             }
             default:
                 break;
@@ -311,7 +324,7 @@ public class Hive {
         do {
             switch (this.eggsFrames.size()) {
                 case 3: {
-                    System.out.println("In hive you have 3 eggsFrame, maximum of eggsFrame which you can add will be 1\\n" +
+                    System.out.println("In hive you have 3 eggsFrame, maximum of eggsFrame which you can add will be 1\n" +
                             "because hive is too small to care for more than another 1 frame.");
                 }
                 break;
@@ -360,8 +373,9 @@ public class Hive {
                         if (eggsFrameFull < eggsFrames.size()) {
                             eggsFrame = eggsFrames.get(eggsFrameFull);
                         } else {
-                            System.out.println("You hive is full and will be split in two");
+                            System.out.println("You hive fill up all new eggsFrame and will be split in two");
                             apiary.splitHive();
+                            break;
                         }
                     }
 
