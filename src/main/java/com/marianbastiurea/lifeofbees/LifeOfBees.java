@@ -40,6 +40,7 @@ public class LifeOfBees {
 
         Random random = new Random();
         Hive hive = new Hive();
+        hive.setItWasSplit(false);// a hive could be solit only once in a year
         hive.setEggsBatches(new ArrayList<>());
         hive.setEggsFrames(new ArrayList<>());
         hive.setHoneyFrames(new ArrayList<>());
@@ -48,21 +49,16 @@ public class LifeOfBees {
         Queen queen = new Queen();
         hive.setQueen(queen);
         hive.getQueen().setAgeOfQueen(random.nextInt(1, 5));
-       hive.setNumberOfHoneyFrame(random.nextInt(3, 6)); // Random number of honey frames
-//        hive.setNumberOfEggsFrame(random.nextInt(3, 6)); // Random number of eggs frames
-        hive.setNumberOfEggsFrame(5);
+        hive.setNumberOfHoneyFrame(random.nextInt(4, 6)); // Random number of honey frames
+        hive.setNumberOfEggsFrame(random.nextInt(4, 6)); // Random number of eggs frames
         hive.setApiary(apiary);
         // Creating EggsFrame with a random number off eggs
         queen = new Queen(hive.getAgeOfQueen());
         for (int i = 1; i < hive.getNumberOfEggsFrame() + 1; i++) {
-            int randomNumberOfEggs = random.nextInt(2000, 3000);
-           // hive.addEggsFrames(queen.fillUpWithEggs(i, randomNumberOfEggs));
-            hive.addEggsFrames(queen.fillUpWithEggs(i,3400));
-        }
+            int randomNumberOfEggs = random.nextInt(4000, 5000);
+            hive.addEggsFrames(queen.fillUpWithEggs(i, randomNumberOfEggs));
 
-        System.out.println("Hive ID: " + hive.getId());
-        System.out.println("Eggs Frame: " + hive.getEggsFrames());
-        System.out.println();
+        }
 
         // Creating HoneyFrames
         List<HoneyFrame> honeyFrames = new ArrayList<>(); // Create the list outside the loop
@@ -72,14 +68,9 @@ public class LifeOfBees {
         }
         hive.addHoneyFrames(honeyFrames);
 
-        System.out.println("Hive ID: " + hive.getId());
-        System.out.println("Honey Frame: " + hive.getHoneyFrames());
-        System.out.println();
-
         // each hive will have a random number of bees for each frame
-        int numberOfBees = random.nextInt(2000, 2500) * (hive.getNumberOfHoneyFrame() + hive.getNumberOfEggsFrame());
-        hive.setNumberOfBees(numberOfBees);
-        System.out.println("Hive " + hive + " have a starting number of bees: " + hive.getNumberOfBees());
+        int numberOfBees = random.nextInt(3000, 4000) * (hive.getNumberOfHoneyFrame() + hive.getNumberOfEggsFrame());
+         hive.setNumberOfBees(numberOfBees);
 
         return hive;
     }
@@ -111,8 +102,8 @@ public class LifeOfBees {
                     double queenIndex = hive.ageOfQueenIndex(dayOfMonth, month);
                     hive.addEggsBatches(queen.makeBatchOfEggs(queen.makeEggs(hive, dayOfMonth, month), currentDate));
                     hive.fillUpExistingEggsFrameFromHive(currentDate);
-                    hive.fillUpNewAddedEggsFrameInHive(currentDate);
-                   // hive.checkAndAddEggsToBees(currentDate);
+                    hive.addNewEggsFrameInHive(currentDate);
+                    hive.checkAndAddEggsToBees(currentDate);
 
                     System.out.println();
 
@@ -122,7 +113,12 @@ public class LifeOfBees {
 
                 calendar.add(Calendar.DAY_OF_MONTH, 1); // Move to the next day
             }
-            calendar.set(Calendar.MONTH, Calendar.APRIL); // Reset month for the next year
+            List<Hive> hives = apiary.getHives();
+            for (Hive hive : hives) {
+                hive.setItWasSplit(false);
+            }
+
+            calendar.set(Calendar.MONTH, Calendar.APRIL);// Reset month for the next year
         }
         System.out.println("your apiary is: " + apiary);
     }

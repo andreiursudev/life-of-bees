@@ -1,9 +1,7 @@
 package com.marianbastiurea.lifeofbees;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
 public class Apiary {
     /* An apiary is a location where beehives of honey bees are kept.
@@ -75,13 +73,15 @@ public class Apiary {
     public void splitHive() {
         List<Hive> newHives = new ArrayList<>();
         for (Hive hive : hives) {
-            if (hive.getNumberOfEggsFrame() == 6) {
+            if (hive.getNumberOfEggsFrame() == 6&& hive.isItWasSplit()==false) {
                 Hive newHive = new Hive();// changes  Hive new Hive=new Hive
                 newHive.setId(this.getNumberOfHives() + 1);
+                newHive.setItWasSplit(true);
                 newHive.setNumberOfEggsFrame(hive.getNumberOfEggsFrame());
                 newHive.setNumberOfHoneyFrame(hive.getNumberOfHoneyFrame());
                 newHive.setNumberOfBees(hive.getNumberOfBees() / 2);
                 hive.setNumberOfBees(hive.getNumberOfBees()/2);
+                hive.setItWasSplit(true);
                 Queen queen = new Queen();
                 newHive.setQueen(queen);
                 newHive.getQueen().setAgeOfQueen(0);
@@ -117,6 +117,7 @@ public class Apiary {
                     newHiveEggsBatches.add(newHiveBatch);
                     eggsBatch.setNumberOfEggs(eggsBatch.getNumberOfEggs() - eggsToTransfer);
                 }
+                newHive.setEggsBatches(newHiveEggsBatches);
 
                 List<BeesBatch> hiveBeesBatches = hive.getBeesBatches();
                 List<BeesBatch> newHiveBeesBatches = new ArrayList<>();
@@ -126,9 +127,9 @@ public class Apiary {
                     newHiveBeesBatches.add(newHiveBatch);
                     beesBatch.setNumberOfBees(beesBatch.getNumberOfBees() - beesToTransfer);
                 }
-
                 newHive.setBeesBatches(newHiveBeesBatches);
-                //  newHives.add(newHive);
+
+                 newHives.add(newHive);
                 this.setNumberOfHives(this.getNumberOfHives() + 1);
 
             }

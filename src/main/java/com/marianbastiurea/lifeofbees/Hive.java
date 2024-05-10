@@ -1,14 +1,13 @@
 package com.marianbastiurea.lifeofbees;
 
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.*;
 import java.util.Scanner;
-import java.time.*;
 
 
 public class Hive {
     private int id;
+    private boolean itWasSplit;
     private int numberOfHoneyFrame;
     private int numberOfEggsFrame;
     private List<EggsFrame> eggsFrames;
@@ -28,6 +27,14 @@ public class Hive {
         this.honeyFrames = new ArrayList<>(honeyFrames);
     }
 
+    public boolean isItWasSplit() {
+        return itWasSplit;
+    }
+
+    public void setItWasSplit(boolean itWasSplit) {
+        this.itWasSplit = itWasSplit;
+    }
+
     public Apiary getApiary() {
         return apiary;
     }
@@ -40,6 +47,7 @@ public class Hive {
     public String toString() {
         return "Hive{" +
                 "id=" + id +
+                ", itWasSplit=" + this.itWasSplit +
                 ", numberOfHoneyFrame=" + this.numberOfHoneyFrame +
                 ", numberOfEggsFrame=" + this.numberOfEggsFrame +
                 ", eggsFrames=" + this.eggsFrames +
@@ -177,12 +185,11 @@ public class Hive {
             case 0, 1, 2, 3:
                 return 1;
             case 4:
-//                if (numberRandom < 0.5 && honeyType == "Acacia") {
-//                    this.getQueen().setAgeOfQueen(0);
-//                    return 1;
-//                } else
-//                    return 0.75;
-                return 1;
+                if (numberRandom < 0.5 && honeyType == "Acacia") {
+                    this.getQueen().setAgeOfQueen(0);
+                    return 1;
+                } else
+                    return 0.75;
             case 5:
                 this.getQueen().setAgeOfQueen(0);
                 return 0.25;
@@ -194,7 +201,6 @@ public class Hive {
 
 
     public void checkAndAddEggsToBees(Date currentDate) {
-        // Calendar calendar = Calendar.getInstance();
 
 
         Date date = currentDate;
@@ -208,8 +214,7 @@ public class Hive {
             Date creationDate = eggsBatch.getCreationDate();
             long differenceInMillisecond = Math.abs(currentDate.getTime() - creationDate.getTime());
             long differenceInDays = differenceInMillisecond / (24 * 60 * 60 * 1000);
-            if (differenceInDays > 6) {
-                //  int numberOfEggs = eggsBatch.getNumberOfEggs();
+            if (differenceInDays > 20) {
                 this.numberOfBees += eggsBatch.getNumberOfEggs(); // Add eggs to bees
                 for (EggsFrame eggsFrame : eggsFrames) {
 
@@ -242,7 +247,7 @@ public class Hive {
                 for (EggsFrame eggsFrame : eggsFrames) {
                     if (eggsFrame.getNumberOfEggs() < maxEggPerFrame) {
                         if (maximumNumberOfFramesToAdd != 0) {
-                            eggsFrame.setNumberOfEggs(eggsFrame.getNumberOfEggs() + (eggsBatch.getNumberOfEggs() / eggsFrames.size()));
+                            eggsFrame.setNumberOfEggs(Math.min(maxEggPerFrame, eggsFrame.getNumberOfEggs() + (eggsBatch.getNumberOfEggs() / eggsFrames.size())));
                         } else {
                             eggsFrame.setNumberOfEggs(Math.min(eggsFrame.getNumberOfEggs() + eggsBatch.getNumberOfEggs(), maxEggPerFrame));
                         }
@@ -250,46 +255,45 @@ public class Hive {
                 }
             }
         }
-
-        System.out.println("Hive ID: "+this.getId());
-        System.out.println("Eggs Frame: "+this.getEggsFrames());
-        System.out.println(" date is "+currentDate);
-        System.out.println(" your hive is :"+this);
-}
-
-
-public void fillUpNewAddedEggsFrameInHive(Date currentDate) {
-    int maxEggPerFrame = 6400;
-    // a frame have around 8500 cells. 75% more or less are used by the queen to lay eggs.
-    // Remaining cells are fill up with honey or are damaged
-    Scanner scanner = new Scanner(System.in);
-    Date date = currentDate;
-    Calendar calendar = Calendar.getInstance();
-    List<EggsBatch> eggsBatches = this.getEggsBatches();
-    int maximumNumberOfFramesToAdd = 0;
-
-
-    switch (this.eggsFrames.size()) {
-        case 3,4,5:
-            System.out.println("In hive " + this.getId() + " is add another 1 eggsFrame");
-            break;
-        case 6: {
-            boolean allFramesAreFull = true;
-            for (EggsFrame eggsFrame : this.eggsFrames) {
-                if (eggsFrame.getNumberOfEggs() < maxEggPerFrame) {
-                    allFramesAreFull = false;
-                    break;
-                }
-            }
-            if (allFramesAreFull) {
-                System.out.println("Now old and new frames are full. Hive will be split in two hives.");
-                apiary.splitHive();
-            }
-            break;
-        }
-        default:
-            break;
+        System.out.println("Hive ID: " + this.getId());
+        System.out.println("Eggs Frame: " + this.getEggsFrames());
+        System.out.println(" date is " + currentDate);
+        System.out.println(" your hive is :" + this);
     }
+
+
+    public void addNewEggsFrameInHive(Date currentDate) {
+        int maxEggPerFrame = 6400;
+        // a frame have around 8500 cells. 75% more or less are used by the queen to lay eggs.
+        // Remaining cells are fill up with honey or are damaged
+        Scanner scanner = new Scanner(System.in);
+        Date date = currentDate;
+        Calendar calendar = Calendar.getInstance();
+        List<EggsBatch> eggsBatches = this.getEggsBatches();
+        int maximumNumberOfFramesToAdd = 0;
+
+
+        switch (this.eggsFrames.size()) {
+            case 3, 4, 5:
+                System.out.println("In hive " + this.getId() + " is add another 1 eggsFrame");
+                break;
+            case 6: {
+                boolean allFramesAreFull = true;
+                for (EggsFrame eggsFrame : this.eggsFrames) {
+                    if (eggsFrame.getNumberOfEggs() < maxEggPerFrame) {
+                        allFramesAreFull = false;
+                        break;
+                    }
+                }
+                if (allFramesAreFull) {
+                    System.out.println("Now old and new frames are full. Hive will be split in two hives.");
+                    apiary.splitHive();
+                }
+                break;
+            }
+            default:
+                break;
+        }
             /*for a hive, maximum of eggsFrame for spring time is 6 frame.
              After queen fill this number of frame, we can choose to split the hive or add
             another 1/2 hive on top with frame just for honey and bottom hive numberOfEggsFrame will be 10
@@ -297,32 +301,32 @@ public void fillUpNewAddedEggsFrameInHive(Date currentDate) {
              */
 
 
-    int eggsFrameFull = 0;
-    EggsFrame eggsFrame = this.eggsFrames.get(eggsFrameFull);
-    for (int i = 1; i < eggsFrames.size() + 1; i++) {
-        if (eggsFrame.getNumberOfEggs() == maxEggPerFrame && eggsFrameFull < eggsFrames.size()) {
-            eggsFrameFull += 1;
+        int eggsFrameFull = 0;
+        EggsFrame eggsFrame = this.eggsFrames.get(eggsFrameFull);
+        for (int i = 1; i < eggsFrames.size() + 1; i++) {
+            if (eggsFrame.getNumberOfEggs() == maxEggPerFrame && eggsFrameFull < eggsFrames.size()) {
+                eggsFrameFull += 1;
+            }
         }
-    }
-    if (eggsFrameFull == eggsFrames.size()) {
-        maximumNumberOfFramesToAdd = 6 - eggsFrameFull;
-        for (int i = 1; i < maximumNumberOfFramesToAdd + 1; i++) {
-            this.setNumberOfEggsFrame(this.getNumberOfEggsFrame() + 1);
-            this.addEggsFrames(createNewEggsFrame(this.getNumberOfEggsFrame()));
+        if (eggsFrameFull == eggsFrames.size()) {
+            maximumNumberOfFramesToAdd = 6 - eggsFrameFull;
+            for (int i = 1; i < maximumNumberOfFramesToAdd + 1; i++) {
+                this.setNumberOfEggsFrame(this.getNumberOfEggsFrame() + 1);
+                this.addEggsFrames(createNewEggsFrame(this.getNumberOfEggsFrame()));
+            }
         }
-    }
-    
+
     System.out.println("Hive ID: " + this.getId());
     System.out.println("Eggs Frame: " + this.getEggsFrames());
     System.out.println(" date is " + date);
     System.out.println(" your hive is :" + this);
-}
+    }
 
-public List<EggsFrame> createNewEggsFrame(int numberOfEggsFrame) {
-    List<EggsFrame> eggsFrames = new ArrayList<>();
-    EggsFrame eggsFrame = new EggsFrame(numberOfEggsFrame, 0);
-    eggsFrames.add(eggsFrame);
-    return eggsFrames;
-}
+    public List<EggsFrame> createNewEggsFrame(int numberOfEggsFrame) {
+        List<EggsFrame> eggsFrames = new ArrayList<>();
+        EggsFrame eggsFrame = new EggsFrame(numberOfEggsFrame, 0);
+        eggsFrames.add(eggsFrame);
+        return eggsFrames;
+    }
 
 }
