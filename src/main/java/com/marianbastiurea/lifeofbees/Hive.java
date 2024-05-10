@@ -329,4 +329,33 @@ public class Hive {
         return eggsFrames;
     }
 
+
+    public void beesDie(Date currentDate) {
+
+
+        Date date = currentDate;
+        List<EggsFrame> eggsFrames = this.getEggsFrames();
+        List<BeesBatch> beesBatches =this.getBeesBatches();
+
+        Iterator<BeesBatch> iterator = beesBatches.iterator();
+        while (iterator.hasNext()) {
+            BeesBatch beesBatch = iterator.next();
+            Date creationDate = beesBatch.getCreationDate();
+            long differenceInMillisecond = Math.abs(currentDate.getTime() - creationDate.getTime());
+            long differenceInDays = differenceInMillisecond / (24 * 60 * 60 * 1000);
+            if (differenceInDays > 30) {
+                this.numberOfBees -= beesBatch.getNumberOfBees(); // Subtract number of bees from each beesBatch from total number
+//                for (EggFrame eggsFrame : eggsFrames) {
+//
+//                    eggsFrame.setNumberOfEggs(eggsFrame.getNumberOfEggs() - (eggsBatch.getNumberOfEggs() / eggsFrames.size()));
+//                }
+//                BeesBatch beesBatch = new BeesBatch(eggsBatch.getNumberOfEggs(), currentDate);
+//                beesBatches.add(beesBatch);
+//                addBeesBatches(beesBatches);
+                iterator.remove();
+            }
+
+        }
+    }
+
 }

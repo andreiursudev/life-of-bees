@@ -70,7 +70,7 @@ public class LifeOfBees {
 
         // each hive will have a random number of bees for each frame
         int numberOfBees = random.nextInt(3000, 4000) * (hive.getNumberOfHoneyFrame() + hive.getNumberOfEggsFrame());
-         hive.setNumberOfBees(numberOfBees);
+        hive.setNumberOfBees(numberOfBees);
 
         return hive;
     }
@@ -104,7 +104,7 @@ public class LifeOfBees {
                     hive.fillUpExistingEggsFrameFromHive(currentDate);
                     hive.addNewEggsFrameInHive(currentDate);
                     hive.checkAndAddEggsToBees(currentDate);
-
+                  //  hive.beesDie(currentDate);
                     System.out.println();
 
 

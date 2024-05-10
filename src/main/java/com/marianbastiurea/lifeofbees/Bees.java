@@ -1,6 +1,9 @@
 package com.marianbastiurea.lifeofbees;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 /*
 
@@ -13,17 +16,11 @@ public class Bees {
 
 //method bring honey to the hive
 
-
-
-
-
-
-//        public int deadBees () {
-
+        }
 
 
 
 
 
     //they die/ dissapear
-}
+
