@@ -24,6 +24,7 @@ public class LifeOfBees {
 
     // Method to create 10 hives and store them in the apiary
     public void createHives(int numberOfStartingHives) {
+
         List<Hive> hives = new ArrayList<>();
         for (int i = 1; i < numberOfStartingHives + 1; i++) {
             Hive hive = createHive();
@@ -36,6 +37,7 @@ public class LifeOfBees {
 
     // Method to create a single hive with all its components
     private Hive createHive() {
+
         Random random = new Random();
         Hive hive = new Hive();
         hive.setEggsBatches(new ArrayList<>());
@@ -46,19 +48,21 @@ public class LifeOfBees {
         Queen queen = new Queen();
         hive.setQueen(queen);
         hive.getQueen().setAgeOfQueen(random.nextInt(1, 5));
-        hive.setNumberOfHoneyFrame(random.nextInt(3, 6)); // Random number of honey frames
-        hive.setNumberOfEggsFrame(random.nextInt(3, 6)); // Random number of eggs frames
+       hive.setNumberOfHoneyFrame(random.nextInt(3, 6)); // Random number of honey frames
+//        hive.setNumberOfEggsFrame(random.nextInt(3, 6)); // Random number of eggs frames
+        hive.setNumberOfEggsFrame(5);
         hive.setApiary(apiary);
         // Creating EggsFrame with a random number off eggs
         queen = new Queen(hive.getAgeOfQueen());
         for (int i = 1; i < hive.getNumberOfEggsFrame() + 1; i++) {
             int randomNumberOfEggs = random.nextInt(2000, 3000);
-            hive.addEggsFrames(queen.fillUpWithEggs(i, randomNumberOfEggs));
+           // hive.addEggsFrames(queen.fillUpWithEggs(i, randomNumberOfEggs));
+            hive.addEggsFrames(queen.fillUpWithEggs(i,3400));
         }
+
         System.out.println("Hive ID: " + hive.getId());
         System.out.println("Eggs Frame: " + hive.getEggsFrames());
         System.out.println();
-
 
         // Creating HoneyFrames
         List<HoneyFrame> honeyFrames = new ArrayList<>(); // Create the list outside the loop
@@ -85,28 +89,31 @@ public class LifeOfBees {
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) - 1); // Set the calendar to one year ago
-        calendar.set(Calendar.MONTH, Calendar.MARCH); // Start the year on March 1st
+        calendar.set(Calendar.MONTH, Calendar.APRIL); // Start the year on April 1st
         calendar.set(Calendar.DAY_OF_MONTH, 1);
 
         // Iterate over 2 years
         for (int year = 0; year < 1; year++) {// Use only one for debug purposes
-            while (calendar.get(Calendar.MONTH) != Calendar.APRIL) {
+            while (calendar.get(Calendar.MONTH) != Calendar.MAY) {
                 // Iterate until OCTOBER
                 Date currentDate = calendar.getTime();
                 System.out.println("Date: " + currentDate);
                 // Extract day of month and month from the calendar
                 int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-                HarvestingMonths month = HarvestingMonths.values()[calendar.get(Calendar.MONTH)];
+                int monthValue = calendar.get(Calendar.MONTH);
+                HarvestingMonths month = HarvestingMonths.values()[monthValue];
 
 
-                for (Hive hive : apiary.getHives()) {
+                List<Hive> hives = apiary.getHives();
+                ArrayList<Hive> oldHives = new ArrayList<>(hives);
+                for (Hive hive : oldHives) {
                     Queen queen = new Queen();
                     double queenIndex = hive.ageOfQueenIndex(dayOfMonth, month);
                     hive.addEggsBatches(queen.makeBatchOfEggs(queen.makeEggs(hive, dayOfMonth, month), currentDate));
                     hive.fillUpExistingEggsFrameFromHive(currentDate);
-                    hive.checkAndAddEggsToBees(currentDate);
-                    // Add eggs batches for the current day
-                    hive.checkAndAddEggsToBees(currentDate); // Check and add eggs to the number of bees
+                    hive.fillUpNewAddedEggsFrameInHive(currentDate);
+                   // hive.checkAndAddEggsToBees(currentDate);
+
                     System.out.println();
 
 
@@ -115,8 +122,8 @@ public class LifeOfBees {
 
                 calendar.add(Calendar.DAY_OF_MONTH, 1); // Move to the next day
             }
-            calendar.set(Calendar.MONTH, Calendar.MARCH); // Reset month for the next year
+            calendar.set(Calendar.MONTH, Calendar.APRIL); // Reset month for the next year
         }
-        System.out.println("your apiary is: "+apiary);
+        System.out.println("your apiary is: " + apiary);
     }
 }

@@ -8,7 +8,7 @@ public class MainLifeOfBees {
         int numberOfStartingHives;
         Scanner scanner = new Scanner(System.in);
         do {
-            System.out.println("Please input number of starting hive from apiary. ");
+        System.out.println("Please input number of starting hive from apiary. ");
             System.out.println("You have to insert a number lower than 10: ");
             while (!scanner.hasNextInt()) {
                 System.out.print("Invalid input. Please enter an integer: ");

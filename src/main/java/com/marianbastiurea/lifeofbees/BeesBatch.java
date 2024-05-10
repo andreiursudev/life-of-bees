@@ -26,4 +26,12 @@ public class BeesBatch {
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
+
+    @Override
+    public String toString() {
+        return "BeesBatch{" +
+                "numberOfBees=" + numberOfBees +
+                ", creationDate=" + creationDate +
+                '}';
+    }
 }

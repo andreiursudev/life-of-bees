@@ -73,7 +73,7 @@ public class Apiary {
     }
 
     public void splitHive() {
-       // List<Hive> newHives = new ArrayList<>();
+        List<Hive> newHives = new ArrayList<>();
         for (Hive hive : hives) {
             if (hive.getNumberOfEggsFrame() == 6) {
                 Hive newHive = new Hive();// changes  Hive new Hive=new Hive
@@ -130,10 +130,10 @@ public class Apiary {
                 newHive.setBeesBatches(newHiveBeesBatches);
                 //  newHives.add(newHive);
                 this.setNumberOfHives(this.getNumberOfHives() + 1);
-                this.addHive(newHive);
+
             }
         }
-       // hives.addAll(newHives);
+        hives.addAll(newHives);
         System.out.println("your apiary contains " + this.getNumberOfHives() + " hives");
         System.out.println(" your apiary is number "+this);
     }
