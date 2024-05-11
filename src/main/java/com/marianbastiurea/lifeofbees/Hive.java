@@ -123,10 +123,10 @@ public class Hive {
         return getQueen().getAgeOfQueen();
     }
 
-    public void setAgeOfQueen() {
-        Random random = new Random();
-        this.queen.setAgeOfQueen(random.nextInt(1, 5));
-    }
+//    public void setAgeOfQueen() {
+//        Random random = new Random();
+//        this.queen.setAgeOfQueen(random.nextInt(1, 5));
+//    }
 
 
     public int getNumberOfBees() {

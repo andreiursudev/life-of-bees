@@ -46,9 +46,19 @@ public class LifeOfBees {
         hive.setHoneyFrames(new ArrayList<>());
         hive.setBeesBatches(new ArrayList<>());
         hive.setId(hiveIdCounter++);
+
+        Honey honey = new Honey();
+        hive.setHoney(honey);
+        hive.getHoney().setHoneyType("Rapeseed");
+        hive.getHoney().setHoneyKg(0);
+        hive.getHoney().honeyTypes();
+
+
+
         Queen queen = new Queen();
         hive.setQueen(queen);
         hive.getQueen().setAgeOfQueen(random.nextInt(1, 6));
+
         hive.setNumberOfHoneyFrame(random.nextInt(4, 6)); // Random number of honey frames
         hive.setNumberOfEggsFrame(random.nextInt(4, 6)); // Random number of eggs frames
         hive.setApiary(apiary);
@@ -63,7 +73,7 @@ public class LifeOfBees {
         // Creating HoneyFrames
         List<HoneyFrame> honeyFrames = new ArrayList<>(); // Create the list outside the loop
         for (int i = 0; i < hive.getNumberOfHoneyFrame(); i++) {
-            HoneyFrame honeyFrame = new HoneyFrame(random.nextDouble(2, 3), "Wildflower");
+            HoneyFrame honeyFrame = new HoneyFrame(random.nextDouble(2, 3), "Rapeseed");
             honeyFrames.add(honeyFrame); // Add each HoneyFrame to the list
         }
         hive.addHoneyFrames(honeyFrames);
@@ -99,12 +109,12 @@ public class LifeOfBees {
                 ArrayList<Hive> oldHives = new ArrayList<>(hives);
                 for (Hive hive : oldHives) {
                     Queen queen = new Queen();
-                    double queenIndex = hive.ageOfQueenIndex(dayOfMonth, month);
+                    // double queenIndex = hive.ageOfQueenIndex(dayOfMonth, month);
                     hive.addEggsBatches(queen.makeBatchOfEggs(queen.makeEggs(hive, dayOfMonth, month), currentDate));
                     hive.fillUpExistingEggsFrameFromHive(currentDate);
                     hive.addNewEggsFrameInHive(currentDate);
                     hive.checkAndAddEggsToBees(currentDate);
-                  //  hive.beesDie(currentDate);
+                    //  hive.beesDie(currentDate);
                     System.out.println();
 
 

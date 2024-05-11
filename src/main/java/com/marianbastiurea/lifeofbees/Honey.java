@@ -8,6 +8,9 @@ public class Honey {
         return honeyType;
     }
 
+    public Honey() {
+    }
+
     public void setHoneyType(String honeyType) {
         this.honeyType = honeyType;
     }
@@ -20,7 +23,7 @@ public class Honey {
         this.honeyKg = honeyKg;
     }
 
-    public static String honeyTypes(HarvestingMonths month, int dayOfMonth) {
+    public String honeyTypes(HarvestingMonths month, int dayOfMonth) {
         String honeyType;
         switch (month) {
             case APRIL:
@@ -53,6 +56,7 @@ public class Honey {
         }
         return honeyType=""; // Default value if month and day combination doesn't match any condition
     }
+
     public double honeyProductivity( HarvestingMonths month, int dayOfMonth){
         String honeyType=honeyTypes(month, dayOfMonth);
         int indexHoneyProductivity=0;
