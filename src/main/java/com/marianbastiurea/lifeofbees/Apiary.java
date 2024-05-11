@@ -71,6 +71,12 @@ public class Apiary {
     }
 
     public void splitHive() {
+
+        /*
+        this method will split a hive in two equal half. First will check boolean itWasSplit. If this is false
+        hive will be split. A hive could be split only once in a year.
+         */
+
         List<Hive> newHives = new ArrayList<>();
         for (Hive hive : hives) {
             if (hive.getNumberOfEggsFrame() == 6&& hive.isItWasSplit()==false) {

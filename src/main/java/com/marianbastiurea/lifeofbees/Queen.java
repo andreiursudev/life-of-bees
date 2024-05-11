@@ -43,6 +43,11 @@ public class Queen {
 
 
     public int makeEggs(Hive hive, int dayOfMonth, HarvestingMonths month) {
+        /*
+        this method will calculate number of daily laying eggs by queen. will used two factors for this:
+        - first will be index about age of queen and honey productivity;
+        - second will be an whether index connected with wind speed, precipitation and temperature
+         */
 
         int numberOfEggs = (int) (2000 * hive.ageOfQueenIndex(dayOfMonth,month));//*Whether.geWhetherIndex());
         // have to add another index, a  whetherIndex which will depend on quantity of honey made it
@@ -52,6 +57,10 @@ public class Queen {
     // Method to make eggs and create a list of EggsBatch, which store daily
     // numberOfEggs and date from calendar when eggs are made
     public List<EggsBatch> makeBatchOfEggs(int numberOfEggs, Date date) {
+        /*
+        this method will create a daily eggs batch
+         */
+
         List<EggsBatch> eggsBatches = new ArrayList<>();
         EggsBatch eggsBatch = new EggsBatch(numberOfEggs, date);
         eggsBatches.add(eggsBatch);
@@ -62,6 +71,10 @@ public class Queen {
     }
 
     public List<EggsFrame> fillUpWithEggs(int numberOfEggsFrame, int numberOfEggs) {
+        /*
+        this method will fill up with eggs first eggs frame from new created hive
+         */
+
         List<EggsFrame> eggsFrames = new ArrayList<>();
         EggsFrame eggsFrame = new EggsFrame(numberOfEggsFrame, numberOfEggs);
         eggsFrames.add(eggsFrame);

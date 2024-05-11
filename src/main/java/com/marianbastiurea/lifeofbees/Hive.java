@@ -173,9 +173,9 @@ public class Hive {
     public double ageOfQueenIndex(int dayOfMonth, HarvestingMonths month) {
         /* a queen lives 3-5 years. When will build first 10 hives in apiary will use random to generate ageOfQueen
          between 1  and 5 years old for our queen. At age 5, will have to replace this queen with new one.
-         Depending on age of queen will choose an fertility index between 0 and 1. When index is 0, queen is too old
-         to lay eggs and she have to be replaced. Whenn index is 1,
-     fertility of queen is at maximum and she can lay upon 2000 eggs daily
+         Depending on age of queen will choose an fertility index between 0.25 and 1. When index is 0.25, queen is too old
+         to lay eggs and she have to be replaced. When index is 1,fertility of queen is at maximum and she can lay
+         upon 2000 eggs daily
          */
 
         int ageOfQueen = this.getQueen().getAgeOfQueen();
@@ -201,7 +201,11 @@ public class Hive {
 
 
     public void checkAndAddEggsToBees(Date currentDate) {
+/* this method check creation date of each eggs batch and difference between current date and creation date is more
+        than 20 days, eggs will hatch into bees. Eggs batch will be removed from list and number of eggs will be add to
+        number of bees from hive
 
+ */
 
         Date date = currentDate;
         List<EggsBatch> eggsBatches = this.getEggsBatches();
@@ -232,6 +236,12 @@ public class Hive {
 
     public void fillUpExistingEggsFrameFromHive(Date currentDate) {
 
+        /*
+        this method will fill up with eggs eggs frame from hive after it was created. when all first eggs frame was full
+        will be add another eggs frame in hive. maximum number of eggs frame is 6.
+         */
+
+
         int maxEggPerFrame = 6400; // a frame have around 8500 cells. 75% more or less are used by the queen to lay eggs.
         // Remaining cells are fill up with honey or are damaged
 
@@ -243,7 +253,6 @@ public class Hive {
         int maximumNumberOfFramesToAdd = 6 - eggsFrames.size();
         for (EggsBatch eggsBatch : eggsBatches) {
             if (currentDate.equals(eggsBatch.getCreationDate())) {
-                getCreationDate = eggsBatch.getCreationDate();
                 for (EggsFrame eggsFrame : eggsFrames) {
                     if (eggsFrame.getNumberOfEggs() < maxEggPerFrame) {
                         if (maximumNumberOfFramesToAdd != 0) {
@@ -263,10 +272,16 @@ public class Hive {
 
 
     public void addNewEggsFrameInHive(Date currentDate) {
+
+        /*
+        this method will add new empty eggs frame in hive. If total number of eggs frame full in hive is equal with
+        6, will call method to split hive in two hives.
+         */
+
         int maxEggPerFrame = 6400;
         // a frame have around 8500 cells. 75% more or less are used by the queen to lay eggs.
         // Remaining cells are fill up with honey or are damaged
-        Scanner scanner = new Scanner(System.in);
+
         Date date = currentDate;
         Calendar calendar = Calendar.getInstance();
         List<EggsBatch> eggsBatches = this.getEggsBatches();
@@ -316,13 +331,15 @@ public class Hive {
             }
         }
 
-    System.out.println("Hive ID: " + this.getId());
-    System.out.println("Eggs Frame: " + this.getEggsFrames());
-    System.out.println(" date is " + date);
-    System.out.println(" your hive is :" + this);
+        System.out.println("Hive ID: " + this.getId());
+        System.out.println("Eggs Frame: " + this.getEggsFrames());
+        System.out.println(" date is " + date);
+        System.out.println(" your hive is :" + this);
     }
 
     public List<EggsFrame> createNewEggsFrame(int numberOfEggsFrame) {
+        // this method will create a new empty eggs frame
+
         List<EggsFrame> eggsFrames = new ArrayList<>();
         EggsFrame eggsFrame = new EggsFrame(numberOfEggsFrame, 0);
         eggsFrames.add(eggsFrame);
@@ -331,11 +348,14 @@ public class Hive {
 
 
     public void beesDie(Date currentDate) {
-
+/*
+this method will check the date when bees hatched and if difference between hatched date and current date is more than 31 days
+they will die. bees number from each batch will be subtract from total number of bees from hive
+ */
 
         Date date = currentDate;
         List<EggsFrame> eggsFrames = this.getEggsFrames();
-        List<BeesBatch> beesBatches =this.getBeesBatches();
+        List<BeesBatch> beesBatches = this.getBeesBatches();
 
         Iterator<BeesBatch> iterator = beesBatches.iterator();
         while (iterator.hasNext()) {
