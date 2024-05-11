@@ -185,14 +185,13 @@ public class Hive {
             case 0, 1, 2, 3:
                 return 1;
             case 4:
-                if (numberRandom < 0.5 && honeyType == "Acacia") {
+               if (numberRandom < 0.5 && honeyType == "Acacia") {
                     this.getQueen().setAgeOfQueen(0);
-                    return 1;
-                } else
+                    return 1;}
+               else
                     return 0.75;
             case 5:
                 this.getQueen().setAgeOfQueen(0);
-                return 0.25;
             default:
                 break;
         }

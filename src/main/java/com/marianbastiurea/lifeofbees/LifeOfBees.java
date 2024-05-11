@@ -48,7 +48,7 @@ public class LifeOfBees {
         hive.setId(hiveIdCounter++);
         Queen queen = new Queen();
         hive.setQueen(queen);
-        hive.getQueen().setAgeOfQueen(random.nextInt(1, 5));
+        hive.getQueen().setAgeOfQueen(random.nextInt(1, 6));
         hive.setNumberOfHoneyFrame(random.nextInt(4, 6)); // Random number of honey frames
         hive.setNumberOfEggsFrame(random.nextInt(4, 6)); // Random number of eggs frames
         hive.setApiary(apiary);
