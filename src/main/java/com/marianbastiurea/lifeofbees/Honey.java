@@ -2,14 +2,10 @@ package com.marianbastiurea.lifeofbees;
 
 public class Honey {
     private String honeyType;
-    private double honeyKg;
+
 
     public Honey(String honeyType) {
         this.honeyType = honeyType;
-    }
-
-    public Honey(double honeyKg) {
-        this.honeyKg = honeyKg;
     }
 
     public String getHoneyType() {
@@ -23,19 +19,11 @@ public class Honey {
         this.honeyType = honeyType;
     }
 
-    public double getHoneyKg() {
-        return honeyKg;
-    }
-
-    public void setHoneyKg(double honeyKg) {
-        this.honeyKg = honeyKg;
-    }
-
     @Override
     public String toString() {
         return "Honey{" +
                 "honeyType='" + honeyType + '\'' +
-                ", honeyKg=" + honeyKg +
+               // ", honeyKg=" + honeyKg +
                 '}';
     }
 

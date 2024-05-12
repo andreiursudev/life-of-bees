@@ -53,7 +53,7 @@ public class LifeOfBees {
         //honey=new Honey(hive.getHoney().getHoneyType());
 
         hive.getHoney().setHoneyType("Rapeseed");
-        hive.getHoney().setHoneyKg(0);
+       // hive.getHoney().setHoneyKg(0);
 
         Queen queen = new Queen();
         hive.setQueen(queen);

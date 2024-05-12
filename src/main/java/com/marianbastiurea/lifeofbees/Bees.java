@@ -1,9 +1,7 @@
 package com.marianbastiurea.lifeofbees;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+
 
 /*
 
@@ -14,13 +12,20 @@ bee stage life:
 
 public class Bees {
 
-//method bring honey to the hive
 
-        }
+    public double addHoney(Hive hive) {
+        //method to bring honey to the hive
+// add a new honey frame until maximum of 6
+        Random random = new Random();
+        int numberOfBees = hive.getNumberOfBees();
+        int numberOfFlight = random.nextInt(3, 10);
+        double kgOfHoney = numberOfBees * numberOfFlight * 0.00002;//0.02gr/flight/bee
+        return kgOfHoney;
+    }
 
 
+}
 
 
-
-    //they die/ dissapear
+//they die/ dissapear
 

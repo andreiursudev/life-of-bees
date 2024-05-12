@@ -3,7 +3,7 @@ import java.util.Date;
 
 public class EggsBatch {
   private int numberOfEggs;
-   private Date creationDate;
+   private final  Date creationDate;
 
    public EggsBatch(int numberOfEggs, Date creationDate) {
        this.numberOfEggs = numberOfEggs;
@@ -22,9 +22,6 @@ public class EggsBatch {
         this.numberOfEggs = numberOfEggs;
     }
 
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
 
     @Override
     public String toString() {

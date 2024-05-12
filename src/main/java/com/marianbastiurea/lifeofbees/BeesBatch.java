@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class BeesBatch {
     private int numberOfBees;
-    private Date creationDate;
+    private final Date creationDate;
 
     public BeesBatch(int numberOfBees, Date creationDate) {
         this.numberOfBees = numberOfBees;
@@ -21,10 +21,6 @@ public class BeesBatch {
 
     public Date getCreationDate() {
         return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
     }
 
     @Override
