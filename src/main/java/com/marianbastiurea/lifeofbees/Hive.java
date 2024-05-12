@@ -202,8 +202,6 @@ public class Hive {
         number of bees from hive
 
  */
-
-        Date date = currentDate;
         List<EggsBatch> eggsBatches = this.getEggsBatches();
         List<EggsFrame> eggsFrames = this.getEggsFrames();
         List<BeesBatch> beesBatches = new ArrayList<>();
@@ -348,17 +346,14 @@ this method will check the date when bees hatched and if difference between hatc
 they will die. bees number from each batch will be subtract from total number of bees from hive
  */
 
-        Date date = currentDate;
-        List<EggsFrame> eggsFrames = this.getEggsFrames();
         List<BeesBatch> beesBatches = this.getBeesBatches();
-
         Iterator<BeesBatch> iterator = beesBatches.iterator();
         while (iterator.hasNext()) {
             BeesBatch beesBatch = iterator.next();
             Date creationDate = beesBatch.getCreationDate();
             long differenceInMillisecond = Math.abs(currentDate.getTime() - creationDate.getTime());
             long differenceInDays = differenceInMillisecond / (24 * 60 * 60 * 1000);
-            if (differenceInDays > 2) {
+            if (differenceInDays > 30) {
                 this.numberOfBees -= beesBatch.getNumberOfBees(); // Subtract number of bees from each beesBatch from total number
                 iterator.remove();
             }

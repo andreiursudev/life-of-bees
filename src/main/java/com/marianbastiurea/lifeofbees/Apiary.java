@@ -147,6 +147,4 @@ public class Apiary {
         System.out.println("your apiary contains " + this.getNumberOfHives() + " hives");
         System.out.println(" your apiary is number "+this);
     }
-
-
 }
