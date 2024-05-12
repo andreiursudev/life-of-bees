@@ -28,6 +28,16 @@ public class Hive {
         this.honeyFrames = new ArrayList<>(honeyFrames);
     }
 
+    public Hive(int id, boolean itWasSplit, int numberOfHoneyFrame, int numberOfEggsFrame, int numberOfBees, Queen queen, Honey honey) {
+        this.id = id;
+        this.itWasSplit = itWasSplit;
+        this.numberOfHoneyFrame = numberOfHoneyFrame;
+        this.numberOfEggsFrame = numberOfEggsFrame;
+        this.numberOfBees = numberOfBees;
+        this.queen = queen;
+        this.honey = honey;
+    }
+
     public boolean isItWasSplit() {
         return itWasSplit;
     }

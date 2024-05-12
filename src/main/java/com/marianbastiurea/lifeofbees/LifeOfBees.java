@@ -110,8 +110,9 @@ public class LifeOfBees {
                 ArrayList<Hive> oldHives = new ArrayList<>(hives);
                 for (Hive hive : oldHives) {
                     Queen queen = new Queen();
-                    Honey honey=new Honey();
-                    hive.getHoney().setHoneyType("Rapeseed");
+                    
+                   Honey honey= new Honey("Rapeseed");
+                   // hive.getHoney().setHoneyType("Rapeseed");
                     hive.getHoney().honeyTypes(month,dayOfMonth);
                     hive.addEggsBatches(queen.makeBatchOfEggs(queen.makeEggs(hive, dayOfMonth, month), currentDate));
                     hive.fillUpExistingEggsFrameFromHive(currentDate);

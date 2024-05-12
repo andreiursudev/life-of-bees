@@ -18,9 +18,9 @@ public class Apiary {
 
 
     public Apiary() {
-        this.hives = new ArrayList<>();
-        this.harvestedHoneys = new ArrayList<>();
-        this.numberOfHives = numberOfHives;
+        hives = new ArrayList<>();
+        harvestedHoneys = new ArrayList<>();
+        numberOfHives = numberOfHives;
     }
 
     public int getNumberOfHives() {
@@ -71,18 +71,34 @@ public class Apiary {
         List<Hive> newHives = new ArrayList<>();
         for (Hive hive : hives) {
             if (hive.getNumberOfEggsFrame() == 6 && hive.isItWasSplit() == false) {
-                Hive newHive = new Hive();// changes  Hive new Hive=new Hive
-                newHive.setId(this.getNumberOfHives() + 1);
-                newHive.setItWasSplit(true);
-                newHive.setNumberOfEggsFrame(hive.getNumberOfEggsFrame());
-                newHive.setNumberOfHoneyFrame(hive.getNumberOfHoneyFrame());
-                newHive.setNumberOfBees(hive.getNumberOfBees() / 2);
+                Hive newHive= new Hive(this.getNumberOfHives()+1,
+                        true, hive.getNumberOfHoneyFrame(),hive.getNumberOfEggsFrame(),
+                        (hive.getNumberOfBees() / 2), new Queen(), new Honey()
+
+                );
                 hive.setNumberOfBees(hive.getNumberOfBees() / 2);
                 hive.setItWasSplit(true);
-                Queen queen = new Queen();
-                Honey honey = new Honey();
-                newHive.setQueen(queen);
-                newHive.setHoney(honey);
+
+
+
+
+
+
+
+//                Hive newHive = new Hive();// changes  Hive new Hive=new Hive
+//                newHive.setId(this.getNumberOfHives() + 1);
+//                newHive.setItWasSplit(true);
+//                newHive.setNumberOfEggsFrame(hive.getNumberOfEggsFrame());
+//                newHive.setNumberOfHoneyFrame(hive.getNumberOfHoneyFrame());
+//                newHive.setNumberOfBees(hive.getNumberOfBees() / 2);
+
+//                Queen queen = new Queen();
+//                Honey honey = new Honey();
+
+
+
+//                newHive.setQueen(queen);
+//                newHive.setHoney(honey);
                 newHive.getQueen().setAgeOfQueen(0);
                 newHive.getHoney().setHoneyType("Acacia");
 
