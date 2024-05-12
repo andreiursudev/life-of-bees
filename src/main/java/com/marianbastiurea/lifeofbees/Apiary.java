@@ -2,6 +2,7 @@ package com.marianbastiurea.lifeofbees;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 public class Apiary {
     /* An apiary is a location where beehives of honey bees are kept.
@@ -49,12 +50,6 @@ public class Apiary {
     public void setHives(List<Hive> hives) {
         this.hives = hives;
     }
-
-
-//    // Add a hive to the apiary
-//    public void addHive(Hive hive) {
-//        hives.add(hive);
-//    }
 
 
     @Override
@@ -144,32 +139,32 @@ public class Apiary {
         System.out.println(" your apiary is number " + this);
     }
 
-    public void collectHoneyFromHives() {
+    public void collectHoneyFromHives(Date currentDate) {
         List<HarvestedHoney> harvestedHoney = new ArrayList<>();
         int hiveCounter = 0;
+        int frameCounter=0;
         double totalKgOfHoneyPerHive = 0;
         for (Hive hive : hives) {
             List<HoneyFrame> hiveHoneyFrames = hive.getHoneyFrames();
             for (HoneyFrame honeyFrame : hiveHoneyFrames) {
                 if (honeyFrame.getKgOfHoney() > 3.5) {
                     hiveCounter++;
-                    totalKgOfHoneyPerHive = honeyFrame.getKgOfHoney();
+                    frameCounter++;
+                    totalKgOfHoneyPerHive += honeyFrame.getKgOfHoney();
                 }
 
-                    HarvestedHoney harvestedHoneys = new HarvestedHoney(this,
-                            hive,
+                    HarvestedHoney harvestedHoneys = new HarvestedHoney(
+                            this,
                             hive.getId(),
-                            hive.getHoney(),
-                            hiveCounter,
-                            honeyFrame.getHoneyType(),
+                            frameCounter,
+                            hive.getHoney().getHoneyType(),
                             totalKgOfHoneyPerHive,
                             currentDate);
+
                     harvestedHoney.add(harvestedHoneys);
                     honeyFrame.setKgOfHoney(0);
                 }
                 this.harvestedHoneys.addAll(harvestedHoney);
-
-
             }
         }
     }

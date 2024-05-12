@@ -11,14 +11,12 @@ public class HarvestedHoney {
     private double kgOfHoney;
     private final Date date;
 
-    public HarvestedHoney(Apiary apiary, Hive hive, int hiveNumber, int numberOfFramesHarvested,
+    public HarvestedHoney(Apiary apiary, int hiveNumber, int numberOfFramesHarvested,
                           String honeyType, double kgOfHoney, Date date) {
         this.apiary = apiary;
-       // this.hive = hive;
-       // this.honey = honey;
         this.hiveNumber = this.hive.getId();
         this.numberOfFramesHarvested = numberOfFramesHarvested;
-        this.honeyType = this.hive.getHoneyFrames().g;
+        this.honeyType = this.hive.getHoney().getHoneyType();
         this.kgOfHoney = kgOfHoney;
         this.date=date;
     }
