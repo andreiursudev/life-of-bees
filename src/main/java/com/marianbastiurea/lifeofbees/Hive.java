@@ -2,7 +2,7 @@ package com.marianbastiurea.lifeofbees;
 
 import java.util.Date;
 import java.util.*;
-import java.util.Scanner;
+
 
 
 public class Hive {
@@ -53,6 +53,7 @@ public class Hive {
                 ", eggsFrames=" + this.eggsFrames +
                 ", numberOfBees=" + this.numberOfBees +
                 ", age of queen=" + this.queen.getAgeOfQueen() +
+                ", honey="+this.honey.getHoneyType()+
                 ", eggsBatches=" + this.eggsBatches +
                 ", beesBatches=" + this.beesBatches +
                 ", honeyFrames=" + this.honeyFrames +
@@ -76,10 +77,12 @@ public class Hive {
     }
 
     public Queen getQueen() {
+
         return queen;
     }
 
     public void setQueen(Queen queen) {
+
         this.queen = queen;
     }
 
@@ -122,12 +125,6 @@ public class Hive {
     public int getAgeOfQueen() {
         return getQueen().getAgeOfQueen();
     }
-
-//    public void setAgeOfQueen() {
-//        Random random = new Random();
-//        this.queen.setAgeOfQueen(random.nextInt(1, 5));
-//    }
-
 
     public int getNumberOfBees() {
         return numberOfBees;
@@ -185,7 +182,7 @@ public class Hive {
             case 0, 1, 2, 3:
                 return 1;
             case 4:
-               if (numberRandom < 0.5 && honeyType == "Acacia") {
+               if (numberRandom < 0.5 && honeyType.equals("Acacia")) {
                     this.getQueen().setAgeOfQueen(0);
                     return 1;}
                else
@@ -245,7 +242,6 @@ public class Hive {
         // Remaining cells are fill up with honey or are damaged
 
         System.out.println();
-        Random random = new Random();
         Date getCreationDate = null;
         List<EggsBatch> eggsBatches = this.getEggsBatches();
         List<EggsFrame> eggsFrames = this.getEggsFrames();
@@ -282,9 +278,9 @@ public class Hive {
         // Remaining cells are fill up with honey or are damaged
 
         Date date = currentDate;
-        Calendar calendar = Calendar.getInstance();
-        List<EggsBatch> eggsBatches = this.getEggsBatches();
-        int maximumNumberOfFramesToAdd = 0;
+//        Calendar calendar = Calendar.getInstance();
+//        List<EggsBatch> eggsBatches = this.getEggsBatches();
+
 
 
         switch (this.eggsFrames.size()) {
@@ -323,7 +319,7 @@ public class Hive {
             }
         }
         if (eggsFrameFull == eggsFrames.size()) {
-            maximumNumberOfFramesToAdd = 6 - eggsFrameFull;
+            int maximumNumberOfFramesToAdd = 6 - eggsFrameFull;
             for (int i = 1; i < maximumNumberOfFramesToAdd + 1; i++) {
                 this.setNumberOfEggsFrame(this.getNumberOfEggsFrame() + 1);
                 this.addEggsFrames(createNewEggsFrame(this.getNumberOfEggsFrame()));

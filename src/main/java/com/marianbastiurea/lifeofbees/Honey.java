@@ -4,6 +4,14 @@ public class Honey {
     private String honeyType;
     private double honeyKg;
 
+    public Honey(String honeyType) {
+        this.honeyType = honeyType;
+    }
+
+    public Honey(double honeyKg) {
+        this.honeyKg = honeyKg;
+    }
+
     public String getHoneyType() {
         return honeyType;
     }
@@ -23,8 +31,15 @@ public class Honey {
         this.honeyKg = honeyKg;
     }
 
+    @Override
+    public String toString() {
+        return "Honey{" +
+                "honeyType='" + honeyType + '\'' +
+                ", honeyKg=" + honeyKg +
+                '}';
+    }
+
     public String honeyTypes(HarvestingMonths month, int dayOfMonth) {
-        String honeyType;
         switch (month) {
             case APRIL:
                 if (dayOfMonth >= 1 && dayOfMonth <= 20) {
@@ -62,17 +77,17 @@ public class Honey {
         int indexHoneyProductivity=0;
         switch (honeyType){
             case "Acacia":
-                return 2 ;//kgOnHa=1600
+                return 1 ;//kgOnHa=1600
             case "Rapeseed":
-                return  1.25; //kgOnHa=50
+                return  0.8; //kgOnHa=50
             case "WildFlower":
                 return 0.5 ;//kgOnHa=40
             case "Linden":
-                return 1.5;//kgOnHa=1200
+                return 1;//kgOnHa=1200
             case "SunFlower":
-                return 1.1;//kgOnHa=60
+                return 0.7;//kgOnHa=60
             case "FalseIndigo":
-                return 0.75;//kgOnHa=70
+                return 0.5;//kgOnHa=70
         }
         return indexHoneyProductivity;
     }

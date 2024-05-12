@@ -89,8 +89,11 @@ public class Apiary {
                 hive.setNumberOfBees(hive.getNumberOfBees()/2);
                 hive.setItWasSplit(true);
                 Queen queen = new Queen();
+                Honey honey=new Honey();
                 newHive.setQueen(queen);
+                newHive.setHoney(honey);
                 newHive.getQueen().setAgeOfQueen(0);
+                newHive.getHoney().setHoneyType("Acacia");
 
                 newHive.setApiary(this);
                 newHive.setBeesBatches(hive.getBeesBatches().subList(0, 0));

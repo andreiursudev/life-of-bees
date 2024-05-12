@@ -40,7 +40,7 @@ public class LifeOfBees {
 
         Random random = new Random();
         Hive hive = new Hive();
-        hive.setItWasSplit(false);// a hive could be solit only once in a year
+        hive.setItWasSplit(false);// a hive could be split only once in a year
         hive.setEggsBatches(new ArrayList<>());
         hive.setEggsFrames(new ArrayList<>());
         hive.setHoneyFrames(new ArrayList<>());
@@ -48,12 +48,11 @@ public class LifeOfBees {
         hive.setId(hiveIdCounter++);
 
         Honey honey = new Honey();
+
+        honey=new Honey(hive.getHoney().getHoneyType());
         hive.setHoney(honey);
         hive.getHoney().setHoneyType("Rapeseed");
         hive.getHoney().setHoneyKg(0);
-        hive.getHoney().honeyTypes();
-
-
 
         Queen queen = new Queen();
         hive.setQueen(queen);
@@ -71,9 +70,10 @@ public class LifeOfBees {
         }
 
         // Creating HoneyFrames
-        List<HoneyFrame> honeyFrames = new ArrayList<>(); // Create the list outside the loop
+        List<HoneyFrame> honeyFrames = new ArrayList<>();
         for (int i = 0; i < hive.getNumberOfHoneyFrame(); i++) {
-            HoneyFrame honeyFrame = new HoneyFrame(random.nextDouble(2, 3), "Rapeseed");
+            HoneyFrame honeyFrame=new HoneyFrame(random.nextDouble(2, 3), hive.getHoney().getHoneyType());
+          //  HoneyFrame honeyFrame = new HoneyFrame(random.nextDouble(2, 3), "Rapeseed");
             honeyFrames.add(honeyFrame); // Add each HoneyFrame to the list
         }
         hive.addHoneyFrames(honeyFrames);
@@ -109,6 +109,9 @@ public class LifeOfBees {
                 ArrayList<Hive> oldHives = new ArrayList<>(hives);
                 for (Hive hive : oldHives) {
                     Queen queen = new Queen();
+                    Honey honey=new Honey();
+                    hive.getHoney().setHoneyType("Rapeseed");
+                    hive.getHoney().honeyTypes(month,dayOfMonth);
                     // double queenIndex = hive.ageOfQueenIndex(dayOfMonth, month);
                     hive.addEggsBatches(queen.makeBatchOfEggs(queen.makeEggs(hive, dayOfMonth, month), currentDate));
                     hive.fillUpExistingEggsFrameFromHive(currentDate);
@@ -123,7 +126,7 @@ public class LifeOfBees {
 
                 calendar.add(Calendar.DAY_OF_MONTH, 1); // Move to the next day
             }
-            List<Hive> hives = apiary.getHives();
+            List<Hive> hives = apiary.getHives();// have to build a hibernate method
             for (Hive hive : hives) {
                 hive.setItWasSplit(false);
             }
