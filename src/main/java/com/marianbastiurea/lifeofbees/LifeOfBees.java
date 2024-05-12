@@ -48,9 +48,10 @@ public class LifeOfBees {
         hive.setId(hiveIdCounter++);
 
         Honey honey = new Honey();
-
-        honey=new Honey(hive.getHoney().getHoneyType());
         hive.setHoney(honey);
+
+        //honey=new Honey(hive.getHoney().getHoneyType());
+
         hive.getHoney().setHoneyType("Rapeseed");
         hive.getHoney().setHoneyKg(0);
 
@@ -112,12 +113,11 @@ public class LifeOfBees {
                     Honey honey=new Honey();
                     hive.getHoney().setHoneyType("Rapeseed");
                     hive.getHoney().honeyTypes(month,dayOfMonth);
-                    // double queenIndex = hive.ageOfQueenIndex(dayOfMonth, month);
                     hive.addEggsBatches(queen.makeBatchOfEggs(queen.makeEggs(hive, dayOfMonth, month), currentDate));
                     hive.fillUpExistingEggsFrameFromHive(currentDate);
                     hive.addNewEggsFrameInHive(currentDate);
                     hive.checkAndAddEggsToBees(currentDate);
-                    //  hive.beesDie(currentDate);
+                     hive.beesDie(currentDate);
                     System.out.println();
 
 

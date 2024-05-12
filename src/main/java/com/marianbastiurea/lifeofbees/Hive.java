@@ -358,15 +358,8 @@ they will die. bees number from each batch will be subtract from total number of
             Date creationDate = beesBatch.getCreationDate();
             long differenceInMillisecond = Math.abs(currentDate.getTime() - creationDate.getTime());
             long differenceInDays = differenceInMillisecond / (24 * 60 * 60 * 1000);
-            if (differenceInDays > 30) {
+            if (differenceInDays > 2) {
                 this.numberOfBees -= beesBatch.getNumberOfBees(); // Subtract number of bees from each beesBatch from total number
-//                for (EggFrame eggsFrame : eggsFrames) {
-//
-//                    eggsFrame.setNumberOfEggs(eggsFrame.getNumberOfEggs() - (eggsBatch.getNumberOfEggs() / eggsFrames.size()));
-//                }
-//                BeesBatch beesBatch = new BeesBatch(eggsBatch.getNumberOfEggs(), currentDate);
-//                beesBatches.add(beesBatch);
-//                addBeesBatches(beesBatches);
                 iterator.remove();
             }
 
