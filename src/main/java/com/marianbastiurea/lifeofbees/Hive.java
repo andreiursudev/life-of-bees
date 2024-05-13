@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.*;
 
 
-
 public class Hive {
     private int id;
     private boolean itWasSplit;
@@ -28,7 +27,7 @@ public class Hive {
         this.honeyFrames = new ArrayList<>(honeyFrames);
     }
 
-    public Hive(int id, boolean itWasSplit, int numberOfHoneyFrame, int numberOfEggsFrame, int numberOfBees, Queen queen, Honey honey) {
+    public Hive(int id, boolean itWasSplit, int numberOfHoneyFrame, int numberOfEggsFrame, int numberOfBees, Queen queen, Honey honey, Bees bees) {
         this.id = id;
         this.itWasSplit = itWasSplit;
         this.numberOfHoneyFrame = numberOfHoneyFrame;
@@ -36,6 +35,7 @@ public class Hive {
         this.numberOfBees = numberOfBees;
         this.queen = queen;
         this.honey = honey;
+        this.bees = bees;
     }
 
     public boolean isItWasSplit() {
@@ -62,9 +62,9 @@ public class Hive {
                 ", numberOfHoneyFrame=" + this.numberOfHoneyFrame +
                 ", numberOfEggsFrame=" + this.numberOfEggsFrame +
                 ", eggsFrames=" + this.eggsFrames +
-                ", numberOfBees=" + this.numberOfBees +
+                ", numberOfBees=" + this.bees.getNumberOfBees() +
                 ", age of queen=" + this.queen.getAgeOfQueen() +
-                ", honey="+this.honey.getHoneyType()+
+                ", honey=" + this.honey.getHoneyType() +
                 ", eggsBatches=" + this.eggsBatches +
                 ", beesBatches=" + this.beesBatches +
                 ", honeyFrames=" + this.honeyFrames +
@@ -99,6 +99,10 @@ public class Hive {
     public void setQueen(Queen queen) {
 
         this.queen = queen;
+    }
+
+    public void setBees(Bees bees) {
+        this.bees = bees;
     }
 
     public Hive() {
@@ -142,7 +146,7 @@ public class Hive {
     }
 
     public int getNumberOfBees() {
-        return numberOfBees;
+        return getBees().getNumberOfBees();
     }
 
     public void setNumberOfBees(int numberOfBees) {
@@ -197,10 +201,10 @@ public class Hive {
             case 0, 1, 2, 3:
                 return 1;
             case 4:
-               if (numberRandom < 0.5 && honeyType.equals("Acacia")) {
+                if (numberRandom < 0.5 && honeyType.equals("Acacia")) {
                     this.getQueen().setAgeOfQueen(0);
-                    return 1;}
-               else
+                    return 1;
+                } else
                     return 0.75;
             case 5:
                 this.getQueen().setAgeOfQueen(0);
@@ -272,10 +276,10 @@ public class Hive {
                 }
             }
         }
-        System.out.println("Hive ID: " + this.getId());
-        System.out.println("Eggs Frame: " + this.getEggsFrames());
-        System.out.println(" date is " + currentDate);
-        System.out.println(" your hive is :" + this);
+//        System.out.println("Hive ID: " + this.getId());
+//        System.out.println("Eggs Frame: " + this.getEggsFrames());
+//        System.out.println(" date is " + currentDate);
+//        System.out.println(" your hive is :" + this);
     }
 
 
@@ -335,10 +339,10 @@ public class Hive {
             }
         }
 
-        System.out.println("Hive ID: " + this.getId());
-        System.out.println("Eggs Frame: " + this.getEggsFrames());
-        System.out.println(" date is " + date);
-        System.out.println(" your hive is :" + this);
+//        System.out.println("Hive ID: " + this.getId());
+//        System.out.println("Eggs Frame: " + this.getEggsFrames());
+//        System.out.println(" date is " + date);
+//        System.out.println(" your hive is :" + this);
     }
 
     public void fillUpExistingHoneyFrameFromHive(Date currentDate) {
@@ -348,32 +352,83 @@ public class Hive {
         will add another honeyFrame in hive. maximum number of honeyFrame is 6.
          */
 
-        double maxKgOfHoneyPerFrame=4.5;
+        double maxKgOfHoneyPerFrame = 4.5;
         // a frame could be loaded with around  4.5Kg of honey
 
         System.out.println();
         Date getCreationDate = null;
         List<HoneyFrame> honeyFrames = this.getHoneyFrames();
         int maximumNumberOfFramesToAdd = 6 - honeyFrames.size();
-
-                for (HoneyFrame honeyFrame : honeyFrames) {
-                    if (honeyFrame.getKgOfHoney() < maxKgOfHoneyPerFrame) {
-                        if (maximumNumberOfFramesToAdd != 0) {
-                            honeyFrame.setKgOfHoney(Math.min(maxKgOfHoneyPerFrame, honeyFrame.getKgOfHoney() + (getBees().addHoney()/ honeyFrames.size())));
-                        } else {
-                            honeyFrame.setKgOfHoney(Math.min(honeyFrame.getKgOfHoney() +getBees().addHoney() , maxKgOfHoneyPerFrame));
-                        }
-                    }
+        double kgOfHoneyToAdd = getBees().addHoney();
+        for (HoneyFrame honeyFrame : honeyFrames) {
+            if (honeyFrame.getKgOfHoney() < maxKgOfHoneyPerFrame) {
+                if (maximumNumberOfFramesToAdd != 0) {
+                    honeyFrame.setKgOfHoney(Math.min(maxKgOfHoneyPerFrame, honeyFrame.getKgOfHoney() + (kgOfHoneyToAdd / honeyFrames.size())));
+                } else {
+                    honeyFrame.setKgOfHoney(Math.min(honeyFrame.getKgOfHoney() + kgOfHoneyToAdd, maxKgOfHoneyPerFrame));
                 }
+            }
+        }
 
 
-        System.out.println("Hive ID: " + this.getId());
-        System.out.println("Honey Frame: " + this.getHoneyFrames());
-        System.out.println(" date is " + currentDate);
-        System.out.println(" your hive is :" + this);
+//        System.out.println("Hive ID: " + this.getId());
+//        System.out.println("Honey Frame: " + this.getHoneyFrames());
+//        System.out.println(" date is " + currentDate);
+//        System.out.println(" your hive is :" + this);
     }
 
 
+    public void addNewHoneyFrameInHive(Date currentDate) {
+
+        /*
+        this method will add new empty honey frame in hive. If total number of honey frame full in hive is equal with
+        6, will call method to collect honey from frames.
+         */
+
+        double maxKgOfHoneyPerFrame = 4.5;
+        // a frame could be loaded with around  4.5Kg of honey
+
+        switch (this.honeyFrames.size()) {
+            case 3, 4, 5:
+                System.out.println("In hive " + this.getId() + " is add another 1 honeyFrame");
+                break;
+            case 6: {
+                boolean allFramesAreFull = true;
+                for (HoneyFrame honeyFrame : this.honeyFrames) {
+                    if (honeyFrame.getKgOfHoney() < maxKgOfHoneyPerFrame) {
+                        allFramesAreFull = false;
+                        break;
+                    }
+                }
+                if (allFramesAreFull) {
+                    System.out.println("Now old and new frames are full. Hive will be split in two hives.");
+//                    apiary.collectHoneyFromHives(currentDate);
+                }
+                break;
+            }
+            default:
+                break;
+        }
+
+        int honeyFrameFull = 0;
+        for (HoneyFrame honeyFrame : honeyFrames) {
+            if (honeyFrame.getKgOfHoney() == maxKgOfHoneyPerFrame && honeyFrameFull < honeyFrames.size()) {
+                honeyFrameFull += 1;
+            }
+        }
+        if (honeyFrameFull == honeyFrames.size()) {
+            int maximumNumberOfFramesToAdd = 6 - honeyFrameFull;
+            for (int i = 1; i < maximumNumberOfFramesToAdd + 1; i++) {
+                this.setNumberOfHoneyFrame(this.getNumberOfHoneyFrame() + 1);
+                this.addHoneyFrames(createNewHoneyFrame(this.getNumberOfHoneyFrame()));
+            }
+        }
+
+//        System.out.println("Hive ID: " + this.getId());
+//        System.out.println("Honey Frame: " + this.getHoneyFrames());
+//        System.out.println(" date is " + currentDate);
+//        System.out.println(" your hive is :" + this);
+    }
 
 
     public List<EggsFrame> createNewEggsFrame(int numberOfEggsFrame) {
@@ -383,6 +438,15 @@ public class Hive {
         EggsFrame eggsFrame = new EggsFrame(numberOfEggsFrame, 0);
         eggsFrames.add(eggsFrame);
         return eggsFrames;
+    }
+
+    public List<HoneyFrame> createNewHoneyFrame(int numberOfHoneyFrame) {
+        // this method will create a new empty honey frame
+
+        List<HoneyFrame> honeyFrames = new ArrayList<>();
+        HoneyFrame honeyFrame = new HoneyFrame(0, getHoney().getHoneyType());
+        honeyFrames.add(honeyFrame);
+        return honeyFrames;
     }
 
 

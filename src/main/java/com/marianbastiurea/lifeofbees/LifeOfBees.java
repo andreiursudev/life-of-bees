@@ -53,7 +53,7 @@ public class LifeOfBees {
         //honey=new Honey(hive.getHoney().getHoneyType());
 
         hive.getHoney().setHoneyType("Rapeseed");
-       // hive.getHoney().setHoneyKg(0);
+        // hive.getHoney().setHoneyKg(0);
 
         Queen queen = new Queen();
         hive.setQueen(queen);
@@ -73,15 +73,19 @@ public class LifeOfBees {
         // Creating HoneyFrames
         List<HoneyFrame> honeyFrames = new ArrayList<>();
         for (int i = 0; i < hive.getNumberOfHoneyFrame(); i++) {
-            HoneyFrame honeyFrame=new HoneyFrame(random.nextDouble(2, 3), hive.getHoney().getHoneyType());
-          //  HoneyFrame honeyFrame = new HoneyFrame(random.nextDouble(2, 3), "Rapeseed");
+            HoneyFrame honeyFrame = new HoneyFrame(random.nextDouble(2, 3), hive.getHoney().getHoneyType());
+            //  HoneyFrame honeyFrame = new HoneyFrame(random.nextDouble(2, 3), "Rapeseed");
             honeyFrames.add(honeyFrame); // Add each HoneyFrame to the list
         }
         hive.addHoneyFrames(honeyFrames);
 
-        // each hive will have a random number of bees for each frame
         int numberOfBees = random.nextInt(3000, 4000) * (hive.getNumberOfHoneyFrame() + hive.getNumberOfEggsFrame());
-        hive.setNumberOfBees(numberOfBees);
+        Bees bees = new Bees(numberOfBees);
+        hive.setBees(bees);
+
+
+        // each hive will have a random number of bees for each frame
+        // hive.setNumberOfBees(numberOfBees);
 
         return hive;
     }
@@ -110,20 +114,19 @@ public class LifeOfBees {
                 ArrayList<Hive> oldHives = new ArrayList<>(hives);
                 for (Hive hive : oldHives) {
                     Queen queen = new Queen();
-                    
-                   Honey honey= new Honey("Rapeseed");
-                   // hive.getHoney().setHoneyType("Rapeseed");
-                    hive.getHoney().honeyTypes(month,dayOfMonth);
+
+                    Honey honey = new Honey("Rapeseed");
+                    hive.getHoney().honeyTypes(month, dayOfMonth);
                     hive.addEggsBatches(queen.makeBatchOfEggs(queen.makeEggs(hive, dayOfMonth, month), currentDate));
                     hive.fillUpExistingEggsFrameFromHive(currentDate);
                     hive.addNewEggsFrameInHive(currentDate);
                     hive.checkAndAddEggsToBees(currentDate);
-                     hive.beesDie(currentDate);
+                    hive.fillUpExistingHoneyFrameFromHive(currentDate);
+                    hive.addNewHoneyFrameInHive(currentDate);
+                    hive.beesDie(currentDate);
                     System.out.println();
-
-
                 }
-
+                apiary.collectHoneyFromHives(currentDate);
 
                 calendar.add(Calendar.DAY_OF_MONTH, 1); // Move to the next day
             }

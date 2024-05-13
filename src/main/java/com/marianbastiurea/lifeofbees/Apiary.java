@@ -39,10 +39,6 @@ public class Apiary {
         this.harvestedHoneys = harvestedHoneys;
     }
 
-//    public Apiary(List<Hive> hives) {
-//        this.hives = hives;
-//    }
-
     public List<Hive> getHives() {
         return hives;
     }
@@ -71,34 +67,14 @@ public class Apiary {
         List<Hive> newHives = new ArrayList<>();
         for (Hive hive : hives) {
             if (hive.getNumberOfEggsFrame() == 6 && hive.isItWasSplit() == false) {
-                Hive newHive= new Hive(this.getNumberOfHives()+1,
-                        true, hive.getNumberOfHoneyFrame(),hive.getNumberOfEggsFrame(),
-                        (hive.getNumberOfBees() / 2), new Queen(), new Honey()
+                Hive newHive = new Hive(this.getNumberOfHives() + 1,
+                        true, hive.getNumberOfHoneyFrame(), hive.getNumberOfEggsFrame(),
+                        (hive.getNumberOfBees() / 2), new Queen(), new Honey(), new Bees()
 
                 );
                 hive.setNumberOfBees(hive.getNumberOfBees() / 2);
                 hive.setItWasSplit(true);
 
-
-
-
-
-
-
-//                Hive newHive = new Hive();// changes  Hive new Hive=new Hive
-//                newHive.setId(this.getNumberOfHives() + 1);
-//                newHive.setItWasSplit(true);
-//                newHive.setNumberOfEggsFrame(hive.getNumberOfEggsFrame());
-//                newHive.setNumberOfHoneyFrame(hive.getNumberOfHoneyFrame());
-//                newHive.setNumberOfBees(hive.getNumberOfBees() / 2);
-
-//                Queen queen = new Queen();
-//                Honey honey = new Honey();
-
-
-
-//                newHive.setQueen(queen);
-//                newHive.setHoney(honey);
                 newHive.getQueen().setAgeOfQueen(0);
                 newHive.getHoney().setHoneyType("Acacia");
 
@@ -157,30 +133,33 @@ public class Apiary {
 
     public void collectHoneyFromHives(Date currentDate) {
         List<HarvestedHoney> harvestedHoney = new ArrayList<>();
-        int hiveCounter = 0;
-        int frameCounter=0;
-        double totalKgOfHoneyPerHive = 0;
+        int frameCounter = 0;
+        double totalKgOfHoneyPerFrame = 0;
         for (Hive hive : hives) {
             List<HoneyFrame> hiveHoneyFrames = hive.getHoneyFrames();
             for (HoneyFrame honeyFrame : hiveHoneyFrames) {
                 if (honeyFrame.getKgOfHoney() > 3.5) {
-                    hiveCounter++;
                     frameCounter++;
-                    totalKgOfHoneyPerHive += honeyFrame.getKgOfHoney();
+                    totalKgOfHoneyPerFrame += honeyFrame.getKgOfHoney();
+                    honeyFrame.setKgOfHoney(0);
                 }
 
+                if (totalKgOfHoneyPerFrame != 0) {
                     HarvestedHoney harvestedHoneys = new HarvestedHoney(
                             this,
+                            hive,
                             hive.getId(),
                             frameCounter,
                             hive.getHoney().getHoneyType(),
-                            totalKgOfHoneyPerHive,
+                            totalKgOfHoneyPerFrame,
                             currentDate);
 
                     harvestedHoney.add(harvestedHoneys);
-                    honeyFrame.setKgOfHoney(0);
                 }
-                this.harvestedHoneys.addAll(harvestedHoney);
             }
+            this.harvestedHoneys.addAll(harvestedHoney);
         }
+        System.out.println("daily honey harvest is:" + harvestedHoney);
+
     }
+}

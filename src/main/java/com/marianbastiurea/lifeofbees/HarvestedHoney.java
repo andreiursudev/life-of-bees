@@ -11,9 +11,10 @@ public class HarvestedHoney {
     private double kgOfHoney;
     private final Date date;
 
-    public HarvestedHoney(Apiary apiary, int hiveNumber, int numberOfFramesHarvested,
+    public HarvestedHoney(Apiary apiary,Hive hive,  int hiveNumber, int numberOfFramesHarvested,
                           String honeyType, double kgOfHoney, Date date) {
         this.apiary = apiary;
+        this.hive=hive;
         this.hiveNumber = this.hive.getId();
         this.numberOfFramesHarvested = numberOfFramesHarvested;
         this.honeyType = this.hive.getHoney().getHoneyType();
@@ -37,14 +38,6 @@ public class HarvestedHoney {
     public void setHive(Hive hive) {
         this.hive = hive;
     }
-
-//    public Honey getHoney() {
-//        return honey;
-//    }
-//
-//    public void setHoney(Honey honey) {
-//        this.honey = honey;
-//    }
 
     public int getHiveNumber() {
         return hiveNumber;
@@ -85,9 +78,6 @@ public class HarvestedHoney {
     @Override
     public String toString() {
         return "HarvestedHoney{" +
-                "apiary=" + apiary +
-                ", hive=" + hive +
-               // ", honey=" + honey +
                 ", hiveNumber=" + hiveNumber +
                 ", numberOfFramesHarvested=" + numberOfFramesHarvested +
                 ", honeyType='" + honeyType + '\'' +

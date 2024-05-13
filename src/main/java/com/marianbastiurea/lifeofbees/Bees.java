@@ -12,31 +12,35 @@ bee stage life:
 
 public class Bees {
     private int numberOfBees;
-    private Hive hive;
 
-    public Bees(int numberOfBees, Hive hive) {
+    public Bees(int numberOfBees) {
         this.numberOfBees = numberOfBees;
-        this.hive = hive;
+    }
+
+    public Bees() {
     }
 
     public int getNumberOfBees() {
-        return numberOfBees= hive.getNumberOfBees();
+        return numberOfBees= numberOfBees;
+    }
+
+    public void setNumberOfBees(int numberOfBees) {
+        this.numberOfBees = numberOfBees;
     }
 
 
-    public Hive getHive() {
-        return hive;
-    }
-
-    public void setHive(Hive hive) {
-        this.hive = hive;
+    @Override
+    public String toString() {
+        return "Bees{" +
+                "numberOfBees=" + numberOfBees +
+                '}';
     }
 
     public double addHoney() {
         //method to bring honey to the hive
 
         Random random = new Random();
-         numberOfBees = hive.getNumberOfBees();
+         numberOfBees = this.getNumberOfBees();
         int numberOfFlight = random.nextInt(3, 10);
         double kgOfHoney = numberOfBees * numberOfFlight * 0.00002;//0.02gr/flight/bee
         return kgOfHoney;
