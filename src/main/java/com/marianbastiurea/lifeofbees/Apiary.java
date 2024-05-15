@@ -47,7 +47,9 @@ public class Apiary {
         this.hives = hives;
     }
 
-
+    public void addHoneyHarvested(List<HarvestedHoney> harvestedHoneys){
+        this.harvestedHoneys.addAll(harvestedHoneys);
+    }
     @Override
     public String toString() {
         return "{" +
@@ -67,6 +69,7 @@ public class Apiary {
         List<Hive> newHives = new ArrayList<>();
         for (Hive hive : hives) {
             if (hive.getNumberOfEggsFrame() == 6 && hive.isItWasSplit() == false) {
+                System.out.println("Now old and new frames are full. Hive will be split in two hives.");
                 Hive newHive = new Hive(this.getNumberOfHives() + 1,
                         true, hive.getNumberOfHoneyFrame(), hive.getNumberOfEggsFrame(),
                         (hive.getNumberOfBees() / 2), new Queen(), new Honey(), new Bees()
@@ -94,10 +97,9 @@ public class Apiary {
                 List<HoneyFrame> hiveHoneyFrames = hive.getHoneyFrames();
                 List<HoneyFrame> newHiveHoneyFrames = new ArrayList<>();
                 for (HoneyFrame honeyFrame : hiveHoneyFrames) {
-                    double honeyToTransfer = honeyFrame.getKgOfHoney() / 2;
-                    HoneyFrame newHiveFrame = new HoneyFrame(honeyToTransfer, honeyFrame.getHoneyType());
+                    HoneyFrame newHiveFrame = new HoneyFrame(honeyFrame.getKgOfHoney() / 2, honeyFrame.getHoneyType());
                     newHiveHoneyFrames.add(newHiveFrame);
-                    honeyFrame.setKgOfHoney(honeyFrame.getKgOfHoney() - honeyToTransfer);
+                    honeyFrame.setKgOfHoney(honeyFrame.getKgOfHoney() / 2);
                 }
                 newHive.setHoneyFrames(newHiveHoneyFrames);
 
@@ -132,34 +134,41 @@ public class Apiary {
     }
 
     public void collectHoneyFromHives(Date currentDate) {
-        List<HarvestedHoney> harvestedHoney = new ArrayList<>();
+        List<HarvestedHoney> harvestedHoneys = new ArrayList<>();
+
         int frameCounter = 0;
-        double totalKgOfHoneyPerFrame = 0;
+        double totalKgOfHoneyPerHive = 0;
         for (Hive hive : hives) {
-            List<HoneyFrame> hiveHoneyFrames = hive.getHoneyFrames();
-            for (HoneyFrame honeyFrame : hiveHoneyFrames) {
-                if (honeyFrame.getKgOfHoney() > 3.5) {
-                    frameCounter++;
-                    totalKgOfHoneyPerFrame += honeyFrame.getKgOfHoney();
-                    honeyFrame.setKgOfHoney(0);
+            if (hive.isItWasSplit() == true) {
+                List<HoneyFrame> hiveHoneyFrames = hive.getHoneyFrames();
+                for (HoneyFrame honeyFrame : hiveHoneyFrames) {
+                    if (honeyFrame.getKgOfHoney() > 3) {
+                        frameCounter++;
+                        totalKgOfHoneyPerHive += honeyFrame.getKgOfHoney();
+                        honeyFrame.setKgOfHoney(0);
+                    }
                 }
 
-                if (totalKgOfHoneyPerFrame != 0) {
-                    HarvestedHoney harvestedHoneys = new HarvestedHoney(
-                            this,
-                            hive,
+                if (totalKgOfHoneyPerHive != 0) {
+                    HarvestedHoney harvestedHoney = new HarvestedHoney(
                             hive.getId(),
                             frameCounter,
                             hive.getHoney().getHoneyType(),
-                            totalKgOfHoneyPerFrame,
+                            totalKgOfHoneyPerHive,
                             currentDate);
 
-                    harvestedHoney.add(harvestedHoneys);
+
+                    harvestedHoneys.add(harvestedHoney);
+                    addHoneyHarvested(harvestedHoneys);
                 }
+                frameCounter = 0;
+                totalKgOfHoneyPerHive = 0;
             }
-            this.harvestedHoneys.addAll(harvestedHoney);
         }
-        System.out.println("daily honey harvest is:" + harvestedHoney);
+                this.harvestedHoneys.addAll(harvestedHoneys);
+
+        System.out.println("daily honey harvest is:" + harvestedHoneys);
 
     }
+
 }

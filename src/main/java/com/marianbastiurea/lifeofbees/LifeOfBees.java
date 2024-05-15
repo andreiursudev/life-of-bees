@@ -73,20 +73,15 @@ public class LifeOfBees {
         // Creating HoneyFrames
         List<HoneyFrame> honeyFrames = new ArrayList<>();
         for (int i = 0; i < hive.getNumberOfHoneyFrame(); i++) {
-            HoneyFrame honeyFrame = new HoneyFrame(random.nextDouble(2, 3), hive.getHoney().getHoneyType());
-            //  HoneyFrame honeyFrame = new HoneyFrame(random.nextDouble(2, 3), "Rapeseed");
+            HoneyFrame honeyFrame = new HoneyFrame(random.nextDouble(2, 2.5), hive.getHoney().getHoneyType());
             honeyFrames.add(honeyFrame); // Add each HoneyFrame to the list
         }
         hive.addHoneyFrames(honeyFrames);
 
-        int numberOfBees = random.nextInt(3000, 4000) * (hive.getNumberOfHoneyFrame() + hive.getNumberOfEggsFrame());
-        Bees bees = new Bees(numberOfBees);
-        hive.setBees(bees);
-
-
-        // each hive will have a random number of bees for each frame
-        // hive.setNumberOfBees(numberOfBees);
-
+        int numberOfBees = random.nextInt(2000, 2500) * (hive.getNumberOfHoneyFrame() + hive.getNumberOfEggsFrame());
+//        Bees bees = new Bees(numberOfBees);
+//        hive.setBees(bees);
+hive.setNumberOfBees(numberOfBees);
         return hive;
     }
 
@@ -138,5 +133,6 @@ public class LifeOfBees {
             calendar.set(Calendar.MONTH, Calendar.APRIL);// Reset month for the next year
         }
         System.out.println("your apiary is: " + apiary);
+        System.out.println("your honey production is "+apiary.getHarvestedHoneys());
     }
 }

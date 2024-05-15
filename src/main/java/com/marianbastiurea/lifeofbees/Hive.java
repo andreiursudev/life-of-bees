@@ -62,7 +62,7 @@ public class Hive {
                 ", numberOfHoneyFrame=" + this.numberOfHoneyFrame +
                 ", numberOfEggsFrame=" + this.numberOfEggsFrame +
                 ", eggsFrames=" + this.eggsFrames +
-                ", numberOfBees=" + this.bees.getNumberOfBees() +
+                ", numberOfBees=" + this.numberOfBees +
                 ", age of queen=" + this.queen.getAgeOfQueen() +
                 ", honey=" + this.honey.getHoneyType() +
                 ", eggsBatches=" + this.eggsBatches +
@@ -146,7 +146,7 @@ public class Hive {
     }
 
     public int getNumberOfBees() {
-        return getBees().getNumberOfBees();
+        return numberOfBees;
     }
 
     public void setNumberOfBees(int numberOfBees) {
@@ -309,7 +309,6 @@ public class Hive {
                     }
                 }
                 if (allFramesAreFull) {
-                    System.out.println("Now old and new frames are full. Hive will be split in two hives.");
                     apiary.splitHive();
                 }
                 break;
@@ -354,12 +353,16 @@ public class Hive {
 
         double maxKgOfHoneyPerFrame = 4.5;
         // a frame could be loaded with around  4.5Kg of honey
-
+        Random random = new Random();
         System.out.println();
         Date getCreationDate = null;
         List<HoneyFrame> honeyFrames = this.getHoneyFrames();
         int maximumNumberOfFramesToAdd = 6 - honeyFrames.size();
-        double kgOfHoneyToAdd = getBees().addHoney();
+
+
+        int numberOfFlight = random.nextInt(3, 6);
+        double kgOfHoneyToAdd=this.numberOfBees* numberOfFlight * 0.00002;//0.02gr/flight/bee
+        System.out.println("daily honey production for " + this.getId() + " is " + kgOfHoneyToAdd + " kg");
         for (HoneyFrame honeyFrame : honeyFrames) {
             if (honeyFrame.getKgOfHoney() < maxKgOfHoneyPerFrame) {
                 if (maximumNumberOfFramesToAdd != 0) {
@@ -371,10 +374,10 @@ public class Hive {
         }
 
 
-//        System.out.println("Hive ID: " + this.getId());
-//        System.out.println("Honey Frame: " + this.getHoneyFrames());
-//        System.out.println(" date is " + currentDate);
-//        System.out.println(" your hive is :" + this);
+        System.out.println("Hive ID: " + this.getId());
+        System.out.println("Honey Frame: " + this.getHoneyFrames());
+        System.out.println(" date is " + currentDate);
+        System.out.println(" your hive is :" + this);
     }
 
 
@@ -388,27 +391,23 @@ public class Hive {
         double maxKgOfHoneyPerFrame = 4.5;
         // a frame could be loaded with around  4.5Kg of honey
 
-        switch (this.honeyFrames.size()) {
-            case 3, 4, 5:
-                System.out.println("In hive " + this.getId() + " is add another 1 honeyFrame");
-                break;
-            case 6: {
-                boolean allFramesAreFull = true;
-                for (HoneyFrame honeyFrame : this.honeyFrames) {
-                    if (honeyFrame.getKgOfHoney() < maxKgOfHoneyPerFrame) {
-                        allFramesAreFull = false;
-                        break;
-                    }
-                }
-                if (allFramesAreFull) {
-                    System.out.println("Now old and new frames are full. Hive will be split in two hives.");
-//                    apiary.collectHoneyFromHives(currentDate);
-                }
-                break;
-            }
-            default:
-                break;
-        }
+//        switch (this.honeyFrames.size()) {
+//            case 3, 4, 5:
+//                System.out.println("In hive " + this.getId() + " is add another 1 honeyFrame");
+//                break;
+//            case 6: {
+//                boolean allFramesAreFull = true;
+//                for (HoneyFrame honeyFrame : this.honeyFrames) {
+//                    if (honeyFrame.getKgOfHoney() < maxKgOfHoneyPerFrame) {
+//                        allFramesAreFull = false;
+//                        break;
+//                    }
+//                }
+//                break;
+//            }
+//            default:
+//                break;
+//        }
 
         int honeyFrameFull = 0;
         for (HoneyFrame honeyFrame : honeyFrames) {
@@ -418,7 +417,7 @@ public class Hive {
         }
         if (honeyFrameFull == honeyFrames.size()) {
             int maximumNumberOfFramesToAdd = 6 - honeyFrameFull;
-            for (int i = 1; i < maximumNumberOfFramesToAdd + 1; i++) {
+            if(maximumNumberOfFramesToAdd!=0){
                 this.setNumberOfHoneyFrame(this.getNumberOfHoneyFrame() + 1);
                 this.addHoneyFrames(createNewHoneyFrame(this.getNumberOfHoneyFrame()));
             }

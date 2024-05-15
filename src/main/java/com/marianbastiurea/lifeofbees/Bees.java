@@ -12,6 +12,7 @@ bee stage life:
 
 public class Bees {
     private int numberOfBees;
+    private List<Hive> hives;
 
     public Bees(int numberOfBees) {
         this.numberOfBees = numberOfBees;
@@ -21,7 +22,7 @@ public class Bees {
     }
 
     public int getNumberOfBees() {
-        return numberOfBees= numberOfBees;
+        return numberOfBees = numberOfBees;
     }
 
     public void setNumberOfBees(int numberOfBees) {
@@ -36,16 +37,6 @@ public class Bees {
                 '}';
     }
 
-    public double addHoney() {
-        //method to bring honey to the hive
-
-        Random random = new Random();
-         numberOfBees = this.getNumberOfBees();
-        int numberOfFlight = random.nextInt(3, 10);
-        double kgOfHoney = numberOfBees * numberOfFlight * 0.00002;//0.02gr/flight/bee
-        return kgOfHoney;
-    }
-
-
 }
+
 

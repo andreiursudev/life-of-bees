@@ -5,23 +5,29 @@ import java.util.Date;
 public class HarvestedHoney {
     private Apiary apiary;
     private Hive hive;
-    private int hiveNumber;
+    private int hiveId;
     private int numberOfFramesHarvested;
     private String honeyType;
     private double kgOfHoney;
     private final Date date;
 
-    public HarvestedHoney(Apiary apiary,Hive hive,  int hiveNumber, int numberOfFramesHarvested,
+    public HarvestedHoney(Apiary apiary, Hive hive, int hiveId, int numberOfFramesHarvested,
                           String honeyType, double kgOfHoney, Date date) {
-        this.apiary = apiary;
-        this.hive=hive;
-        this.hiveNumber = this.hive.getId();
+
+        this.hiveId = this.hive.getId();
         this.numberOfFramesHarvested = numberOfFramesHarvested;
         this.honeyType = this.hive.getHoney().getHoneyType();
         this.kgOfHoney = kgOfHoney;
         this.date=date;
     }
 
+    public HarvestedHoney(int hiveId, int numberOfFramesHarvested, String honeyType, double kgOfHoney, Date date) {
+        this.hiveId = hiveId;
+        this.numberOfFramesHarvested = numberOfFramesHarvested;
+        this.honeyType = honeyType;
+        this.kgOfHoney = kgOfHoney;
+        this.date = date;
+    }
 
     public Apiary getApiary() {
         return apiary;
@@ -39,12 +45,12 @@ public class HarvestedHoney {
         this.hive = hive;
     }
 
-    public int getHiveNumber() {
-        return hiveNumber;
+    public int getHiveId() {
+        return hiveId;
     }
 
-    public void setHiveNumber(int hiveNumber) {
-        this.hiveNumber = hiveNumber;
+    public void setHiveId(int hiveId) {
+        this.hiveId = hiveId;
     }
 
     public int getNumberOfFramesHarvested() {
@@ -78,7 +84,7 @@ public class HarvestedHoney {
     @Override
     public String toString() {
         return "HarvestedHoney{" +
-                ", hiveNumber=" + hiveNumber +
+                "hiveID=" + hiveId +
                 ", numberOfFramesHarvested=" + numberOfFramesHarvested +
                 ", honeyType='" + honeyType + '\'' +
                 ", kgOfHoney=" + kgOfHoney +
