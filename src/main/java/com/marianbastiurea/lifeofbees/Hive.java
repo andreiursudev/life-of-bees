@@ -17,7 +17,6 @@ public class Hive {
     private List<BeesBatch> beesBatches;
     private List<HoneyFrame> honeyFrames;
     private Apiary apiary; // Add an Apiary field to store the associated apiary
-    private Bees bees;
 
     public Hive(Apiary apiary, List<EggsBatch> eggsBatches, List<EggsFrame> eggsFrames, List<BeesBatch> beesBatches, List<HoneyFrame> honeyFrames) {
         this.apiary = apiary;
@@ -27,7 +26,7 @@ public class Hive {
         this.honeyFrames = new ArrayList<>(honeyFrames);
     }
 
-    public Hive(int id, boolean itWasSplit, int numberOfHoneyFrame, int numberOfEggsFrame, int numberOfBees, Queen queen, Honey honey, Bees bees) {
+    public Hive(int id, boolean itWasSplit, int numberOfHoneyFrame, int numberOfEggsFrame, int numberOfBees, Queen queen, Honey honey) {
         this.id = id;
         this.itWasSplit = itWasSplit;
         this.numberOfHoneyFrame = numberOfHoneyFrame;
@@ -35,7 +34,7 @@ public class Hive {
         this.numberOfBees = numberOfBees;
         this.queen = queen;
         this.honey = honey;
-        this.bees = bees;
+
     }
 
     public boolean isItWasSplit() {
@@ -92,18 +91,11 @@ public class Hive {
         return queen;
     }
 
-    public Bees getBees() {
-        return bees;
-    }
-
     public void setQueen(Queen queen) {
 
         this.queen = queen;
     }
 
-    public void setBees(Bees bees) {
-        this.bees = bees;
-    }
 
     public Hive() {
     }
@@ -294,8 +286,6 @@ public class Hive {
         // a frame have around 8500 cells. 75% more or less are used by the queen to lay eggs.
         // Remaining cells are fill up with honey or are damaged
 
-        Date date = currentDate;
-
         switch (this.eggsFrames.size()) {
             case 3, 4, 5:
                 System.out.println("In hive " + this.getId() + " is add another 1 eggsFrame");
@@ -355,7 +345,6 @@ public class Hive {
         // a frame could be loaded with around  4.5Kg of honey
         Random random = new Random();
         System.out.println();
-        Date getCreationDate = null;
         List<HoneyFrame> honeyFrames = this.getHoneyFrames();
         int maximumNumberOfFramesToAdd = 6 - honeyFrames.size();
 
@@ -390,24 +379,6 @@ public class Hive {
 
         double maxKgOfHoneyPerFrame = 4.5;
         // a frame could be loaded with around  4.5Kg of honey
-
-//        switch (this.honeyFrames.size()) {
-//            case 3, 4, 5:
-//                System.out.println("In hive " + this.getId() + " is add another 1 honeyFrame");
-//                break;
-//            case 6: {
-//                boolean allFramesAreFull = true;
-//                for (HoneyFrame honeyFrame : this.honeyFrames) {
-//                    if (honeyFrame.getKgOfHoney() < maxKgOfHoneyPerFrame) {
-//                        allFramesAreFull = false;
-//                        break;
-//                    }
-//                }
-//                break;
-//            }
-//            default:
-//                break;
-//        }
 
         int honeyFrameFull = 0;
         for (HoneyFrame honeyFrame : honeyFrames) {

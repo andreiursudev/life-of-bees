@@ -46,22 +46,16 @@ public class LifeOfBees {
         hive.setHoneyFrames(new ArrayList<>());
         hive.setBeesBatches(new ArrayList<>());
         hive.setId(hiveIdCounter++);
-
         Honey honey = new Honey();
         hive.setHoney(honey);
-
-        //honey=new Honey(hive.getHoney().getHoneyType());
-
         hive.getHoney().setHoneyType("Rapeseed");
-        // hive.getHoney().setHoneyKg(0);
-
         Queen queen = new Queen();
         hive.setQueen(queen);
         hive.getQueen().setAgeOfQueen(random.nextInt(1, 6));
-
         hive.setNumberOfHoneyFrame(random.nextInt(4, 6)); // Random number of honey frames
         hive.setNumberOfEggsFrame(random.nextInt(4, 6)); // Random number of eggs frames
         hive.setApiary(apiary);
+
         // Creating EggsFrame with a random number off eggs
         queen = new Queen(hive.getAgeOfQueen());
         for (int i = 1; i < hive.getNumberOfEggsFrame() + 1; i++) {
@@ -79,9 +73,7 @@ public class LifeOfBees {
         hive.addHoneyFrames(honeyFrames);
 
         int numberOfBees = random.nextInt(2000, 2500) * (hive.getNumberOfHoneyFrame() + hive.getNumberOfEggsFrame());
-//        Bees bees = new Bees(numberOfBees);
-//        hive.setBees(bees);
-hive.setNumberOfBees(numberOfBees);
+        hive.setNumberOfBees(numberOfBees);
         return hive;
     }
 
@@ -110,7 +102,6 @@ hive.setNumberOfBees(numberOfBees);
                 for (Hive hive : oldHives) {
                     Queen queen = new Queen();
 
-                    Honey honey = new Honey("Rapeseed");
                     hive.getHoney().honeyTypes(month, dayOfMonth);
                     hive.addEggsBatches(queen.makeBatchOfEggs(queen.makeEggs(hive, dayOfMonth, month), currentDate));
                     hive.fillUpExistingEggsFrameFromHive(currentDate);
@@ -133,6 +124,6 @@ hive.setNumberOfBees(numberOfBees);
             calendar.set(Calendar.MONTH, Calendar.APRIL);// Reset month for the next year
         }
         System.out.println("your apiary is: " + apiary);
-        System.out.println("your honey production is "+apiary.getHarvestedHoneys());
+        System.out.println("your honey production is " + apiary.getHarvestedHoneys());
     }
 }

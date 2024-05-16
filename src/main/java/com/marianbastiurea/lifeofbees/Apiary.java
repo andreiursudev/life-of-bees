@@ -68,12 +68,11 @@ public class Apiary {
 
         List<Hive> newHives = new ArrayList<>();
         for (Hive hive : hives) {
-            if (hive.getNumberOfEggsFrame() == 6 && hive.isItWasSplit() == false) {
+            if (hive.getNumberOfEggsFrame() == 6 && !hive.isItWasSplit()) {
                 System.out.println("Now old and new frames are full. Hive will be split in two hives.");
                 Hive newHive = new Hive(this.getNumberOfHives() + 1,
                         true, hive.getNumberOfHoneyFrame(), hive.getNumberOfEggsFrame(),
-                        (hive.getNumberOfBees() / 2), new Queen(), new Honey(), new Bees()
-
+                        (hive.getNumberOfBees() / 2), new Queen(), new Honey()
                 );
                 hive.setNumberOfBees(hive.getNumberOfBees() / 2);
                 hive.setItWasSplit(true);
@@ -139,7 +138,7 @@ public class Apiary {
         int frameCounter = 0;
         double totalKgOfHoneyPerHive = 0;
         for (Hive hive : hives) {
-            if (hive.isItWasSplit() == true) {
+            if (hive.isItWasSplit()) {
                 List<HoneyFrame> hiveHoneyFrames = hive.getHoneyFrames();
                 for (HoneyFrame honeyFrame : hiveHoneyFrames) {
                     if (honeyFrame.getKgOfHoney() > 3) {
