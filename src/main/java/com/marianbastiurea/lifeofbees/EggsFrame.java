@@ -32,7 +32,7 @@ public class EggsFrame {
 
     @Override
     public String toString() {
-        return "EggsFrame{" +
+        return "{" +
                 "numberOfEggs=" + numberOfEggs +
                 ", numberOfEggsFrame=" + numberOfEggsFrame +
                 '}';

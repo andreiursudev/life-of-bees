@@ -1,6 +1,6 @@
 package com.marianbastiurea.lifeofbees;
 
-enum HarvestingMonths {
-    MARCH, APRIL, MAY, JUNE, JULY, AUGUST, SEPTEMBER, OCTOBER
+public enum HarvestingMonths {
+    JANUARY, FEBRUARY,MARCH,APRIL, MAY, JUNE, JULY, AUGUST, SEPTEMBER, OCTOBER
 
 }

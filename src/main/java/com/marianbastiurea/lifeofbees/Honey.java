@@ -2,29 +2,33 @@ package com.marianbastiurea.lifeofbees;
 
 public class Honey {
     private String honeyType;
-    private double honeyKg;
+
+
+    public Honey(String honeyType) {
+        this.honeyType = honeyType;
+    }
 
     public String getHoneyType() {
         return honeyType;
+    }
+
+    public Honey() {
     }
 
     public void setHoneyType(String honeyType) {
         this.honeyType = honeyType;
     }
 
-    public double getHoneyKg() {
-        return honeyKg;
+    @Override
+    public String toString() {
+        return "Honey{" +
+                "honeyType='" + honeyType + '\'' +
+               // ", honeyKg=" + honeyKg +
+                '}';
     }
 
-    public void setHoneyKg(double honeyKg) {
-        this.honeyKg = honeyKg;
-    }
-
-    public static String honeyTypes(HarvestingMonths month, int dayOfMonth) {
-        String honeyType;
+    public String honeyTypes(HarvestingMonths month, int dayOfMonth) {
         switch (month) {
-            case MARCH:
-                return honeyType="";
             case APRIL:
                 if (dayOfMonth >= 1 && dayOfMonth <= 20) {
                     return honeyType="Rapeseed";
@@ -55,23 +59,25 @@ public class Honey {
         }
         return honeyType=""; // Default value if month and day combination doesn't match any condition
     }
-    public static int honeyProductivity(String honeyType){
-        int kgOnHa=1;
+
+    public double honeyProductivity( HarvestingMonths month, int dayOfMonth){
+        String honeyType=honeyTypes(month, dayOfMonth);
+        int indexHoneyProductivity=0;
         switch (honeyType){
             case "Acacia":
-                return kgOnHa=1600;
+                return 1 ;//kgOnHa=1600
             case "Rapeseed":
-                return  kgOnHa=50;
+                return  0.8; //kgOnHa=50
             case "WildFlower":
-                return kgOnHa=40;
+                return 0.5 ;//kgOnHa=40
             case "Linden":
-                return kgOnHa=1200;
+                return 1;//kgOnHa=1200
             case "SunFlower":
-                return kgOnHa=60;
+                return 0.7;//kgOnHa=60
             case "FalseIndigo":
-                return kgOnHa=70;
+                return 0.5;//kgOnHa=70
         }
-        return kgOnHa;
+        return indexHoneyProductivity;
     }
 
 }

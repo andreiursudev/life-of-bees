@@ -2,7 +2,7 @@ package com.marianbastiurea.lifeofbees;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.Date;
 
 public class Apiary {
     /* An apiary is a location where beehives of honey bees are kept.
@@ -12,17 +12,31 @@ public class Apiary {
     and no honey from this two forest.
 
      */
-
+    private int numberOfHives;
     private List<Hive> hives;
-    private List<Honey> honeys;
+    private List<HarvestedHoney> harvestedHoneys;
+
 
     public Apiary() {
-        this.hives = new ArrayList<>();
-        this.honeys=new ArrayList<>();
+        hives = new ArrayList<>();
+        harvestedHoneys = new ArrayList<>();
+        numberOfHives = numberOfHives;
     }
 
-    public Apiary(List<Hive> hives) {
-        this.hives = hives;
+    public int getNumberOfHives() {
+        return numberOfHives;
+    }
+
+    public void setNumberOfHives(int numberOfHives) {
+        this.numberOfHives = numberOfHives;
+    }
+
+    public List<HarvestedHoney> getHarvestedHoneys() {
+        return harvestedHoneys;
+    }
+
+    public void setHarvestedHoneys(List<HarvestedHoney> harvestedHoneys) {
+        this.harvestedHoneys = harvestedHoneys;
     }
 
     public List<Hive> getHives() {
@@ -33,45 +47,127 @@ public class Apiary {
         this.hives = hives;
     }
 
-    public List<Honey> getHoneys() {
-        return honeys;
+    public void addHoneyHarvested(List<HarvestedHoney> harvestedHoneys){
+        this.harvestedHoneys.addAll(harvestedHoneys);
     }
-
-    public void setHoneys(List<Honey> honeys) {
-        this.honeys = honeys;
-    }
-
-    // Add a hive to the apiary
-    public void addHive(Hive hive) {
-        hives.add(hive);
-    }
-    // Add a honey to the apiary
-    public void addHoney(Honey honey) {
-        honeys.add(honey);
-    }
-
     @Override
     public String toString() {
-        return "Apiary{" +
-                "hives=" + hives +
-                ", honeys=" + honeys +
+        return "{" +
+                "numberOfHives=" + this.numberOfHives +
+                ", hives=" + this.hives +
+                ", honeys harvested=" + this.harvestedHoneys +
                 '}';
     }
 
-    private void splitHive(Hive hive) {
-        // Create a new hive with half of the honey frames and half of the eggs frames
-        Hive newHive = new Hive();
-        newHive.setAgeOfQueen(); // Set age of the new queen to 0
+    public void splitHive() {
 
-        int halfNumberOfHoneyFrame = hive.getNumberOfHoneyFrame() / 2;
-        int halfNumberOfEggsFrame = hive.getNumberOfEggsFrame() / 2;
+        /*
+        this method will split a hive in two equal half. First will check boolean itWasSplit. If this is false
+        hive will be split. A hive could be split only once in a year.
+         */
 
-        newHive.setNumberOfHoneyFrame(halfNumberOfHoneyFrame);
-        newHive.setNumberOfEggsFrame(halfNumberOfEggsFrame);
+        List<Hive> newHives = new ArrayList<>();
+        for (Hive hive : hives) {
+            if (hive.getNumberOfEggsFrame() == 6 && !hive.isItWasSplit()) {
+                System.out.println("Now old and new frames are full. Hive will be split in two hives.");
+                Hive newHive = new Hive(this.getNumberOfHives() + 1,
+                        true, hive.getNumberOfHoneyFrame(), hive.getNumberOfEggsFrame(),
+                        (hive.getNumberOfBees() / 2), new Queen(), new Honey()
+                );
+                hive.setNumberOfBees(hive.getNumberOfBees() / 2);
+                hive.setItWasSplit(true);
 
-        // Transfer the new hive to the apiary
-        hives.add(newHive);
+                newHive.getQueen().setAgeOfQueen(0);
+                newHive.getHoney().setHoneyType("Acacia");
+
+                newHive.setApiary(this);
+                newHive.setBeesBatches(hive.getBeesBatches().subList(0, 0));
+
+                List<EggsFrame> hiveEggsFrames = hive.getEggsFrames();
+                List<EggsFrame> newHiveEggsFrames = new ArrayList<>();
+                for (EggsFrame eggsFrame : hiveEggsFrames) {
+                    int eggsToTransfer = eggsFrame.getNumberOfEggs() / 2;
+                    EggsFrame newHiveFrame = new EggsFrame(eggsFrame.getNumberOfEggsFrame(), eggsToTransfer);
+                    newHiveEggsFrames.add(newHiveFrame);
+                    eggsFrame.setNumberOfEggs(eggsFrame.getNumberOfEggs() - eggsToTransfer);
+                }
+                newHive.setEggsFrames(newHiveEggsFrames);
+
+                List<HoneyFrame> hiveHoneyFrames = hive.getHoneyFrames();
+                List<HoneyFrame> newHiveHoneyFrames = new ArrayList<>();
+                for (HoneyFrame honeyFrame : hiveHoneyFrames) {
+                    HoneyFrame newHiveFrame = new HoneyFrame(honeyFrame.getKgOfHoney() / 2, honeyFrame.getHoneyType());
+                    newHiveHoneyFrames.add(newHiveFrame);
+                    honeyFrame.setKgOfHoney(honeyFrame.getKgOfHoney() / 2);
+                }
+                newHive.setHoneyFrames(newHiveHoneyFrames);
+
+                List<EggsBatch> hiveEggsBatches = hive.getEggsBatches();
+                List<EggsBatch> newHiveEggsBatches = new ArrayList<>();
+                for (EggsBatch eggsBatch : hiveEggsBatches) {
+                    int eggsToTransfer = eggsBatch.getNumberOfEggs() / 2;
+                    EggsBatch newHiveBatch = new EggsBatch(eggsToTransfer, eggsBatch.getCreationDate());
+                    newHiveEggsBatches.add(newHiveBatch);
+                    eggsBatch.setNumberOfEggs(eggsBatch.getNumberOfEggs() - eggsToTransfer);
+                }
+                newHive.setEggsBatches(newHiveEggsBatches);
+
+                List<BeesBatch> hiveBeesBatches = hive.getBeesBatches();
+                List<BeesBatch> newHiveBeesBatches = new ArrayList<>();
+                for (BeesBatch beesBatch : hiveBeesBatches) {
+                    int beesToTransfer = beesBatch.getNumberOfBees() / 2;
+                    BeesBatch newHiveBatch = new BeesBatch(beesToTransfer, beesBatch.getCreationDate());
+                    newHiveBeesBatches.add(newHiveBatch);
+                    beesBatch.setNumberOfBees(beesBatch.getNumberOfBees() - beesToTransfer);
+                }
+                newHive.setBeesBatches(newHiveBeesBatches);
+
+                newHives.add(newHive);
+                this.setNumberOfHives(this.getNumberOfHives() + 1);
+
+            }
+        }
+        hives.addAll(newHives);
+        System.out.println("your apiary contains " + this.getNumberOfHives() + " hives");
+        System.out.println(" your apiary is number " + this);
     }
 
+    public void collectHoneyFromHives(Date currentDate) {
+        List<HarvestedHoney> harvestedHoneys = new ArrayList<>();
+
+        int frameCounter = 0;
+        double totalKgOfHoneyPerHive = 0;
+        for (Hive hive : hives) {
+            if (hive.isItWasSplit()) {
+                List<HoneyFrame> hiveHoneyFrames = hive.getHoneyFrames();
+                for (HoneyFrame honeyFrame : hiveHoneyFrames) {
+                    if (honeyFrame.getKgOfHoney() > 3) {
+                        frameCounter++;
+                        totalKgOfHoneyPerHive += honeyFrame.getKgOfHoney();
+                        honeyFrame.setKgOfHoney(0);
+                    }
+                }
+
+                if (totalKgOfHoneyPerHive != 0) {
+                    HarvestedHoney harvestedHoney = new HarvestedHoney(
+                            hive.getId(),
+                            frameCounter,
+                            hive.getHoney().getHoneyType(),
+                            totalKgOfHoneyPerHive,
+                            currentDate);
+
+
+                    harvestedHoneys.add(harvestedHoney);
+                    addHoneyHarvested(harvestedHoneys);
+                }
+                frameCounter = 0;
+                totalKgOfHoneyPerHive = 0;
+            }
+        }
+                this.harvestedHoneys.addAll(harvestedHoneys);
+
+        System.out.println("daily honey harvest is:" + harvestedHoneys);
+
+    }
 
 }

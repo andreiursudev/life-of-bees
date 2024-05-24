@@ -1,6 +1,7 @@
 package com.marianbastiurea.lifeofbees;
 
-import java.util.Date;
+import java.util.*;
+
 
 /*
 
@@ -10,20 +11,32 @@ bee stage life:
  */
 
 public class Bees {
+    private int numberOfBees;
+    private List<Hive> hives;
 
-//method bring honey to the hive
+    public Bees(int numberOfBees) {
+        this.numberOfBees = numberOfBees;
+    }
+
+    public Bees() {
+    }
+
+    public int getNumberOfBees() {
+        return numberOfBees = numberOfBees;
+    }
+
+    public void setNumberOfBees(int numberOfBees) {
+        this.numberOfBees = numberOfBees;
+    }
 
 
+    @Override
+    public String toString() {
+        return "Bees{" +
+                "numberOfBees=" + numberOfBees +
+                '}';
+    }
 
-
-
-
-//        public int deadBees () {
-
-
-
-
-
-
-    //they die/ dissapear
 }
+
+
