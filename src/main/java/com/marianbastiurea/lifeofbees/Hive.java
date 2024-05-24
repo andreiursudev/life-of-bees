@@ -16,14 +16,17 @@ public class Hive {
     private Honey honey;
     private List<BeesBatch> beesBatches;
     private List<HoneyFrame> honeyFrames;
+    private List<HoneyBatch> honeyBatches;
     private Apiary apiary; // Add an Apiary field to store the associated apiary
 
-    public Hive(Apiary apiary, List<EggsBatch> eggsBatches, List<EggsFrame> eggsFrames, List<BeesBatch> beesBatches, List<HoneyFrame> honeyFrames) {
+    public Hive(Apiary apiary, List<EggsBatch> eggsBatches, List<EggsFrame> eggsFrames, List<BeesBatch> beesBatches,
+                List<HoneyFrame> honeyFrames, List<HoneyBatch> honeyBatches) {
         this.apiary = apiary;
         this.eggsBatches = new ArrayList<>(eggsBatches);
         this.eggsFrames = new ArrayList<>(eggsFrames);
         this.beesBatches = new ArrayList<>(beesBatches);
         this.honeyFrames = new ArrayList<>(honeyFrames);
+        this.honeyBatches = new ArrayList<>(honeyBatches);
     }
 
     public Hive(int id, boolean itWasSplit, int numberOfHoneyFrame, int numberOfEggsFrame, int numberOfBees, Queen queen, Honey honey) {
@@ -67,6 +70,7 @@ public class Hive {
                 ", eggsBatches=" + this.eggsBatches +
                 ", beesBatches=" + this.beesBatches +
                 ", honeyFrames=" + this.honeyFrames +
+                ", honeyBatches=" + this.honeyBatches +
                 '}';
     }
 
@@ -84,6 +88,10 @@ public class Hive {
 
     public void setHoneyFrames(List<HoneyFrame> honeyFrames) {
         this.honeyFrames = honeyFrames;
+    }
+
+    public void setHoneyBatches(List<HoneyBatch> honeyBatches) {
+        this.honeyBatches = honeyBatches;
     }
 
     public Queen getQueen() {
@@ -154,6 +162,10 @@ public class Hive {
         this.beesBatches.addAll(beesBatches);
     }
 
+    public void addHoneyBatches(List<HoneyBatch> honeyBatches) {
+        this.honeyBatches.addAll(honeyBatches);
+    }
+
     public void addHoneyFrames(List<HoneyFrame> honeyFrames) {
         this.honeyFrames.addAll(honeyFrames);
     }
@@ -162,8 +174,13 @@ public class Hive {
         this.eggsFrames.addAll(eggsFrames);
     }
 
+
     public List<EggsBatch> getEggsBatches() {
         return eggsBatches;
+    }
+
+    public List<HoneyBatch> getHoneyBatches() {
+        return honeyBatches;
     }
 
     public List<HoneyFrame> getHoneyFrames() {
@@ -350,7 +367,7 @@ public class Hive {
 
 
         int numberOfFlight = random.nextInt(3, 6);
-        double kgOfHoneyToAdd=this.numberOfBees* numberOfFlight * 0.00002;//0.02gr/flight/bee
+        double kgOfHoneyToAdd = this.numberOfBees * numberOfFlight * 0.00002;//0.02gr/flight/bee
         System.out.println("daily honey production for " + this.getId() + " is " + kgOfHoneyToAdd + " kg");
         for (HoneyFrame honeyFrame : honeyFrames) {
             if (honeyFrame.getKgOfHoney() < maxKgOfHoneyPerFrame) {
@@ -388,7 +405,7 @@ public class Hive {
         }
         if (honeyFrameFull == honeyFrames.size()) {
             int maximumNumberOfFramesToAdd = 6 - honeyFrameFull;
-            if(maximumNumberOfFramesToAdd!=0){
+            if (maximumNumberOfFramesToAdd != 0) {
                 this.setNumberOfHoneyFrame(this.getNumberOfHoneyFrame() + 1);
                 this.addHoneyFrames(createNewHoneyFrame(this.getNumberOfHoneyFrame()));
             }
@@ -439,6 +456,32 @@ they will die. bees number from each batch will be subtract from total number of
             }
 
         }
+    }
+
+    public List<HoneyBatch> makeHoneyBatch(Date currentDate) {
+
+        double totalKgOfHoneyPerHive = 0;
+        int frameCounter = 0;
+        if (this.isItWasSplit()) {
+            List<HoneyFrame> hiveHoneyFrames = this.getHoneyFrames();
+            for (HoneyFrame honeyFrame : hiveHoneyFrames) {
+                if (honeyFrame.getKgOfHoney() > 3) {
+                    frameCounter++;
+                    totalKgOfHoneyPerHive += honeyFrame.getKgOfHoney();
+                    honeyFrame.setKgOfHoney(0);
+                }
+            }
+        }
+
+        List<HoneyBatch> honeyBatches = new ArrayList<>();
+        if(totalKgOfHoneyPerHive>0) {
+            HoneyBatch honeyBatch = new HoneyBatch(this.id, currentDate, totalKgOfHoneyPerHive,
+                    this.getHoney().getHoneyType(), frameCounter);
+            honeyBatches.add(honeyBatch);
+            System.out.println("Honey Batch are:" + honeyBatch);
+        }
+        return honeyBatches;
+
     }
 
 }

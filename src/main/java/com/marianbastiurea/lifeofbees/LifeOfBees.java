@@ -45,6 +45,7 @@ public class LifeOfBees {
         hive.setEggsFrames(new ArrayList<>());
         hive.setHoneyFrames(new ArrayList<>());
         hive.setBeesBatches(new ArrayList<>());
+        hive.setHoneyBatches(new ArrayList<>());
         hive.setId(hiveIdCounter++);
         Honey honey = new Honey();
         hive.setHoney(honey);
@@ -109,10 +110,11 @@ public class LifeOfBees {
                     hive.checkAndAddEggsToBees(currentDate);
                     hive.fillUpExistingHoneyFrameFromHive(currentDate);
                     hive.addNewHoneyFrameInHive(currentDate);
+                    hive.makeHoneyBatch(currentDate);
                     hive.beesDie(currentDate);
                     System.out.println();
                 }
-                apiary.collectHoneyFromHives(currentDate);
+               // apiary.collectHoneyFromHives(currentDate);
 
                 calendar.add(Calendar.DAY_OF_MONTH, 1); // Move to the next day
             }

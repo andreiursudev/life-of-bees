@@ -158,12 +158,13 @@ public class Apiary {
 
 
                     harvestedHoneys.add(harvestedHoney);
-                    addHoneyHarvested(harvestedHoneys);
+                   // addHoneyHarvested(harvestedHoneys);
                 }
                 frameCounter = 0;
                 totalKgOfHoneyPerHive = 0;
             }
         }
+
                 this.harvestedHoneys.addAll(harvestedHoneys);
 
         System.out.println("daily honey harvest is:" + harvestedHoneys);

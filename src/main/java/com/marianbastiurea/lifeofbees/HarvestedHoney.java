@@ -3,7 +3,6 @@ package com.marianbastiurea.lifeofbees;
 import java.util.Date;
 
 public class HarvestedHoney {
-    private Apiary apiary;
     private Hive hive;
     private int hiveId;
     private int numberOfFramesHarvested;
@@ -11,7 +10,7 @@ public class HarvestedHoney {
     private double kgOfHoney;
     private final Date date;
 
-    public HarvestedHoney(Apiary apiary, Hive hive, int hiveId, int numberOfFramesHarvested,
+    public HarvestedHoney( Hive hive, int hiveId, int numberOfFramesHarvested,
                           String honeyType, double kgOfHoney, Date date) {
 
         this.hiveId = this.hive.getId();
@@ -27,22 +26,6 @@ public class HarvestedHoney {
         this.honeyType = honeyType;
         this.kgOfHoney = kgOfHoney;
         this.date = date;
-    }
-
-    public Apiary getApiary() {
-        return apiary;
-    }
-
-    public void setApiary(Apiary apiary) {
-        this.apiary = apiary;
-    }
-
-    public Hive getHive() {
-        return hive;
-    }
-
-    public void setHive(Hive hive) {
-        this.hive = hive;
     }
 
     public int getHiveId() {
