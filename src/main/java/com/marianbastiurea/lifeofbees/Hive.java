@@ -458,30 +458,4 @@ they will die. bees number from each batch will be subtract from total number of
         }
     }
 
-    public List<HoneyBatch> makeHoneyBatch(Date currentDate) {
-
-        double totalKgOfHoneyPerHive = 0;
-        int frameCounter = 0;
-        if (this.isItWasSplit()) {
-            List<HoneyFrame> hiveHoneyFrames = this.getHoneyFrames();
-            for (HoneyFrame honeyFrame : hiveHoneyFrames) {
-                if (honeyFrame.getKgOfHoney() > 3) {
-                    frameCounter++;
-                    totalKgOfHoneyPerHive += honeyFrame.getKgOfHoney();
-                    honeyFrame.setKgOfHoney(0);
-                }
-            }
-        }
-
-        List<HoneyBatch> honeyBatches = new ArrayList<>();
-        if(totalKgOfHoneyPerHive>0) {
-            HoneyBatch honeyBatch = new HoneyBatch(this.id, currentDate, totalKgOfHoneyPerHive,
-                    this.getHoney().getHoneyType(), frameCounter);
-            honeyBatches.add(honeyBatch);
-            System.out.println("Honey Batch are:" + honeyBatch);
-        }
-        return honeyBatches;
-
-    }
-
 }

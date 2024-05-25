@@ -122,6 +122,8 @@ public class Apiary {
                 }
                 newHive.setBeesBatches(newHiveBeesBatches);
 
+                newHive.setHoneyBatches(new ArrayList<>());
+
                 newHives.add(newHive);
                 this.setNumberOfHives(this.getNumberOfHives() + 1);
 

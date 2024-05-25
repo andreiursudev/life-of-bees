@@ -102,7 +102,8 @@ public class LifeOfBees {
                 ArrayList<Hive> oldHives = new ArrayList<>(hives);
                 for (Hive hive : oldHives) {
                     Queen queen = new Queen();
-
+                   // Honey honey = new Honey();
+                    Honey honey=hive.getHoney();
                     hive.getHoney().honeyTypes(month, dayOfMonth);
                     hive.addEggsBatches(queen.makeBatchOfEggs(queen.makeEggs(hive, dayOfMonth, month), currentDate));
                     hive.fillUpExistingEggsFrameFromHive(currentDate);
@@ -110,7 +111,8 @@ public class LifeOfBees {
                     hive.checkAndAddEggsToBees(currentDate);
                     hive.fillUpExistingHoneyFrameFromHive(currentDate);
                     hive.addNewHoneyFrameInHive(currentDate);
-                    hive.makeHoneyBatch(currentDate);
+                   // hive.getHoney().makeHoneyBatch(currentDate);
+                    hive.addHoneyBatches(honey.makeHoneyBatch(hive,currentDate));
                     hive.beesDie(currentDate);
                     System.out.println();
                 }

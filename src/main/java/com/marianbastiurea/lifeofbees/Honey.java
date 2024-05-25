@@ -1,18 +1,20 @@
 package com.marianbastiurea.lifeofbees;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 public class Honey {
     private String honeyType;
+    private List<Hive> hives;
 
 
-    public Honey(String honeyType) {
-        this.honeyType = honeyType;
-    }
+//    public Honey(String honeyType) {
+//        this.honeyType = honeyType;
+//    }
 
     public String getHoneyType() {
         return honeyType;
-    }
-
-    public Honey() {
     }
 
     public void setHoneyType(String honeyType) {
@@ -80,4 +82,29 @@ public class Honey {
         return indexHoneyProductivity;
     }
 
+    public List<HoneyBatch> makeHoneyBatch(Hive hive,Date currentDate) {
+        List<HoneyBatch> honeyBatches = new ArrayList<>();
+
+            double totalKgOfHoneyPerHive = 0;
+            int frameCounter = 0;
+
+            if (hive.isItWasSplit()) {
+                List<HoneyFrame> hiveHoneyFrames = hive.getHoneyFrames();
+                for (HoneyFrame honeyFrame : hiveHoneyFrames) {
+                    if (honeyFrame.getKgOfHoney() > 3) {
+                        frameCounter++;
+                        totalKgOfHoneyPerHive += honeyFrame.getKgOfHoney();
+                        honeyFrame.setKgOfHoney(0);
+                    }
+                }
+
+            if (totalKgOfHoneyPerHive > 0) {
+                HoneyBatch honeyBatch = new HoneyBatch(hive.getId(), currentDate, totalKgOfHoneyPerHive,
+                        getHoneyType(), frameCounter);
+                honeyBatches.add(honeyBatch);
+                System.out.println("Honey Batch are:" + honeyBatch);
+            }
+        }
+            return honeyBatches;
+    }
 }
