@@ -107,11 +107,10 @@ public class LifeOfBees {
                     hive.getHoney().honeyTypes(month, dayOfMonth);
                     hive.addEggsBatches(queen.makeBatchOfEggs(queen.makeEggs(hive, dayOfMonth, month), currentDate));
                     hive.fillUpExistingEggsFrameFromHive(currentDate);
-                    hive.addNewEggsFrameInHive(currentDate);
+                    hive.addNewEggsFrameInHive();
                     hive.checkAndAddEggsToBees(currentDate);
                     hive.fillUpExistingHoneyFrameFromHive(currentDate);
-                    hive.addNewHoneyFrameInHive(currentDate);
-                   // hive.getHoney().makeHoneyBatch(currentDate);
+                    hive.addNewHoneyFrameInHive();
                     hive.addHoneyBatches(honey.makeHoneyBatch(hive,currentDate));
                     hive.beesDie(currentDate);
                     System.out.println();

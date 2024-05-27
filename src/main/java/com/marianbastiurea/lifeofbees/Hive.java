@@ -292,7 +292,7 @@ public class Hive {
     }
 
 
-    public void addNewEggsFrameInHive(Date currentDate) {
+    public void addNewEggsFrameInHive() {
 
         /*
         this method will add new empty eggs frame in hive. If total number of eggs frame full in hive is equal with
@@ -387,7 +387,7 @@ public class Hive {
     }
 
 
-    public void addNewHoneyFrameInHive(Date currentDate) {
+    public void addNewHoneyFrameInHive() {
 
         /*
         this method will add new empty honey frame in hive. If total number of honey frame full in hive is equal with
@@ -457,5 +457,23 @@ they will die. bees number from each batch will be subtract from total number of
 
         }
     }
+
+    public boolean checkIfAll6EggsFrameAreFull(){
+        int eggsFrameFull = 0;
+        int maxEggPerFrame=6400;
+        boolean allEggsFrameAreFull=false;
+        EggsFrame eggsFrame = this.eggsFrames.get(eggsFrameFull);
+        if(eggsFrames.size()==6) {
+            for (int i = 1; i < 7; i++) {
+                if (eggsFrame.getNumberOfEggs() == maxEggPerFrame) {
+                    eggsFrameFull += 1;
+                }
+            }
+        }
+        if (eggsFrameFull == 6) {
+            allEggsFrameAreFull=true;
+            }
+        return allEggsFrameAreFull;
+        }
 
 }
