@@ -88,7 +88,7 @@ public class LifeOfBees {
 
         // Iterate over 2 years
         for (int year = 0; year < 1; year++) {// Use only one for debug purposes
-            while (calendar.get(Calendar.MONTH) != Calendar.MAY) {
+            while (calendar.get(Calendar.MONTH) != Calendar.JUNE) {
                 // Iterate until OCTOBER
                 Date currentDate = calendar.getTime();
                 System.out.println("Date: " + currentDate);
