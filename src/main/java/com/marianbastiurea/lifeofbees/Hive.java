@@ -340,30 +340,15 @@ public class Hive {
         // a frame could be loaded with around  4.5Kg of honey
         Random random = new Random();
         System.out.println();
-        List<HoneyFrame> honeyFrames = this.getHoneyFrames();
-        int numberOfHoneyFrameNotFull = this.honeyFrames.size() - this.getNumberOfFullHoneyFrame();
+        int numberOfHoneyFrameNotFull = honeyFrames.size() - this.getNumberOfFullHoneyFrame();
         int numberOfFlight = random.nextInt(3, 6);
         double kgOfHoneyToAdd = this.numberOfBees * numberOfFlight * 0.00002;//0.02gr/flight/bee
         System.out.println("daily honey production for " + this.getId() + " is " + kgOfHoneyToAdd + " kg");
-        for (int i = 0; i <this.honeyFrames.size(); i++) {
-            if (this.honeyFrames.get(i).getKgOfHoney() < maxKgOfHoneyPerFrame) {
-                this.honeyFrames.get(i).setKgOfHoney(Math.min(maxKgOfHoneyPerFrame, this.honeyFrames.get(i).getKgOfHoney() + kgOfHoneyToAdd/ numberOfHoneyFrameNotFull));
+        for (HoneyFrame honeyFrame : honeyFrames) {
+            if (honeyFrame.getKgOfHoney() < maxKgOfHoneyPerFrame) {
+                honeyFrame.setKgOfHoney(Math.min(maxKgOfHoneyPerFrame, honeyFrame.getKgOfHoney() + kgOfHoneyToAdd / numberOfHoneyFrameNotFull));
             }
         }
-
-//
-//
-//        int numberOfEggsFrameNotFull = this.eggsFrames.size() - this.getNumberOfFullEggsFrame();
-//        for (EggsBatch eggsBatch : eggsBatches) {
-//            if (currentDate.equals(eggsBatch.getCreationDate())) {
-//                // getCreationDate = eggsBatch.getCreationDate();
-//                for (int i = 0; i < eggsFrames.size(); i++) {
-//                    if (this.eggsFrames.get(i).getNumberOfEggs() < maxEggPerFrame) {
-//                        this.eggsFrames.get(i).setNumberOfEggs(Math.min(maxEggPerFrame, this.eggsFrames.get(i).getNumberOfEggs() + eggsBatch.getNumberOfEggs() / numberOfEggsFrameNotFull));
-//                    }
-//                }
-//            }
-//        }
 
             System.out.println("Hive ID: " + this.getId());
             System.out.println("Honey Frame: " + this.getHoneyFrames());
@@ -392,7 +377,7 @@ public class Hive {
                 int maximumNumberOfFramesToAdd = 6 - honeyFrameFull;
                 if (maximumNumberOfFramesToAdd != 0) {
                     this.setNumberOfHoneyFrame(this.getNumberOfHoneyFrame() + 1);
-                    this.addHoneyFrames(createNewHoneyFrame(this.getNumberOfHoneyFrame()));
+                    this.addHoneyFrames(createNewHoneyFrame());
                 }
             }
         }
@@ -407,7 +392,7 @@ public class Hive {
             return eggsFrames;
         }
 
-        public List<HoneyFrame> createNewHoneyFrame ( int numberOfHoneyFrame){
+        public List<HoneyFrame> createNewHoneyFrame (){
             // this method will create a new empty honey frame
 
             List<HoneyFrame> honeyFrames = new ArrayList<>();
