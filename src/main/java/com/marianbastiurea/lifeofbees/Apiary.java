@@ -131,8 +131,8 @@ public class Apiary {
             }
         }
         hives.addAll(newHives);
-        System.out.println("your apiary contains " + this.getNumberOfHives() + " hives");
-        System.out.println(" your apiary is number " + this);
+//        System.out.println("your apiary contains " + this.getNumberOfHives() + " hives");
+//        System.out.println(" your apiary is number " + this);
     }
 
     public void honeyHarvestedByHoneyType() {
@@ -174,7 +174,6 @@ public class Apiary {
                         falseIndigoHoney.add(harvestedHoney);
                         break;
                     default:
-                        // Handle unknown honey types if necessary
                         break;
 
                 }

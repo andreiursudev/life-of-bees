@@ -9,10 +9,6 @@ public class Honey {
     private List<Hive> hives;
 
 
-//    public Honey(String honeyType) {
-//        this.honeyType = honeyType;
-//    }
-
     public String getHoneyType() {
         return honeyType;
     }
@@ -56,6 +52,8 @@ public class Honey {
                 return honeyType="SunFlower";
             case AUGUST:
                 return honeyType="WildFlower";
+            case SEPTEMBER:
+                return honeyType="WildFlower";
             default:
                 break;
         }
@@ -71,13 +69,13 @@ public class Honey {
             case "Rapeseed":
                 return  0.8; //kgOnHa=50
             case "WildFlower":
-                return 0.5 ;//kgOnHa=40
+                return 0.7 ;//kgOnHa=40
             case "Linden":
                 return 1;//kgOnHa=1200
             case "SunFlower":
                 return 0.7;//kgOnHa=60
             case "FalseIndigo":
-                return 0.5;//kgOnHa=70
+                return 0.7;//kgOnHa=70
         }
         return indexHoneyProductivity;
     }

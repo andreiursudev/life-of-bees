@@ -48,10 +48,6 @@ public class Hive {
         this.itWasSplit = itWasSplit;
     }
 
-    public Apiary getApiary() {
-        return apiary;
-    }
-
     public void setApiary(Apiary apiary) {
         this.apiary = apiary;
     }
@@ -272,7 +268,6 @@ public class Hive {
         int numberOfEggsFrameNotFull = this.eggsFrames.size() - this.getNumberOfFullEggsFrame();
         for (EggsBatch eggsBatch : eggsBatches) {
             if (currentDate.equals(eggsBatch.getCreationDate())) {
-                // getCreationDate = eggsBatch.getCreationDate();
                 for (int i = 0; i < eggsFrames.size(); i++) {
                     if (this.eggsFrames.get(i).getNumberOfEggs() < maxEggPerFrame) {
                         this.eggsFrames.get(i).setNumberOfEggs(Math.min(maxEggPerFrame, this.eggsFrames.get(i).getNumberOfEggs() + eggsBatch.getNumberOfEggs() / numberOfEggsFrameNotFull));
@@ -350,10 +345,10 @@ public class Hive {
             }
         }
 
-            System.out.println("Hive ID: " + this.getId());
-            System.out.println("Honey Frame: " + this.getHoneyFrames());
-            System.out.println(" date is " + currentDate);
-            System.out.println(" your hive is :" + this);
+//            System.out.println("Hive ID: " + this.getId());
+//            System.out.println("Honey Frame: " + this.getHoneyFrames());
+//            System.out.println(" date is " + currentDate);
+//            System.out.println(" your hive is :" + this);
         }
 
 

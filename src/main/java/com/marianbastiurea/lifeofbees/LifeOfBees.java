@@ -102,7 +102,6 @@ public class LifeOfBees {
                 ArrayList<Hive> oldHives = new ArrayList<>(hives);
                 for (Hive hive : oldHives) {
                     Queen queen = new Queen();
-                   // Honey honey = new Honey();
                     Honey honey=hive.getHoney();
                     hive.getHoney().honeyTypes(month, dayOfMonth);
                     hive.addEggsBatches(queen.makeBatchOfEggs(queen.makeEggs(hive, dayOfMonth, month), currentDate));
@@ -115,17 +114,19 @@ public class LifeOfBees {
                     hive.beesDie(currentDate);
                     System.out.println();
                 }
-               apiary.honeyHarvestedByHoneyType();
 
                 calendar.add(Calendar.DAY_OF_MONTH, 1); // Move to the next day
             }
+
             List<Hive> hives = apiary.getHives();// have to build a hibernate method
             for (Hive hive : hives) {
                 hive.setItWasSplit(false);
             }
 
+            apiary.honeyHarvestedByHoneyType();
             calendar.set(Calendar.MONTH, Calendar.APRIL);// Reset month for the next year
         }
+
         System.out.println("your apiary is: " + apiary);
         System.out.println("your honey production is " + apiary.getHarvestedHoneys());
     }

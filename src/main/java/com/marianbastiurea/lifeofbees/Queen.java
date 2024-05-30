@@ -49,7 +49,7 @@ public class Queen {
         - second will be an whether index connected with wind speed, precipitation and temperature
          */
 
-        int numberOfEggs = (int) (2000 * hive.ageOfQueenIndex(dayOfMonth,month)*hive.getHoney().honeyProductivity(month, dayOfMonth));//*Whether.geWhetherIndex());
+        int numberOfEggs = (int) (2000 * hive.ageOfQueenIndex(dayOfMonth,month)*hive.getHoney().honeyProductivity(month, dayOfMonth)*Whether.whetherIndex(Whether.whetherToday(month,dayOfMonth)));
         // have to add another index, a  whetherIndex which will depend on quantity of honey made it
         return numberOfEggs;
     }

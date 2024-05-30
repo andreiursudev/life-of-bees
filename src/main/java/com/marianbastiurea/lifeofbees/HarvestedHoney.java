@@ -3,7 +3,6 @@ package com.marianbastiurea.lifeofbees;
 import java.util.Date;
 
 public class HarvestedHoney {
-    private Hive hive;
     private int hiveId;
     private String honeyType;
     private double kgOfHoney;
