@@ -177,12 +177,18 @@ public class Apiary {
                         break;
 
                 }
-                System.out.println("Acacia Honey: " + acaciaHoney);
-                System.out.println("Rapeseed Honey: " + rapeseedHoney);
-                System.out.println("WildFlower Honey: " + wildFlowerHoney);
-                System.out.println("Linden Honey: " + lindenHoney);
-                System.out.println("SunFlower Honey: " + sunflowerHoney);
-                System.out.println("FalseIndigo Honey: " + falseIndigoHoney);
+                if(!acaciaHoney.isEmpty()){
+                System.out.println("Acacia Honey: " + acaciaHoney);}
+                if(!rapeseedHoney.isEmpty()){
+                System.out.println("Rapeseed Honey: " + rapeseedHoney);}
+                if(!wildFlowerHoney.isEmpty()){
+                System.out.println("WildFlower Honey: " + wildFlowerHoney);}
+                if(!lindenHoney.isEmpty()){
+                System.out.println("Linden Honey: " + lindenHoney);}
+                if(!sunflowerHoney.isEmpty()){
+                System.out.println("SunFlower Honey: " + sunflowerHoney);}
+                if(!falseIndigoHoney.isEmpty()){
+                System.out.println("FalseIndigo Honey: " + falseIndigoHoney);}
             }
         }
     }
