@@ -132,7 +132,6 @@ public class Whether {
             default:
                 break;
         }
-        System.out.println("whether today is"+dailyWhether);
         return dailyWhether;
     }
 
