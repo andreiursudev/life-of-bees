@@ -47,9 +47,10 @@ public class Apiary {
         this.hives = hives;
     }
 
-    public void addHoneyHarvested(List<HarvestedHoney> harvestedHoneys){
+    public void addHoneyHarvested(List<HarvestedHoney> harvestedHoneys) {
         this.harvestedHoneys.addAll(harvestedHoneys);
     }
+
     @Override
     public String toString() {
         return "{" +
@@ -122,6 +123,8 @@ public class Apiary {
                 }
                 newHive.setBeesBatches(newHiveBeesBatches);
 
+                newHive.setHoneyBatches(new ArrayList<>());
+
                 newHives.add(newHive);
                 this.setNumberOfHives(this.getNumberOfHives() + 1);
 
@@ -132,42 +135,49 @@ public class Apiary {
         System.out.println(" your apiary is number " + this);
     }
 
-    public void collectHoneyFromHives(Date currentDate) {
-        List<HarvestedHoney> harvestedHoneys = new ArrayList<>();
+    public void honeyHarvestedByHoneyType(Date currentDate) {
+        List<HarvestedHoney> rapeseedHoney = new ArrayList<>();
+        List<HarvestedHoney> acaciaHoney = new ArrayList<>();
+        List<HarvestedHoney> wildFlowerHoney = new ArrayList<>();
+        List<HarvestedHoney> lindenHoney = new ArrayList<>();
+        List<HarvestedHoney> sunflowerHoney = new ArrayList<>();
+        List<HarvestedHoney> falseIndigoHoney = new ArrayList<>();
 
-        int frameCounter = 0;
-        double totalKgOfHoneyPerHive = 0;
+
         for (Hive hive : hives) {
-            if (hive.isItWasSplit()) {
-                List<HoneyFrame> hiveHoneyFrames = hive.getHoneyFrames();
-                for (HoneyFrame honeyFrame : hiveHoneyFrames) {
-                    if (honeyFrame.getKgOfHoney() > 3) {
-                        frameCounter++;
-                        totalKgOfHoneyPerHive += honeyFrame.getKgOfHoney();
-                        honeyFrame.setKgOfHoney(0);
-                    }
+            List<HoneyBatch> hiveHoneyBatches = hive.getHoneyBatches();
+            for (HoneyBatch honeyBatch : hiveHoneyBatches) {
+                HarvestedHoney harvestedHoney = new HarvestedHoney(
+                        hive.getId(),
+                        honeyBatch.getHoneyType(),
+                        honeyBatch.getKgOfHoney(),
+                        honeyBatch.getCreationDate()
+                );
+
+                switch (honeyBatch.getHoneyType()) {
+                    case "Acacia":
+                        acaciaHoney.add(harvestedHoney);
+                        break;
+                    case "Rapeseed":
+                        rapeseedHoney.add(harvestedHoney);
+                        break;
+                    case "WildFlower":
+                        wildFlowerHoney.add(harvestedHoney);
+                        break;
+                    case "Linden":
+                        lindenHoney.add(harvestedHoney);
+                        break;
+                    case "SunFlower":
+                        sunflowerHoney.add(harvestedHoney);
+                        break;
+                    case "FalseIndigo":
+                        falseIndigoHoney.add(harvestedHoney);
+                        break;
+                    default:
+                        // Handle unknown honey types if necessary
+                        break;
                 }
-
-                if (totalKgOfHoneyPerHive != 0) {
-                    HarvestedHoney harvestedHoney = new HarvestedHoney(
-                            hive.getId(),
-                            frameCounter,
-                            hive.getHoney().getHoneyType(),
-                            totalKgOfHoneyPerHive,
-                            currentDate);
-
-
-                    harvestedHoneys.add(harvestedHoney);
-                    addHoneyHarvested(harvestedHoneys);
-                }
-                frameCounter = 0;
-                totalKgOfHoneyPerHive = 0;
             }
         }
-                this.harvestedHoneys.addAll(harvestedHoneys);
-
-        System.out.println("daily honey harvest is:" + harvestedHoneys);
-
     }
-
 }

@@ -45,6 +45,7 @@ public class LifeOfBees {
         hive.setEggsFrames(new ArrayList<>());
         hive.setHoneyFrames(new ArrayList<>());
         hive.setBeesBatches(new ArrayList<>());
+        hive.setHoneyBatches(new ArrayList<>());
         hive.setId(hiveIdCounter++);
         Honey honey = new Honey();
         hive.setHoney(honey);
@@ -87,7 +88,7 @@ public class LifeOfBees {
 
         // Iterate over 2 years
         for (int year = 0; year < 1; year++) {// Use only one for debug purposes
-            while (calendar.get(Calendar.MONTH) != Calendar.MAY) {
+            while (calendar.get(Calendar.MONTH) != Calendar.JUNE) {
                 // Iterate until OCTOBER
                 Date currentDate = calendar.getTime();
                 System.out.println("Date: " + currentDate);
@@ -101,18 +102,20 @@ public class LifeOfBees {
                 ArrayList<Hive> oldHives = new ArrayList<>(hives);
                 for (Hive hive : oldHives) {
                     Queen queen = new Queen();
-
+                   // Honey honey = new Honey();
+                    Honey honey=hive.getHoney();
                     hive.getHoney().honeyTypes(month, dayOfMonth);
                     hive.addEggsBatches(queen.makeBatchOfEggs(queen.makeEggs(hive, dayOfMonth, month), currentDate));
                     hive.fillUpExistingEggsFrameFromHive(currentDate);
-                    hive.addNewEggsFrameInHive(currentDate);
+                    hive.addNewEggsFrameInHive();
                     hive.checkAndAddEggsToBees(currentDate);
                     hive.fillUpExistingHoneyFrameFromHive(currentDate);
-                    hive.addNewHoneyFrameInHive(currentDate);
+                    hive.addNewHoneyFrameInHive();
+                    hive.addHoneyBatches(honey.makeHoneyBatch(hive,currentDate));
                     hive.beesDie(currentDate);
                     System.out.println();
                 }
-                apiary.collectHoneyFromHives(currentDate);
+               // apiary.collectHoneyFromHives(currentDate);
 
                 calendar.add(Calendar.DAY_OF_MONTH, 1); // Move to the next day
             }
