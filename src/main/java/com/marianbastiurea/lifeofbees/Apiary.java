@@ -135,7 +135,7 @@ public class Apiary {
         System.out.println(" your apiary is number " + this);
     }
 
-    public void honeyHarvestedByHoneyType(Date currentDate) {
+    public void honeyHarvestedByHoneyType() {
         List<HarvestedHoney> rapeseedHoney = new ArrayList<>();
         List<HarvestedHoney> acaciaHoney = new ArrayList<>();
         List<HarvestedHoney> wildFlowerHoney = new ArrayList<>();
@@ -176,7 +176,14 @@ public class Apiary {
                     default:
                         // Handle unknown honey types if necessary
                         break;
+
                 }
+                System.out.println("Acacia Honey: " + acaciaHoney);
+                System.out.println("Rapeseed Honey: " + rapeseedHoney);
+                System.out.println("WildFlower Honey: " + wildFlowerHoney);
+                System.out.println("Linden Honey: " + lindenHoney);
+                System.out.println("SunFlower Honey: " + sunflowerHoney);
+                System.out.println("FalseIndigo Honey: " + falseIndigoHoney);
             }
         }
     }

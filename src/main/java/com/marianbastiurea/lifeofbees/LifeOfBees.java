@@ -115,7 +115,7 @@ public class LifeOfBees {
                     hive.beesDie(currentDate);
                     System.out.println();
                 }
-               // apiary.collectHoneyFromHives(currentDate);
+               apiary.honeyHarvestedByHoneyType();
 
                 calendar.add(Calendar.DAY_OF_MONTH, 1); // Move to the next day
             }
