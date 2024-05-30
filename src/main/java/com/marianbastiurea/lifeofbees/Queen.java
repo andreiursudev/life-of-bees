@@ -64,8 +64,7 @@ public class Queen {
         List<EggsBatch> eggsBatches = new ArrayList<>();
         EggsBatch eggsBatch = new EggsBatch(numberOfEggs, date);
         eggsBatches.add(eggsBatch);
-        System.out.println("Eggs Batch are: " + eggsBatch);
-        System.out.println("number of eggs are: " + numberOfEggs);
+       // System.out.println("Eggs Batch are: " + eggsBatch);
         return eggsBatches;
 
     }
