@@ -145,9 +145,9 @@ public class Whether {
         if (dailyWhether.precipitation <= 4) {
             rainIndex = 1;
         } else if (dailyWhether.precipitation > 4 && dailyWhether.precipitation <= 16) {
-            rainIndex = 0.9;
+            rainIndex = 0.95;
         } else if (dailyWhether.precipitation > 16 && dailyWhether.precipitation <= 50) {
-            rainIndex = 0.85;
+            rainIndex = 0.9;
         } else if (dailyWhether.precipitation > 50) {
             rainIndex = 0.7;
         }

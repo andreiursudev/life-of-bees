@@ -53,8 +53,10 @@ public class LifeOfBees {
         Queen queen = new Queen();
         hive.setQueen(queen);
         hive.getQueen().setAgeOfQueen(random.nextInt(1, 6));
-        hive.setNumberOfHoneyFrame(random.nextInt(4, 6)); // Random number of honey frames
-        hive.setNumberOfEggsFrame(random.nextInt(4, 6)); // Random number of eggs frames
+        hive.setNumberOfHoneyFrame(6);
+       // hive.setNumberOfHoneyFrame(random.nextInt(5, 6)); // Random number of honey frames
+       hive.setNumberOfEggsFrame(6);
+        // hive.setNumberOfEggsFrame(random.nextInt(4, 6)); // Random number of eggs frames
         hive.setApiary(apiary);
 
         // Creating EggsFrame with a random number off eggs
@@ -68,7 +70,7 @@ public class LifeOfBees {
         // Creating HoneyFrames
         List<HoneyFrame> honeyFrames = new ArrayList<>();
         for (int i = 0; i < hive.getNumberOfHoneyFrame(); i++) {
-            HoneyFrame honeyFrame = new HoneyFrame(random.nextDouble(2, 2.5), hive.getHoney().getHoneyType());
+            HoneyFrame honeyFrame = new HoneyFrame(random.nextDouble(3, 4), hive.getHoney().getHoneyType());
             honeyFrames.add(honeyFrame); // Add each HoneyFrame to the list
         }
         hive.addHoneyFrames(honeyFrames);
@@ -88,7 +90,7 @@ public class LifeOfBees {
 
         // Iterate over 2 years
         for (int year = 0; year < 1; year++) {// Use only one for debug purposes
-            while (calendar.get(Calendar.MONTH) != Calendar.JUNE) {
+            while (calendar.get(Calendar.MONTH) != Calendar.OCTOBER) {
                 // Iterate until OCTOBER
                 Date currentDate = calendar.getTime();
                 System.out.println("Date: " + currentDate);

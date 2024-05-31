@@ -86,7 +86,7 @@ public class Honey {
             double totalKgOfHoneyPerHive = 0;
             int frameCounter = 0;
 
-            if (hive.isItWasSplit()&& hive.checkIfAll6EggsFrameAre80PercentFull()) {
+            if (hive.isAnswerIfWantToSplit() && hive.checkIfAll6EggsFrameAre80PercentFull()) {
                 List<HoneyFrame> hiveHoneyFrames = hive.getHoneyFrames();
                 for (HoneyFrame honeyFrame : hiveHoneyFrames) {
                     if (honeyFrame.getKgOfHoney() > 3) {

@@ -141,7 +141,12 @@ public class Apiary {
         List<HarvestedHoney> lindenHoney = new ArrayList<>();
         List<HarvestedHoney> sunflowerHoney = new ArrayList<>();
         List<HarvestedHoney> falseIndigoHoney = new ArrayList<>();
-
+        double annualKgOfRapeseedHoney = 0;
+        double annualKgOfAcaciaHoney = 0;
+        double annualKgOfLindenHoney = 0;
+        double annualKgOfWildFlowerHoney = 0;
+        double annualKgOfSunflowerHoney = 0;
+        double annualKgOfFalseIndigoHoney = 0;
 
         for (Hive hive : hives) {
             List<HoneyBatch> hiveHoneyBatches = hive.getHoneyBatches();
@@ -156,44 +161,56 @@ public class Apiary {
                 switch (honeyBatch.getHoneyType()) {
                     case "Acacia":
                         acaciaHoney.add(harvestedHoney);
+                        annualKgOfAcaciaHoney += honeyBatch.getKgOfHoney();
                         break;
                     case "Rapeseed":
                         rapeseedHoney.add(harvestedHoney);
+                        //  annualKgOfRapeseedHoney+=honeyBatch.getKgOfHoney();
+                        annualKgOfRapeseedHoney += harvestedHoney.getKgOfHoney();
                         break;
                     case "WildFlower":
                         wildFlowerHoney.add(harvestedHoney);
+                        annualKgOfWildFlowerHoney += honeyBatch.getKgOfHoney();
                         break;
                     case "Linden":
                         lindenHoney.add(harvestedHoney);
+                        annualKgOfLindenHoney += honeyBatch.getKgOfHoney();
                         break;
                     case "SunFlower":
                         sunflowerHoney.add(harvestedHoney);
+                        annualKgOfSunflowerHoney += honeyBatch.getKgOfHoney();
                         break;
                     case "FalseIndigo":
                         falseIndigoHoney.add(harvestedHoney);
+                        annualKgOfFalseIndigoHoney += honeyBatch.getKgOfHoney();
                         break;
                     default:
                         break;
 
                 }
-                if (!acaciaHoney.isEmpty()) {
-                    System.out.println("Acacia Honey: " + acaciaHoney);
-                }
-                if (!rapeseedHoney.isEmpty()) {
-                    System.out.println("Rapeseed Honey: " + rapeseedHoney);
-                }
-                if (!wildFlowerHoney.isEmpty()) {
-                    System.out.println("WildFlower Honey: " + wildFlowerHoney);
-                }
-                if (!lindenHoney.isEmpty()) {
-                    System.out.println("Linden Honey: " + lindenHoney);
-                }
-                if (!sunflowerHoney.isEmpty()) {
-                    System.out.println("SunFlower Honey: " + sunflowerHoney);
-                }
-                if (!falseIndigoHoney.isEmpty()) {
-                    System.out.println("FalseIndigo Honey: " + falseIndigoHoney);
-                }
+            }
+            if (!acaciaHoney.isEmpty()) {
+                System.out.println("Acacia Honey: " + acaciaHoney);
+                System.out.println("annual quantity of acacia honey is: " + annualKgOfAcaciaHoney);
+            }
+            if (!rapeseedHoney.isEmpty()) {
+                System.out.println("Rapeseed Honey: " + rapeseedHoney);
+                System.out.println("Annual quantity of rapeseed Honey: " + annualKgOfRapeseedHoney);
+            }
+            if (!wildFlowerHoney.isEmpty()) {
+                System.out.println("WildFlower Honey: " + wildFlowerHoney);
+                System.out.println("Annual quantity of wildflower Honey: " + annualKgOfWildFlowerHoney);
+            }
+            if (!lindenHoney.isEmpty()) {
+                System.out.println("Linden Honey: " + lindenHoney);
+                System.out.println("Annual quantity of linden Honey: " + annualKgOfLindenHoney);
+            }
+            if (!sunflowerHoney.isEmpty()) {
+                System.out.println("SunFlower Honey: " + sunflowerHoney);
+                System.out.println("Annual quantity of sunflower Honey: " + annualKgOfSunflowerHoney);
+            }
+            if (!falseIndigoHoney.isEmpty()) {
+                System.out.println("FalseIndigo Honey: " + falseIndigoHoney);
             }
         }
     }

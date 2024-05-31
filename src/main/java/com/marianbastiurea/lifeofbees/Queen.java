@@ -48,10 +48,11 @@ public class Queen {
         - first will be index about age of queen and honey productivity;
         - second will be an whether index connected with wind speed, precipitation and temperature
          */
-
-        int numberOfEggs = (int) (2000 * hive.ageOfQueenIndex(dayOfMonth,month)*hive.getHoney().honeyProductivity(month, dayOfMonth)
-                *Whether.whetherIndex(Whether.whetherToday(month,dayOfMonth)));
-        return numberOfEggs;
+//
+//        int numberOfEggs = (int) (2000 * hive.ageOfQueenIndex(dayOfMonth,month)*hive.getHoney().honeyProductivity(month, dayOfMonth)
+//                *Whether.whetherIndex(Whether.whetherToday(month,dayOfMonth)));
+//        return numberOfEggs;
+return 5000;
 
     }
 
@@ -65,7 +66,6 @@ public class Queen {
         List<EggsBatch> eggsBatches = new ArrayList<>();
         EggsBatch eggsBatch = new EggsBatch(numberOfEggs, date);
         eggsBatches.add(eggsBatch);
-       // System.out.println("Eggs Batch are: " + eggsBatch);
         return eggsBatches;
 
     }

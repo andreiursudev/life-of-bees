@@ -458,7 +458,7 @@ they will die. bees number from each batch will subtract from total number of be
 
     public boolean checkIfAll6EggsFrameAre80PercentFull() {
         int eggsFrameFull = 0;
-        int maxEggPerFrame = 6400;
+        int maxEggPerFrame = 5000;
         boolean allEggsFrameAreFull = false;
         EggsFrame eggsFrame = this.eggsFrames.get(eggsFrameFull);
         if (eggsFrames.size() == 6) {
