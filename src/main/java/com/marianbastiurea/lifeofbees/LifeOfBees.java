@@ -60,7 +60,7 @@ public class LifeOfBees {
         // Creating EggsFrame with a random number off eggs
         queen = new Queen(hive.getAgeOfQueen());
         for (int i = 1; i < hive.getNumberOfEggsFrame() + 1; i++) {
-            int randomNumberOfEggs = random.nextInt(4000, 5000);
+            int randomNumberOfEggs = random.nextInt(4000, 4500);
             hive.addEggsFrames(queen.fillUpWithEggs(i, randomNumberOfEggs));
 
         }
@@ -121,7 +121,9 @@ public class LifeOfBees {
             List<Hive> hives = apiary.getHives();// have to build a hibernate method
             for (Hive hive : hives) {
                 hive.setItWasSplit(false);
+                hive.setAnswerIfWantToSplit(false);
             }
+
 
             apiary.honeyHarvestedByHoneyType();
             calendar.set(Calendar.MONTH, Calendar.APRIL);// Reset month for the next year

@@ -72,15 +72,14 @@ public class Apiary {
             if (hive.getNumberOfEggsFrame() == 6 && !hive.isItWasSplit()) {
                 System.out.println("Now old and new frames are full. Hive will be split in two hives.");
                 Hive newHive = new Hive(this.getNumberOfHives() + 1,
-                        true, hive.getNumberOfHoneyFrame(), hive.getNumberOfEggsFrame(),
-                        (hive.getNumberOfBees() / 2), new Queen(), new Honey()
+                        true, true, hive.getNumberOfHoneyFrame(), hive.getNumberOfEggsFrame(),
+                        (hive.getNumberOfBees() / 2), new Queen()
                 );
                 hive.setNumberOfBees(hive.getNumberOfBees() / 2);
                 hive.setItWasSplit(true);
-
+                hive.setAnswerIfWantToSplit(true);
                 newHive.getQueen().setAgeOfQueen(0);
-                newHive.getHoney().setHoneyType("Acacia");
-
+                newHive.setHoney(hive.getHoney());
                 newHive.setApiary(this);
                 newHive.setBeesBatches(hive.getBeesBatches().subList(0, 0));
 
@@ -177,18 +176,24 @@ public class Apiary {
                         break;
 
                 }
-                if(!acaciaHoney.isEmpty()){
-                System.out.println("Acacia Honey: " + acaciaHoney);}
-                if(!rapeseedHoney.isEmpty()){
-                System.out.println("Rapeseed Honey: " + rapeseedHoney);}
-                if(!wildFlowerHoney.isEmpty()){
-                System.out.println("WildFlower Honey: " + wildFlowerHoney);}
-                if(!lindenHoney.isEmpty()){
-                System.out.println("Linden Honey: " + lindenHoney);}
-                if(!sunflowerHoney.isEmpty()){
-                System.out.println("SunFlower Honey: " + sunflowerHoney);}
-                if(!falseIndigoHoney.isEmpty()){
-                System.out.println("FalseIndigo Honey: " + falseIndigoHoney);}
+                if (!acaciaHoney.isEmpty()) {
+                    System.out.println("Acacia Honey: " + acaciaHoney);
+                }
+                if (!rapeseedHoney.isEmpty()) {
+                    System.out.println("Rapeseed Honey: " + rapeseedHoney);
+                }
+                if (!wildFlowerHoney.isEmpty()) {
+                    System.out.println("WildFlower Honey: " + wildFlowerHoney);
+                }
+                if (!lindenHoney.isEmpty()) {
+                    System.out.println("Linden Honey: " + lindenHoney);
+                }
+                if (!sunflowerHoney.isEmpty()) {
+                    System.out.println("SunFlower Honey: " + sunflowerHoney);
+                }
+                if (!falseIndigoHoney.isEmpty()) {
+                    System.out.println("FalseIndigo Honey: " + falseIndigoHoney);
+                }
             }
         }
     }
