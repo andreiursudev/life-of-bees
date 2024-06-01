@@ -99,7 +99,7 @@ public class Honey {
                 HoneyBatch honeyBatch = new HoneyBatch(hive.getId(), currentDate, totalKgOfHoneyPerHive,
                         getHoneyType(), frameCounter);
                 honeyBatches.add(honeyBatch);
-                System.out.println("Honey Batch are:" + honeyBatch);
+               // System.out.println("Honey Batch are:" + honeyBatch);
             }
         }
             return honeyBatches;

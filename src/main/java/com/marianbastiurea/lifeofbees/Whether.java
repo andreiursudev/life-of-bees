@@ -136,7 +136,7 @@ public class Whether {
     }
 
     public static double whetherIndex(Whether dailyWhether) {
-        System.out.println("whether today is"+dailyWhether);
+       // System.out.println("whether today is"+dailyWhether);
         double rainIndex = 0;
         double temperatureIndex = 0;
         double speedWindIndex = 0;
@@ -172,7 +172,7 @@ public class Whether {
             speedWindIndex = 0.7;
         }
         whetherIndex = rainIndex * temperatureIndex * speedWindIndex;
-        System.out.println("Daily whether index is: "+ whetherIndex);
+      //  System.out.println("Daily whether index is: "+ whetherIndex);
         return whetherIndex;
     }
 

@@ -401,8 +401,8 @@ public class Hive {
             }
         }
 
-        System.out.println("Hive ID: " + this.getId());
-        System.out.println("Honey Frame: " + this.getHoneyFrames());
+        // System.out.println("Hive ID: " + this.getId());
+        //  System.out.println("Honey Frame: " + this.getHoneyFrames());
         System.out.println(" date is " + currentDate);
         System.out.println(" your hive is :" + this);
     }
@@ -438,7 +438,7 @@ public class Hive {
         // this method will create a new empty eggs frame
 
         List<EggsFrame> eggsFrames = new ArrayList<>();
-        EggsFrame eggsFrame = new EggsFrame( 0);
+        EggsFrame eggsFrame = new EggsFrame(0);
         eggsFrames.add(eggsFrame);
         return eggsFrames;
     }
@@ -516,7 +516,6 @@ they will die. bees number from each batch will subtract from total number of be
     }
 
     public void moveAnEggsFrameFromUnsplitHiveToASplitOne() {
-        int maxEggPerFrame = 6400;
         if (this.checkIfAll6EggsFrameAre80PercentFull() && !this.itWasSplit && !this.wasMovedAnEggsFrame) {
             List<Hive> hives = apiary.getHives();
             for (Hive hive : hives) {
@@ -524,22 +523,10 @@ they will die. bees number from each batch will subtract from total number of be
                     System.out.println("We move an eggs frame " + this.eggsFrames.get(0) +
                             " from hive " + this.getId() + " to hive " + hive.getId());
 
-                    for (EggsFrame targetFrame : hive.getEggsFrames()) {
-                        if (targetFrame.getNumberOfEggs() < maxEggPerFrame) {
-                            int eggsToMove = Math.min(this.eggsFrames.get(0).getNumberOfEggs(), maxEggPerFrame - targetFrame.getNumberOfEggs());
-                            targetFrame.setNumberOfEggs(targetFrame.getNumberOfEggs() + eggsToMove);
-                            this.eggsFrames.get(0).setNumberOfEggs(this.eggsFrames.get(0).getNumberOfEggs() - eggsToMove);
-
-                            System.out.println("We moved " + eggsToMove + " eggs from frame " + this.eggsFrames.get(0) +
-                                    " to frame " + targetFrame + " in hive " + hive.getId());
-
-                            if (this.eggsFrames.get(0).getNumberOfEggs() == 0) {
-                                break;
-                            }
-                        }
-                    }
-                    this.setWasMovedAnEggsFrame(true);
-                    break; // Move only one frame to one split hive
+                    EggsFrame frameToMove = this.getEggsFrames().remove(hive.getEggsFrames().size() - 1);
+                    hive.eggsFrames.add(frameToMove);
+                    this.setWasMovedAnEggsFrame(true);// Move only one frame to one split hive
+                    break;
                 }
             }
         }
