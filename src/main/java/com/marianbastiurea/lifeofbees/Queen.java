@@ -67,13 +67,13 @@ public class Queen {
 
     }
 
-    public List<EggsFrame> fillUpWithEggs(int numberOfEggsFrame, int numberOfEggs) {
+    public List<EggsFrame> fillUpWithEggs(int numberOfEggs) {
         /*
         this method will fill up with eggs first eggs frame from new created hive
          */
 
         List<EggsFrame> eggsFrames = new ArrayList<>();
-        EggsFrame eggsFrame = new EggsFrame(numberOfEggsFrame, numberOfEggs);
+        EggsFrame eggsFrame = new EggsFrame(numberOfEggs);
         eggsFrames.add(eggsFrame);
 
         return eggsFrames;

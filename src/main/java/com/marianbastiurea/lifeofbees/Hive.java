@@ -438,7 +438,7 @@ public class Hive {
         // this method will create a new empty eggs frame
 
         List<EggsFrame> eggsFrames = new ArrayList<>();
-        EggsFrame eggsFrame = new EggsFrame(numberOfEggsFrame, 0);
+        EggsFrame eggsFrame = new EggsFrame( 0);
         eggsFrames.add(eggsFrame);
         return eggsFrames;
     }

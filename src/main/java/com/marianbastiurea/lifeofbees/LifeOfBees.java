@@ -63,7 +63,7 @@ public class LifeOfBees {
         queen = new Queen(hive.getAgeOfQueen());
         for (int i = 1; i < hive.getNumberOfEggsFrame() + 1; i++) {
             int randomNumberOfEggs = random.nextInt(5000, 6000);
-            hive.addEggsFrames(queen.fillUpWithEggs(i, randomNumberOfEggs));
+            hive.addEggsFrames(queen.fillUpWithEggs(randomNumberOfEggs));
 
         }
 

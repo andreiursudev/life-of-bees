@@ -79,20 +79,24 @@ public class Apiary {
             hive.setNumberOfBees(hive.getNumberOfBees() / 2);
             hive.setItWasSplit(true);
             hive.setAnswerIfWantToSplit(true);
+            hive.setNumberOfEggsFrame(3);
+            hive.setNumberOfHoneyFrame(3);
             newHive.getQueen().setAgeOfQueen(0);
             newHive.setHoney(hive.getHoney());
             newHive.setApiary(this);
             newHive.setWasMovedAnEggsFrame(false);
             newHive.setBeesBatches(hive.getBeesBatches().subList(0, 0));
+            newHive.setNumberOfHoneyFrame(3);
+            newHive.setNumberOfEggsFrame(3);
 
-            List<EggsFrame> hiveEggsFrames = hive.getEggsFrames();
             List<EggsFrame> newHiveEggsFrames = new ArrayList<>();
-            for (EggsFrame eggsFrame : hiveEggsFrames) {
-                int eggsToTransfer = eggsFrame.getNumberOfEggs() / 2;
-                EggsFrame newHiveFrame = new EggsFrame(eggsFrame.getNumberOfEggsFrame(), eggsToTransfer);
-                newHiveEggsFrames.add(newHiveFrame);
-                eggsFrame.setNumberOfEggs(eggsFrame.getNumberOfEggs() - eggsToTransfer);
+            for (int i = 0; i < 3; i++) {
+                EggsFrame frameToMove = hive.getEggsFrames().remove(hive.getEggsFrames().size() - 1);
+                newHiveEggsFrames.add(frameToMove);
+
             }
+
+
             newHive.setEggsFrames(newHiveEggsFrames);
 
             List<HoneyFrame> hiveHoneyFrames = hive.getHoneyFrames();
@@ -224,7 +228,8 @@ public class Apiary {
         hive.setNumberOfEggsFrame(4);
         hive.getEggsBatches().clear();
         hive.getBeesBatches().clear();
-        hive.getHoneyBatches().clear();;
+        hive.getHoneyBatches().clear();
+        ;
         hive.getEggsFrames().remove(hive.getEggsFrames().size() - 1);
         hive.getEggsFrames().remove(hive.getEggsFrames().size() - 1);
         hive.getHoneyFrames().remove(hive.getHoneyFrames().size() - 1);
