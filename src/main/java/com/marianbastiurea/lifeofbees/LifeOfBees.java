@@ -89,7 +89,7 @@ public class LifeOfBees {
         calendar.set(Calendar.DAY_OF_MONTH, 1);
 
         // Iterate over 2 years
-        for (int year = 0; year < 1; year++) {// Use only one for debug purposes
+        for (int year = 0; year < 2; year++) {
             while (calendar.get(Calendar.MONTH) != Calendar.OCTOBER) {
                 // Iterate until OCTOBER
                 Date currentDate = calendar.getTime();
@@ -104,7 +104,7 @@ public class LifeOfBees {
                 ArrayList<Hive> oldHives = new ArrayList<>(hives);
                 for (Hive hive : oldHives) {
                     Queen queen = new Queen();
-                    Honey honey=hive.getHoney();
+                    Honey honey = hive.getHoney();
                     hive.getHoney().honeyTypes(month, dayOfMonth);
                     hive.addEggsBatches(queen.makeBatchOfEggs(queen.makeEggs(hive, dayOfMonth, month), currentDate));
                     hive.fillUpExistingEggsFrameFromHive(currentDate);
@@ -113,7 +113,7 @@ public class LifeOfBees {
                     hive.checkAndAddEggsToBees(currentDate);
                     hive.fillUpExistingHoneyFrameFromHive(currentDate);
                     hive.addNewHoneyFrameInHive();
-                    hive.addHoneyBatches(honey.makeHoneyBatch(hive,currentDate));
+                    hive.addHoneyBatches(honey.makeHoneyBatch(hive, currentDate));
                     hive.beesDie(currentDate);
                     System.out.println();
                 }
@@ -131,9 +131,8 @@ public class LifeOfBees {
             }
 
             calendar.set(Calendar.MONTH, Calendar.APRIL);// Reset month for the next year
+
+            System.out.println("your apiary at the beginning of new  year is: " + apiary);
         }
-
-        System.out.println("your apiary at the beginning of new  year is: " + apiary);
-
     }
 }

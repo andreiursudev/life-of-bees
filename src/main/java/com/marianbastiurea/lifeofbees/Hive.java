@@ -400,9 +400,6 @@ public class Hive {
                 honeyFrame.setKgOfHoney(Math.min(maxKgOfHoneyPerFrame, honeyFrame.getKgOfHoney() + kgOfHoneyToAdd / numberOfHoneyFrameNotFull));
             }
         }
-
-        // System.out.println("Hive ID: " + this.getId());
-        //  System.out.println("Honey Frame: " + this.getHoneyFrames());
         System.out.println(" date is " + currentDate);
         System.out.println(" your hive is :" + this);
     }
