@@ -20,15 +20,15 @@ public class Hive {
     private List<HoneyBatch> honeyBatches;
     private Apiary apiary; // Add an Apiary field to store the associated apiary
 
-//    public Hive(Apiary apiary, List<EggsBatch> eggsBatches, List<EggsFrame> eggsFrames, List<BeesBatch> beesBatches,
-//                List<HoneyFrame> honeyFrames, List<HoneyBatch> honeyBatches) {
-//        this.apiary = apiary;
-//        this.eggsBatches = new ArrayList<>(eggsBatches);
-//        this.eggsFrames = new ArrayList<>(eggsFrames);
-//        this.beesBatches = new ArrayList<>(beesBatches);
-//        this.honeyFrames = new ArrayList<>(honeyFrames);
-//        this.honeyBatches = new ArrayList<>(honeyBatches);
-//    }
+    public Hive(Apiary apiary, List<EggsBatch> eggsBatches, List<EggsFrame> eggsFrames, List<BeesBatch> beesBatches,
+                List<HoneyFrame> honeyFrames, List<HoneyBatch> honeyBatches) {
+        this.apiary = apiary;
+        this.eggsBatches = new ArrayList<>(eggsBatches);
+        this.eggsFrames = new ArrayList<>(eggsFrames);
+        this.beesBatches = new ArrayList<>(beesBatches);
+        this.honeyFrames = new ArrayList<>(honeyFrames);
+        this.honeyBatches = new ArrayList<>(honeyBatches);
+    }
 
     public Hive(int id, boolean itWasSplit, boolean answerIfWantToSplit, int numberOfHoneyFrame, int numberOfEggsFrame, int numberOfBees, Queen queen) {
         this.id = id;
@@ -62,6 +62,10 @@ public class Hive {
 
     public void setApiary(Apiary apiary) {
         this.apiary = apiary;
+    }
+
+    public Apiary getApiary() {
+        return apiary;
     }
 
     @Override
@@ -272,7 +276,7 @@ public class Hive {
         will add another eggs frame in hive. maximum number of eggs frame is 6.
          */
 
-        int maxEggPerFrame = 5000; // a frame have around 8500 cells. 75% more or less are used by the queen to lay eggs.
+        int maxEggPerFrame = 6400; // a frame have around 8500 cells. 75% more or less are used by the queen to lay eggs.
         // Remaining cells are fill up with honey or are damaged
 
         System.out.println();
@@ -298,7 +302,7 @@ public class Hive {
         6, will call method to split hive in two hives.
          */
 
-        int maxEggPerFrame = 5000;
+        int maxEggPerFrame = 6400;
         // a frame have around 8500 cells. 75% more or less are used by the queen to lay eggs.
         // Remaining cells are fill up with honey or are damaged
 
@@ -313,7 +317,7 @@ public class Hive {
             if (allFramesAreFull) {
                 Scanner scanner = new Scanner(System.in);
                 String answer;
-                if (!answerIfWantToSplit) {
+                if (!this.answerIfWantToSplit) {
                     do {
                         System.out.println("You can choose to split or not hive number " + this.getId());
                         System.out.println("You can split this hive only once in a year and is only one question per year");
@@ -331,7 +335,7 @@ public class Hive {
 
                         if (answer.equals("Y")) {
                             System.out.println("You choose to split your hive");
-                            apiary.splitHive();
+                            this.getApiary().splitHive(this);
                         }
                         break;
 
@@ -458,7 +462,7 @@ they will die. bees number from each batch will subtract from total number of be
 
     public boolean checkIfAll6EggsFrameAre80PercentFull() {
         int eggsFrameFull = 0;
-        int maxEggPerFrame = 5000;
+        int maxEggPerFrame = 6400;
         boolean allEggsFrameAreFull = false;
         EggsFrame eggsFrame = this.eggsFrames.get(eggsFrameFull);
         if (eggsFrames.size() == 6) {

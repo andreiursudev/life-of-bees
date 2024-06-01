@@ -60,7 +60,7 @@ public class Apiary {
                 '}';
     }
 
-    public void splitHive() {
+    public void splitHive(Hive hive) {
 
         /*
         this method will split a hive in two equal half. First will check boolean itWasSplit. If this is false
@@ -68,7 +68,7 @@ public class Apiary {
          */
 
         List<Hive> newHives = new ArrayList<>();
-        for (Hive hive : hives) {
+
             if (hive.getNumberOfEggsFrame() == 6 && !hive.isItWasSplit()) {
                 System.out.println("Now old and new frames are full. Hive will be split in two hives.");
                 Hive newHive = new Hive(this.getNumberOfHives() + 1,
@@ -128,10 +128,8 @@ public class Apiary {
                 this.setNumberOfHives(this.getNumberOfHives() + 1);
 
             }
-        }
+
         hives.addAll(newHives);
-//        System.out.println("your apiary contains " + this.getNumberOfHives() + " hives");
-//        System.out.println(" your apiary is number " + this);
     }
 
     public void honeyHarvestedByHoneyType() {

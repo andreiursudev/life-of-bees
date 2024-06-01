@@ -6,7 +6,6 @@ import java.util.List;
 
 public class Honey {
     private String honeyType;
-    private List<Hive> hives;
 
 
     public String getHoneyType() {

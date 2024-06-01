@@ -158,7 +158,7 @@ public class Whether {
         } else if (dailyWhether.temperature > 10 && dailyWhether.temperature < 30) {
             temperatureIndex = 1;
         } else if (dailyWhether.temperature >= 30) {
-            temperatureIndex = 0.7;
+            temperatureIndex = 0.8;
         }
 
         //speedWindIndex by wind speed

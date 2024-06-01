@@ -53,16 +53,14 @@ public class LifeOfBees {
         Queen queen = new Queen();
         hive.setQueen(queen);
         hive.getQueen().setAgeOfQueen(random.nextInt(1, 6));
-        hive.setNumberOfHoneyFrame(6);
-       // hive.setNumberOfHoneyFrame(random.nextInt(5, 6)); // Random number of honey frames
-       hive.setNumberOfEggsFrame(6);
-        // hive.setNumberOfEggsFrame(random.nextInt(4, 6)); // Random number of eggs frames
+        hive.setNumberOfHoneyFrame(random.nextInt(4, 5)); // Random number of honey frames
+        hive.setNumberOfEggsFrame(random.nextInt(4, 5)); // Random number of eggs frames
         hive.setApiary(apiary);
 
         // Creating EggsFrame with a random number off eggs
         queen = new Queen(hive.getAgeOfQueen());
         for (int i = 1; i < hive.getNumberOfEggsFrame() + 1; i++) {
-            int randomNumberOfEggs = random.nextInt(4000, 4500);
+            int randomNumberOfEggs = random.nextInt(3000, 3500);
             hive.addEggsFrames(queen.fillUpWithEggs(i, randomNumberOfEggs));
 
         }
@@ -70,7 +68,7 @@ public class LifeOfBees {
         // Creating HoneyFrames
         List<HoneyFrame> honeyFrames = new ArrayList<>();
         for (int i = 0; i < hive.getNumberOfHoneyFrame(); i++) {
-            HoneyFrame honeyFrame = new HoneyFrame(random.nextDouble(3, 4), hive.getHoney().getHoneyType());
+            HoneyFrame honeyFrame = new HoneyFrame(random.nextDouble(2.5, 3), hive.getHoney().getHoneyType());
             honeyFrames.add(honeyFrame); // Add each HoneyFrame to the list
         }
         hive.addHoneyFrames(honeyFrames);

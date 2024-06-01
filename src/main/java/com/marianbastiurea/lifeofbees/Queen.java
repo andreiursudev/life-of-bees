@@ -48,16 +48,13 @@ public class Queen {
         - first will be index about age of queen and honey productivity;
         - second will be an whether index connected with wind speed, precipitation and temperature
          */
-//
-//        int numberOfEggs = (int) (2000 * hive.ageOfQueenIndex(dayOfMonth,month)*hive.getHoney().honeyProductivity(month, dayOfMonth)
-//                *Whether.whetherIndex(Whether.whetherToday(month,dayOfMonth)));
-//        return numberOfEggs;
-return 5000;
+
+        int numberOfEggs = (int) (2000 * hive.ageOfQueenIndex(dayOfMonth,month)*hive.getHoney().honeyProductivity(month, dayOfMonth)
+                *Whether.whetherIndex(Whether.whetherToday(month,dayOfMonth)));
+        return numberOfEggs;
 
     }
 
-    // Method to make eggs and create a list of EggsBatch, which store daily
-    // numberOfEggs and date from calendar when eggs are made
     public List<EggsBatch> makeBatchOfEggs(int numberOfEggs, Date date) {
         /*
         this method will create a daily eggs batch
