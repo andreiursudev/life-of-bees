@@ -8,6 +8,7 @@ public class Hive {
     private int id;
     private boolean itWasSplit;
     private boolean answerIfWantToSplit;
+    private boolean wasMovedAnEggsFrame;
     private int numberOfHoneyFrame;
     private int numberOfEggsFrame;
     private List<EggsFrame> eggsFrames;
@@ -44,8 +45,20 @@ public class Hive {
         this.honey = honey;
     }
 
+    public Hive(boolean wasMovedAnEggsFrame) {
+        this.wasMovedAnEggsFrame = wasMovedAnEggsFrame;
+    }
+
     public boolean isItWasSplit() {
         return itWasSplit;
+    }
+
+    public boolean isWasMovedAnEggsFrame() {
+        return wasMovedAnEggsFrame;
+    }
+
+    public void setWasMovedAnEggsFrame(boolean wasMovedAnEggsFrame) {
+        this.wasMovedAnEggsFrame = wasMovedAnEggsFrame;
     }
 
     public void setItWasSplit(boolean itWasSplit) {
@@ -74,6 +87,7 @@ public class Hive {
                 "id=" + id +
                 ", itWasSplit=" + this.itWasSplit +
                 ", answerIfWantToSplit=" + this.answerIfWantToSplit +
+                ",wasMovedAnEggsFrame=" + this.wasMovedAnEggsFrame +
                 ", numberOfHoneyFrame=" + this.numberOfHoneyFrame +
                 ", numberOfEggsFrame=" + this.numberOfEggsFrame +
                 ", eggsFrames=" + this.eggsFrames +
@@ -387,10 +401,10 @@ public class Hive {
             }
         }
 
-            System.out.println("Hive ID: " + this.getId());
-            System.out.println("Honey Frame: " + this.getHoneyFrames());
-            System.out.println(" date is " + currentDate);
-            System.out.println(" your hive is :" + this);
+        System.out.println("Hive ID: " + this.getId());
+        System.out.println("Honey Frame: " + this.getHoneyFrames());
+        System.out.println(" date is " + currentDate);
+        System.out.println(" your hive is :" + this);
     }
 
 
@@ -490,6 +504,7 @@ they will die. bees number from each batch will subtract from total number of be
     }
 
     public int getNumberOfFullHoneyFrame() {
+
         int honeyFrameFull = 0;
         double maxKgOfHoneyPerFrame = 4.5;
         for (int i = 0; i < this.honeyFrames.size(); i++) {
@@ -500,4 +515,33 @@ they will die. bees number from each batch will subtract from total number of be
         return honeyFrameFull;
     }
 
+    public void moveAnEggsFrameFromUnsplitHiveToASplitOne() {
+        int maxEggPerFrame = 6400;
+        if (this.checkIfAll6EggsFrameAre80PercentFull() && !this.itWasSplit && !this.wasMovedAnEggsFrame) {
+            List<Hive> hives = apiary.getHives();
+            for (Hive hive : hives) {
+                if (hive.itWasSplit) {
+                    System.out.println("We move an eggs frame " + this.eggsFrames.get(0) +
+                            " from hive " + this.getId() + " to hive " + hive.getId());
+
+                    for (EggsFrame targetFrame : hive.getEggsFrames()) {
+                        if (targetFrame.getNumberOfEggs() < maxEggPerFrame) {
+                            int eggsToMove = Math.min(this.eggsFrames.get(0).getNumberOfEggs(), maxEggPerFrame - targetFrame.getNumberOfEggs());
+                            targetFrame.setNumberOfEggs(targetFrame.getNumberOfEggs() + eggsToMove);
+                            this.eggsFrames.get(0).setNumberOfEggs(this.eggsFrames.get(0).getNumberOfEggs() - eggsToMove);
+
+                            System.out.println("We moved " + eggsToMove + " eggs from frame " + this.eggsFrames.get(0) +
+                                    " to frame " + targetFrame + " in hive " + hive.getId());
+
+                            if (this.eggsFrames.get(0).getNumberOfEggs() == 0) {
+                                break;
+                            }
+                        }
+                    }
+                    this.setWasMovedAnEggsFrame(true);
+                    break; // Move only one frame to one split hive
+                }
+            }
+        }
+    }
 }

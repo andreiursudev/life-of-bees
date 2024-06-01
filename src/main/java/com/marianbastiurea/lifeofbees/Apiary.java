@@ -81,6 +81,7 @@ public class Apiary {
                 newHive.getQueen().setAgeOfQueen(0);
                 newHive.setHoney(hive.getHoney());
                 newHive.setApiary(this);
+                newHive.setWasMovedAnEggsFrame(false);
                 newHive.setBeesBatches(hive.getBeesBatches().subList(0, 0));
 
                 List<EggsFrame> hiveEggsFrames = hive.getEggsFrames();
@@ -163,7 +164,7 @@ public class Apiary {
                         break;
                     case "Rapeseed":
                         rapeseedHoney.add(harvestedHoney);
-                        //  annualKgOfRapeseedHoney+=honeyBatch.getKgOfHoney();
+
                         annualKgOfRapeseedHoney += harvestedHoney.getKgOfHoney();
                         break;
                     case "WildFlower":

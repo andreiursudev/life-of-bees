@@ -41,6 +41,8 @@ public class LifeOfBees {
         Random random = new Random();
         Hive hive = new Hive();
         hive.setItWasSplit(false);// a hive could be split only once in a year
+        hive.setWasMovedAnEggsFrame(false);
+        hive.setAnswerIfWantToSplit(false);
         hive.setEggsBatches(new ArrayList<>());
         hive.setEggsFrames(new ArrayList<>());
         hive.setHoneyFrames(new ArrayList<>());
@@ -54,13 +56,13 @@ public class LifeOfBees {
         hive.setQueen(queen);
         hive.getQueen().setAgeOfQueen(random.nextInt(1, 6));
         hive.setNumberOfHoneyFrame(random.nextInt(4, 5)); // Random number of honey frames
-        hive.setNumberOfEggsFrame(random.nextInt(4, 5)); // Random number of eggs frames
+        hive.setNumberOfEggsFrame(random.nextInt(5, 6)); // Random number of eggs frames
         hive.setApiary(apiary);
 
         // Creating EggsFrame with a random number off eggs
         queen = new Queen(hive.getAgeOfQueen());
         for (int i = 1; i < hive.getNumberOfEggsFrame() + 1; i++) {
-            int randomNumberOfEggs = random.nextInt(3000, 3500);
+            int randomNumberOfEggs = random.nextInt(5000, 6000);
             hive.addEggsFrames(queen.fillUpWithEggs(i, randomNumberOfEggs));
 
         }
@@ -88,7 +90,7 @@ public class LifeOfBees {
 
         // Iterate over 2 years
         for (int year = 0; year < 1; year++) {// Use only one for debug purposes
-            while (calendar.get(Calendar.MONTH) != Calendar.OCTOBER) {
+            while (calendar.get(Calendar.MONTH) != Calendar.JUNE) {
                 // Iterate until OCTOBER
                 Date currentDate = calendar.getTime();
                 System.out.println("Date: " + currentDate);
@@ -107,6 +109,7 @@ public class LifeOfBees {
                     hive.addEggsBatches(queen.makeBatchOfEggs(queen.makeEggs(hive, dayOfMonth, month), currentDate));
                     hive.fillUpExistingEggsFrameFromHive(currentDate);
                     hive.addNewEggsFrameInHive();
+                    hive.moveAnEggsFrameFromUnsplitHiveToASplitOne();
                     hive.checkAndAddEggsToBees(currentDate);
                     hive.fillUpExistingHoneyFrameFromHive(currentDate);
                     hive.addNewHoneyFrameInHive();
@@ -130,6 +133,6 @@ public class LifeOfBees {
         }
 
         System.out.println("your apiary is: " + apiary);
-        System.out.println("your honey production is " + apiary.getHarvestedHoneys());
+
     }
 }
