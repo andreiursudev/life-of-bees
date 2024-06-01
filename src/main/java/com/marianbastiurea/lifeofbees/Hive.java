@@ -7,6 +7,8 @@ import java.util.*;
 public class Hive {
     private int id;
     private boolean itWasSplit;
+    private boolean answerIfWantToSplit;
+    private boolean wasMovedAnEggsFrame;
     private int numberOfHoneyFrame;
     private int numberOfEggsFrame;
     private List<EggsFrame> eggsFrames;
@@ -29,31 +31,54 @@ public class Hive {
         this.honeyBatches = new ArrayList<>(honeyBatches);
     }
 
-    public Hive(int id, boolean itWasSplit, int numberOfHoneyFrame, int numberOfEggsFrame, int numberOfBees, Queen queen, Honey honey) {
+    public Hive(int id, boolean itWasSplit, boolean answerIfWantToSplit, int numberOfHoneyFrame, int numberOfEggsFrame, int numberOfBees, Queen queen) {
         this.id = id;
         this.itWasSplit = itWasSplit;
+        this.answerIfWantToSplit = answerIfWantToSplit;
         this.numberOfHoneyFrame = numberOfHoneyFrame;
         this.numberOfEggsFrame = numberOfEggsFrame;
         this.numberOfBees = numberOfBees;
         this.queen = queen;
-        this.honey = honey;
+    }
 
+    public Hive(Honey honey) {
+        this.honey = honey;
+    }
+
+    public Hive(boolean wasMovedAnEggsFrame) {
+        this.wasMovedAnEggsFrame = wasMovedAnEggsFrame;
     }
 
     public boolean isItWasSplit() {
         return itWasSplit;
     }
 
+    public boolean isWasMovedAnEggsFrame() {
+        return wasMovedAnEggsFrame;
+    }
+
+    public void setWasMovedAnEggsFrame(boolean wasMovedAnEggsFrame) {
+        this.wasMovedAnEggsFrame = wasMovedAnEggsFrame;
+    }
+
     public void setItWasSplit(boolean itWasSplit) {
         this.itWasSplit = itWasSplit;
     }
 
-    public Apiary getApiary() {
-        return apiary;
+    public boolean isAnswerIfWantToSplit() {
+        return answerIfWantToSplit;
+    }
+
+    public void setAnswerIfWantToSplit(boolean answerIfWantToSplit) {
+        this.answerIfWantToSplit = answerIfWantToSplit;
     }
 
     public void setApiary(Apiary apiary) {
         this.apiary = apiary;
+    }
+
+    public Apiary getApiary() {
+        return apiary;
     }
 
     @Override
@@ -61,6 +86,8 @@ public class Hive {
         return "Hive{" +
                 "id=" + id +
                 ", itWasSplit=" + this.itWasSplit +
+                ", answerIfWantToSplit=" + this.answerIfWantToSplit +
+                ",wasMovedAnEggsFrame=" + this.wasMovedAnEggsFrame +
                 ", numberOfHoneyFrame=" + this.numberOfHoneyFrame +
                 ", numberOfEggsFrame=" + this.numberOfEggsFrame +
                 ", eggsFrames=" + this.eggsFrames +
@@ -272,7 +299,6 @@ public class Hive {
         int numberOfEggsFrameNotFull = this.eggsFrames.size() - this.getNumberOfFullEggsFrame();
         for (EggsBatch eggsBatch : eggsBatches) {
             if (currentDate.equals(eggsBatch.getCreationDate())) {
-                // getCreationDate = eggsBatch.getCreationDate();
                 for (int i = 0; i < eggsFrames.size(); i++) {
                     if (this.eggsFrames.get(i).getNumberOfEggs() < maxEggPerFrame) {
                         this.eggsFrames.get(i).setNumberOfEggs(Math.min(maxEggPerFrame, this.eggsFrames.get(i).getNumberOfEggs() + eggsBatch.getNumberOfEggs() / numberOfEggsFrameNotFull));
@@ -303,7 +329,32 @@ public class Hive {
                 }
             }
             if (allFramesAreFull) {
-                apiary.splitHive();
+                Scanner scanner = new Scanner(System.in);
+                String answer;
+                if (!this.answerIfWantToSplit) {
+                    do {
+                        System.out.println("You can choose to split or not hive number " + this.getId());
+                        System.out.println("You can split this hive only once in a year and is only one question per year");
+                        System.out.println("You have to insert Y(yes) or N(no): ");
+
+                        while (true) {
+                            answer = scanner.nextLine().trim().toUpperCase();
+                            if (answer.equals("Y") || answer.equals("N")) {
+                                break;
+                            } else {
+                                System.out.print("Invalid input. Please enter Y or N: ");
+                            }
+                        }
+                        this.setAnswerIfWantToSplit(true);
+
+                        if (answer.equals("Y")) {
+                            System.out.println("You choose to split your hive");
+                            this.getApiary().splitHive(this);
+                        }
+                        break;
+
+                    } while (false);
+                }
             }
         }
 
@@ -349,118 +400,132 @@ public class Hive {
                 honeyFrame.setKgOfHoney(Math.min(maxKgOfHoneyPerFrame, honeyFrame.getKgOfHoney() + kgOfHoneyToAdd / numberOfHoneyFrameNotFull));
             }
         }
-
-            System.out.println("Hive ID: " + this.getId());
-            System.out.println("Honey Frame: " + this.getHoneyFrames());
-            System.out.println(" date is " + currentDate);
-            System.out.println(" your hive is :" + this);
-        }
+        System.out.println(" date is " + currentDate);
+        System.out.println(" your hive is :" + this);
+    }
 
 
-        public void addNewHoneyFrameInHive () {
+    public void addNewHoneyFrameInHive() {
 
         /*
         this method will add new empty honey frame in hive. If total number of honey frame full in hive is equal with
         6, will call method to collect honey from frames.
          */
 
-            double maxKgOfHoneyPerFrame = 4.5;
-            // a frame could be loaded with around  4.5Kg of honey
+        double maxKgOfHoneyPerFrame = 4.5;
+        // a frame could be loaded with around  4.5Kg of honey
 
-            int honeyFrameFull = 0;
-            for (HoneyFrame honeyFrame : honeyFrames) {
-                if (honeyFrame.getKgOfHoney() == maxKgOfHoneyPerFrame && honeyFrameFull < honeyFrames.size()) {
-                    honeyFrameFull += 1;
-                }
-            }
-            if (honeyFrameFull == honeyFrames.size()) {
-                int maximumNumberOfFramesToAdd = 6 - honeyFrameFull;
-                if (maximumNumberOfFramesToAdd != 0) {
-                    this.setNumberOfHoneyFrame(this.getNumberOfHoneyFrame() + 1);
-                    this.addHoneyFrames(createNewHoneyFrame());
-                }
+        int honeyFrameFull = 0;
+        for (HoneyFrame honeyFrame : honeyFrames) {
+            if (honeyFrame.getKgOfHoney() == maxKgOfHoneyPerFrame && honeyFrameFull < honeyFrames.size()) {
+                honeyFrameFull += 1;
             }
         }
-
-
-        public List<EggsFrame> createNewEggsFrame ( int numberOfEggsFrame){
-            // this method will create a new empty eggs frame
-
-            List<EggsFrame> eggsFrames = new ArrayList<>();
-            EggsFrame eggsFrame = new EggsFrame(numberOfEggsFrame, 0);
-            eggsFrames.add(eggsFrame);
-            return eggsFrames;
+        if (honeyFrameFull == honeyFrames.size()) {
+            int maximumNumberOfFramesToAdd = 6 - honeyFrameFull;
+            if (maximumNumberOfFramesToAdd != 0) {
+                this.setNumberOfHoneyFrame(this.getNumberOfHoneyFrame() + 1);
+                this.addHoneyFrames(createNewHoneyFrame());
+            }
         }
-
-        public List<HoneyFrame> createNewHoneyFrame (){
-            // this method will create a new empty honey frame
-
-            List<HoneyFrame> honeyFrames = new ArrayList<>();
-            HoneyFrame honeyFrame = new HoneyFrame(0, getHoney().getHoneyType());
-            honeyFrames.add(honeyFrame);
-            return honeyFrames;
-        }
+    }
 
 
-        public void beesDie (Date currentDate){
+    public List<EggsFrame> createNewEggsFrame(int numberOfEggsFrame) {
+        // this method will create a new empty eggs frame
+
+        List<EggsFrame> eggsFrames = new ArrayList<>();
+        EggsFrame eggsFrame = new EggsFrame(0);
+        eggsFrames.add(eggsFrame);
+        return eggsFrames;
+    }
+
+    public List<HoneyFrame> createNewHoneyFrame() {
+        // this method will create a new empty honey frame
+
+        List<HoneyFrame> honeyFrames = new ArrayList<>();
+        HoneyFrame honeyFrame = new HoneyFrame(0, getHoney().getHoneyType());
+        honeyFrames.add(honeyFrame);
+        return honeyFrames;
+    }
+
+
+    public void beesDie(Date currentDate) {
 /*
 this method will check the date when bees hatched and if difference between hatched date and current date is more than 31 days
 they will die. bees number from each batch will subtract from total number of bees from hive
  */
 
-            List<BeesBatch> beesBatches = this.getBeesBatches();
-            Iterator<BeesBatch> iterator = beesBatches.iterator();
-            while (iterator.hasNext()) {
-                BeesBatch beesBatch = iterator.next();
-                Date creationDate = beesBatch.getCreationDate();
-                long differenceInMillisecond = Math.abs(currentDate.getTime() - creationDate.getTime());
-                long differenceInDays = differenceInMillisecond / (24 * 60 * 60 * 1000);
-                if (differenceInDays > 30) {
-                    this.numberOfBees -= beesBatch.getNumberOfBees(); // Subtract number of bees from each beesBatch from total number
-                    iterator.remove();
-                }
-
+        List<BeesBatch> beesBatches = this.getBeesBatches();
+        Iterator<BeesBatch> iterator = beesBatches.iterator();
+        while (iterator.hasNext()) {
+            BeesBatch beesBatch = iterator.next();
+            Date creationDate = beesBatch.getCreationDate();
+            long differenceInMillisecond = Math.abs(currentDate.getTime() - creationDate.getTime());
+            long differenceInDays = differenceInMillisecond / (24 * 60 * 60 * 1000);
+            if (differenceInDays > 30) {
+                this.numberOfBees -= beesBatch.getNumberOfBees(); // Subtract number of bees from each beesBatch from total number
+                iterator.remove();
             }
+
         }
+    }
 
-        public boolean checkIfAll6EggsFrameAre80PercentFull () {
-            int eggsFrameFull = 0;
-            int maxEggPerFrame = 6400;
-            boolean allEggsFrameAreFull = false;
-            EggsFrame eggsFrame = this.eggsFrames.get(eggsFrameFull);
-            if (eggsFrames.size() == 6) {
-                for (int i = 1; i < 7; i++) {
-                    if (eggsFrame.getNumberOfEggs() > 0.8 * maxEggPerFrame) {
-                        eggsFrameFull += 1;
-                    }
-                }
-            }
-            if (eggsFrameFull == 6) {
-                allEggsFrameAreFull = true;
-            }
-            return allEggsFrameAreFull;
-        }
-
-        public int getNumberOfFullEggsFrame () {
-            int eggsFrameFull = 0;
-            int maxEggPerFrame = 6400;
-            for (int i = 0; i < eggsFrames.size(); i++) {
-                if (this.eggsFrames.get(i).getNumberOfEggs() == maxEggPerFrame && eggsFrameFull < eggsFrames.size()) {
+    public boolean checkIfAll6EggsFrameAre80PercentFull() {
+        int eggsFrameFull = 0;
+        int maxEggPerFrame = 6400;
+        boolean allEggsFrameAreFull = false;
+        EggsFrame eggsFrame = this.eggsFrames.get(eggsFrameFull);
+        if (eggsFrames.size() == 6) {
+            for (int i = 1; i < 7; i++) {
+                if (eggsFrame.getNumberOfEggs() > 0.8 * maxEggPerFrame) {
                     eggsFrameFull += 1;
                 }
             }
-            return eggsFrameFull;
         }
+        if (eggsFrameFull == 6) {
+            allEggsFrameAreFull = true;
+        }
+        return allEggsFrameAreFull;
+    }
 
-        public int getNumberOfFullHoneyFrame () {
-            int honeyFrameFull = 0;
-            double maxKgOfHoneyPerFrame = 4.5;
-            for (int i = 0; i < this.honeyFrames.size(); i++) {
-                if (this.honeyFrames.get(i).getKgOfHoney() == maxKgOfHoneyPerFrame && honeyFrameFull < this.honeyFrames.size()) {
-                    honeyFrameFull += 1;
+    public int getNumberOfFullEggsFrame() {
+        int eggsFrameFull = 0;
+        int maxEggPerFrame = 6400;
+        for (int i = 0; i < eggsFrames.size(); i++) {
+            if (this.eggsFrames.get(i).getNumberOfEggs() == maxEggPerFrame && eggsFrameFull < eggsFrames.size()) {
+                eggsFrameFull += 1;
+            }
+        }
+        return eggsFrameFull;
+    }
+
+    public int getNumberOfFullHoneyFrame() {
+
+        int honeyFrameFull = 0;
+        double maxKgOfHoneyPerFrame = 4.5;
+        for (int i = 0; i < this.honeyFrames.size(); i++) {
+            if (this.honeyFrames.get(i).getKgOfHoney() == maxKgOfHoneyPerFrame && honeyFrameFull < this.honeyFrames.size()) {
+                honeyFrameFull += 1;
+            }
+        }
+        return honeyFrameFull;
+    }
+
+    public void moveAnEggsFrameFromUnsplitHiveToASplitOne() {
+        if (this.checkIfAll6EggsFrameAre80PercentFull() && !this.itWasSplit && !this.wasMovedAnEggsFrame) {
+            List<Hive> hives = apiary.getHives();
+            for (Hive hive : hives) {
+                if (hive.itWasSplit) {
+                    System.out.println("We move an eggs frame " + this.eggsFrames.get(0) +
+                            " from hive " + this.getId() + " to hive " + hive.getId());
+
+                    EggsFrame frameToMove = this.getEggsFrames().remove(hive.getEggsFrames().size() - 1);
+                    hive.eggsFrames.add(frameToMove);
+                    this.setWasMovedAnEggsFrame(true);// Move only one frame to one split hive
+                    break;
                 }
             }
-            return honeyFrameFull;
         }
-
     }
+}

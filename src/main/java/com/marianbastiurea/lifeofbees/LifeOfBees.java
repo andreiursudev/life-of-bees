@@ -41,6 +41,8 @@ public class LifeOfBees {
         Random random = new Random();
         Hive hive = new Hive();
         hive.setItWasSplit(false);// a hive could be split only once in a year
+        hive.setWasMovedAnEggsFrame(false);
+        hive.setAnswerIfWantToSplit(false);
         hive.setEggsBatches(new ArrayList<>());
         hive.setEggsFrames(new ArrayList<>());
         hive.setHoneyFrames(new ArrayList<>());
@@ -53,22 +55,22 @@ public class LifeOfBees {
         Queen queen = new Queen();
         hive.setQueen(queen);
         hive.getQueen().setAgeOfQueen(random.nextInt(1, 6));
-        hive.setNumberOfHoneyFrame(random.nextInt(4, 6)); // Random number of honey frames
-        hive.setNumberOfEggsFrame(random.nextInt(4, 6)); // Random number of eggs frames
+        hive.setNumberOfHoneyFrame(random.nextInt(3, 4)); // Random number of honey frames
+        hive.setNumberOfEggsFrame(random.nextInt(3, 4)); // Random number of eggs frames
         hive.setApiary(apiary);
 
         // Creating EggsFrame with a random number off eggs
         queen = new Queen(hive.getAgeOfQueen());
         for (int i = 1; i < hive.getNumberOfEggsFrame() + 1; i++) {
-            int randomNumberOfEggs = random.nextInt(4000, 5000);
-            hive.addEggsFrames(queen.fillUpWithEggs(i, randomNumberOfEggs));
+            int randomNumberOfEggs = random.nextInt(4500, 5000);
+            hive.addEggsFrames(queen.fillUpWithEggs(randomNumberOfEggs));
 
         }
 
         // Creating HoneyFrames
         List<HoneyFrame> honeyFrames = new ArrayList<>();
         for (int i = 0; i < hive.getNumberOfHoneyFrame(); i++) {
-            HoneyFrame honeyFrame = new HoneyFrame(random.nextDouble(2, 2.5), hive.getHoney().getHoneyType());
+            HoneyFrame honeyFrame = new HoneyFrame(random.nextDouble(2.5, 3), hive.getHoney().getHoneyType());
             honeyFrames.add(honeyFrame); // Add each HoneyFrame to the list
         }
         hive.addHoneyFrames(honeyFrames);
@@ -87,8 +89,8 @@ public class LifeOfBees {
         calendar.set(Calendar.DAY_OF_MONTH, 1);
 
         // Iterate over 2 years
-        for (int year = 0; year < 1; year++) {// Use only one for debug purposes
-            while (calendar.get(Calendar.MONTH) != Calendar.JUNE) {
+        for (int year = 0; year < 2; year++) {
+            while (calendar.get(Calendar.MONTH) != Calendar.OCTOBER) {
                 // Iterate until OCTOBER
                 Date currentDate = calendar.getTime();
                 System.out.println("Date: " + currentDate);
@@ -102,31 +104,35 @@ public class LifeOfBees {
                 ArrayList<Hive> oldHives = new ArrayList<>(hives);
                 for (Hive hive : oldHives) {
                     Queen queen = new Queen();
-                   // Honey honey = new Honey();
-                    Honey honey=hive.getHoney();
+                    Honey honey = hive.getHoney();
                     hive.getHoney().honeyTypes(month, dayOfMonth);
                     hive.addEggsBatches(queen.makeBatchOfEggs(queen.makeEggs(hive, dayOfMonth, month), currentDate));
                     hive.fillUpExistingEggsFrameFromHive(currentDate);
                     hive.addNewEggsFrameInHive();
+                    hive.moveAnEggsFrameFromUnsplitHiveToASplitOne();
                     hive.checkAndAddEggsToBees(currentDate);
                     hive.fillUpExistingHoneyFrameFromHive(currentDate);
                     hive.addNewHoneyFrameInHive();
-                    hive.addHoneyBatches(honey.makeHoneyBatch(hive,currentDate));
+                    hive.addHoneyBatches(honey.makeHoneyBatch(hive, currentDate));
                     hive.beesDie(currentDate);
                     System.out.println();
                 }
-               // apiary.collectHoneyFromHives(currentDate);
 
                 calendar.add(Calendar.DAY_OF_MONTH, 1); // Move to the next day
             }
+
+            apiary.honeyHarvestedByHoneyType();
+            System.out.println("your apiary at the end of the year is: " + apiary);
+
             List<Hive> hives = apiary.getHives();// have to build a hibernate method
+
             for (Hive hive : hives) {
-                hive.setItWasSplit(false);
+                apiary.hibernate(hive);
             }
 
             calendar.set(Calendar.MONTH, Calendar.APRIL);// Reset month for the next year
+
+            System.out.println("your apiary at the beginning of new  year is: " + apiary);
         }
-        System.out.println("your apiary is: " + apiary);
-        System.out.println("your honey production is " + apiary.getHarvestedHoneys());
     }
 }

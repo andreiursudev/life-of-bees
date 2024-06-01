@@ -6,12 +6,7 @@ import java.util.List;
 
 public class Honey {
     private String honeyType;
-    private List<Hive> hives;
 
-
-//    public Honey(String honeyType) {
-//        this.honeyType = honeyType;
-//    }
 
     public String getHoneyType() {
         return honeyType;
@@ -56,6 +51,8 @@ public class Honey {
                 return honeyType="SunFlower";
             case AUGUST:
                 return honeyType="WildFlower";
+            case SEPTEMBER:
+                return honeyType="WildFlower";
             default:
                 break;
         }
@@ -71,13 +68,13 @@ public class Honey {
             case "Rapeseed":
                 return  0.8; //kgOnHa=50
             case "WildFlower":
-                return 0.5 ;//kgOnHa=40
+                return 0.7 ;//kgOnHa=40
             case "Linden":
                 return 1;//kgOnHa=1200
             case "SunFlower":
                 return 0.7;//kgOnHa=60
             case "FalseIndigo":
-                return 0.5;//kgOnHa=70
+                return 0.7;//kgOnHa=70
         }
         return indexHoneyProductivity;
     }
@@ -88,7 +85,7 @@ public class Honey {
             double totalKgOfHoneyPerHive = 0;
             int frameCounter = 0;
 
-            if (hive.isItWasSplit()&& hive.checkIfAll6EggsFrameAre80PercentFull()) {
+            if (hive.isAnswerIfWantToSplit() && hive.checkIfAll6EggsFrameAre80PercentFull()) {
                 List<HoneyFrame> hiveHoneyFrames = hive.getHoneyFrames();
                 for (HoneyFrame honeyFrame : hiveHoneyFrames) {
                     if (honeyFrame.getKgOfHoney() > 3) {
@@ -102,7 +99,7 @@ public class Honey {
                 HoneyBatch honeyBatch = new HoneyBatch(hive.getId(), currentDate, totalKgOfHoneyPerHive,
                         getHoneyType(), frameCounter);
                 honeyBatches.add(honeyBatch);
-                System.out.println("Honey Batch are:" + honeyBatch);
+               // System.out.println("Honey Batch are:" + honeyBatch);
             }
         }
             return honeyBatches;
