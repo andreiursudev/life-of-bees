@@ -121,18 +121,19 @@ public class LifeOfBees {
                 calendar.add(Calendar.DAY_OF_MONTH, 1); // Move to the next day
             }
 
+            apiary.honeyHarvestedByHoneyType();
+            System.out.println("your apiary at the end of the year is: " + apiary);
+
             List<Hive> hives = apiary.getHives();// have to build a hibernate method
+
             for (Hive hive : hives) {
-                hive.setItWasSplit(false);
-                hive.setAnswerIfWantToSplit(false);
+                apiary.hibernate(hive);
             }
 
-
-            apiary.honeyHarvestedByHoneyType();
             calendar.set(Calendar.MONTH, Calendar.APRIL);// Reset month for the next year
         }
 
-        System.out.println("your apiary is: " + apiary);
+        System.out.println("your apiary at the beggining of new  year is: " + apiary);
 
     }
 }

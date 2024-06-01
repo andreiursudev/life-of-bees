@@ -1,6 +1,7 @@
 package com.marianbastiurea.lifeofbees;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Date;
 
@@ -69,66 +70,66 @@ public class Apiary {
 
         List<Hive> newHives = new ArrayList<>();
 
-            if (hive.getNumberOfEggsFrame() == 6 && !hive.isItWasSplit()) {
-                System.out.println("Now old and new frames are full. Hive will be split in two hives.");
-                Hive newHive = new Hive(this.getNumberOfHives() + 1,
-                        true, true, hive.getNumberOfHoneyFrame(), hive.getNumberOfEggsFrame(),
-                        (hive.getNumberOfBees() / 2), new Queen()
-                );
-                hive.setNumberOfBees(hive.getNumberOfBees() / 2);
-                hive.setItWasSplit(true);
-                hive.setAnswerIfWantToSplit(true);
-                newHive.getQueen().setAgeOfQueen(0);
-                newHive.setHoney(hive.getHoney());
-                newHive.setApiary(this);
-                newHive.setWasMovedAnEggsFrame(false);
-                newHive.setBeesBatches(hive.getBeesBatches().subList(0, 0));
+        if (hive.getNumberOfEggsFrame() == 6 && !hive.isItWasSplit()) {
+            System.out.println("Now old and new frames are full. Hive will be split in two hives.");
+            Hive newHive = new Hive(this.getNumberOfHives() + 1,
+                    true, true, hive.getNumberOfHoneyFrame(), hive.getNumberOfEggsFrame(),
+                    (hive.getNumberOfBees() / 2), new Queen()
+            );
+            hive.setNumberOfBees(hive.getNumberOfBees() / 2);
+            hive.setItWasSplit(true);
+            hive.setAnswerIfWantToSplit(true);
+            newHive.getQueen().setAgeOfQueen(0);
+            newHive.setHoney(hive.getHoney());
+            newHive.setApiary(this);
+            newHive.setWasMovedAnEggsFrame(false);
+            newHive.setBeesBatches(hive.getBeesBatches().subList(0, 0));
 
-                List<EggsFrame> hiveEggsFrames = hive.getEggsFrames();
-                List<EggsFrame> newHiveEggsFrames = new ArrayList<>();
-                for (EggsFrame eggsFrame : hiveEggsFrames) {
-                    int eggsToTransfer = eggsFrame.getNumberOfEggs() / 2;
-                    EggsFrame newHiveFrame = new EggsFrame(eggsFrame.getNumberOfEggsFrame(), eggsToTransfer);
-                    newHiveEggsFrames.add(newHiveFrame);
-                    eggsFrame.setNumberOfEggs(eggsFrame.getNumberOfEggs() - eggsToTransfer);
-                }
-                newHive.setEggsFrames(newHiveEggsFrames);
-
-                List<HoneyFrame> hiveHoneyFrames = hive.getHoneyFrames();
-                List<HoneyFrame> newHiveHoneyFrames = new ArrayList<>();
-                for (HoneyFrame honeyFrame : hiveHoneyFrames) {
-                    HoneyFrame newHiveFrame = new HoneyFrame(honeyFrame.getKgOfHoney() / 2, honeyFrame.getHoneyType());
-                    newHiveHoneyFrames.add(newHiveFrame);
-                    honeyFrame.setKgOfHoney(honeyFrame.getKgOfHoney() / 2);
-                }
-                newHive.setHoneyFrames(newHiveHoneyFrames);
-
-                List<EggsBatch> hiveEggsBatches = hive.getEggsBatches();
-                List<EggsBatch> newHiveEggsBatches = new ArrayList<>();
-                for (EggsBatch eggsBatch : hiveEggsBatches) {
-                    int eggsToTransfer = eggsBatch.getNumberOfEggs() / 2;
-                    EggsBatch newHiveBatch = new EggsBatch(eggsToTransfer, eggsBatch.getCreationDate());
-                    newHiveEggsBatches.add(newHiveBatch);
-                    eggsBatch.setNumberOfEggs(eggsBatch.getNumberOfEggs() - eggsToTransfer);
-                }
-                newHive.setEggsBatches(newHiveEggsBatches);
-
-                List<BeesBatch> hiveBeesBatches = hive.getBeesBatches();
-                List<BeesBatch> newHiveBeesBatches = new ArrayList<>();
-                for (BeesBatch beesBatch : hiveBeesBatches) {
-                    int beesToTransfer = beesBatch.getNumberOfBees() / 2;
-                    BeesBatch newHiveBatch = new BeesBatch(beesToTransfer, beesBatch.getCreationDate());
-                    newHiveBeesBatches.add(newHiveBatch);
-                    beesBatch.setNumberOfBees(beesBatch.getNumberOfBees() - beesToTransfer);
-                }
-                newHive.setBeesBatches(newHiveBeesBatches);
-
-                newHive.setHoneyBatches(new ArrayList<>());
-
-                newHives.add(newHive);
-                this.setNumberOfHives(this.getNumberOfHives() + 1);
-
+            List<EggsFrame> hiveEggsFrames = hive.getEggsFrames();
+            List<EggsFrame> newHiveEggsFrames = new ArrayList<>();
+            for (EggsFrame eggsFrame : hiveEggsFrames) {
+                int eggsToTransfer = eggsFrame.getNumberOfEggs() / 2;
+                EggsFrame newHiveFrame = new EggsFrame(eggsFrame.getNumberOfEggsFrame(), eggsToTransfer);
+                newHiveEggsFrames.add(newHiveFrame);
+                eggsFrame.setNumberOfEggs(eggsFrame.getNumberOfEggs() - eggsToTransfer);
             }
+            newHive.setEggsFrames(newHiveEggsFrames);
+
+            List<HoneyFrame> hiveHoneyFrames = hive.getHoneyFrames();
+            List<HoneyFrame> newHiveHoneyFrames = new ArrayList<>();
+            for (HoneyFrame honeyFrame : hiveHoneyFrames) {
+                HoneyFrame newHiveFrame = new HoneyFrame(honeyFrame.getKgOfHoney() / 2, honeyFrame.getHoneyType());
+                newHiveHoneyFrames.add(newHiveFrame);
+                honeyFrame.setKgOfHoney(honeyFrame.getKgOfHoney() / 2);
+            }
+            newHive.setHoneyFrames(newHiveHoneyFrames);
+
+            List<EggsBatch> hiveEggsBatches = hive.getEggsBatches();
+            List<EggsBatch> newHiveEggsBatches = new ArrayList<>();
+            for (EggsBatch eggsBatch : hiveEggsBatches) {
+                int eggsToTransfer = eggsBatch.getNumberOfEggs() / 2;
+                EggsBatch newHiveBatch = new EggsBatch(eggsToTransfer, eggsBatch.getCreationDate());
+                newHiveEggsBatches.add(newHiveBatch);
+                eggsBatch.setNumberOfEggs(eggsBatch.getNumberOfEggs() - eggsToTransfer);
+            }
+            newHive.setEggsBatches(newHiveEggsBatches);
+
+            List<BeesBatch> hiveBeesBatches = hive.getBeesBatches();
+            List<BeesBatch> newHiveBeesBatches = new ArrayList<>();
+            for (BeesBatch beesBatch : hiveBeesBatches) {
+                int beesToTransfer = beesBatch.getNumberOfBees() / 2;
+                BeesBatch newHiveBatch = new BeesBatch(beesToTransfer, beesBatch.getCreationDate());
+                newHiveBeesBatches.add(newHiveBatch);
+                beesBatch.setNumberOfBees(beesBatch.getNumberOfBees() - beesToTransfer);
+            }
+            newHive.setBeesBatches(newHiveBeesBatches);
+
+            newHive.setHoneyBatches(new ArrayList<>());
+
+            newHives.add(newHive);
+            this.setNumberOfHives(this.getNumberOfHives() + 1);
+
+        }
 
         hives.addAll(newHives);
     }
@@ -213,4 +214,21 @@ public class Apiary {
             }
         }
     }
+
+    public void hibernate(Hive hive) {
+        hive.getQueen().setAgeOfQueen(hive.getQueen().getAgeOfQueen() + 1);
+        hive.setItWasSplit(false);
+        hive.setAnswerIfWantToSplit(false);
+        hive.setWasMovedAnEggsFrame(false);
+        hive.setNumberOfHoneyFrame(4);
+        hive.setNumberOfEggsFrame(4);
+        hive.getEggsBatches().clear();
+        hive.getBeesBatches().clear();
+        hive.getHoneyBatches().clear();;
+        hive.getEggsFrames().remove(hive.getEggsFrames().size() - 1);
+        hive.getEggsFrames().remove(hive.getEggsFrames().size() - 1);
+        hive.getHoneyFrames().remove(hive.getHoneyFrames().size() - 1);
+        hive.getHoneyFrames().remove(hive.getHoneyFrames().size() - 1);
+    }
 }
+
