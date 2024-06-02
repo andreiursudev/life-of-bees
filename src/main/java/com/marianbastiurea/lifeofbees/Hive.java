@@ -309,7 +309,7 @@ public class Hive {
     }
 
 
-    public void addNewEggsFrameInHive() {
+    public void addNewEggsFrameInHive(int year) {
 
         /*
         this method will add new empty eggs frame in hive. If total number of eggs frame full in hive is equal with
@@ -333,6 +333,7 @@ public class Hive {
                 String answer;
                 if (!this.answerIfWantToSplit) {
                     do {
+                        System.out.println("this is year: "+year);
                         System.out.println("You can choose to split or not hive number " + this.getId());
                         System.out.println("You can split this hive only once in a year and is only one question per year");
                         System.out.println("You have to insert Y(yes) or N(no): ");

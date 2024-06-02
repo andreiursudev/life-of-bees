@@ -90,7 +90,7 @@ public class LifeOfBees {
 
         // Iterate over 2 years
         for (int year = 0; year < 2; year++) {
-            while (calendar.get(Calendar.MONTH) != Calendar.OCTOBER) {
+            while (calendar.get(Calendar.MONTH) != Calendar.JULY) {
                 // Iterate until OCTOBER
                 Date currentDate = calendar.getTime();
                 System.out.println("Date: " + currentDate);
@@ -108,7 +108,7 @@ public class LifeOfBees {
                     hive.getHoney().honeyTypes(month, dayOfMonth);
                     hive.addEggsBatches(queen.makeBatchOfEggs(queen.makeEggs(hive, dayOfMonth, month), currentDate));
                     hive.fillUpExistingEggsFrameFromHive(currentDate);
-                    hive.addNewEggsFrameInHive();
+                    hive.addNewEggsFrameInHive(year);
                     hive.moveAnEggsFrameFromUnsplitHiveToASplitOne();
                     hive.checkAndAddEggsToBees(currentDate);
                     hive.fillUpExistingHoneyFrameFromHive(currentDate);
