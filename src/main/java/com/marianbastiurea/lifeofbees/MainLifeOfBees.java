@@ -1,5 +1,8 @@
 package com.marianbastiurea.lifeofbees;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 public class MainLifeOfBees {
@@ -8,7 +11,7 @@ public class MainLifeOfBees {
         int numberOfStartingHives;
         Scanner scanner = new Scanner(System.in);
         do {
-        System.out.println("Please input number of starting hive from apiary. ");
+            System.out.println("Please input number of starting hive from apiary. ");
             System.out.println("You have to insert a number lower than 10: ");
             while (!scanner.hasNextInt()) {
                 System.out.print("Invalid input. Please enter an integer: ");
@@ -19,9 +22,50 @@ public class MainLifeOfBees {
                 System.out.println("Input should be lower than 10. Please try again.");
             }
         } while (numberOfStartingHives > 11);
-        LifeOfBees lifeOfBees = new LifeOfBees();
-        lifeOfBees.createHives(numberOfStartingHives);
-        lifeOfBees.iterateOverTwoYears();
+
+        Random random = new Random();
+
+
+        List<Hive> hives = new ArrayList<>();
+        String honeyType = "Rapeseed";
+        for (int i = 1; i < numberOfStartingHives + 1; i++) {
+            int ageOfQueen = random.nextInt(1, 6);
+            int numberOfHoneyFrame = random.nextInt(3, 4);
+            int numberOfEggsFrame = random.nextInt(3, 4);
+            int randomNumberOfEggs = random.nextInt(4500, 5000);
+            double kgOfHoney = random.nextDouble(2.5, 3);
+            List<EggsFrame> eggsFrames = new ArrayList<>();
+            for (int j = 1; j < numberOfEggsFrame; j++) {
+                eggsFrames.add(new EggsFrame(randomNumberOfEggs));
+            }
+            List<HoneyFrame> honeyFrames = new ArrayList<>();
+            for (int k = 0; k < numberOfHoneyFrame; k++) {
+                honeyFrames.add(new HoneyFrame(kgOfHoney, honeyType));
+            }
+            int numberOfBees = random.nextInt(2000, 2500) * (numberOfHoneyFrame + numberOfEggsFrame);
+            Hive hive = new Hive(i,
+                    false,
+                    false,
+                    false,
+                    new ArrayList<>(),
+                    eggsFrames,
+                    new ArrayList<>(),
+                    new ArrayList<>(),
+                    new ArrayList<>(),
+                    new Honey(honeyType),
+                    new Queen(ageOfQueen),
+                    numberOfHoneyFrame,
+                    numberOfEggsFrame,
+                    numberOfBees);
+            hives.add(hive);
+        }
+        IWeather whether = new Whether();
+
+        System.out.println("First " + numberOfStartingHives + " are " + hives);
+
+
+        LifeOfBees lifeOfBees = new LifeOfBees(new Apiary(hives, new ArrayList<>()));
+        lifeOfBees.iterateOverTwoYears(whether);
 
     }
 }

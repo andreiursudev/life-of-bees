@@ -42,17 +42,37 @@ public class Queen {
     }
 
 
-    public int makeEggs(Hive hive, int dayOfMonth, HarvestingMonths month) {
+    public int makeEggs(Honey honey, double whetherIndex) {
         /*
         this method will calculate number of daily laying eggs by queen. will used two factors for this:
         - first will be index about age of queen and honey productivity;
         - second will be an whether index connected with wind speed, precipitation and temperature
          */
 
-        int numberOfEggs = (int) (2000 * hive.ageOfQueenIndex(dayOfMonth,month)*hive.getHoney().honeyProductivity(month, dayOfMonth)
-                *Whether.whetherIndex(Whether.whetherToday(month,dayOfMonth)));
+        int numberOfEggs = (int) (2000 * this.ageOfQueenIndex()*honey.honeyProductivity() * whetherIndex);
         return numberOfEggs;
 
+    }
+
+    public double ageOfQueenIndex() {
+        /* a queen lives 3-5 years. When will build first 10 hives in apiary will use random to generate ageOfQueen
+         between 1  and 5 years old for our queen. At age 5, will have to replace this queen with new one.
+         Depending on age of queen will choose an fertility index between 0.25 and 1. When index is 0.25, queen is too old
+         to lay eggs and she have to be replaced. When index is 1,fertility of queen is at maximum and she can lay
+         upon 2000 eggs daily
+         */
+
+        int ageOfQueen = this.getAgeOfQueen();
+
+        switch (ageOfQueen) {
+            case 0, 1, 2, 3:
+                return 1;
+            case 4:
+                    return 0.75;
+            default:
+                break;
+        }
+        return 0;
     }
 
     public List<EggsBatch> makeBatchOfEggs(int numberOfEggs, Date date) {

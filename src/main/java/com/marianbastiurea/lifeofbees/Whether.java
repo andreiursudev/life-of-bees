@@ -4,7 +4,7 @@ package com.marianbastiurea.lifeofbees;
 import java.util.*;
 
 
-public class Whether {
+public class Whether implements IWeather{
     private double speedWind;// in km/h
     private double temperature;// in Celsius Degree
     private double precipitation;// in mm
@@ -39,7 +39,7 @@ public class Whether {
                 '}';
     }
 
-    public static Whether whetherToday(HarvestingMonths month, int dayOfMonth) {
+    public Whether whetherToday(HarvestingMonths month, int dayOfMonth) {
         Random random = new Random();
         Whether dailyWhether = new Whether();
         switch (month) {
@@ -135,7 +135,7 @@ public class Whether {
         return dailyWhether;
     }
 
-    public static double whetherIndex(Whether dailyWhether) {
+    public double whetherIndex(Whether dailyWhether) {
        // System.out.println("whether today is"+dailyWhether);
         double rainIndex = 0;
         double temperatureIndex = 0;
@@ -176,4 +176,7 @@ public class Whether {
         return whetherIndex;
     }
 
+    public double whetherIndex(HarvestingMonths harvestingMonth, int dayOfMonth) {
+        return whetherIndex(whetherToday(harvestingMonth, dayOfMonth));
+    }
 }

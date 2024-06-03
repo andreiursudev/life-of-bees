@@ -49,6 +49,36 @@ public class Hive {
         this.wasMovedAnEggsFrame = wasMovedAnEggsFrame;
     }
 
+    public Hive(int hiveIdCounter,
+                boolean itWasSplit,
+                boolean wasMovedAnEggsFrame,
+                boolean answerIfWantToSplit,
+                List<EggsBatch> eggsBatches,
+                List<EggsFrame> eggsFrames,
+                List<HoneyFrame> honeyFrames,
+                List<BeesBatch> beesBatches,
+                List<HoneyBatch> honeyBatches,
+                Honey honey,
+                Queen queen,
+                int numberOfHoneyFrame,
+                int numberOfEggsFrame,
+                int numberOfBees) {
+        this.id = hiveIdCounter;
+        this.itWasSplit = itWasSplit;
+        this.wasMovedAnEggsFrame = wasMovedAnEggsFrame;
+        this.answerIfWantToSplit = answerIfWantToSplit;
+        this.eggsBatches = eggsBatches;
+        this.eggsFrames = eggsFrames;
+        this.honeyFrames = honeyFrames;
+        this.beesBatches = beesBatches;
+        this.honeyBatches = honeyBatches;
+        this.honey = honey;
+        this.queen = queen;
+        this.numberOfHoneyFrame = numberOfHoneyFrame;
+        this.numberOfEggsFrame = numberOfEggsFrame;
+        this.numberOfBees = numberOfBees;
+    }
+
     public boolean isItWasSplit() {
         return itWasSplit;
     }
@@ -222,33 +252,6 @@ public class Hive {
         return beesBatches;
     }
 
-    public double ageOfQueenIndex(int dayOfMonth, HarvestingMonths month) {
-        /* a queen lives 3-5 years. When will build first 10 hives in apiary will use random to generate ageOfQueen
-         between 1  and 5 years old for our queen. At age 5, will have to replace this queen with new one.
-         Depending on age of queen will choose an fertility index between 0.25 and 1. When index is 0.25, queen is too old
-         to lay eggs and she have to be replaced. When index is 1,fertility of queen is at maximum and she can lay
-         upon 2000 eggs daily
-         */
-
-        int ageOfQueen = this.getQueen().getAgeOfQueen();
-        String honeyType = this.getHoney().honeyTypes(month, dayOfMonth);
-        double numberRandom = Math.random();
-        switch (ageOfQueen) {
-            case 0, 1, 2, 3:
-                return 1;
-            case 4:
-                if (numberRandom < 0.5 && honeyType.equals("Acacia")) {
-                    this.getQueen().setAgeOfQueen(0);
-                    return 1;
-                } else
-                    return 0.75;
-            case 5:
-                this.getQueen().setAgeOfQueen(0);
-            default:
-                break;
-        }
-        return 0;
-    }
 
 
     public void checkAndAddEggsToBees(Date currentDate) {
@@ -528,5 +531,9 @@ they will die. bees number from each batch will subtract from total number of be
                 }
             }
         }
+    }
+
+    public void changeQueen() {
+        queen = new Queen(0);
     }
 }

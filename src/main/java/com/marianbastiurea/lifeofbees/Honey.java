@@ -7,6 +7,10 @@ import java.util.List;
 public class Honey {
     private String honeyType;
 
+    public Honey(String honeyType) {
+        this.honeyType = honeyType;
+    }
+
 
     public String getHoneyType() {
         return honeyType;
@@ -20,55 +24,54 @@ public class Honey {
     public String toString() {
         return "Honey{" +
                 "honeyType='" + honeyType + '\'' +
-               // ", honeyKg=" + honeyKg +
+                // ", honeyKg=" + honeyKg +
                 '}';
     }
 
-    public String honeyTypes(HarvestingMonths month, int dayOfMonth) {
+    public void honeyTypes(HarvestingMonths month, int dayOfMonth) {
         switch (month) {
             case APRIL:
                 if (dayOfMonth >= 1 && dayOfMonth <= 20) {
-                    return honeyType="Rapeseed";
+                    honeyType = "Rapeseed";
                 } else if (dayOfMonth >= 21 && dayOfMonth <= 30) {
-                    return honeyType="WildFlower";
+                    honeyType = "WildFlower";
                 }
                 break;
             case MAY:
                 if (dayOfMonth >= 1 && dayOfMonth <= 20) {
-                    return honeyType="Acacia";
-                }else if (dayOfMonth >= 21 && dayOfMonth <= 31) {
-                    return honeyType="FalseIndigo";
+                    honeyType = "Acacia";
+                } else if (dayOfMonth >= 21 && dayOfMonth <= 31) {
+                    honeyType = "FalseIndigo";
                 }
                 break;
             case JUNE:
                 if (dayOfMonth >= 1 && dayOfMonth <= 20) {
-                    return honeyType="Linden";
-                }else if (dayOfMonth >= 21 && dayOfMonth <= 30) {
-                    return honeyType="WildFlower";
+                    honeyType = "Linden";
+                } else if (dayOfMonth >= 21 && dayOfMonth <= 30) {
+                    honeyType = "WildFlower";
                 }
                 break;
             case JULY:
-                return honeyType="SunFlower";
+                honeyType = "SunFlower";
             case AUGUST:
-                return honeyType="WildFlower";
+                honeyType = "WildFlower";
             case SEPTEMBER:
-                return honeyType="WildFlower";
+                honeyType = "WildFlower";
             default:
                 break;
         }
-        return honeyType=""; // Default value if month and day combination doesn't match any condition
+
     }
 
-    public double honeyProductivity( HarvestingMonths month, int dayOfMonth){
-        String honeyType=honeyTypes(month, dayOfMonth);
-        int indexHoneyProductivity=0;
-        switch (honeyType){
+    public double honeyProductivity() {
+        int indexHoneyProductivity = 0;
+        switch (honeyType) {
             case "Acacia":
-                return 1 ;//kgOnHa=1600
+                return 1;//kgOnHa=1600
             case "Rapeseed":
-                return  0.8; //kgOnHa=50
+                return 0.8; //kgOnHa=50
             case "WildFlower":
-                return 0.7 ;//kgOnHa=40
+                return 0.7;//kgOnHa=40
             case "Linden":
                 return 1;//kgOnHa=1200
             case "SunFlower":
@@ -79,29 +82,29 @@ public class Honey {
         return indexHoneyProductivity;
     }
 
-    public List<HoneyBatch> makeHoneyBatch(Hive hive,Date currentDate) {
+    public List<HoneyBatch> makeHoneyBatch(Hive hive, Date currentDate) {
         List<HoneyBatch> honeyBatches = new ArrayList<>();
 
-            double totalKgOfHoneyPerHive = 0;
-            int frameCounter = 0;
+        double totalKgOfHoneyPerHive = 0;
+        int frameCounter = 0;
 
-            if (hive.isAnswerIfWantToSplit() && hive.checkIfAll6EggsFrameAre80PercentFull()) {
-                List<HoneyFrame> hiveHoneyFrames = hive.getHoneyFrames();
-                for (HoneyFrame honeyFrame : hiveHoneyFrames) {
-                    if (honeyFrame.getKgOfHoney() > 3) {
-                        frameCounter++;
-                        totalKgOfHoneyPerHive += honeyFrame.getKgOfHoney();
-                        honeyFrame.setKgOfHoney(0);
-                    }
+        if (hive.isAnswerIfWantToSplit() && hive.checkIfAll6EggsFrameAre80PercentFull()) {
+            List<HoneyFrame> hiveHoneyFrames = hive.getHoneyFrames();
+            for (HoneyFrame honeyFrame : hiveHoneyFrames) {
+                if (honeyFrame.getKgOfHoney() > 3) {
+                    frameCounter++;
+                    totalKgOfHoneyPerHive += honeyFrame.getKgOfHoney();
+                    honeyFrame.setKgOfHoney(0);
                 }
+            }
 
             if (totalKgOfHoneyPerHive > 0) {
                 HoneyBatch honeyBatch = new HoneyBatch(hive.getId(), currentDate, totalKgOfHoneyPerHive,
                         getHoneyType(), frameCounter);
                 honeyBatches.add(honeyBatch);
-               // System.out.println("Honey Batch are:" + honeyBatch);
+                // System.out.println("Honey Batch are:" + honeyBatch);
             }
         }
-            return honeyBatches;
+        return honeyBatches;
     }
 }

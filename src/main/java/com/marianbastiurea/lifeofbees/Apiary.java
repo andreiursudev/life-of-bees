@@ -1,9 +1,7 @@
 package com.marianbastiurea.lifeofbees;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Date;
 
 public class Apiary {
     /* An apiary is a location where beehives of honey bees are kept.
@@ -18,10 +16,9 @@ public class Apiary {
     private List<HarvestedHoney> harvestedHoneys;
 
 
-    public Apiary() {
-        hives = new ArrayList<>();
-        harvestedHoneys = new ArrayList<>();
-        numberOfHives = numberOfHives;
+    public Apiary(List<Hive> hives, List<HarvestedHoney> harvestedHoneys) {
+        this.hives = hives;
+        this.harvestedHoneys = harvestedHoneys;
     }
 
     public int getNumberOfHives() {
@@ -98,8 +95,8 @@ public class Apiary {
             newHive.setEggsFrames(newHiveEggsFrames);
 
             List<HoneyFrame> newHiveHoneyFrames = new ArrayList<>();
-            for(int i=0;i<3;i++){
-                HoneyFrame frameToMove=hive.getHoneyFrames().remove(hive.getHoneyFrames().size()-1);
+            for (int i = 0; i < 3; i++) {
+                HoneyFrame frameToMove = hive.getHoneyFrames().remove(hive.getHoneyFrames().size() - 1);
                 newHiveHoneyFrames.add(frameToMove);
             }
             newHive.setHoneyFrames(newHiveHoneyFrames);
