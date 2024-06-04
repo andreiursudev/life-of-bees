@@ -118,7 +118,6 @@ public class Hive {
     @Override
     public String toString() {
         return "Hive{" +
-              //  "apiary="+ this.apiary+
                 ", id=" + id +
                 ", itWasSplit=" + this.itWasSplit +
                 ", answerIfWantToSplit=" + this.answerIfWantToSplit +
@@ -384,7 +383,7 @@ public class Hive {
             int maximumNumberOfFramesToAdd = 6 - eggsFrameFull;
             if (maximumNumberOfFramesToAdd != 0) {
                 this.setNumberOfEggsFrame(this.getNumberOfEggsFrame() + 1);
-                this.addEggsFrames(createNewEggsFrame(this.getNumberOfEggsFrame()));
+                this.addEggsFrames(createNewEggsFrame());
             }
         }
     }
@@ -440,7 +439,7 @@ public class Hive {
     }
 
 
-    public List<EggsFrame> createNewEggsFrame(int numberOfEggsFrame) {
+    public List<EggsFrame> createNewEggsFrame() {
         // this method will create a new empty eggs frame
 
         List<EggsFrame> eggsFrames = new ArrayList<>();
@@ -522,7 +521,6 @@ they will die. bees number from each batch will subtract from total number of be
     }
 
     public void moveAnEggsFrameFromUnsplitHiveToASplitOne() {
-        System.out.println(" uyy apiary is: "+this.getApiary().getHives());
         if (this.checkIfAll6EggsFrameAre80PercentFull() && !this.itWasSplit && !this.wasMovedAnEggsFrame) {
             List<Hive> hives = this.getApiary().getHives();
             for (Hive hive : hives) {
