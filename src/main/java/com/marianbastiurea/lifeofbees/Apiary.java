@@ -41,10 +41,6 @@ public class Apiary {
         return hives;
     }
 
-    public void setHives(List<Hive> hives) {
-        this.hives = hives;
-    }
-
     public void addHoneyHarvested(List<HarvestedHoney> harvestedHoneys) {
         this.harvestedHoneys.addAll(harvestedHoneys);
     }
@@ -52,7 +48,7 @@ public class Apiary {
     @Override
     public String toString() {
         return "{" +
-                "numberOfHives=" + this.numberOfHives +
+                "numberOfHives=" + this.getHives().size() +
                 ", hives=" + this.hives +
                 ", honeys harvested=" + this.harvestedHoneys +
                 '}';
@@ -69,7 +65,7 @@ public class Apiary {
 
         if (hive.getNumberOfEggsFrame() == 6 && !hive.isItWasSplit()) {
             System.out.println("Now old and new frames are full. Hive will be split in two hives.");
-            Hive newHive = new Hive(this.getNumberOfHives() + 1,
+            Hive newHive = new Hive( this,this.getNumberOfHives() + 1,
                     true, true, hive.getNumberOfHoneyFrame(), hive.getNumberOfEggsFrame(),
                     (hive.getNumberOfBees() / 2), new Queen()
             );

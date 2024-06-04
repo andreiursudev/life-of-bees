@@ -31,7 +31,8 @@ public class Hive {
         this.honeyBatches = new ArrayList<>(honeyBatches);
     }
 
-    public Hive(int id, boolean itWasSplit, boolean answerIfWantToSplit, int numberOfHoneyFrame, int numberOfEggsFrame, int numberOfBees, Queen queen) {
+    public Hive(Apiary apiary,  int id, boolean itWasSplit, boolean answerIfWantToSplit, int numberOfHoneyFrame, int numberOfEggsFrame, int numberOfBees, Queen queen) {
+        this.apiary=apiary;
         this.id = id;
         this.itWasSplit = itWasSplit;
         this.answerIfWantToSplit = answerIfWantToSplit;
@@ -49,7 +50,9 @@ public class Hive {
         this.wasMovedAnEggsFrame = wasMovedAnEggsFrame;
     }
 
-    public Hive(int hiveIdCounter,
+    public Hive(
+            Apiary apiary,
+            int hiveIdCounter,
                 boolean itWasSplit,
                 boolean wasMovedAnEggsFrame,
                 boolean answerIfWantToSplit,
@@ -63,6 +66,7 @@ public class Hive {
                 int numberOfHoneyFrame,
                 int numberOfEggsFrame,
                 int numberOfBees) {
+        this.apiary=apiary;
         this.id = hiveIdCounter;
         this.itWasSplit = itWasSplit;
         this.wasMovedAnEggsFrame = wasMovedAnEggsFrame;
@@ -114,7 +118,8 @@ public class Hive {
     @Override
     public String toString() {
         return "Hive{" +
-                "id=" + id +
+              //  "apiary="+ this.apiary+
+                ", id=" + id +
                 ", itWasSplit=" + this.itWasSplit +
                 ", answerIfWantToSplit=" + this.answerIfWantToSplit +
                 ",wasMovedAnEggsFrame=" + this.wasMovedAnEggsFrame +
@@ -517,8 +522,9 @@ they will die. bees number from each batch will subtract from total number of be
     }
 
     public void moveAnEggsFrameFromUnsplitHiveToASplitOne() {
+        System.out.println(" uyy apiary is: "+this.getApiary().getHives());
         if (this.checkIfAll6EggsFrameAre80PercentFull() && !this.itWasSplit && !this.wasMovedAnEggsFrame) {
-            List<Hive> hives = apiary.getHives();
+            List<Hive> hives = this.getApiary().getHives();
             for (Hive hive : hives) {
                 if (hive.itWasSplit) {
                     System.out.println("We move an eggs frame " + this.eggsFrames.get(0) +

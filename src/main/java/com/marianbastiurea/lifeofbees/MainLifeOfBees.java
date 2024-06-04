@@ -28,6 +28,7 @@ public class MainLifeOfBees {
 
         List<Hive> hives = new ArrayList<>();
         String honeyType = "Rapeseed";
+        Apiary apiary=new Apiary(hives,new ArrayList<>());
         for (int i = 1; i < numberOfStartingHives + 1; i++) {
             int ageOfQueen = random.nextInt(1, 6);
             int numberOfHoneyFrame = random.nextInt(3, 4);
@@ -43,7 +44,8 @@ public class MainLifeOfBees {
                 honeyFrames.add(new HoneyFrame(kgOfHoney, honeyType));
             }
             int numberOfBees = random.nextInt(2000, 2500) * (numberOfHoneyFrame + numberOfEggsFrame);
-            Hive hive = new Hive(i,
+            Hive hive = new Hive(apiary,
+                    i,
                     false,
                     false,
                     false,
@@ -59,12 +61,14 @@ public class MainLifeOfBees {
                     numberOfBees);
             hives.add(hive);
         }
+
         IWeather whether = new Whether();
 
         System.out.println("First " + numberOfStartingHives + " are " + hives);
 
 
         LifeOfBees lifeOfBees = new LifeOfBees(new Apiary(hives, new ArrayList<>()));
+
         lifeOfBees.iterateOverTwoYears(whether);
 
     }
