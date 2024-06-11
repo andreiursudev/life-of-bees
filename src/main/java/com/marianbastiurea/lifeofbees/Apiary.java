@@ -66,7 +66,7 @@ public class Apiary {
         if (hive.getEggsFrames().size() == 6 && !hive.isItWasSplit()) {
             System.out.println("Now old and new frames are full. Hive will be split in two hives.");
             Hive newHive = new Hive( this,this.getNumberOfHives() + 1,
-                    true, true, hive.getNumberOfHoneyFrame(), hive.getEggsFrames().size(),
+                    true, true, hive.getNumberOfHoneyFrame(),
                     (hive.getNumberOfBees() / 2), new Queen()
             );
             hive.setNumberOfBees(hive.getNumberOfBees() / 2);

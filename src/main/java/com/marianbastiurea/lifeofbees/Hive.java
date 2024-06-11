@@ -30,7 +30,7 @@ public class Hive {
         this.honeyBatches = new ArrayList<>(honeyBatches);
     }
 
-    public Hive(Apiary apiary,  int id, boolean itWasSplit, boolean answerIfWantToSplit, int numberOfHoneyFrame, int numberOfEggsFrame, int numberOfBees, Queen queen) {
+    public Hive(Apiary apiary,  int id, boolean itWasSplit, boolean answerIfWantToSplit, int numberOfHoneyFrame, int numberOfBees, Queen queen) {
         this.apiary=apiary;
         this.id = id;
         this.itWasSplit = itWasSplit;
