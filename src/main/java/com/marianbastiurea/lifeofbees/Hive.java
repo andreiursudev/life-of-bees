@@ -10,7 +10,6 @@ public class Hive {
     private boolean answerIfWantToSplit;
     private boolean wasMovedAnEggsFrame;
     private int numberOfHoneyFrame;
-    private int numberOfEggsFrame;
     private List<EggsFrame> eggsFrames;
     private int numberOfBees;
     private Queen queen;
@@ -31,13 +30,12 @@ public class Hive {
         this.honeyBatches = new ArrayList<>(honeyBatches);
     }
 
-    public Hive(Apiary apiary,  int id, boolean itWasSplit, boolean answerIfWantToSplit, int numberOfHoneyFrame, int numberOfEggsFrame, int numberOfBees, Queen queen) {
+    public Hive(Apiary apiary,  int id, boolean itWasSplit, boolean answerIfWantToSplit, int numberOfHoneyFrame, int numberOfBees, Queen queen) {
         this.apiary=apiary;
         this.id = id;
         this.itWasSplit = itWasSplit;
         this.answerIfWantToSplit = answerIfWantToSplit;
         this.numberOfHoneyFrame = numberOfHoneyFrame;
-        this.numberOfEggsFrame = numberOfEggsFrame;
         this.numberOfBees = numberOfBees;
         this.queen = queen;
     }
@@ -64,7 +62,6 @@ public class Hive {
                 Honey honey,
                 Queen queen,
                 int numberOfHoneyFrame,
-                int numberOfEggsFrame,
                 int numberOfBees) {
         this.apiary=apiary;
         this.id = hiveIdCounter;
@@ -79,7 +76,6 @@ public class Hive {
         this.honey = honey;
         this.queen = queen;
         this.numberOfHoneyFrame = numberOfHoneyFrame;
-        this.numberOfEggsFrame = numberOfEggsFrame;
         this.numberOfBees = numberOfBees;
     }
 
@@ -123,7 +119,7 @@ public class Hive {
                 ", answerIfWantToSplit=" + this.answerIfWantToSplit +
                 ",wasMovedAnEggsFrame=" + this.wasMovedAnEggsFrame +
                 ", numberOfHoneyFrame=" + this.numberOfHoneyFrame +
-                ", numberOfEggsFrame=" + this.numberOfEggsFrame +
+                ", numberOfEggsFrame=" + this.eggsFrames.size() +
                 ", eggsFrames=" + this.eggsFrames +
                 ", numberOfBees=" + this.numberOfBees +
                 ", age of queen=" + this.queen.getAgeOfQueen() +
@@ -192,15 +188,6 @@ public class Hive {
     public void setNumberOfHoneyFrame(int numberOfHoneyFrame) {
         this.numberOfHoneyFrame = numberOfHoneyFrame;
     }
-
-    public int getNumberOfEggsFrame() {
-        return numberOfEggsFrame;
-    }
-
-    public void setNumberOfEggsFrame(int numberOfEggsFrame) {
-        this.numberOfEggsFrame = numberOfEggsFrame;
-    }
-
 
     public int getAgeOfQueen() {
         return getQueen().getAgeOfQueen();
@@ -382,7 +369,6 @@ public class Hive {
         if (eggsFrameFull == eggsFrames.size()) {
             int maximumNumberOfFramesToAdd = 6 - eggsFrameFull;
             if (maximumNumberOfFramesToAdd != 0) {
-                this.setNumberOfEggsFrame(this.getNumberOfEggsFrame() + 1);
                 this.addEggsFrames(createNewEggsFrame());
             }
         }

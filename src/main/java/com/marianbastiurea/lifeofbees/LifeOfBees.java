@@ -75,7 +75,7 @@ public class LifeOfBees {
             }
 
             apiary.honeyHarvestedByHoneyType();
-            System.out.println("your apiary at the end of the year is: " + apiary);
+            System.out.println("your apiary at the end of the year "+year+" is: " + apiary);
 
             List<Hive> hives = apiary.getHives();// have to build a hibernate method
 
