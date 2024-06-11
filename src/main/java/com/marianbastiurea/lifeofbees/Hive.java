@@ -10,7 +10,6 @@ public class Hive {
     private boolean answerIfWantToSplit;
     private boolean wasMovedAnEggsFrame;
     private int numberOfHoneyFrame;
-    private int numberOfEggsFrame;
     private List<EggsFrame> eggsFrames;
     private int numberOfBees;
     private Queen queen;
@@ -37,7 +36,6 @@ public class Hive {
         this.itWasSplit = itWasSplit;
         this.answerIfWantToSplit = answerIfWantToSplit;
         this.numberOfHoneyFrame = numberOfHoneyFrame;
-        this.numberOfEggsFrame = numberOfEggsFrame;
         this.numberOfBees = numberOfBees;
         this.queen = queen;
     }
@@ -190,15 +188,6 @@ public class Hive {
     public void setNumberOfHoneyFrame(int numberOfHoneyFrame) {
         this.numberOfHoneyFrame = numberOfHoneyFrame;
     }
-
-    public int getNumberOfEggsFrame() {
-        return numberOfEggsFrame;
-    }
-
-    public void setNumberOfEggsFrame(int numberOfEggsFrame) {
-        this.numberOfEggsFrame = numberOfEggsFrame;
-    }
-
 
     public int getAgeOfQueen() {
         return getQueen().getAgeOfQueen();
@@ -380,7 +369,6 @@ public class Hive {
         if (eggsFrameFull == eggsFrames.size()) {
             int maximumNumberOfFramesToAdd = 6 - eggsFrameFull;
             if (maximumNumberOfFramesToAdd != 0) {
-                this.setNumberOfEggsFrame(this.getNumberOfEggsFrame() + 1);
                 this.addEggsFrames(createNewEggsFrame());
             }
         }
