@@ -65,20 +65,17 @@ public class Apiary {
 
         if (hive.getEggsFrames().size() == 6 && !hive.isItWasSplit()) {
             System.out.println("Now old and new frames are full. Hive will be split in two hives.");
-            Hive newHive = new Hive( this,this.getNumberOfHives() + 1,
-                    true, true, hive.getNumberOfHoneyFrame(),
-                    (hive.getNumberOfBees() / 2), new Queen()
-            );
             hive.setNumberOfBees(hive.getNumberOfBees() / 2);
             hive.setItWasSplit(true);
             hive.setAnswerIfWantToSplit(true);
-            hive.setNumberOfHoneyFrame(3);
+
+
+            Hive newHive=new Hive(this,this.getHives().size()+1,true,true,hive.getNumberOfBees()/2, new Queen());
             newHive.getQueen().setAgeOfQueen(0);
             newHive.setHoney(hive.getHoney());
             newHive.setApiary(this);
             newHive.setWasMovedAnEggsFrame(false);
             newHive.setBeesBatches(hive.getBeesBatches().subList(0, 0));
-            newHive.setNumberOfHoneyFrame(3);
 
             List<EggsFrame> newHiveEggsFrames = new ArrayList<>();
             for (int i = 0; i < 3; i++) {
@@ -211,7 +208,6 @@ public class Apiary {
         hive.setItWasSplit(false);
         hive.setAnswerIfWantToSplit(false);
         hive.setWasMovedAnEggsFrame(false);
-        hive.setNumberOfHoneyFrame(4);
         hive.getEggsBatches().clear();
         hive.getBeesBatches().clear();
         hive.getHoneyBatches().clear();

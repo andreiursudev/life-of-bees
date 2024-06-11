@@ -32,7 +32,7 @@ public class LifeOfBees {
         System.out.println("apiary at beginning of game is: "+apiary);
         // Iterate over 2 years
         for (int year = 0; year < 2; year++) {
-            while (calendar.get(Calendar.MONTH) != Calendar.OCTOBER) {
+            while (calendar.get(Calendar.MONTH) != Calendar.JULY) {
                 // Iterate until OCTOBER
                 Date currentDate = calendar.getTime();
                 System.out.println("Date: " + currentDate);
