@@ -64,7 +64,6 @@ public class Hive {
                 Honey honey,
                 Queen queen,
                 int numberOfHoneyFrame,
-                int numberOfEggsFrame,
                 int numberOfBees) {
         this.apiary=apiary;
         this.id = hiveIdCounter;
@@ -79,7 +78,6 @@ public class Hive {
         this.honey = honey;
         this.queen = queen;
         this.numberOfHoneyFrame = numberOfHoneyFrame;
-        this.numberOfEggsFrame = numberOfEggsFrame;
         this.numberOfBees = numberOfBees;
     }
 
@@ -123,7 +121,7 @@ public class Hive {
                 ", answerIfWantToSplit=" + this.answerIfWantToSplit +
                 ",wasMovedAnEggsFrame=" + this.wasMovedAnEggsFrame +
                 ", numberOfHoneyFrame=" + this.numberOfHoneyFrame +
-                ", numberOfEggsFrame=" + this.numberOfEggsFrame +
+                ", numberOfEggsFrame=" + this.eggsFrames.size() +
                 ", eggsFrames=" + this.eggsFrames +
                 ", numberOfBees=" + this.numberOfBees +
                 ", age of queen=" + this.queen.getAgeOfQueen() +
