@@ -35,7 +35,6 @@ public class MainLifeOfBees {
             int randomNumberOfEggs = random.nextInt(4500, 5000);
             double kgOfHoney = random.nextDouble(2.5, 3);
             List<EggsFrame> eggsFrames = new ArrayList<>();
-             random.nextInt(3, 4);
             for (int j = 1; j < random.nextInt(3, 4); j++) {
                 eggsFrames.add(new EggsFrame(randomNumberOfEggs));
             }
