@@ -1,5 +1,8 @@
 package com.marianbastiurea.lifeofbees;
 
+import com.marianbastiurea.lifeofbees.eggframe.EggsBatch;
+import com.marianbastiurea.lifeofbees.eggframe.EggsFrame;
+
 import java.util.Date;
 import java.util.*;
 
@@ -12,7 +15,6 @@ public class Hive {
     private List<EggsFrame> eggsFrames;
     private int numberOfBees;
     private Queen queen;
-    private List<EggsBatch> eggsBatches;
     private Honey honey;
     private List<BeesBatch> beesBatches;
     private List<HoneyFrame> honeyFrames;
