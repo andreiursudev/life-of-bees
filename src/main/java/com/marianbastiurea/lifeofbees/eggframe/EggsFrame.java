@@ -3,6 +3,7 @@ package com.marianbastiurea.lifeofbees.eggframe;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 public class EggsFrame {
 
@@ -28,6 +29,9 @@ public class EggsFrame {
         return "{" +
                 "numberOfEggs=" + getNumberOfEggs() +
                 '}';
+    }
+    public void addEggs(int numberOfEggs, Date date){
+        eggsBatches.add(new EggsBatch(numberOfEggs, date));
     }
 }
 
