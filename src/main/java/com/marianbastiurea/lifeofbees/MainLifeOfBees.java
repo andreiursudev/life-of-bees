@@ -33,11 +33,10 @@ public class MainLifeOfBees {
         Apiary apiary=new Apiary(hives,new ArrayList<>());
         for (int i = 1; i < numberOfStartingHives + 1; i++) {
             int ageOfQueen = random.nextInt(1, 6);
-            int randomNumberOfEggs = random.nextInt(3000, 4000);
             double kgOfHoney = random.nextDouble(2.5, 3);
             List<EggsFrame> eggsFrames = new ArrayList<>();
             for (int j = 1; j < random.nextInt(5, 6); j++) {
-                eggsFrames.add(new EggsFrame(randomNumberOfEggs));
+                eggsFrames.add(new EggsFrame());
             }
             List<HoneyFrame> honeyFrames = new ArrayList<>();
             for (int k = 0; k < random.nextInt(3, 4); k++) {
@@ -49,7 +48,6 @@ public class MainLifeOfBees {
                     false,
                     false,
                     false,
-                    new ArrayList<>(),
                     eggsFrames,
                     new ArrayList<>(),
                     new ArrayList<>(),

@@ -1,5 +1,8 @@
 package com.marianbastiurea.lifeofbees;
 
+import com.marianbastiurea.lifeofbees.hive.HoneyBatch;
+import com.marianbastiurea.lifeofbees.hive.HoneyFrame;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

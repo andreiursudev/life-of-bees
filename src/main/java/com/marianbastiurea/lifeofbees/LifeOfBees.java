@@ -57,7 +57,9 @@ public class LifeOfBees {
 
                     double whetherIndex = whether.whetherIndex(harvestingMonth, dayOfMonth);
 
-                    hive.addEggsBatches(queen.makeBatchOfEggs(queen.makeEggs(honey, whetherIndex), currentDate));
+                    int numberOfEggs = queen.makeEggs(honey, whetherIndex);
+                    hive.addEggs(currentDate, numberOfEggs);
+
                     hive.fillUpExistingEggsFrameFromHive(currentDate);
                     hive.addNewEggsFrameInHive(year);
                     hive.moveAnEggsFrameFromUnsplitHiveToASplitOne();

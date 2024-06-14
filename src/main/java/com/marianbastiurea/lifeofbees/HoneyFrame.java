@@ -1,6 +1,6 @@
 package com.marianbastiurea.lifeofbees;
 
-public class HoneyFrame {
+class HoneyFrame {
     private double kgOfHoney;
     private String honeyType;
 

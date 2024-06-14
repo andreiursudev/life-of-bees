@@ -1,6 +1,5 @@
 package com.marianbastiurea.lifeofbees;
 
-import com.marianbastiurea.lifeofbees.eggframe.EggsBatch;
 import com.marianbastiurea.lifeofbees.eggframe.EggsFrame;
 
 import java.util.ArrayList;
@@ -95,15 +94,6 @@ public class Apiary {
             }
             newHive.setHoneyFrames(newHiveHoneyFrames);
 
-            List<EggsBatch> hiveEggsBatches = hive.getEggsBatches();
-            List<EggsBatch> newHiveEggsBatches = new ArrayList<>();
-            for (EggsBatch eggsBatch : hiveEggsBatches) {
-                int eggsToTransfer = eggsBatch.getNumberOfEggs() / 2;
-                EggsBatch newHiveBatch = new EggsBatch(eggsToTransfer, eggsBatch.getCreationDate());
-                newHiveEggsBatches.add(newHiveBatch);
-                eggsBatch.setNumberOfEggs(eggsBatch.getNumberOfEggs() - eggsToTransfer);
-            }
-            newHive.setEggsBatches(newHiveEggsBatches);
 
             List<BeesBatch> hiveBeesBatches = hive.getBeesBatches();
             List<BeesBatch> newHiveBeesBatches = new ArrayList<>();
@@ -211,7 +201,6 @@ public class Apiary {
         hive.setItWasSplit(false);
         hive.setAnswerIfWantToSplit(false);
         hive.setWasMovedAnEggsFrame(false);
-        hive.getEggsBatches().clear();
         hive.getBeesBatches().clear();
         hive.getHoneyBatches().clear();
         hive.getEggsFrames().remove(hive.getEggsFrames().size() - 1);

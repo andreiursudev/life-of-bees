@@ -1,11 +1,5 @@
 package com.marianbastiurea.lifeofbees;
 
-import com.marianbastiurea.lifeofbees.eggframe.EggsBatch;
-import com.marianbastiurea.lifeofbees.eggframe.EggsFrame;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 /*
 When the honeybee colony senses that it needs a new queen, perhaps because the queen is ailing or is preparing to
 swarm, the worker bees will begin the process of raising new queen bees.
@@ -77,29 +71,4 @@ public class Queen {
         }
         return 0;
     }
-
-    public List<EggsBatch> makeBatchOfEggs(int numberOfEggs, Date date) {
-        /*
-        this method will create a daily eggs batch
-         */
-
-        List<EggsBatch> eggsBatches = new ArrayList<>();
-        EggsBatch eggsBatch = new EggsBatch(numberOfEggs, date);
-        eggsBatches.add(eggsBatch);
-        return eggsBatches;
-
-    }
-
-    public List<EggsFrame> fillUpWithEggs(int numberOfEggs) {
-        /*
-        this method will fill up with eggs first eggs frame from new created hive
-         */
-
-        List<EggsFrame> eggsFrames = new ArrayList<>();
-        EggsFrame eggsFrame = new EggsFrame(numberOfEggs);
-        eggsFrames.add(eggsFrame);
-
-        return eggsFrames;
-    }
-
 }
