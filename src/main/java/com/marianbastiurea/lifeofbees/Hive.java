@@ -245,14 +245,15 @@ public class Hive {
         6, will call method to split hive in two hives.
          */
 
-        int maxEggPerFrame = 6400;
+
         // a frame have around 8500 cells. 75% more or less are used by the queen to lay eggs.
         // Remaining cells are fill up with honey or are damaged
 
         if (this.eggsFrames.size() == 6) {
+
             boolean allFramesAreFull = true;
             for (EggsFrame eggsFrame : this.eggsFrames) {
-                if (eggsFrame.getNumberOfEggs() < maxEggPerFrame) {
+                if (eggsFrame.getNumberOfEggs() <eggsFrame.getMaxEggPerFrame()) {
                     allFramesAreFull = false;
                     break;
                 }
@@ -297,7 +298,7 @@ public class Hive {
 
         int eggsFrameFull = 0;
         for (int i = 0; i < eggsFrames.size(); i++) {
-            if (this.eggsFrames.get(i).getNumberOfEggs() == maxEggPerFrame && eggsFrameFull < eggsFrames.size()) {
+            if (this.eggsFrames.get(i).getNumberOfEggs() == this.eggsFrames.get(i).getMaxEggPerFrame() && eggsFrameFull < eggsFrames.size()) {
                 eggsFrameFull += 1;
             }
         }
@@ -401,12 +402,11 @@ they will die. bees number from each batch will subtract from total number of be
 
     public boolean checkIfAll6EggsFrameAre80PercentFull() {
         int eggsFrameFull = 0;
-        int maxEggPerFrame = 6400;
         boolean allEggsFrameAreFull = false;
         EggsFrame eggsFrame = this.eggsFrames.get(eggsFrameFull);
         if (eggsFrames.size() == 6) {
             for (int i = 1; i < 7; i++) {
-                if (eggsFrame.getNumberOfEggs() > 0.8 * maxEggPerFrame) {
+                if (eggsFrame.getNumberOfEggs() > 0.8 *eggsFrame.getMaxEggPerFrame()) {
                     eggsFrameFull += 1;
                 }
             }
@@ -419,9 +419,8 @@ they will die. bees number from each batch will subtract from total number of be
 
     public int getNumberOfFullEggsFrame() {
         int eggsFrameFull = 0;
-        int maxEggPerFrame = 6400;
         for (int i = 0; i < eggsFrames.size(); i++) {
-            if (this.eggsFrames.get(i).getNumberOfEggs() == maxEggPerFrame && eggsFrameFull < eggsFrames.size()) {
+            if (this.eggsFrames.get(i).getNumberOfEggs() == this.eggsFrames.get(i).getMaxEggPerFrame() && eggsFrameFull < eggsFrames.size()) {
                 eggsFrameFull += 1;
             }
         }
@@ -473,7 +472,7 @@ they will die. bees number from each batch will subtract from total number of be
             int numberOfEggsToPutInFrame = numberOfEggs / size;
 
             for (EggsFrame eggsFrame : getEggsFrames()) {
-                if (eggsFrame.getNumberOfEggs() < maxEggPerFrame) {
+                if (eggsFrame.getNumberOfEggs() <eggsFrame.getMaxEggPerFrame()) {
                     if (eggsFrame.getNumberOfEggs() + numberOfEggsToPutInFrame < maxEggPerFrame) {
                         eggsFrame.addEggs(numberOfEggsToPutInFrame, currentDate);
                     } else {
