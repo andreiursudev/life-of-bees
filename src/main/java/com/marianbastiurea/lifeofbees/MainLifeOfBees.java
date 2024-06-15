@@ -29,7 +29,8 @@ public class MainLifeOfBees {
 
 
         List<Hive> hives = new ArrayList<>();
-        String honeyType = "Rapeseed";
+        String honeyType = "WildFlower";
+
         Apiary apiary=new Apiary(hives,new ArrayList<>());
         for (int i = 1; i < numberOfStartingHives + 1; i++) {
             int ageOfQueen = random.nextInt(1, 6);
@@ -39,8 +40,9 @@ public class MainLifeOfBees {
                 eggsFrames.add(new EggsFrame());
             }
             List<HoneyFrame> honeyFrames = new ArrayList<>();
-            for (int k = 0; k < random.nextInt(3, 4); k++) {
-                honeyFrames.add(new HoneyFrame(kgOfHoney, honeyType));
+            for (int k = 1; k < random.nextInt(3, 4); k++) {
+               // honeyFrames.add(new HoneyFrame());
+                honeyFrames.add(new HoneyFrame(0, "WildFlower"));
             }
             int numberOfBees = random.nextInt(2000, 2500) * (honeyFrames.size() + eggsFrames.size());
             Hive hive = new Hive(apiary,
@@ -49,7 +51,7 @@ public class MainLifeOfBees {
                     false,
                     false,
                     eggsFrames,
-                    new ArrayList<>(),
+                    honeyFrames,
                     new ArrayList<>(),
                     new ArrayList<>(),
                     new Honey(honeyType),

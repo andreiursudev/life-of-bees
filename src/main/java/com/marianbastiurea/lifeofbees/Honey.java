@@ -1,8 +1,5 @@
 package com.marianbastiurea.lifeofbees;
 
-import com.marianbastiurea.lifeofbees.hive.HoneyBatch;
-import com.marianbastiurea.lifeofbees.hive.HoneyFrame;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,6 +30,9 @@ public class Honey {
 
     public void honeyTypes(HarvestingMonths month, int dayOfMonth) {
         switch (month) {
+            case MARCH:
+                    honeyType = "WildFlower";
+                break;
             case APRIL:
                 if (dayOfMonth >= 1 && dayOfMonth <= 20) {
                     honeyType = "Rapeseed";

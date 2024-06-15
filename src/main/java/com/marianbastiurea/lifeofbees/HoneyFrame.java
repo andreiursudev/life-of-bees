@@ -9,6 +9,10 @@ class HoneyFrame {
         this.honeyType = honeyType;
     }
 
+    public HoneyFrame() {
+
+    }
+
     public double getKgOfHoney() {
         return kgOfHoney;
     }

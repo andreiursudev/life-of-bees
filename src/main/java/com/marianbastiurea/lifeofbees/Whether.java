@@ -43,6 +43,21 @@ public class Whether implements IWeather{
         Random random = new Random();
         Whether dailyWhether = new Whether();
         switch (month) {
+            case MARCH:
+                if (dayOfMonth >= 1 && dayOfMonth <= 15) {
+                    dailyWhether = new Whether(random.nextDouble(1, 4),
+                            random.nextDouble(5, 10),
+                            random.nextDouble(0, 40)
+                    );
+                    return dailyWhether;
+                } else if (dayOfMonth >= 16 && dayOfMonth <= 30) {
+                    dailyWhether = new Whether(random.nextDouble(0, 4),
+                            random.nextDouble(9, 15),
+                            random.nextDouble(0, 70)
+                    );
+                    return dailyWhether;
+                }
+                break;
             case APRIL:
                 if (dayOfMonth >= 1 && dayOfMonth <= 15) {
                     dailyWhether = new Whether(random.nextDouble(1, 3),

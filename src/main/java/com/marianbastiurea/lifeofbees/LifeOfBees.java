@@ -27,11 +27,11 @@ public class LifeOfBees {
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) - 1); // Set the calendar to one year ago
-        calendar.set(Calendar.MONTH, Calendar.APRIL); // Start the year on April 1st
+        calendar.set(Calendar.MONTH, Calendar.MARCH); // Start the year on April 1st
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         System.out.println("apiary at beginning of game is: "+apiary);
         // Iterate over 2 years
-        for (int year = 0; year < 2; year++) {
+        for (int year = 0; year < 1; year++) {
             while (calendar.get(Calendar.MONTH) != Calendar.JULY) {
                 // Iterate until OCTOBER
                 Date currentDate = calendar.getTime();
@@ -58,9 +58,7 @@ public class LifeOfBees {
                     double whetherIndex = whether.whetherIndex(harvestingMonth, dayOfMonth);
 
                     int numberOfEggs = queen.makeEggs(honey, whetherIndex);
-                    hive.addEggs(currentDate, numberOfEggs);
-
-                    hive.fillUpExistingEggsFrameFromHive(currentDate);
+                    hive.fillUpEggsFrame(currentDate, numberOfEggs);
                     hive.addNewEggsFrameInHive(year);
                     hive.moveAnEggsFrameFromUnsplitHiveToASplitOne();
                     hive.checkAndAddEggsToBees(currentDate);
@@ -85,7 +83,7 @@ public class LifeOfBees {
                 apiary.hibernate(hive);
             }
 
-            calendar.set(Calendar.MONTH, Calendar.APRIL);// Reset month for the next year
+            calendar.set(Calendar.MONTH, Calendar.MARCH);// Reset month for the next year
 
             System.out.println("your apiary at the beginning of new  year is: " + apiary);
         }
