@@ -1,6 +1,6 @@
 package com.marianbastiurea.lifeofbees;
 
-import com.marianbastiurea.lifeofbees.eggframe.EggsFrame;
+import com.marianbastiurea.lifeofbees.eggframe.EggFrame;
 
 import java.util.Date;
 import java.util.*;
@@ -11,7 +11,7 @@ public class Hive {
     private boolean itWasSplit;
     private boolean answerIfWantToSplit;
     private boolean wasMovedAnEggsFrame;
-    private List<EggsFrame> eggsFrames;
+    private List<EggFrame> eggFrames;
     private int numberOfBees;
     private Queen queen;
     private Honey honey;
@@ -20,10 +20,10 @@ public class Hive {
     private List<HoneyBatch> honeyBatches;
     private Apiary apiary; // Add an Apiary field to store the associated apiary
 
-    public Hive(Apiary apiary, List<EggsFrame> eggsFrames, List<BeesBatch> beesBatches,
+    public Hive(Apiary apiary, List<EggFrame> eggFrames, List<BeesBatch> beesBatches,
                 List<HoneyFrame> honeyFrames, List<HoneyBatch> honeyBatches) {
         this.apiary = apiary;
-        this.eggsFrames = new ArrayList<>(eggsFrames);
+        this.eggFrames = new ArrayList<>(eggFrames);
         this.beesBatches = new ArrayList<>(beesBatches);
         this.honeyFrames = new ArrayList<>(honeyFrames);
         this.honeyBatches = new ArrayList<>(honeyBatches);
@@ -52,7 +52,7 @@ public class Hive {
             boolean itWasSplit,
             boolean wasMovedAnEggsFrame,
             boolean answerIfWantToSplit,
-            List<EggsFrame> eggsFrames,
+            List<EggFrame> eggFrames,
             List<HoneyFrame> honeyFrames,
             List<BeesBatch> beesBatches,
             List<HoneyBatch> honeyBatches,
@@ -64,7 +64,7 @@ public class Hive {
         this.itWasSplit = itWasSplit;
         this.wasMovedAnEggsFrame = wasMovedAnEggsFrame;
         this.answerIfWantToSplit = answerIfWantToSplit;
-        this.eggsFrames = eggsFrames;
+        this.eggFrames = eggFrames;
         this.honeyFrames = honeyFrames;
         this.beesBatches = beesBatches;
         this.honeyBatches = honeyBatches;
@@ -113,8 +113,8 @@ public class Hive {
                 ", answerIfWantToSplit=" + this.answerIfWantToSplit +
                 ",wasMovedAnEggsFrame=" + this.wasMovedAnEggsFrame +
                 ", numberOfHoneyFrame=" + this.honeyFrames.size() +
-                ", numberOfEggsFrame=" + this.eggsFrames.size() + "\n" +
-                ", eggsFrames=" + this.eggsFrames + "\n" +
+                ", numberOfEggsFrame=" + this.eggFrames.size() + "\n" +
+                ", eggsFrames=" + this.eggFrames + "\n" +
                 ", numberOfBees=" + this.numberOfBees +
                 ", age of queen=" + this.queen.getAgeOfQueen() +
                 ", beesBatches=" + this.beesBatches +
@@ -123,8 +123,8 @@ public class Hive {
                 '}';
     }
 
-    public void setEggsFrames(List<EggsFrame> eggsFrames) {
-        this.eggsFrames = eggsFrames;
+    public void setEggsFrames(List<EggFrame> eggFrames) {
+        this.eggFrames = eggFrames;
     }
 
     public void setBeesBatches(List<BeesBatch> beesBatches) {
@@ -193,8 +193,8 @@ public class Hive {
         this.honeyFrames.addAll(honeyFrames);
     }
 
-    public void addEggsFrames(List<EggsFrame> eggsFrames) {
-        this.eggsFrames.addAll(eggsFrames);
+    public void addEggsFrames(List<EggFrame> eggFrames) {
+        this.eggFrames.addAll(eggFrames);
     }
 
     public List<HoneyBatch> getHoneyBatches() {
@@ -205,8 +205,8 @@ public class Hive {
         return honeyFrames;
     }
 
-    public List<EggsFrame> getEggsFrames() {
-        return eggsFrames;
+    public List<EggFrame> getEggsFrames() {
+        return eggFrames;
     }
 
     public List<BeesBatch> getBeesBatches() {
@@ -222,8 +222,8 @@ public class Hive {
  */
         int numberOfBeesFromEggsBatch = 0;
 
-        for (EggsFrame eggsFrame : eggsFrames) {
-            List<BeesBatch> hatchedBatches = eggsFrame.checkAndHatchEggs(currentDate);
+        for (EggFrame eggFrame : eggFrames) {
+            List<BeesBatch> hatchedBatches = eggFrame.checkAndHatchEggs(currentDate);
             for (BeesBatch batch : hatchedBatches) {
                 numberOfBeesFromEggsBatch += batch.getNumberOfBees();
             }
@@ -249,11 +249,11 @@ public class Hive {
         // a frame have around 8500 cells. 75% more or less are used by the queen to lay eggs.
         // Remaining cells are fill up with honey or are damaged
 
-        if (this.eggsFrames.size() == 6) {
+        if (this.eggFrames.size() == 6) {
 
             boolean allFramesAreFull = true;
-            for (EggsFrame eggsFrame : this.eggsFrames) {
-                if (eggsFrame.getNumberOfEggs() <eggsFrame.getMaxEggPerFrame()) {
+            for (EggFrame eggFrame : this.eggFrames) {
+                if (eggFrame.getNumberOfEggs() < eggFrame.getMaxEggPerFrame()) {
                     allFramesAreFull = false;
                     break;
                 }
@@ -297,12 +297,12 @@ public class Hive {
 
 
         int eggsFrameFull = 0;
-        for (int i = 0; i < eggsFrames.size(); i++) {
-            if (this.eggsFrames.get(i).getNumberOfEggs() == this.eggsFrames.get(i).getMaxEggPerFrame() && eggsFrameFull < eggsFrames.size()) {
+        for (int i = 0; i < eggFrames.size(); i++) {
+            if (this.eggFrames.get(i).getNumberOfEggs() == this.eggFrames.get(i).getMaxEggPerFrame() && eggsFrameFull < eggFrames.size()) {
                 eggsFrameFull += 1;
             }
         }
-        if (eggsFrameFull == eggsFrames.size()) {
+        if (eggsFrameFull == eggFrames.size()) {
             int maximumNumberOfFramesToAdd = 6 - eggsFrameFull;
             if (maximumNumberOfFramesToAdd != 0) {
                 this.addEggsFrames(createNewEggsFrame());
@@ -360,13 +360,13 @@ public class Hive {
     }
 
 
-    public List<EggsFrame> createNewEggsFrame() {
+    public List<EggFrame> createNewEggsFrame() {
         // this method will create a new empty eggs frame
 
-        List<EggsFrame> eggsFrames = new ArrayList<>();
-        EggsFrame eggsFrame = new EggsFrame();
-        eggsFrames.add(eggsFrame);
-        return eggsFrames;
+        List<EggFrame> eggFrames = new ArrayList<>();
+        EggFrame eggFrame = new EggFrame();
+        eggFrames.add(eggFrame);
+        return eggFrames;
     }
 
     public List<HoneyFrame> createNewHoneyFrame() {
@@ -403,10 +403,10 @@ they will die. bees number from each batch will subtract from total number of be
     public boolean checkIfAll6EggsFrameAre80PercentFull() {
         int eggsFrameFull = 0;
         boolean allEggsFrameAreFull = false;
-        EggsFrame eggsFrame = this.eggsFrames.get(eggsFrameFull);
-        if (eggsFrames.size() == 6) {
+        EggFrame eggFrame = this.eggFrames.get(eggsFrameFull);
+        if (eggFrames.size() == 6) {
             for (int i = 1; i < 7; i++) {
-                if (eggsFrame.getNumberOfEggs() > 0.8 *eggsFrame.getMaxEggPerFrame()) {
+                if (eggFrame.getNumberOfEggs() > 0.8 * eggFrame.getMaxEggPerFrame()) {
                     eggsFrameFull += 1;
                 }
             }
@@ -419,8 +419,8 @@ they will die. bees number from each batch will subtract from total number of be
 
     public int getNumberOfFullEggsFrame() {
         int eggsFrameFull = 0;
-        for (int i = 0; i < eggsFrames.size(); i++) {
-            if (this.eggsFrames.get(i).getNumberOfEggs() == this.eggsFrames.get(i).getMaxEggPerFrame() && eggsFrameFull < eggsFrames.size()) {
+        for (int i = 0; i < eggFrames.size(); i++) {
+            if (this.eggFrames.get(i).getNumberOfEggs() == this.eggFrames.get(i).getMaxEggPerFrame() && eggsFrameFull < eggFrames.size()) {
                 eggsFrameFull += 1;
             }
         }
@@ -444,11 +444,11 @@ they will die. bees number from each batch will subtract from total number of be
             List<Hive> hives = this.getApiary().getHives();
             for (Hive hive : hives) {
                 if (hive.itWasSplit) {
-                    System.out.println("We move an eggs frame " + this.eggsFrames.get(0) +
+                    System.out.println("We move an eggs frame " + this.eggFrames.get(0) +
                             " from hive " + this.getId() + " to hive " + hive.getId());
 
-                    EggsFrame frameToMove = this.getEggsFrames().remove(hive.getEggsFrames().size() - 1);
-                    hive.eggsFrames.add(frameToMove);
+                    EggFrame frameToMove = this.getEggsFrames().remove(hive.getEggsFrames().size() - 1);
+                    hive.eggFrames.add(frameToMove);
                     this.setWasMovedAnEggsFrame(true);// Move only one frame to one split hive
                     break;
                 }
@@ -471,12 +471,12 @@ they will die. bees number from each batch will subtract from total number of be
         if (size != 0) {
             int numberOfEggsToPutInFrame = numberOfEggs / size;
 
-            for (EggsFrame eggsFrame : getEggsFrames()) {
-                if (eggsFrame.getNumberOfEggs() <eggsFrame.getMaxEggPerFrame()) {
-                    if (eggsFrame.getNumberOfEggs() + numberOfEggsToPutInFrame < maxEggPerFrame) {
-                        eggsFrame.addEggs(numberOfEggsToPutInFrame, currentDate);
+            for (EggFrame eggFrame : getEggsFrames()) {
+                if (eggFrame.getNumberOfEggs() < eggFrame.getMaxEggPerFrame()) {
+                    if (eggFrame.getNumberOfEggs() + numberOfEggsToPutInFrame < maxEggPerFrame) {
+                        eggFrame.addEggs(numberOfEggsToPutInFrame, currentDate);
                     } else {
-                        eggsFrame.addEggs((maxEggPerFrame - eggsFrame.getNumberOfEggs()), currentDate);
+                        eggFrame.addEggs((maxEggPerFrame - eggFrame.getNumberOfEggs()), currentDate);
                     }
                 }
             }

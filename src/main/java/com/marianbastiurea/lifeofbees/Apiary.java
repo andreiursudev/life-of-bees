@@ -1,6 +1,6 @@
 package com.marianbastiurea.lifeofbees;
 
-import com.marianbastiurea.lifeofbees.eggframe.EggsFrame;
+import com.marianbastiurea.lifeofbees.eggframe.EggFrame;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,13 +79,13 @@ public class Apiary {
             newHive.setWasMovedAnEggsFrame(false);
             newHive.setBeesBatches(hive.getBeesBatches().subList(0, 0));
 
-            List<EggsFrame> newHiveEggsFrames = new ArrayList<>();
+            List<EggFrame> newHiveEggFrames = new ArrayList<>();
             for (int i = 0; i < 3; i++) {
-                EggsFrame frameToMove = hive.getEggsFrames().remove(hive.getEggsFrames().size() - 1);
-                newHiveEggsFrames.add(frameToMove);
+                EggFrame frameToMove = hive.getEggsFrames().remove(hive.getEggsFrames().size() - 1);
+                newHiveEggFrames.add(frameToMove);
 
             }
-            newHive.setEggsFrames(newHiveEggsFrames);
+            newHive.setEggsFrames(newHiveEggFrames);
 
             List<HoneyFrame> newHiveHoneyFrames = new ArrayList<>();
             for (int i = 0; i < 3; i++) {
