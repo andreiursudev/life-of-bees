@@ -42,7 +42,7 @@ public class MainLifeOfBees {
             List<HoneyFrame> honeyFrames = new ArrayList<>();
             for (int k = 1; k < random.nextInt(3, 4); k++) {
                // honeyFrames.add(new HoneyFrame());
-                honeyFrames.add(new HoneyFrame(0, "WildFlower"));
+                honeyFrames.add(new HoneyFrame(random.nextDouble(2.5, 3), "WildFlower"));
             }
             int numberOfBees = random.nextInt(2000, 2500) * (honeyFrames.size() + eggFrames.size());
             Hive hive = new Hive(apiary,

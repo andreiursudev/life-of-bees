@@ -10,7 +10,7 @@ import java.util.*;
 
 public class EggFrame {
 
-    private int maxEggPerFrame = 6400;
+    private final int maxEggPerFrame = 6400;
 
     private List<EggBatch> eggBatches;
 
@@ -31,12 +31,16 @@ public class EggFrame {
         return "EggsFrame{" +
                 "numberOfEggs=" + getNumberOfEggs() +
                 " , eggsBatches=" + eggBatches +
-                '}'+"\n";
+                '}' + "\n";
     }
 
-    public void addEggs(int numberOfEggs, Date date){
-        eggBatches.add(new EggBatch(numberOfEggs, date));
+    public void addEggs(int numberOfEggs, Date date) {
+
+        if (getNumberOfEggs() + numberOfEggs < maxEggPerFrame) {
+            eggBatches.add(new EggBatch(numberOfEggs, date));
+        }
     }
+
     public List<BeesBatch> checkAndHatchEggs(Date currentDate) {
         List<BeesBatch> hatchedBatches = new ArrayList<>();
         Iterator<EggBatch> iterator = eggBatches.iterator();
