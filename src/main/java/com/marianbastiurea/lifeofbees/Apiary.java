@@ -201,7 +201,6 @@ public class Apiary {
         hive.setItWasSplit(false);
         hive.setAnswerIfWantToSplit(false);
         hive.setWasMovedAnEggsFrame(false);
-        hive.getBeesBatches().clear();
         hive.getHoneyBatches().clear();
         hive.getEggsFrames().remove(hive.getEggsFrames().size() - 1);
         hive.getEggsFrames().remove(hive.getEggsFrames().size() - 1);

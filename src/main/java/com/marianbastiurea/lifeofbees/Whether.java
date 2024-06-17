@@ -46,11 +46,11 @@ public class Whether implements IWeather{
             case MARCH:
                 if (dayOfMonth >= 1 && dayOfMonth <= 15) {
                     dailyWhether = new Whether(random.nextDouble(1, 4),
-                            random.nextDouble(5, 10),
+                            random.nextDouble(10, 12),
                             random.nextDouble(0, 40)
                     );
                     return dailyWhether;
-                } else if (dayOfMonth >= 16 && dayOfMonth <= 30) {
+                } else if (dayOfMonth >15 && dayOfMonth <= 30) {
                     dailyWhether = new Whether(random.nextDouble(0, 4),
                             random.nextDouble(9, 15),
                             random.nextDouble(0, 70)
@@ -169,7 +169,7 @@ public class Whether implements IWeather{
 
         //temperatureIndex by Celsius Degree
         if (dailyWhether.temperature <= 10) {
-            temperatureIndex = 0.6;
+            temperatureIndex = 0.8;
         } else if (dailyWhether.temperature > 10 && dailyWhether.temperature < 30) {
             temperatureIndex = 1;
         } else if (dailyWhether.temperature >= 30) {
@@ -188,6 +188,8 @@ public class Whether implements IWeather{
         }
         whetherIndex = rainIndex * temperatureIndex * speedWindIndex;
       //  System.out.println("Daily whether index is: "+ whetherIndex);
+        System.out.println("whether today is: "+whetherIndex);
+
         return whetherIndex;
     }
 

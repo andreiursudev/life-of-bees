@@ -305,7 +305,7 @@ public class Hive {
         if (eggsFrameFull == eggFrames.size()) {
             int maximumNumberOfFramesToAdd = 6 - eggsFrameFull;
             if (maximumNumberOfFramesToAdd != 0) {
-                this.addEggsFrames(createNewEggsFrame());
+                this.eggFrames.add(new EggFrame());
             }
         }
     }

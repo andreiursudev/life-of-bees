@@ -27,11 +27,11 @@ public class LifeOfBees {
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) - 1); // Set the calendar to one year ago
-        calendar.set(Calendar.MONTH, Calendar.MARCH); // Start the year on April 1st
+        calendar.set(Calendar.MONTH, Calendar.MARCH); // Start the year on March 1st
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         System.out.println("apiary at beginning of game is: "+apiary);
         // Iterate over 2 years
-        for (int year = 0; year < 1; year++) {
+        for (int year = 0; year < 2; year++) {
             while (calendar.get(Calendar.MONTH) != Calendar.JULY) {
                 // Iterate until OCTOBER
                 Date currentDate = calendar.getTime();

@@ -74,11 +74,11 @@ public class Honey {
             case "Rapeseed":
                 return 0.8; //kgOnHa=50
             case "WildFlower":
-                return 0.7;//kgOnHa=40
+                return 0.75;//kgOnHa=40
             case "Linden":
                 return 1;//kgOnHa=1200
             case "SunFlower":
-                return 0.7;//kgOnHa=60
+                return 0.8;//kgOnHa=60
             case "FalseIndigo":
                 return 0.7;//kgOnHa=70
         }

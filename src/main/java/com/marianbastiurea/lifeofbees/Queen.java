@@ -46,7 +46,7 @@ public class Queen {
         - second will be an whether index connected with wind speed, precipitation and temperature
          */
 
-        int numberOfEggs = (int) (2500 * this.ageOfQueenIndex()*honey.honeyProductivity() * whetherIndex);
+        int numberOfEggs = (int) (2900 * this.ageOfQueenIndex()*honey.honeyProductivity() * whetherIndex);
         return numberOfEggs;
 
     }
