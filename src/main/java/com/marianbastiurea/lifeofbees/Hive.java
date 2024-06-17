@@ -1,5 +1,6 @@
 package com.marianbastiurea.lifeofbees;
 
+
 import com.marianbastiurea.lifeofbees.eggframe.EggFrame;
 
 import java.util.Date;
@@ -233,8 +234,6 @@ public class Hive {
             BeesBatch newBeesBatch = new BeesBatch(numberOfBeesFromEggsBatch, currentDate);
             beesBatches.add(newBeesBatch);
         }
-
-
     }
 
 
