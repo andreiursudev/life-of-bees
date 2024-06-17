@@ -36,7 +36,7 @@ public class EggFrame {
 
     public void addEggs(int numberOfEggs, Date date) {
 
-        if (getNumberOfEggs() + numberOfEggs < maxEggPerFrame) {
+        if (getNumberOfEggs() + numberOfEggs <= maxEggPerFrame) {
             eggBatches.add(new EggBatch(numberOfEggs, date));
         }
     }
