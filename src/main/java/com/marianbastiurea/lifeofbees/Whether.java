@@ -187,9 +187,6 @@ public class Whether implements IWeather{
             speedWindIndex = 0.7;
         }
         whetherIndex = rainIndex * temperatureIndex * speedWindIndex;
-      //  System.out.println("Daily whether index is: "+ whetherIndex);
-        System.out.println("whether today is: "+whetherIndex);
-
         return whetherIndex;
     }
 
