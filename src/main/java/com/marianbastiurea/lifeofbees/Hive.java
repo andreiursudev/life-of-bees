@@ -474,9 +474,13 @@ they will die. bees number from each batch will subtract from total number of be
             for (EggFrame eggFrame : getEggsFrames()) {
                 if (eggFrame.getNumberOfEggs() < eggFrame.getMaxEggPerFrame()) {
                     if (eggFrame.getNumberOfEggs() + numberOfEggsToPutInFrame < maxEggPerFrame) {
+                        System.out.println("number of eggs:"+numberOfEggsToPutInFrame);
                         eggFrame.addEggs(numberOfEggsToPutInFrame, currentDate);
                     } else {
-                        eggFrame.addEggs((maxEggPerFrame - eggFrame.getNumberOfEggs()), currentDate);
+                        int eggsToFillUp=maxEggPerFrame-eggFrame.getNumberOfEggs();
+                        System.out.println("number of eggs to fill up is: "+eggsToFillUp);
+                        eggFrame.addEggs(eggsToFillUp, currentDate);
+                        System.out.println("total number of eggs is: "+ eggFrame.getNumberOfEggs());
                     }
                 }
             }
