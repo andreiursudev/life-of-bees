@@ -400,20 +400,37 @@ they will die. bees number from each batch will subtract from total number of be
     }
 
     public boolean checkIfAll6EggsFrameAre80PercentFull() {
-        int eggsFrameFull = 0;
-        boolean allEggsFrameAreFull = false;
-        EggFrame eggFrame = this.eggFrames.get(eggsFrameFull);
-        if (eggFrames.size() == 6) {
-            for (int i = 1; i < 7; i++) {
-                if (eggFrame.getNumberOfEggs() > 0.8 * eggFrame.getMaxEggPerFrame()) {
-                    eggsFrameFull += 1;
-                }
+        if (eggFrames.size() != 6) {
+            return false;
+        }
+
+        for (EggFrame eggFrame : eggFrames) {
+            if (eggFrame.getNumberOfEggs() <= 0.8 * eggFrame.getMaxEggPerFrame()) {
+                return false;
             }
         }
-        if (eggsFrameFull == 6) {
-            allEggsFrameAreFull = true;
-        }
-        return allEggsFrameAreFull;
+
+        return true;
+
+
+
+
+
+
+//        int eggsFrameFull = 0;
+//        boolean allEggsFrameAreFull = false;
+//        EggFrame eggFrame = this.eggFrames.get(eggsFrameFull);
+//        if (eggFrames.size() == 6) {
+//            for (int i = 1; i < 7; i++) {
+//                if (eggFrame.getNumberOfEggs() > 0.8 * eggFrame.getMaxEggPerFrame()) {
+//                    eggsFrameFull += 1;
+//                }
+//            }
+//        }
+//        if (eggsFrameFull == 6) {
+//            allEggsFrameAreFull = true;
+//        }
+//        return allEggsFrameAreFull;
     }
 
     public int getNumberOfFullEggsFrame() {
