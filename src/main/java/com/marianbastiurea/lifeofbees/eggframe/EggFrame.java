@@ -58,6 +58,9 @@ public class EggFrame {
         }
         return hatchedBatches;
     }
+    public boolean isEggFrameFull(){
+        return getNumberOfEggs() == maxEggPerFrame;
+    }
 }
 
 

@@ -297,7 +297,8 @@ public class Hive {
 
         int eggsFrameFull = 0;
         for (int i = 0; i < eggFrames.size(); i++) {
-            if (this.eggFrames.get(i).getNumberOfEggs() == this.eggFrames.get(i).getMaxEggPerFrame() && eggsFrameFull < eggFrames.size()) {
+
+            if (this.eggFrames.get(i).isEggFrameFull() && eggsFrameFull < eggFrames.size()) {
                 eggsFrameFull += 1;
             }
         }
@@ -358,16 +359,6 @@ public class Hive {
         }
     }
 
-
-    public List<EggFrame> createNewEggsFrame() {
-        // this method will create a new empty eggs frame
-
-        List<EggFrame> eggFrames = new ArrayList<>();
-        EggFrame eggFrame = new EggFrame();
-        eggFrames.add(eggFrame);
-        return eggFrames;
-    }
-
     public List<HoneyFrame> createNewHoneyFrame() {
         // this method will create a new empty honey frame
 
@@ -411,26 +402,6 @@ they will die. bees number from each batch will subtract from total number of be
         }
 
         return true;
-
-
-
-
-
-
-//        int eggsFrameFull = 0;
-//        boolean allEggsFrameAreFull = false;
-//        EggFrame eggFrame = this.eggFrames.get(eggsFrameFull);
-//        if (eggFrames.size() == 6) {
-//            for (int i = 1; i < 7; i++) {
-//                if (eggFrame.getNumberOfEggs() > 0.8 * eggFrame.getMaxEggPerFrame()) {
-//                    eggsFrameFull += 1;
-//                }
-//            }
-//        }
-//        if (eggsFrameFull == 6) {
-//            allEggsFrameAreFull = true;
-//        }
-//        return allEggsFrameAreFull;
     }
 
     public int getNumberOfFullEggsFrame() {
