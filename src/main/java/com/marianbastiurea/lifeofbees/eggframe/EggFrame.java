@@ -61,6 +61,9 @@ public class EggFrame {
     public boolean isEggFrameFull(){
         return getNumberOfEggs() == maxEggPerFrame;
     }
+    public boolean is80PercentFull(){
+        return  getNumberOfEggs() <= 0.8 * maxEggPerFrame;
+    }
 }
 
 

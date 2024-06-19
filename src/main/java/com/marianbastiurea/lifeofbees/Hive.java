@@ -244,7 +244,6 @@ public class Hive {
         6, will call method to split hive in two hives.
          */
 
-
         // a frame have around 8500 cells. 75% more or less are used by the queen to lay eggs.
         // Remaining cells are fill up with honey or are damaged
 
@@ -395,7 +394,7 @@ they will die. bees number from each batch will subtract from total number of be
         }
 
         for (EggFrame eggFrame : eggFrames) {
-            if (eggFrame.getNumberOfEggs() <= 0.8 * eggFrame.getMaxEggPerFrame()) {
+            if (eggFrame.is80PercentFull()) {
                 return false;
             }
         }
