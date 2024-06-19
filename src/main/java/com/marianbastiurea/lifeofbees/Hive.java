@@ -296,9 +296,8 @@ public class Hive {
 
 
         int eggsFrameFull = 0;
-        for (int i = 0; i < eggFrames.size(); i++) {
-
-            if (this.eggFrames.get(i).isEggFrameFull() && eggsFrameFull < eggFrames.size()) {
+        for (EggFrame eggFrame:eggFrames) {
+            if (eggFrame.isEggFrameFull() && eggsFrameFull < eggFrames.size()) {
                 eggsFrameFull += 1;
             }
         }
@@ -407,7 +406,7 @@ they will die. bees number from each batch will subtract from total number of be
     public int getNumberOfFullEggsFrame() {
         int eggsFrameFull = 0;
         for (int i = 0; i < eggFrames.size(); i++) {
-            if (this.eggFrames.get(i).getNumberOfEggs() == this.eggFrames.get(i).getMaxEggPerFrame() && eggsFrameFull < eggFrames.size()) {
+            if (this.eggFrames.get(i).isEggFrameFull()&& eggsFrameFull < eggFrames.size()) {
                 eggsFrameFull += 1;
             }
         }
@@ -453,7 +452,6 @@ they will die. bees number from each batch will subtract from total number of be
         // Remaining cells are fill up with honey or are damaged
 
         int size = getEggsFrames().size() - this.getNumberOfFullEggsFrame();
-        //int remainingEggs = numberOfEggs % size;
 
         if (size != 0) {
             int numberOfEggsToPutInFrame = numberOfEggs / size;
@@ -463,11 +461,10 @@ they will die. bees number from each batch will subtract from total number of be
                     if (eggFrame.getNumberOfEggs() + numberOfEggsToPutInFrame < maxEggPerFrame) {
                         eggFrame.addEggs(numberOfEggsToPutInFrame, currentDate);
                     } else {
-                        eggFrame.addEggs(maxEggPerFrame-eggFrame.getNumberOfEggs(), currentDate);
+                        eggFrame.addEggs(maxEggPerFrame - eggFrame.getNumberOfEggs(), currentDate);
                     }
                 }
             }
         }
-        // eggsFrames.get(0).addEggs(remainingEggs,currentDate);
     }
 }
