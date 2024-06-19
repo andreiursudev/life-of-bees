@@ -405,8 +405,8 @@ they will die. bees number from each batch will subtract from total number of be
 
     public int getNumberOfFullEggsFrame() {
         int eggsFrameFull = 0;
-        for (int i = 0; i < eggFrames.size(); i++) {
-            if (this.eggFrames.get(i).isEggFrameFull()&& eggsFrameFull < eggFrames.size()) {
+        for (EggFrame eggFrame:eggFrames) {
+            if (eggFrame.isEggFrameFull() && eggsFrameFull < eggFrames.size()) {
                 eggsFrameFull += 1;
             }
         }
