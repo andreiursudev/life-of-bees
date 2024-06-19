@@ -35,6 +35,9 @@ public class EggFrame {
     }
 
     public void addEggs(int numberOfEggs, Date date) {
+        //  maxEggPerFrame is 6400. A frame have around 8500 cells. 75% more or less are used by the queen to lay eggs.
+        // Remaining cells are fill up with honey or are damaged
+
 
         if (getNumberOfEggs() + numberOfEggs <= maxEggPerFrame) {
             eggBatches.add(new EggBatch(numberOfEggs, date));

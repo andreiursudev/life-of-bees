@@ -295,7 +295,7 @@ public class Hive {
 
 
         int eggsFrameFull = 0;
-        for (EggFrame eggFrame:eggFrames) {
+        for (EggFrame eggFrame : eggFrames) {
             if (eggFrame.isEggFrameFull() && eggsFrameFull < eggFrames.size()) {
                 eggsFrameFull += 1;
             }
@@ -404,7 +404,7 @@ they will die. bees number from each batch will subtract from total number of be
 
     public int getNumberOfFullEggsFrame() {
         int eggsFrameFull = 0;
-        for (EggFrame eggFrame:eggFrames) {
+        for (EggFrame eggFrame : eggFrames) {
             if (eggFrame.isEggFrameFull() && eggsFrameFull < eggFrames.size()) {
                 eggsFrameFull += 1;
             }
@@ -447,7 +447,7 @@ they will die. bees number from each batch will subtract from total number of be
 
     public void fillUpEggsFrame(Date currentDate, int numberOfEggs) {
 
-        int maxEggPerFrame = 6400; // a frame have around 8500 cells. 75% more or less are used by the queen to lay eggs.
+        //  maxEggPerFrame is 6400 a frame have around 8500 cells. 75% more or less are used by the queen to lay eggs.
         // Remaining cells are fill up with honey or are damaged
 
         int size = getEggsFrames().size() - this.getNumberOfFullEggsFrame();
@@ -456,12 +456,10 @@ they will die. bees number from each batch will subtract from total number of be
             int numberOfEggsToPutInFrame = numberOfEggs / size;
 
             for (EggFrame eggFrame : getEggsFrames()) {
-                if (eggFrame.getNumberOfEggs() < eggFrame.getMaxEggPerFrame()) {
-                    if (eggFrame.getNumberOfEggs() + numberOfEggsToPutInFrame < maxEggPerFrame) {
-                        eggFrame.addEggs(numberOfEggsToPutInFrame, currentDate);
-                    } else {
-                        eggFrame.addEggs(maxEggPerFrame - eggFrame.getNumberOfEggs(), currentDate);
-                    }
+                if (eggFrame.getNumberOfEggs() + numberOfEggsToPutInFrame < eggFrame.getMaxEggPerFrame()) {
+                    eggFrame.addEggs(numberOfEggsToPutInFrame, currentDate);
+                } else {
+                    eggFrame.addEggs(eggFrame.getMaxEggPerFrame() - eggFrame.getNumberOfEggs(), currentDate);
                 }
             }
         }
