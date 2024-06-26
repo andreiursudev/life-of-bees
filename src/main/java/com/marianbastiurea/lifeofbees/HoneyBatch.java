@@ -2,7 +2,7 @@ package com.marianbastiurea.lifeofbees;
 import java.util.Date;
 
 
-public class HoneyBatch {
+class HoneyBatch {
     private final int hiveId;
     private final  Date creationDate;
     private final double kgOfHoney;

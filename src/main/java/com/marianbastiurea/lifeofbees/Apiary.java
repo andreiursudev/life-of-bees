@@ -1,7 +1,6 @@
 package com.marianbastiurea.lifeofbees;
 
-import com.marianbastiurea.lifeofbees.eggframe.EggsBatch;
-import com.marianbastiurea.lifeofbees.eggframe.EggsFrame;
+import com.marianbastiurea.lifeofbees.eggframe.EggFrame;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,13 +79,13 @@ public class Apiary {
             newHive.setWasMovedAnEggsFrame(false);
             newHive.setBeesBatches(hive.getBeesBatches().subList(0, 0));
 
-            List<EggsFrame> newHiveEggsFrames = new ArrayList<>();
+            List<EggFrame> newHiveEggFrames = new ArrayList<>();
             for (int i = 0; i < 3; i++) {
-                EggsFrame frameToMove = hive.getEggsFrames().remove(hive.getEggsFrames().size() - 1);
-                newHiveEggsFrames.add(frameToMove);
+                EggFrame frameToMove = hive.getEggsFrames().remove(hive.getEggsFrames().size() - 1);
+                newHiveEggFrames.add(frameToMove);
 
             }
-            newHive.setEggsFrames(newHiveEggsFrames);
+            newHive.setEggsFrames(newHiveEggFrames);
 
             List<HoneyFrame> newHiveHoneyFrames = new ArrayList<>();
             for (int i = 0; i < 3; i++) {
@@ -95,15 +94,6 @@ public class Apiary {
             }
             newHive.setHoneyFrames(newHiveHoneyFrames);
 
-            List<EggsBatch> hiveEggsBatches = hive.getEggsBatches();
-            List<EggsBatch> newHiveEggsBatches = new ArrayList<>();
-            for (EggsBatch eggsBatch : hiveEggsBatches) {
-                int eggsToTransfer = eggsBatch.getNumberOfEggs() / 2;
-                EggsBatch newHiveBatch = new EggsBatch(eggsToTransfer, eggsBatch.getCreationDate());
-                newHiveEggsBatches.add(newHiveBatch);
-                eggsBatch.setNumberOfEggs(eggsBatch.getNumberOfEggs() - eggsToTransfer);
-            }
-            newHive.setEggsBatches(newHiveEggsBatches);
 
             List<BeesBatch> hiveBeesBatches = hive.getBeesBatches();
             List<BeesBatch> newHiveBeesBatches = new ArrayList<>();
@@ -211,8 +201,6 @@ public class Apiary {
         hive.setItWasSplit(false);
         hive.setAnswerIfWantToSplit(false);
         hive.setWasMovedAnEggsFrame(false);
-        hive.getEggsBatches().clear();
-        hive.getBeesBatches().clear();
         hive.getHoneyBatches().clear();
         hive.getEggsFrames().remove(hive.getEggsFrames().size() - 1);
         hive.getEggsFrames().remove(hive.getEggsFrames().size() - 1);

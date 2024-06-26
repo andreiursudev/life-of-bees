@@ -2,11 +2,13 @@ package com.marianbastiurea.lifeofbees.eggframe;
 
 import java.util.Date;
 
-class EggsBatch {
+
+class EggBatch {
     private int numberOfEggs;
     private final Date creationDate;
 
-    EggsBatch(int numberOfEggs, Date creationDate) {
+
+    EggBatch(int numberOfEggs, Date creationDate) {
         this.numberOfEggs = numberOfEggs;
         this.creationDate = creationDate;
     }
@@ -26,4 +28,5 @@ class EggsBatch {
                 ", creationDate=" + creationDate +
                 '}';
     }
+
 }

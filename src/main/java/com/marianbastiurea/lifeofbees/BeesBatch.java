@@ -1,5 +1,6 @@
 package com.marianbastiurea.lifeofbees;
 
+
 import java.util.Date;
 
 public class BeesBatch {
@@ -28,6 +29,6 @@ public class BeesBatch {
         return "BeesBatch{" +
                 "numberOfBees=" + numberOfBees +
                 ", creationDate=" + creationDate +
-                '}';
+                '}'+ "\n";
     }
 }
