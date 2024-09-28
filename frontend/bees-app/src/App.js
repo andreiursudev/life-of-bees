@@ -1,24 +1,26 @@
-import logo from './logo.svg';
+import React, { useRef } from 'react';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import HomePage from './components/HomePage';
+import GameView from'./components/GameView';
+import SellHoney from './components/SellHoney';
+
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route exact path="/" component={HomePage} />
+          <Route exact path="/another-page" component={GameView} />
+          <Route exact path="/another-page" component={SellHoney}/>
+          
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
