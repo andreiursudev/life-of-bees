@@ -1,0 +1,61 @@
+
+.warning-message {
+  color: red;
+  font-size: 0.9em;
+  margin-bottom: 10px;
+}
+
+body-gameView{
+  background-color: orange;
+}
+
+.card {
+  background-color: white;
+  color: black;
+}
+
+.btn-custom {
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+  width: 250px;
+  }
+
+.btn-custom:hover {
+  background-color: white;
+  color: black;
+}
+
+.img-custom {
+  width: 250px; 
+  height: 250px;
+  border: 1px solid black;
+}
+body-sell {
+  background-color: rgb(235, 159, 18);
+}
+
+.btn-custom-sell {
+  background-color: rgb(224, 133, 13);
+  color: black;
+  border: 1px solid black;
+  width: 250px;
+  }
+
+
+.button-right-bottom {
+  position: fixed; 
+  bottom: 20px;   
+  right: 20px;    
+  padding: 10px 20px;
+  background-color: #ed5509; 
+  color: rgb(13, 13, 13); 
+  border: 1px solid black;
+  border-radius: 5px; 
+  cursor: pointer;
+  font-size: 16px; 
+}
+
+.button-right-bottom:hover {
+  background-color: #45a049;
+}
