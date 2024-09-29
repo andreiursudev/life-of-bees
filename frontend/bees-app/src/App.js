@@ -14,9 +14,9 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
-          <Route exact path="/" component={HomePage} />
-          <Route exact path="/another-page" component={GameView} />
-          <Route exact path="/another-page" component={SellHoney}/>
+          <Route path="/" element={<HomePage/>} />
+          <Route exact path="/another-page" component={<GameView/>}/>
+          <Route exact path="/another-page" component={<SellHoney/>}/>
           
         </Routes>
       </div>

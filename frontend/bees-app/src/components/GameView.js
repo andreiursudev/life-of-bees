@@ -3,8 +3,8 @@ import '../App.css';
 
 const GameView = () => {
     return (
-        <div className="container">
-            <div class="container" style="margin-top: 50px;">
+        <div className="container body-gameView">
+            <div class="container" style={"margin-top: 50px"}>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="card mb-3">

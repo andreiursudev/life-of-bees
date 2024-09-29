@@ -8,7 +8,7 @@ const SellHoney = () => {
             <h1>Total honey: 450kg</h1>
 
 
-            <div class="container" style="margin-top: 50px;">
+            <div class="container" style={"margin-top: 50px"}>
                 <div class="row">
                     <div class="col-md-3">
                         <button class="btn btn-custom-sell mb-2">Honey[kg]:</button>
