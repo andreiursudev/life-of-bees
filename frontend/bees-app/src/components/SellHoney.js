@@ -1,55 +1,51 @@
-import React from 'react';
+import React, { Component } from 'react';
 import '../App.css';
 
+class RowHeader extends Component {
+    render() {
+        return (
+            <div className="row-text">
+                <p className="btn-custom-sell mb-2">Honey[kg]:</p>
+                <p className="btn-custom-sell mb-2">Price[$/kg]:</p>
+                <p className="btn-custom-sell mb-2">You sell:</p>
+            </div>
+        );
+    }
+}
 
+class RowText extends Component {
+    render() {
+        return (
+            <div className="row-text">
+                <p className="btn-custom-sell mb-2">rapeseed:</p>
+                <p className="btn-custom-sell mb-2">3</p>
+
+                <form>
+                    <input type="text" className="form-control" id="name" name="name" />
+                </form>
+            </div>
+        );
+    }
+}
 const SellHoney = () => {
     return (
-        <div className="container body-sell">
+        <div className="body-sell">
             <h1>Total honey: 450kg</h1>
 
-
-            <div class="container" style={"margin-top: 50px"}>
-                <div class="row">
-                    <div class="col-md-3">
-                        <button class="btn btn-custom-sell mb-2">Honey[kg]:</button>
-                        <button class="btn btn-custom-sell mb-2">rapeseed:</button>
-                        <button class="btn btn-custom-sell mb-2">acacia:</button>
-                        <button class="btn btn-custom-sell mb-2">linden:</button>
-                        <button class="btn btn-custom-sell mb-2">wild flower:</button>
-                        <button class="btn btn-custom-sell mb-2">sunflower:</button>
-                        <button class="btn btn-custom-sell mb-2">false indigo:</button>
-                    </div>
-
-                    <div class="col-md-3">
-                        <button class="btn btn-custom-sell mb-2">Price[$/kg]:</button>
-                        <button class="btn btn-custom-sell mb-2">3</button>
-                        <button class="btn btn-custom-sell mb-2">6</button>
-                        <button class="btn btn-custom-sell mb-2">3</button>
-                        <button class="btn btn-custom-sell mb-2">3</button>
-                        <button class="btn btn-custom-sell mb-2">3</button>
-                        <button class="btn btn-custom-sell mb-2">3</button>
-                    </div>
-
-                    <div class="col-md-3">
-                        <button class="btn btn-custom-sell mb-2">You sell:</button>
-                        <button class="btn btn-custom-sell mb-2">30</button>
-                        <button class="btn btn-custom-sell mb-2">60</button>
-                        <button class="btn btn-custom-sell mb-2">30</button>
-                        <button class="btn btn-custom-sell mb-2">30</button>
-                        <button class="btn btn-custom-sell mb-2">30</button>
-                        <button class="btn btn-custom mb-2">30</button>
-                        <button class="btn btn-danger mb-3">Total honey[kg]:210</button>
-
-                    </div>
-                </div>
+            <div className="container" style={{ marginTop: '50px' }}>
+                <RowHeader />
+                <RowText />
+                <RowText />
+                <RowText />
+                <RowText />
+                <RowText />
+                <RowText />
             </div>
 
-            <button class="button-right-bottom" onclick="location.href='gameView.html'">Back</button>
+            <button className="button-right-bottom" onClick={() => (window.location.href = 'gameView.html')}>Back</button>
         </div>
-
-
-
     );
 };
 
-            export default SellHoney;
+export { RowText };
+export default SellHoney; 

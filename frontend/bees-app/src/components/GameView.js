@@ -1,110 +1,56 @@
-import React from 'react';
+import React, { Component } from 'react';
 import '../App.css';
+import rapeseedFlower from '../rapeseed-flower.jpg';
+import acaciaFlower from '../acacia-flower.jpg';
+import lindenFlower from '../linden-flower.jpg';
+import falseIndigoFlower from '../false-indigo-flower.jpg'
+import sunFlower from '../sun-flower.jpg';
+import wildFlower from '../wild-flower.jpg';
+
+
+class CardGame extends Component {
+    render() {
+        return (
+
+            <div className="card mb-3">
+                <div className="card-body">
+                    <p>Hive 1000</p>
+                    <p>Bees 123456</p>
+                    <p>rapeseed honey: 136.6kg</p>
+                    <p>Total honey: 316.6kg</p>
+                </div>
+            </div>
+
+        );
+    }
+}
+
+
 
 const GameView = () => {
     return (
-        <div className="container body-gameView">
-            <div class="container" style={"margin-top: 50px"}>
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <p>Hive 1</p>
-                                <p>Bees 23456</p>
-                                <p>rapeseed honey: 36.6kg</p>
-                                <p>Total honey: 36.6kg</p>
-                            </div>
-                        </div>
-
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <p>Hive 2</p>
-                                <p>Bees 23456</p>
-                                <p>rapeseed honey: 36.6kg</p>
-                                <p>Total honey: 36.6kg</p>
-                            </div>
-                        </div>
-
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <p>Hive 3</p>
-                                <p>Bees 23456</p>
-                                <p>rapeseed honey: 36.6kg</p>
-                                <p>Total honey: 36.6kg</p>
-                            </div>
-                        </div>
-
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <p>Hive 4</p>
-                                <p>Bees 23456</p>
-                                <p>rapeseed honey: 36.6kg</p>
-                                <p>Total honey: 36.6kg</p>
-                            </div>
-                        </div>
-
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <p>Hive 5</p>
-                                <p>Bees 23456</p>
-                                <p>rapeseed honey: 36.6kg</p>
-                                <p>Total honey: 36.6kg</p>
-                            </div>
-                        </div>
-
+        <div className="body-gameView">
+            <div className="container" style={{ marginTop: '50px' }}>
+                <div className="row">
+                    <div className="col-md-3">
+                        <CardGame />
+                        <CardGame />
+                        <CardGame />
+                        <CardGame />
+                        <CardGame />
                     </div>
 
-                    <div class="col-md-3">
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <p>Hive 6</p>
-                                <p>Bees 23456</p>
-                                <p>rapeseed honey: 36.6kg</p>
-                                <p>Total honey: 36.6kg</p>
-                            </div>
-                        </div>
-
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <p>Hive 7</p>
-                                <p>Bees 23456</p>
-                                <p>rapeseed honey: 36.6kg</p>
-                                <p>Total honey: 36.6kg</p>
-                            </div>
-                        </div>
-
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <p>Hive 8</p>
-                                <p>Bees 23456</p>
-                                <p>rapeseed honey: 36.6kg</p>
-                                <p>Total honey: 36.6kg</p>
-                            </div>
-                        </div>
-
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <p>Hive 9</p>
-                                <p>Bees 23456</p>
-                                <p>rapeseed honey: 36.6kg</p>
-                                <p>Total honey: 36.6kg</p>
-                            </div>
-                        </div>
-
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <p>Hive 10</p>
-                                <p>Bees 23456</p>
-                                <p>rapeseed honey: 36.6kg</p>
-                                <p>Total honey: 36.6kg</p>
-                            </div>
-                        </div>
-
+                    <div className="col-md-3">
+                        <CardGame />
+                        <CardGame />
+                        <CardGame />
+                        <CardGame />
+                        <CardGame />
                     </div>
 
-                    <div class="col-md-3">
-                        <div class="card mb-3">
-                            <div class="card-body">
+                    <div className="col-md-3">
+                        <div className="card mb-3">
+                            <div className="card-body">
                                 <p>Action of the week:</p>
                                 <p>Insect control</p>
                                 <p>Yes or No?</p>
@@ -112,20 +58,21 @@ const GameView = () => {
                         </div>
                     </div>
 
-                    <div class="col-md-3">
-                        <div class="d-flex flex-column">
-                            <button class="btn btn-custom mb-2">Date: 1 Apr 2023</button>
-                            <button class="btn btn-custom mb-2">Temp 22°C</button>
-                            <button class="btn btn-custom mb-2">Wind speed: 3m/s</button>
-                            <button class="btn btn-custom mb-2">Totatl honey: 75.6kg</button>
+                    <div className="col-md-3">
+                        <div className="d-flex flex-column">
+                        <p className="btn btn-custom mb-2">Date: 1 Apr 2023</p>
 
-                            <img src="rapeseed flower.jpg" alt="Imagine Buton 5" class="img-custom mb-2" />
+                            <p className="btn btn-custom mb-2">Temp 22°C</p>
+                            <p className="btn btn-custom mb-2">Wind speed: 3m/s</p>
+                            <p className="btn btn-custom mb-2">Totatl honey: 75.6kg</p>
 
-                            <button class="btn btn-custom mb-2" onclick="location.href='sellHoney.html'">Sell honey</button>
-                            <button class="btn btn-custom mb-2">Money in the bank: 3000$</button>
-                            <button class="btn btn-custom mb-2">Buy hives[150$/pc]</button>
-                            <button class="btn btn-custom mb-2">Iterate/ Go to next week</button>
-                            <button class="btn btn-danger mb-2" onclick="location.href='index.html'">Exit</button>
+                            <img src={rapeseedFlower} alt="Imagine Buton 5" className="img-custom mb-2" />
+                            
+                            <button className="btn btn-custom mb-2" onClick="location.href='sellHoney.html'">Sell honey</button>
+                            <p className="btn btn-custom mb-2">Money in the bank: 3000$</p>
+                            <button className="btn btn-custom mb-2">Buy hives[150$/pc]</button>
+                            <button className="btn btn-custom mb-2">Iterate/ Go to next week</button>
+                            <button className="btn btn-danger mb-2" onClick="location.href='index.html'">Exit</button>
                         </div>
                     </div>
                 </div>
@@ -133,6 +80,6 @@ const GameView = () => {
         </div>
 
     );
-  };
+};
 
-            export default GameView;
+export default GameView;
