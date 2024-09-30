@@ -21,7 +21,7 @@ class RowText extends Component {
                 <p className="btn-custom-sell mb-2">3</p>
 
                 <form>
-                    <input type="text" className="form-control" id="name" name="name" />
+                    <input type="text" className="form-control input-custom" id="name" name="name" />
                 </form>
             </div>
         );

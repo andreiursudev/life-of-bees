@@ -70,11 +70,17 @@ html, body {
 }
 .row-text {
   display: flex;
-  justify-content: space-between; /* Distribuie spațial elementele */
-  align-items: center; /* Aliniază vertical elementele */
+  justify-content: space-between; 
+  align-items: center; 
   margin-bottom: 10px;
 }
 
 .row-text p {
-  margin: 0 10px; /* Adaugă un mic spațiu între elemente */
+  margin: 0 10px; 
+}
+
+.input-custom {
+  background-color: rgb(224, 133, 13);
+  color: black;
+  width: 250px;
 }
