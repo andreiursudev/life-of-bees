@@ -1,6 +1,7 @@
 import React, { Component, useState } from 'react';
 import '../App.css';
-import FormularStart from './FormularStart';
+import LoginComponents from './LoginComponents';
+
 
 class CardGame extends Component {
     render() {
@@ -20,19 +21,15 @@ class CardGame extends Component {
     }
 }
 
-
 const HomePage = () => {
     const [showPublicModal, setShowPublicModal] = useState(false);
     const [showPrivateModal, setShowPrivateModal] = useState(false);
-
     const handlePublicGameClick = () => {
         setShowPublicModal(true);
     };
-    
     const handlePrivateGameClick = () => {
         setShowPrivateModal(true);
     };
-
     const handleCloseModal = () => {
         setShowPublicModal(false);
         setShowPrivateModal(false);
@@ -45,7 +42,6 @@ const HomePage = () => {
             </button>
             <button className="btn btn-secondary btn-lg" onClick={handlePrivateGameClick}>Create private game
             </button>
-
             <div className="pt-3">
                 <ul className="nav nav-tabs pt-3">
                     <li className="nav-item">
@@ -56,7 +52,6 @@ const HomePage = () => {
                     </li>
                 </ul>
             </div>
-
             <div className="row pt-3">
                 <div className="col">
                     <CardGame />
@@ -87,10 +82,10 @@ const HomePage = () => {
             </div>
 
             {showPublicModal && (
-                <FormularStart handleClose={handleCloseModal} />
+                <LoginComponents handleClose={handleCloseModal} />
             )}
             {showPrivateModal && (
-                <FormularStart handleClose={handleCloseModal} />
+                <LoginComponents handleClose={handleCloseModal} />
             )}
         </div>
 

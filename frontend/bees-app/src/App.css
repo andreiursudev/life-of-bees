@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   padding: 0;
@@ -18,7 +19,7 @@ html, body {
   margin-bottom: 10px;
 }
 
-.body-gameView{
+.body-gameView {
   background-color: orange;
 }
 
@@ -27,12 +28,22 @@ html, body {
   color: black;
 }
 
-.btn-custom {
-  background-color: white;
-  color: black;
-  border: 1px solid black;
+.btn-custom, .p-custom {
+  background-color: white !important;
+  color: black !important;
   width: 250px;
-  }
+  height: 50px;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  padding-left: 15px;
+}
+
+.btn-danger.btn-custom {
+  background-color: red !important;
+  color: white !important;
+  width: 250px; /* Asigură că are aceeași lățime */
+}
 
 .btn-custom:hover {
   background-color: white;
@@ -40,7 +51,7 @@ html, body {
 }
 
 .img-custom {
-  width: 250px; 
+  width: 250px;
   height: 250px;
   border: 1px solid black;
 }
@@ -49,34 +60,35 @@ html, body {
   background-color: rgb(224, 133, 13);
   color: black;
   width: 250px;
-  }
+}
 
 
 .button-right-bottom {
-  position: fixed; 
-  bottom: 20px;   
-  right: 20px;    
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
   padding: 10px 20px;
-  background-color: #ed5509; 
-  color: rgb(13, 13, 13); 
+  background-color: #ed5509;
+  color: rgb(13, 13, 13);
   border: 1px solid black;
-  border-radius: 5px; 
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 16px; 
+  font-size: 16px;
 }
 
 .button-right-bottom:hover {
   background-color: #45a049;
 }
+
 .row-text {
   display: flex;
-  justify-content: space-between; 
-  align-items: center; 
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 10px;
 }
 
 .row-text p {
-  margin: 0 10px; 
+  margin: 0 10px;
 }
 
 .input-custom {
