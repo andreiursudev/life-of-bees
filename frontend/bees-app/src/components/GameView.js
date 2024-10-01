@@ -28,8 +28,7 @@ class CardGame extends Component {
 const handleAnswer = (answer) => {
     console.log(`User answered: ${answer}`);
     // daca Da se scad banii din Money in The Bank, daca nu reduc numarul albinelor cu 20%
-  };
-  
+};
 
 const GameView = () => {
     return (
@@ -72,7 +71,6 @@ const GameView = () => {
                         <p className="btn-custom p-custom mb-2">Money in the bank: 3000$</p>
                         <img src={rapeseedFlower} alt="Imagine Buton 5" className="img-custom mb-2" />
                         <button className="btn btn-custom p-custom mb-2" onClick={() => window.location.href = 'sellHoney.html'}>Sell honey</button>
-
                         <button className="btn btn-custom mb-2">Buy hives[150$/pc]</button>
                         <button className="btn btn-custom mb-2">Iterate/ Go to next week</button>
                         <button className="btn btn-danger btn-custom mb-2" onClick={() => window.location.href = 'index.html'}>Exit</button>
