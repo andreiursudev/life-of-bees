@@ -1,24 +1,8 @@
 import React, { Component, useState } from 'react';
 import '../App.css';
 import LoginComponents from './LoginComponents';
+import ApiaryCardsRow from './ApiaryCardsRow';
 
-
-class ApiaryCard extends Component {
-    render() {
-        return (
-            <div className="card">
-                <div className="card-body">
-                    <h4 className="card-title">Dacic Apiary</h4>
-                    <p>Location: Galati, Romania</p>
-                    <p>Hives:12</p>
-                    <p>Bees:156790</p>
-                    <p>Honey:5kg</p>
-                </div>
-            </div>
-
-        );
-    }
-}
 
 const HomePage = () => {
     const [showPublicModal, setShowPublicModal] = useState(false);
@@ -51,34 +35,9 @@ const HomePage = () => {
                     </li>
                 </ul>
             </div>
-            <div className="row pt-3">
-                <div className="col">
-                    <ApiaryCard />
-                </div>
-                <div className="col">
-                    <ApiaryCard />
-                </div>
-                <div className="col">
-                    <ApiaryCard />
-                </div>
-                <div className="col">
-                    <ApiaryCard />
-                </div>
-            </div>
-            <div className="row pt-3">
-                <div className="col">
-                    <ApiaryCard />
-                </div>
-                <div className="col">
-                    <ApiaryCard />
-                </div>
-                <div className="col">
-                    <ApiaryCard />
-                </div>
-                <div className="col">
-                    <ApiaryCard />
-                </div>
-            </div>
+
+            <ApiaryCardsRow />
+            <ApiaryCardsRow />
 
             {showPublicModal && (
                 <LoginComponents handleClose={handleCloseModal} />

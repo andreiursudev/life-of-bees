@@ -8,6 +8,7 @@ import falseIndigoFlower from '../false-indigo-flower.jpg'
 import sunFlower from '../sun-flower.jpg';
 import wildFlower from '../wild-flower.jpg';
 
+
 class HiveCard extends Component {
     render() {
         return (

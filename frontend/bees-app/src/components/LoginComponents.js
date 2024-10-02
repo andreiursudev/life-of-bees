@@ -50,7 +50,6 @@ const LoginComponents = ({ handleClose }) => {
                                 </div>
                             </div>
                         </form>
-                        <button className="btn btn-custom p-custom mb-2" onClick={() => navigate('/home')}>GameView</button>
                         <button className="btn btn-secondary" onClick={() => navigate('/home')}>Start</button>
                         <button className="btn btn-warning" onClick={() => navigate('/home')}>Random</button>
                     </div>
