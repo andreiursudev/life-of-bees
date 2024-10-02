@@ -2,7 +2,7 @@
 export const retrieveAllCredentials1
     = [{
         gameName: "Dacic Apiary",
-        location: "Galati", "Romania",
+        location: "Galati, Romania",
         hives: "5",
         honey: "76677"
     }]
@@ -10,7 +10,7 @@ export const retrieveAllCredentials1
 export const retrieveAllCredentials2
     = [{
         gameName: "Stefan Cel Mare Apiary",
-        location: "Baia de Arama", "Moldova",
+        location: "Baia de Arama, Moldova",
         hives: "5000",
         honey: "6666666"
     }]
@@ -19,7 +19,7 @@ export const retrieveAllCredentials2
 export const retrieveAllCredentials3
     = [{
         gameName: "Vlad The Impaler Apiary",
-        location: "Targoviste", "Tara Romaneasca",
+        location: "Targoviste, Tara Romaneasca",
         hives: "5000",
         honey: "6666666"
     }]
