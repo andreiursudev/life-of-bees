@@ -8,10 +8,7 @@ body {
 .body-sell {
   background-color: rgb(235, 159, 18);
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
 }
-
 
 .warning-message {
   color: red;
@@ -28,7 +25,8 @@ body {
   color: black;
 }
 
-.btn-custom, .p-custom {
+.btn-custom,
+.p-custom {
   background-color: white !important;
   color: black !important;
   width: 250px;
@@ -42,7 +40,8 @@ body {
 .btn-danger.btn-custom {
   background-color: red !important;
   color: white !important;
-  width: 250px; /* Asigură că are aceeași lățime */
+  width: 250px;
+  /* Asigură că are aceeași lățime */
 }
 
 .btn-custom:hover {
@@ -55,13 +54,6 @@ body {
   height: 250px;
   border: 1px solid black;
 }
-
-.btn-custom-sell {
-  background-color: rgb(224, 133, 13);
-  color: black;
-  width: 250px;
-}
-
 
 .button-right-bottom {
   position: fixed;
@@ -79,20 +71,26 @@ body {
 .button-right-bottom:hover {
   background-color: #45a049;
 }
-
 .row-text {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
-  margin-bottom: 10px;
+  width: 70%; 
+  margin: 0 auto; 
+  gap: 30px; 
 }
 
-.row-text p {
-  margin: 0 10px;
+.btn-custom-sell {
+  background-color: rgb(224, 133, 13);
+  color: black;
+  flex-basis: 150px;
+  text-align: center;
 }
 
 .input-custom {
   background-color: rgb(224, 133, 13);
   color: black;
-  width: 250px;
+  width: 70px;
+  border: none;
+  padding: 5px; 
 }

@@ -3,10 +3,9 @@ import '../App.css';
 import LoginComponents from './LoginComponents';
 
 
-class CardGame extends Component {
+class ApiaryCard extends Component {
     render() {
         return (
-
             <div className="card">
                 <div className="card-body">
                     <h4 className="card-title">Dacic Apiary</h4>
@@ -54,30 +53,30 @@ const HomePage = () => {
             </div>
             <div className="row pt-3">
                 <div className="col">
-                    <CardGame />
+                    <ApiaryCard />
                 </div>
                 <div className="col">
-                    <CardGame />
+                    <ApiaryCard />
                 </div>
                 <div className="col">
-                    <CardGame />
+                    <ApiaryCard />
                 </div>
                 <div className="col">
-                    <CardGame />
+                    <ApiaryCard />
                 </div>
             </div>
             <div className="row pt-3">
                 <div className="col">
-                    <CardGame />
+                    <ApiaryCard />
                 </div>
                 <div className="col">
-                    <CardGame />
+                    <ApiaryCard />
                 </div>
                 <div className="col">
-                    <CardGame />
+                    <ApiaryCard />
                 </div>
                 <div className="col">
-                    <CardGame />
+                    <ApiaryCard />
                 </div>
             </div>
 

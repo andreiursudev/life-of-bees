@@ -1,6 +1,8 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const FormularStart = ({ handleClose }) => {
+const LoginComponents = ({ handleClose }) => {
+    const navigate = useNavigate();
     return (
         <div className="modal show" style={{ display: 'block' }}>
             <div className="modal-dialog">
@@ -48,8 +50,9 @@ const FormularStart = ({ handleClose }) => {
                                 </div>
                             </div>
                         </form>
-                        <button className="btn btn-secondary" onClick={() => window.location.href = 'gameView.html'}>Start</button>
-                        <button className="btn btn-warning" onClick={() => window.location.href = 'gameView.html'}>Random</button>
+                        <button className="btn btn-custom p-custom mb-2" onClick={() => navigate('/home')}>GameView</button>
+                        <button className="btn btn-secondary" onClick={() => navigate('/home')}>Start</button>
+                        <button className="btn btn-warning" onClick={() => navigate('/home')}>Random</button>
                     </div>
 
                     <div className="modal-footer">
@@ -61,4 +64,4 @@ const FormularStart = ({ handleClose }) => {
     );
 };
 
-export default FormularStart;
+export default LoginComponents;

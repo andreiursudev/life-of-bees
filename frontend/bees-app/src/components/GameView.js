@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../App.css';
 import rapeseedFlower from '../rapeseed-flower.jpg';
 import acaciaFlower from '../acacia-flower.jpg';
@@ -7,11 +8,9 @@ import falseIndigoFlower from '../false-indigo-flower.jpg'
 import sunFlower from '../sun-flower.jpg';
 import wildFlower from '../wild-flower.jpg';
 
-
-class CardGame extends Component {
+class HiveCard extends Component {
     render() {
         return (
-
             <div className="card mb-2">
                 <div className="card-body">
                     <p>Hive 1000</p>
@@ -20,33 +19,33 @@ class CardGame extends Component {
                     <p>Total honey: 316.6kg</p>
                 </div>
             </div>
-
         );
     }
 }
 
-const handleAnswer = (answer) => {
-    console.log(`User answered: ${answer}`);
-    // daca Da se scad banii din Money in The Bank, daca nu reduc numarul albinelor cu 20%
-};
-
 const GameView = () => {
+    const navigate = useNavigate();
+    const handleAnswer = (answer) => {
+        console.log(`User answered: ${answer}`);
+        // daca Da se scad banii din Money in The Bank, daca nu reduc numarul albinelor cu 20%
+    };
+
     return (
         <div className="body-gameView">
             <div className="row">
                 <div className="col-md-3">
-                    <CardGame />
-                    <CardGame />
-                    <CardGame />
-                    <CardGame />
-                    <CardGame />
+                    <HiveCard />
+                    <HiveCard />
+                    <HiveCard />
+                    <HiveCard />
+                    <HiveCard />
                 </div>
                 <div className="col-md-3">
-                    <CardGame />
-                    <CardGame />
-                    <CardGame />
-                    <CardGame />
-                    <CardGame />
+                    <HiveCard />
+                    <HiveCard />
+                    <HiveCard />
+                    <HiveCard />
+                    <HiveCard />
                 </div>
                 <div className="col-md-3">
                     <div className="card mb-3">
@@ -70,10 +69,10 @@ const GameView = () => {
                         <p className="btn-custom p-custom mb-2">Total honey: 75.6kg</p>
                         <p className="btn-custom p-custom mb-2">Money in the bank: 3000$</p>
                         <img src={rapeseedFlower} alt="Imagine Buton 5" className="img-custom mb-2" />
-                        <button className="btn btn-custom p-custom mb-2" onClick={() => window.location.href = 'sellHoney.html'}>Sell honey</button>
+                        <button className="btn btn-custom p-custom mb-2" onClick={() => navigate('/sell-honey')}>Sell honey</button>
                         <button className="btn btn-custom mb-2">Buy hives[150$/pc]</button>
                         <button className="btn btn-custom mb-2">Iterate/ Go to next week</button>
-                        <button className="btn btn-danger btn-custom mb-2" onClick={() => window.location.href = 'index.html'}>Exit</button>
+                        <button className="btn btn-danger btn-custom mb-2" onClick={() => navigate('/')}>Exit</button>
                     </div>
                 </div>
             </div>
