@@ -59,6 +59,67 @@ export const getGames = [
     }
 ];
 
+export const getHives
+=[{
+    hiveId:"1",
+    bees:"123456",
+    rapeseedHoney:"136.6kg",
+    totalHoney:"316.6kg"
+},
+{
+    hiveId:"2",
+    bees:"123456",
+    rapeseedHoney:"136.6kg",
+     totalHoney:"316.6kg"
+},
+{
+    hiveId:"3",
+    bees:"123456",
+    rapeseedHoney:"136.6kg",
+     totalHoney:"316.6kg"
+},
+{
+    hiveId:"4",
+    bees:"123456",
+    rapeseedHoney:"136.6kg",
+    totalHoney:"316.6kg"
+},
+{
+    hiveId:"5",
+    bees:"123456",
+    rapeseedHoney:"136.6kg",
+     totalHoney:"316.6kg"
+},
+{
+    hiveId:"6",
+    bees:"123456",
+    rapeseedHoney:"136.6kg",
+     totalHoney:"316.6kg"
+},
+{
+    hiveId:"7",
+    bees:"123456",
+    rapeseedHoney:"136.6kg",
+    totalHoney:"316.6kg"
+},
+{
+    hiveId:"8",
+    bees:"123456",
+    rapeseedHoney:"136.6kg",
+     totalHoney:"316.6kg"
+},
+{
+    hiveId:"9",
+    bees:"123456",
+    rapeseedHoney:"136.6kg",
+     totalHoney:"316.6kg"
+},
+{
+    hiveId:"10",
+    bees:"123456",
+    rapeseedHoney:"136.6kg",
+    totalHoney:"316.6kg"
+}]
 
 export const iterateGame
     = [{
