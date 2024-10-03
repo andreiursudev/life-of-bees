@@ -7,7 +7,7 @@
             hives: "5",
         }]
 
-    export const showGames = [
+    export const getGameInfos = [
         {
             gameName: "Stefan Cel Mare Apiary",
             location: "Suceava, Romania",
@@ -59,67 +59,116 @@
         }
     ];
 
-    export const getHives
+    export const getGame
     =[{
         hiveId:"1",
         bees:"123456",
         rapeseedHoney:"136.6kg",
         totalHoney:"316.6kg",
-        date:""
+        date:"12-Apr-2024",
+        temp:"22°C",
+        windSpeed:"3m",
+        totalHoney:"75.6kg",
+        moneyInTheBank:"3000$"
     },
     {
         hiveId:"2",
         bees:"123456",
         rapeseedHoney:"136.6kg",
-        totalHoney:"316.6kg"
+        totalHoney:"316.6kg",
+        date:"12-Apr-2024",
+        temp:"22°C",
+        windSpeed:"3m",
+        totalHoney:"75.6kg",
+        moneyInTheBank:"3000$"
     },
     {
         hiveId:"3",
         bees:"123456",
         rapeseedHoney:"136.6kg",
-        totalHoney:"316.6kg"
+        totalHoney:"316.6kg",
+        date:"12-Apr-2024",
+        temp:"22°C",
+        windSpeed:"3m",
+        totalHoney:"75.6kg",
+        moneyInTheBank:"3000$"
     },
     {
         hiveId:"4",
         bees:"123456",
         rapeseedHoney:"136.6kg",
-        totalHoney:"316.6kg"
+        totalHoney:"316.6kg",
+        date:"12-Apr-2024",
+        temp:"22°C",
+        windSpeed:"3m",
+        totalHoney:"75.6kg",
+        moneyInTheBank:"3000$"
     },
     {
         hiveId:"5",
         bees:"123456",
         rapeseedHoney:"136.6kg",
-        totalHoney:"316.6kg"
+        totalHoney:"316.6kg",
+        date:"12-Apr-2024",
+        temp:"22°C",
+        windSpeed:"3m",
+        totalHoney:"75.6kg",
+        moneyInTheBank:"3000$"
     },
     {
         hiveId:"6",
         bees:"123456",
         rapeseedHoney:"136.6kg",
-        totalHoney:"316.6kg"
+        totalHoney:"316.6kg",
+        date:"12-Apr-2024",
+        temp:"22°C",
+        windSpeed:"3m",
+        totalHoney:"75.6kg",
+        moneyInTheBank:"3000$"
     },
     {
         hiveId:"7",
         bees:"123456",
         rapeseedHoney:"136.6kg",
-        totalHoney:"316.6kg"
+        totalHoney:"316.6kg",
+        date:"12-Apr-2024",
+        temp:"22°C",
+        windSpeed:"3m",
+        totalHoney:"75.6kg",
+        moneyInTheBank:"3000$"
     },
     {
         hiveId:"8",
         bees:"123456",
         rapeseedHoney:"136.6kg",
-        totalHoney:"316.6kg"
+        totalHoney:"316.6kg",
+        date:"12-Apr-2024",
+        temp:"22°C",
+        windSpeed:"3m",
+        totalHoney:"75.6kg",
+        moneyInTheBank:"3000$"
     },
     {
         hiveId:"9",
         bees:"123456",
         rapeseedHoney:"136.6kg",
-        totalHoney:"316.6kg"
+        totalHoney:"316.6kg",
+        date:"12-Apr-2024",
+        temp:"22°C",
+        windSpeed:"3m",
+        totalHoney:"75.6kg",
+        moneyInTheBank:"3000$"
     },
     {
         hiveId:"10",
         bees:"123456",
         rapeseedHoney:"136.6kg",
-        totalHoney:"316.6kg"
+        totalHoney:"316.6kg",
+        date:"12-Apr-2024",
+        temp:"22°C",
+        windSpeed:"3m",
+        totalHoney:"75.6kg",
+        moneyInTheBank:"3000$"
     }]
 
     export const iterateGame

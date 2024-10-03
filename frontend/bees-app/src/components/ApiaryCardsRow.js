@@ -1,5 +1,5 @@
 import React from 'react';
-import { showGames } from './BeesApiService';
+import { getGameInfos } from './BeesApiService';
 
 const ApiaryCardsRow = () => {
     const chunkArray = (array, chunkSize) => {
@@ -10,7 +10,7 @@ const ApiaryCardsRow = () => {
         return chunks;
     };
 
-    const chunkedApiaries = chunkArray(showGames, 6);
+    const chunkedApiaries = chunkArray(getGameInfos, 6);
 
     return (
         <div className="container">
