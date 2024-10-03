@@ -37,7 +37,6 @@ const HomePage = () => {
             </div>
 
             <ApiaryCardsRow />
-            <ApiaryCardsRow />
 
             {showPublicModal && (
                 <LoginComponents handleClose={handleCloseModal} />

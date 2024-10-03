@@ -3,11 +3,10 @@ export const createGame
     = [{
         gameName: "Dacic Apiary",
         location: "Sarmizegetusa, Romania",
-        startDate:"1-Apr-2023",
+        startDate: "1-Apr-2023",
         hives: "5",
     }]
 
-    // BeesAppService.js
 export const getGame = [
     {
         gameName: "Stefan Cel Mare Apiary",
@@ -29,6 +28,34 @@ export const getGame = [
         hives: "20000000000000",
         bees: "34567890",
         honey: "46677"
+    },
+    {
+        gameName: "Stefan Cel Mititel Apiary",
+        location: "Suceava, Romania",
+        hives: "50000000000000",
+        bees: "23456789",
+        honey: "76677"
+    },
+    {
+        gameName: "Vlad Impaler Apiary",
+        location: "Targoviste, Romania",
+        hives: "30000000000000",
+        bees: "12345678",
+        honey: "56677"
+    },
+    {
+        gameName: "Mihai Cel Fricos Apiary",
+        location: "Alba Iulia, Romania",
+        hives: "20000000000000",
+        bees: "34567890",
+        honey: "46677"
+    },
+    {
+        gameName: "Mihai Cel Fricos Apiary",
+        location: "Alba Iulia, Romania",
+        hives: "20000000000000",
+        bees: "34567890",
+        honey: "46677"
     }
 ];
 
@@ -36,7 +63,7 @@ export const getGame = [
 export const iterateGame
     = [{
         gameName: "Dacic Apiary",
-        NextDate:"8-Apr-2024"
+        NextDate: "8-Apr-2024"
     }]
 
 
