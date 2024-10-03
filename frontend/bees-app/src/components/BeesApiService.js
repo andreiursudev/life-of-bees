@@ -7,7 +7,7 @@ export const createGame
         hives: "5",
     }]
 
-export const getGame = [
+export const getGames = [
     {
         gameName: "Stefan Cel Mare Apiary",
         location: "Suceava, Romania",

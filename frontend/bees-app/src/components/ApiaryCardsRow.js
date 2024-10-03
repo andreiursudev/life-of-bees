@@ -1,8 +1,7 @@
 import React from 'react';
-import { getGame } from './BeesApiService';
+import { getGames } from './BeesApiService';
 
 const ApiaryCardsRow = () => {
-    // Împărțim lista `getGame` în grupuri de câte 5
     const chunkArray = (array, chunkSize) => {
         const chunks = [];
         for (let i = 0; i < array.length; i += chunkSize) {
@@ -11,7 +10,7 @@ const ApiaryCardsRow = () => {
         return chunks;
     };
 
-    const chunkedApiaries = chunkArray(getGame, 6);
+    const chunkedApiaries = chunkArray(getGames, 6);
 
     return (
         <div className="container">
