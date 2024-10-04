@@ -1,8 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const LoginComponents = ({ handleClose }) => {
     const navigate = useNavigate();
+
+    // State-uri pentru inputurile din formular
+    const [name, setName] = useState('');
+    const [location, setLocation] = useState('');
+    const [startDate, setStartDate] = useState('');
+    const [hives, setHives] = useState('');
+
+   
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const gameData = {
+            name: name,
+            location: location,
+            startDate: startDate,
+            hives: parseInt(hives) 
+        };
+
+        try {
+            const response = await axios.post('http://localhost:8080/api/game/start', gameData);
+            console.log(response.data);
+
+            navigate('/home');
+        } catch (error) {
+            console.error('Error submitting the form', error);
+        }
+    };
+
     return (
         <div className="modal show" style={{ display: 'block' }}>
             <div className="modal-dialog">
@@ -12,13 +41,13 @@ const LoginComponents = ({ handleClose }) => {
                         <button type="button" className="btn-close" onClick={handleClose}></button>
                     </div>
                     <div className="modal-body">
-                        <form>
+                        <form onSubmit={handleSubmit}>
                             <div className="row mb-3 align-items-center">
                                 <div className="col">
                                     <label htmlFor="name" className="col-form-label">Name</label>
                                 </div>
                                 <div className="col">
-                                    <input type="text" className="form-control" id="name" name="name" />
+                                    <input type="text" className="form-control" id="name" name="name" value={name} onChange={(e) => setName(e.target.value)} />
                                 </div>
                             </div>
 
@@ -27,7 +56,7 @@ const LoginComponents = ({ handleClose }) => {
                                     <label htmlFor="location" className="col-form-label">Location</label>
                                 </div>
                                 <div className="col">
-                                    <input type="text" className="form-control" id="location" name="location" />
+                                    <input type="text" className="form-control" id="location" name="location" value={location} onChange={(e) => setLocation(e.target.value)} />
                                 </div>
                             </div>
 
@@ -36,24 +65,22 @@ const LoginComponents = ({ handleClose }) => {
                                     <label htmlFor="startDate" className="form-label">Start Date:</label>
                                 </div>
                                 <div className="col">
-                                    <input type="date" className="form-control" id="startDate" name="startDate" />
+                                    <input type="date" className="form-control" id="startDate" name="startDate" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
                                 </div>
                             </div>
 
                             <div className="row mb-3 align-items-center">
                                 <div className="col">
                                     <label htmlFor="hives" className="col-form-label">Hives</label>
-                                    <span id="errorMessage" className="warning-message">(Values less than 5!)</span>
                                 </div>
                                 <div className="col">
-                                    <input type="number" id="numberInput" className="form-control" name="numberInput" min="0" max="5" required />
+                                    <input type="number" className="form-control" id="hives" name="hives" value={hives} onChange={(e) => setHives(e.target.value)} min="0" max="5" required />
                                 </div>
                             </div>
-                        </form>
-                        <button className="btn btn-secondary" onClick={() => navigate('/home')}>Start</button>
-                        <button className="btn btn-warning" onClick={() => navigate('/home')}>Random</button>
-                    </div>
 
+                            <button type="submit" className="btn btn-secondary">Start</button>
+                        </form>
+                    </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-danger" onClick={handleClose}>Close</button>
                     </div>
