@@ -61,16 +61,22 @@
 
     export const getGame
     =[{
-        hiveId:"1",
-        bees:"123456",
-        rapeseedHoney:"136.6kg",
-        totalHoney:"316.6kg",
-        date:"12-Apr-2024",
-        temp:"22°C",
-        windSpeed:"3m",
-        totalHoney:"75.6kg",
-        moneyInTheBank:"3000$"
-    },
+    hiveId: "1",
+    bees: "89898989",
+    rapeseedHoney: "136.6kg",
+    totalHoney: "316.6kg",
+    date: "12-Apr-2024",
+    temp: "22°C",
+    windSpeed: "3m/s",
+    moneyInTheBank: "3000$",
+    actions: {
+      imageSrc: "../rapeseed-flower.jpg",
+      sellHoneyText: "Sell honey",
+      buyHivesText: "Buy hives [150$/pc]",
+      iterateText: "Iterate/ Go to next week",
+      exitText: "Exit"
+    }
+  },
     {
         hiveId:"2",
         bees:"123456",
