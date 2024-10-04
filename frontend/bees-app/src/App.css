@@ -81,10 +81,10 @@ body {
 }
 
 .btn-custom-sell {
+  text-align: left;
   background-color: rgb(224, 133, 13);
   color: black;
   flex-basis: 150px;
-  text-align: center;
 }
 
 .input-custom {

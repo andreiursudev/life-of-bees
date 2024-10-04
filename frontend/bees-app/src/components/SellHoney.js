@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../App.css';
 import { useNavigate } from 'react-router-dom';
+import { sellHoney } from './BeesApiService';  
 
 class RowHeader extends Component {
     render() {
@@ -16,10 +17,11 @@ class RowHeader extends Component {
 
 class RowText extends Component {
     render() {
+        const { honeyType, price } = this.props;  
         return (
             <div className="row-text">
-                <p className="btn-custom-sell mb-2">rapeseed:</p>
-                <p className="btn-custom-sell mb-2">3</p>
+                <p className="btn-custom-sell mb-2">{honeyType}</p>
+                <p className="btn-custom-sell mb-2">{price}</p>
                 <form>
                     <input type="text" className="input-custom" id="name" name="name" />
                 </form>
@@ -27,20 +29,23 @@ class RowText extends Component {
         );
     }
 }
+
 const SellHoney = () => {
     const navigate = useNavigate();
+    const honeyData = sellHoney[0];  // Accesează datele din BeesApiService
+
     return (
         <div className="body-sell">
             <h1>Total honey: 450kg</h1>
 
             <div className="container" style={{ marginTop: '50px' }}>
                 <RowHeader />
-                <RowText />
-                <RowText />
-                <RowText />
-                <RowText />
-                <RowText />
-                <RowText />
+                <RowText honeyType={honeyData.rapeseedHoney} price="3"/>
+                <RowText honeyType={honeyData.acaciaHoney} price="6" />
+                <RowText honeyType={honeyData.lindenHoney} price="3" />
+                <RowText honeyType={honeyData.wildFlowerHoney} price="3" />
+                <RowText honeyType={honeyData.sunFlowerHoney} price="3" />
+                <RowText honeyType={honeyData.falseIndigoFlowerHoney} price="3" />
             </div>
 
             <button className="btn btn-danger btn-custom mb-2" onClick={() => navigate('/home')}>Back</button>
@@ -49,4 +54,4 @@ const SellHoney = () => {
 };
 
 export { RowText };
-export default SellHoney; 
+export default SellHoney;
