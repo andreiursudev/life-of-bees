@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { getGame } from './BeesApiService';
 
 const LoginComponents = ({ handleClose }) => {
     const navigate = useNavigate();
@@ -14,23 +15,23 @@ const LoginComponents = ({ handleClose }) => {
    
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         const gameData = {
             name: name,
             location: location,
             startDate: startDate,
             hives: parseInt(hives) 
         };
-
+    
         try {
             const response = await axios.post('http://localhost:8080/api/game/start', gameData);
-            console.log(response.data);
-
+            const gameInfo = await getGame();
             navigate('/home');
         } catch (error) {
             console.error('Error submitting the form', error);
         }
     };
+    
 
     return (
         <div className="modal show" style={{ display: 'block' }}>

@@ -1,3 +1,4 @@
+import axios from 'axios';
 
 export const createGame
     = [{
@@ -59,13 +60,16 @@ export const getGameInfos = [
     }
 ];
 
-export const getGame
-    = [{
+export const getGame = [
+    {
         hiveId: "1",
-        bees: "89898989",
+        ageOfQueen: "0",
+        bees: "12345",
         rapeseedHoney: "136.6kg",
+        eggsFrame: "2",
+        honeyFrame: "3",
         totalHoney: "316.6kg",
-        date: "12-Apr-2024",
+        date: "1-Apr-2024",
         temp: "22°C",
         windSpeed: "3m/s",
         moneyInTheBank: "3000$",
@@ -76,112 +80,8 @@ export const getGame
             iterateText: "Iterate/ Go to next week",
             exitText: "Exit"
         }
-    },
-    {
-        hiveId: "2",
-        bees: "123456",
-        rapeseedHoney: "136.6kg",
-        totalHoney: "316.6kg",
-        date: "12-Apr-2024",
-        temp: "22°C",
-        windSpeed: "3m",
-        totalHoney: "75.6kg",
-        moneyInTheBank: "3000$"
-    },
-    {
-        hiveId: "3",
-        bees: "123456",
-        rapeseedHoney: "136.6kg",
-        totalHoney: "316.6kg",
-        date: "12-Apr-2024",
-        temp: "22°C",
-        windSpeed: "3m",
-        totalHoney: "75.6kg",
-        moneyInTheBank: "3000$"
-    },
-    {
-        hiveId: "4",
-        bees: "123456",
-        rapeseedHoney: "136.6kg",
-        totalHoney: "316.6kg",
-        date: "12-Apr-2024",
-        temp: "22°C",
-        windSpeed: "3m",
-        totalHoney: "75.6kg",
-        moneyInTheBank: "3000$"
-    },
-    {
-        hiveId: "5",
-        bees: "123456",
-        rapeseedHoney: "136.6kg",
-        totalHoney: "316.6kg",
-        date: "12-Apr-2024",
-        temp: "22°C",
-        windSpeed: "3m",
-        totalHoney: "75.6kg",
-        moneyInTheBank: "3000$"
-    },
-    {
-        hiveId: "6",
-        bees: "123456",
-        rapeseedHoney: "136.6kg",
-        totalHoney: "316.6kg",
-        date: "12-Apr-2024",
-        temp: "22°C",
-        windSpeed: "3m",
-        totalHoney: "75.6kg",
-        moneyInTheBank: "3000$"
-    },
-    {
-        hiveId: "7",
-        bees: "123456",
-        rapeseedHoney: "136.6kg",
-        totalHoney: "316.6kg",
-        date: "12-Apr-2024",
-        temp: "22°C",
-        windSpeed: "3m",
-        totalHoney: "75.6kg",
-        moneyInTheBank: "3000$"
-    },
-    {
-        hiveId: "8",
-        bees: "123456",
-        rapeseedHoney: "136.6kg",
-        totalHoney: "316.6kg",
-        date: "12-Apr-2024",
-        temp: "22°C",
-        windSpeed: "3m",
-        totalHoney: "75.6kg",
-        moneyInTheBank: "3000$"
-    },
-    {
-        hiveId: "9",
-        bees: "123456",
-        rapeseedHoney: "136.6kg",
-        totalHoney: "316.6kg",
-        date: "12-Apr-2024",
-        temp: "22°C",
-        windSpeed: "3m",
-        totalHoney: "75.6kg",
-        moneyInTheBank: "3000$"
-    },
-    {
-        hiveId: "10",
-        bees: "123456",
-        rapeseedHoney: "136.6kg",
-        totalHoney: "316.6kg",
-        date: "12-Apr-2024",
-        temp: "22°C",
-        windSpeed: "3m",
-        totalHoney: "75.6kg",
-        moneyInTheBank: "3000$"
-    }]
-
-export const iterateGame
-    = [{
-        gameName: "Dacic Apiary",
-        NextDate: "8-Apr-2024"
-    }]
+    }
+];
 
 
 export const sellHoney = [

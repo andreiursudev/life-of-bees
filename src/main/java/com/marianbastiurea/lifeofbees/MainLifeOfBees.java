@@ -1,7 +1,6 @@
 package com.marianbastiurea.lifeofbees;
 
 import com.marianbastiurea.lifeofbees.eggframe.EggFrame;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
