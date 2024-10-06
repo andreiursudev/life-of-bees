@@ -1,12 +1,7 @@
 import axios from 'axios';
 
 export const createGame
-    = [{
-        gameName: "Dacic Apiary",
-        location: "Sarmizegetusa, Romania",
-        startDate: "1-Apr-2023",
-        hives: "5",
-    }]
+    = (game) =>  1
 
 export const getGameInfos = [
     {
@@ -60,37 +55,47 @@ export const getGameInfos = [
     }
 ];
 
-export const getGame = [
-    {
-        hiveId: "1",
-        ageOfQueen: "0",
-        bees: "12345",
-        rapeseedHoney: "136.6kg",
-        eggsFrame: "2",
-        honeyFrame: "3",
-        totalHoney: "316.6kg",
-        date: "1-Apr-2024",
-        temp: "22°C",
-        windSpeed: "3m/s",
-        moneyInTheBank: "3000$",
-        actions: {
-            imageSrc: "../rapeseed-flower.jpg",
-            sellHoneyText: "Sell honey",
-            buyHivesText: "Buy hives [150$/pc]",
-            iterateText: "Iterate/ Go to next week",
-            exitText: "Exit"
-        }
-    }
-];
+export const getGame(id) =>await axios.post('http://localhost:8080/api/game', id);
+export const getGame={
+    hives: [
+        {
+            id: 1,
+            ageOfQueen: "0",
+            bees: "12345",
+            rapeseedHoney: "136.6",
+            eggsFrame: "2",
+            honeyFrame: "3",
+            totalHoney: "316.6",
+        },
+        {
+            id: 2,
+            ageOfQueen: "0",
+            bees: "12345",
+            rapeseedHoney: "136.6",
+            eggsFrame: "2",
+            honeyFrame: "3",
+            totalHoney: "316.6",
+        }],
+    action: {
+        name: "Insect control"
+    },
+    date: "1-Apr-2024",
+    temp: "22",
+    windSpeed: "3",
+    moneyInTheBank: "3000",
+    flower: "rapeseed"
+
+}
+
 
 
 export const sellHoney = [
     {
-        rapeseedHoney: "rapeseed: 50",
-        acaciaHoney: "acacia: 40",
-        lindenHoney: " linden: 50.6",
-        wildFlowerHoney: "  wildFlower: 22.8",
-        sunFlowerHoney: " sunFlower: 50.9",
-        falseIndigoFlowerHoney: "falseIndigo: 50"
+        rapeseed: "50",
+        acacia: "40",
+        linden: "50.6",
+        wildFlower: "22.8",
+        sunFlower: "50.9",
+        falseIndigoFlower: "50"
     }
 ];

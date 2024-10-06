@@ -5,10 +5,10 @@ import HiveCard from './HiveCard';
 import { getGame } from './BeesApiService';
 import rapeseedFlower from '../rapeseed-flower.jpg';
 
-const GameView = () => {
+const GameView = (id) => {
     const navigate = useNavigate();
 
-    const globalGameData = getGame[0];
+    const globalGameData = getGame[id];
 
     const handleAnswer = (answer) => {
         console.log(`User answered: ${answer}`);
@@ -44,7 +44,7 @@ const GameView = () => {
                     <div className="d-flex flex-column">
                         <p className="btn-custom p-custom mb-2">Date: {globalGameData.date}</p>
                         <p className="btn-custom p-custom mb-2">Temp: {globalGameData.temp}</p>
-                        <p className="btn-custom p-custom mb-2">Wind speed: {globalGameData.windSpeed}</p>
+                        <p className="btn-custom p-custom mb-2">Wind speed: {globalGameData.windSpeed} m/s</p>
                         <p className="btn-custom p-custom mb-2">Total honey: {globalGameData.totalHoney}</p>
                         <p className="btn-custom p-custom mb-2">Money in the bank: {globalGameData.moneyInTheBank}</p>
                         <img src={rapeseedFlower} alt="Imagine Buton 5" className="img-custom mb-2" />

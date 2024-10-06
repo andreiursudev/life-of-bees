@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { getGame } from './BeesApiService';
 
-const LoginComponents = ({ handleClose }) => {
+const LoginComponents = ({ handleClose }) => {//TODO rename to createNewGame
     const navigate = useNavigate();
 
     // State-uri pentru inputurile din formular
@@ -16,7 +16,7 @@ const LoginComponents = ({ handleClose }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
     
-        const gameData = {
+        const game = {
             name: name,
             location: location,
             startDate: startDate,
@@ -24,9 +24,8 @@ const LoginComponents = ({ handleClose }) => {
         };
     
         try {
-            const response = await axios.post('http://localhost:8080/api/game/start', gameData);
-            const gameInfo = await getGame();
-            navigate('/home');
+            const response = await axios.post('http://localhost:8080/api/createNewGame', game);//move this line to BeesApiService.js
+            navigate('/home/'+response.data);
         } catch (error) {
             console.error('Error submitting the form', error);
         }

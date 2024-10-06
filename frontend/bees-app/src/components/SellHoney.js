@@ -40,7 +40,9 @@ const SellHoney = () => {
 
             <div className="container" style={{ marginTop: '50px' }}>
                 <RowHeader />
-                <RowText honeyType={honeyData.rapeseedHoney} price="3"/>
+                if(rapeseed > 0){
+                    <RowText honeyType={honeyData.rapeseed} price="3"/>
+                }
                 <RowText honeyType={honeyData.acaciaHoney} price="6" />
                 <RowText honeyType={honeyData.lindenHoney} price="3" />
                 <RowText honeyType={honeyData.wildFlowerHoney} price="3" />

@@ -36,7 +36,7 @@ const HomePage = () => {
                 </ul>
             </div>
 
-            <ApiaryCardsRow />
+            <ApiaryCardsRow />//TODO GamesList
 
             {showPublicModal && (
                 <LoginComponents handleClose={handleCloseModal} />

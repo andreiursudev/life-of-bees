@@ -1,5 +1,5 @@
 package com.marianbastiurea.lifeofbees;
-
+import java.util.Date;
 
 import com.marianbastiurea.lifeofbees.eggframe.EggFrame;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +10,22 @@ import java.util.*;
 @RequestMapping("/api")
 public class LifeOfBeesController {
 
-    @PostMapping("/startGame")
+    @PostMapping("/createNewGame")
+    public Integer startGame(@RequestBody GameRequest gameRequest) {
+        LifeOfBees lifeOfBees = new LifeOfBees(gameRequest.getName(), gameRequest.getLocation(), gameRequest.getStartDate(), gameRequest.getHives());
+        Games.INSTANCE.games.add(lifeOfBees);
+        return lifeOfBees.getId();
+    }
+
+    @PostMapping("/game")
+    public Integer getGame(@RequestBody Integer id) {
+        LifeOfBees lifeOfBees = Games.INSTANCE.games.stream().filter(id == id).findFirst().get();
+        //transform lifeOfBees to GameResponse
+        GameResponse gameResponse = new GameResponse();
+        return gameResponse;
+    }
+
+    /*@PostMapping("/startGame")
     public List<GameResponse> startGame(@RequestBody GameRequest gameRequest) {
         int numberOfStartingHives = Integer.parseInt(gameRequest.getHives());
         List<Hive> hives = new ArrayList<>();
@@ -44,11 +59,11 @@ public class LifeOfBeesController {
             response.setAgeOfQueen(hive.getQueen().getAgeOfQueen());
             response.setNumberOfBees(hive.getNumberOfBees());
             response.setEggsFrameSize(hive.getEggsFrames().size());
-            response.setCurrentDate();
+            //response.setCurrentDate();
             hiveResponses.add(response);
 
         }
 
         return hiveResponses;
-    }
+    }*/
 }

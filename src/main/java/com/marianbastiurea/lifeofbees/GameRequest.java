@@ -2,18 +2,17 @@ package com.marianbastiurea.lifeofbees;
 
 
 public class GameRequest {
-    private String gameName;
+    private String name;
     private String location;
     private String startDate;
-    private String hives;
+    private Integer hives;
 
-    // Getters și Setters
-    public String getGameName() {
-        return gameName;
+    public String getName() {
+        return name;
     }
 
-    public void setGameName(String gameName) {
-        this.gameName = gameName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getLocation() {
@@ -32,11 +31,11 @@ public class GameRequest {
         this.startDate = startDate;
     }
 
-    public String getHives() {
+    public Integer getHives() {
         return hives;
     }
 
-    public void setHives(String hives) {
+    public void setHives(Integer hives) {
         this.hives = hives;
     }
 }

@@ -8,7 +8,6 @@ public class GameResponse {
     private int ageOfQueen;
     private int numberOfBees;
     private int eggsFrameSize;
-
     private int honeyFrameSize;
     private double speedWind;// in km/h
     private double temperature;// in Celsius Degree
