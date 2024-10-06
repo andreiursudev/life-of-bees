@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react';
 import '../App.css';
-import LoginComponents from './LoginComponents';
+import NewGameModal from './CreateNewGame';
 import ApiaryCardsRow from './ApiaryCardsRow';
 
 
@@ -39,10 +39,10 @@ const HomePage = () => {
             <ApiaryCardsRow />//TODO GamesList
 
             {showPublicModal && (
-                <LoginComponents handleClose={handleCloseModal} />
+                <NewGameModal handleClose={handleCloseModal} />
             )}
             {showPrivateModal && (
-                <LoginComponents handleClose={handleCloseModal} />
+                <NewGameModal handleClose={handleCloseModal} />
             )}
         </div>
 

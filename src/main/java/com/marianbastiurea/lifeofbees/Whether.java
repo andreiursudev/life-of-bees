@@ -18,6 +18,17 @@ public class Whether implements IWeather{
         this.precipitation = precipitation;
 
     }
+    public double getSpeedWind() {
+        return speedWind;
+    }
+
+    public double getTemperature() {
+        return temperature;
+    }
+
+    public double getPrecipitation() {
+        return precipitation;
+    }
 
     public static List<Whether> getWhetherList() {
         return whetherList;

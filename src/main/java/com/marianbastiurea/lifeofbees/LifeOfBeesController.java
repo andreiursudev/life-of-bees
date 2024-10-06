@@ -1,69 +1,19 @@
 package com.marianbastiurea.lifeofbees;
-import java.util.Date;
-
-import com.marianbastiurea.lifeofbees.eggframe.EggFrame;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/bees")
 public class LifeOfBeesController {
 
-    @PostMapping("/createNewGame")
-    public Integer startGame(@RequestBody GameRequest gameRequest) {
-        LifeOfBees lifeOfBees = new LifeOfBees(gameRequest.getName(), gameRequest.getLocation(), gameRequest.getStartDate(), gameRequest.getHives());
-        Games.INSTANCE.games.add(lifeOfBees);
-        return lifeOfBees.getId();
+    @PostMapping("/create-hives")
+    public List<GameResponse> createHives(@RequestBody GameRequest gameRequest) {
+        LifeOfBeesGame game = new LifeOfBeesGame(gameRequest.getName(),
+                gameRequest.getLocation(),
+                gameRequest.getStartDate(),
+                gameRequest.getNumberOfStartingHives());
+        return game.createApiary(gameRequest.getNumberOfStartingHives());
     }
-
-    @PostMapping("/game")
-    public Integer getGame(@RequestBody Integer id) {
-        LifeOfBees lifeOfBees = Games.INSTANCE.games.stream().filter(id == id).findFirst().get();
-        //transform lifeOfBees to GameResponse
-        GameResponse gameResponse = new GameResponse();
-        return gameResponse;
-    }
-
-    /*@PostMapping("/startGame")
-    public List<GameResponse> startGame(@RequestBody GameRequest gameRequest) {
-        int numberOfStartingHives = Integer.parseInt(gameRequest.getHives());
-        List<Hive> hives = new ArrayList<>();
-        Random random = new Random();
-
-        Apiary apiary = new Apiary(hives, new ArrayList<>());
-        for (int i = 1; i <= numberOfStartingHives; i++) {
-            int ageOfQueen = random.nextInt(1, 6);
-            List<EggFrame> eggFrames = new ArrayList<>();
-            for (int j = 0; j < random.nextInt(5, 6); j++) {
-                eggFrames.add(new EggFrame());
-            }
-            List<HoneyFrame> honeyFrames = new ArrayList<>();
-            for (int k = 0; k < random.nextInt(4, 5); k++) {
-                honeyFrames.add(new HoneyFrame(random.nextDouble(2.5, 3), "WildFlower"));
-            }
-            int numberOfBees = random.nextInt(2000, 2500) * (honeyFrames.size() + eggFrames.size());
-            Hive hive = new Hive(apiary, i, false, false, false, eggFrames, honeyFrames, new ArrayList<>(), new ArrayList<>(), new Honey("WildFlower"), new Queen(ageOfQueen), numberOfBees);
-            hives.add(hive);
-        }
-
-        IWeather weather = new Whether();
-        LifeOfBees lifeOfBees = new LifeOfBees(apiary);
-        lifeOfBees.iterateOverTwoYears(weather);
-
-
-        List<GameResponse> hiveResponses = new ArrayList<>();
-        for (Hive hive : hives) {
-            GameResponse response = new GameResponse();
-            response.setHiveId(hive.getId());
-            response.setAgeOfQueen(hive.getQueen().getAgeOfQueen());
-            response.setNumberOfBees(hive.getNumberOfBees());
-            response.setEggsFrameSize(hive.getEggsFrames().size());
-            //response.setCurrentDate();
-            hiveResponses.add(response);
-
-        }
-
-        return hiveResponses;
-    }*/
 }
+

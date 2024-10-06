@@ -1,7 +1,15 @@
 import axios from 'axios';
 
-export const createGame
-    = (game) =>  1
+export const createGame = async (gameData) => {
+    try {
+        const response = await axios.post('http://localhost:8080/api/bees/create-hives', gameData);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching game data:', error);
+        throw error;
+    }
+};
+
 
 export const getGameInfos = [
     {
@@ -55,8 +63,8 @@ export const getGameInfos = [
     }
 ];
 
-export const getGame(id) =>await axios.post('http://localhost:8080/api/game', id);
-export const getGame={
+
+export const getGame = {
     hives: [
         {
             id: 1,
@@ -85,6 +93,7 @@ export const getGame={
     moneyInTheBank: "3000",
     flower: "rapeseed"
 
+
 }
 
 
@@ -92,10 +101,10 @@ export const getGame={
 export const sellHoney = [
     {
         rapeseed: "50",
-        acacia: "40",
+        acacia: "30",
         linden: "50.6",
         wildFlower: "22.8",
         sunFlower: "50.9",
-        falseIndigoFlower: "50"
+        falseIndigoFlower: "10"
     }
 ];

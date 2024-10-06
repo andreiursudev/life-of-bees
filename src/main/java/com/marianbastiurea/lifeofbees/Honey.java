@@ -1,5 +1,6 @@
 package com.marianbastiurea.lifeofbees;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,6 +12,8 @@ public class Honey {
         this.honeyType = honeyType;
     }
 
+    public Honey() {
+    }
 
     public String getHoneyType() {
         return honeyType;
@@ -28,61 +31,56 @@ public class Honey {
                 '}';
     }
 
-    public void honeyTypes(HarvestingMonths month, int dayOfMonth) {
+    public static HarvestingMonths getHarvestingMonth(LocalDate date) {
+        int monthValue = date.getMonthValue();
+        return HarvestingMonths.values()[monthValue - 1];
+    }
+
+    public String honeyTypes(HarvestingMonths month, int dayOfMonth) {
         switch (month) {
-            case MARCH:
-                    honeyType = "WildFlower";
-                break;
+            case MARCH, AUGUST, SEPTEMBER:
+                    return  "WildFlower";
             case APRIL:
                 if (dayOfMonth >= 1 && dayOfMonth <= 20) {
-                    honeyType = "Rapeseed";
+                   return "Rapeseed";
                 } else if (dayOfMonth >= 21 && dayOfMonth <= 30) {
-                    honeyType = "WildFlower";
+                    return "WildFlower";
                 }
                 break;
             case MAY:
                 if (dayOfMonth >= 1 && dayOfMonth <= 20) {
-                    honeyType = "Acacia";
+                    return "Acacia";
                 } else if (dayOfMonth >= 21 && dayOfMonth <= 31) {
-                    honeyType = "FalseIndigo";
+                    return "FalseIndigo";
                 }
                 break;
             case JUNE:
                 if (dayOfMonth >= 1 && dayOfMonth <= 20) {
-                    honeyType = "Linden";
+                    return "Linden";
                 } else if (dayOfMonth >= 21 && dayOfMonth <= 30) {
-                    honeyType = "WildFlower";
+                    return "WildFlower";
                 }
                 break;
             case JULY:
-                honeyType = "SunFlower";
-            case AUGUST:
-                honeyType = "WildFlower";
-            case SEPTEMBER:
-                honeyType = "WildFlower";
+                return "SunFlower";
             default:
-                break;
+                return "No honey type available";
         }
-
+        return "No honey type available";
     }
 
     public double honeyProductivity() {
         int indexHoneyProductivity = 0;
-        switch (honeyType) {
-            case "Acacia":
-                return 1;//kgOnHa=1600
-            case "Rapeseed":
-                return 0.8; //kgOnHa=50
-            case "WildFlower":
-                return 0.75;//kgOnHa=40
-            case "Linden":
-                return 1;//kgOnHa=1200
-            case "SunFlower":
-                return 0.8;//kgOnHa=60
-            case "FalseIndigo":
-                return 0.7;//kgOnHa=70
-        }
-        return indexHoneyProductivity;
+        return switch (honeyType) {
+            case "Acacia" -> 1;//kgOnHa=1600
+            case "Rapeseed" -> 0.8; //kgOnHa=50
+            case "WildFlower" -> 0.75;//kgOnHa=40
+            case "Linden" -> 1;//kgOnHa=1200
+            case "SunFlower" -> 0.8;//kgOnHa=60
+            case "FalseIndigo" -> 0.7;
+            default ->//kgOnHa=70
+                    indexHoneyProductivity;
+        };
     }
 
     public List<HoneyBatch> makeHoneyBatch(Hive hive, Date currentDate) {

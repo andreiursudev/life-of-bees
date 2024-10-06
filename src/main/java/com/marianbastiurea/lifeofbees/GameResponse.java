@@ -12,7 +12,7 @@ public class GameResponse {
     private double speedWind;// in km/h
     private double temperature;// in Celsius Degree
     private double precipitation;
-    private Date currentDate;
+    private String currentDate;
 
     public int getHiveId() {
         return hiveId;
@@ -78,11 +78,11 @@ public class GameResponse {
         this.precipitation = precipitation;
     }
 
-    public Date getCurrentDate() {
+    public String getCurrentDate() {
         return currentDate;
     }
 
-    public void setCurrentDate(Date currentDate) {
+    public void setCurrentDate(String currentDate) {
         this.currentDate = currentDate;
     }
 }

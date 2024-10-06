@@ -8,7 +8,7 @@ import rapeseedFlower from '../rapeseed-flower.jpg';
 const GameView = (id) => {
     const navigate = useNavigate();
 
-    const globalGameData = getGame[id];
+    const globalGameData = getGame;
 
     const handleAnswer = (answer) => {
         console.log(`User answered: ${answer}`);
@@ -20,10 +20,8 @@ const GameView = (id) => {
             <div className="row">
                 <div className="col-md-6">
                     <div className="row">
-                        {getGame.map((hive, index) => (
-                            <div className="col-md-6" key={index}>
-                                <HiveCard hive={hive} />
-                            </div>
+                        {getGame.hives.map((hive) => (
+                            <HiveCard key={hive.id} hive={hive} /> // Creează un HiveCard pentru fiecare hive
                         ))}
                     </div>
                 </div>
@@ -48,10 +46,10 @@ const GameView = (id) => {
                         <p className="btn-custom p-custom mb-2">Total honey: {globalGameData.totalHoney}</p>
                         <p className="btn-custom p-custom mb-2">Money in the bank: {globalGameData.moneyInTheBank}</p>
                         <img src={rapeseedFlower} alt="Imagine Buton 5" className="img-custom mb-2" />
-                        <button className="btn btn-custom p-custom mb-2" onClick={() => navigate('/sell-honey')}>{globalGameData.actions.sellHoneyText}</button>
-                        <button className="btn btn-custom mb-2">{globalGameData.actions.buyHivesText}</button>
-                        <button className="btn btn-custom mb-2">{globalGameData.actions.iterateText}</button>
-                        <button className="btn btn-danger btn-custom mb-2" onClick={() => navigate('/')}>{globalGameData.actions.exitText}</button>
+                        <button className="btn btn-custom p-custom mb-2" onClick={() => navigate('/sell-honey')}>Sell Honey</button>
+                        <button className="btn btn-custom mb-2">Buy Hives</button>
+                        <button className="btn btn-custom mb-2">Iterate next week</button>
+                        <button className="btn btn-danger btn-custom mb-2" onClick={() => navigate('/')}>Exit</button>
                     </div>
                 </div>
             </div>

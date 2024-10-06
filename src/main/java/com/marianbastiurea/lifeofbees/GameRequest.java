@@ -5,7 +5,7 @@ public class GameRequest {
     private String name;
     private String location;
     private String startDate;
-    private Integer hives;
+    private Integer numberOfStartingHives;
 
     public String getName() {
         return name;
@@ -31,11 +31,11 @@ public class GameRequest {
         this.startDate = startDate;
     }
 
-    public Integer getHives() {
-        return hives;
+    public Integer getNumberOfStartingHives() {
+        return numberOfStartingHives;
     }
 
-    public void setHives(Integer hives) {
-        this.hives = hives;
+    public void setNumberOfStartingHives(Integer numberOfStartingHives) {
+        this.numberOfStartingHives = numberOfStartingHives;
     }
 }
