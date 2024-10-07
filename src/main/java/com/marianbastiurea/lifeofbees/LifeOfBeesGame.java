@@ -31,6 +31,7 @@ public class LifeOfBeesGame {
         this.numberOfStartingHives = numberOfStartingHives;
     }
 
+
     public List<GameResponse> createApiary(int numberOfStartingHives) {
         List<GameResponse> gameResponses = new ArrayList<>();
         LocalDate date = LocalDate.parse(startingDate);
@@ -100,6 +101,9 @@ public class LifeOfBeesGame {
 
 
         String jsonResponse = game.serializeGameResponses(gameResponses);
+        System.out.println(gameResponses);
+        System.out.println(jsonResponse);
+
 
 
     }

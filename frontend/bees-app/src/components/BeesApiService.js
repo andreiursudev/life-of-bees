@@ -64,37 +64,15 @@ export const getGameInfos = [
 ];
 
 
-export const getGame = {
-    hives: [
-        {
-            id: 1,
-            ageOfQueen: "0",
-            bees: "12345",
-            rapeseedHoney: "136.6",
-            eggsFrame: "2",
-            honeyFrame: "3",
-            totalHoney: "316.6",
-        },
-        {
-            id: 2,
-            ageOfQueen: "0",
-            bees: "12345",
-            rapeseedHoney: "136.6",
-            eggsFrame: "2",
-            honeyFrame: "3",
-            totalHoney: "316.6",
-        }],
-    action: {
-        name: "Insect control"
-    },
-    date: "1-Apr-2024",
-    temp: "22",
-    windSpeed: "3",
-    moneyInTheBank: "3000",
-    flower: "rapeseed"
-
-
-}
+export const getGame = async () => {
+    try {
+        const response = await axios.get('http://localhost:8080/api/bees/create-hives'); 
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching game data:', error);
+        throw error;
+    }
+};
 
 
 

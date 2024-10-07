@@ -85,4 +85,19 @@ public class GameResponse {
     public void setCurrentDate(String currentDate) {
         this.currentDate = currentDate;
     }
+
+    @Override
+    public String toString() {
+        return "GameResponse{" +
+                "hiveId=" + hiveId +
+                ", ageOfQueen=" + ageOfQueen +
+                ", numberOfBees=" + numberOfBees +
+                ", eggsFrameSize=" + eggsFrameSize +
+                ", honeyFrameSize=" + honeyFrameSize +
+                ", speedWind=" + speedWind +
+                ", temperature=" + temperature +
+                ", precipitation=" + precipitation +
+                ", currentDate='" + currentDate + '\'' +
+                '}';
+    }
 }
