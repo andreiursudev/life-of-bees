@@ -1,4 +1,6 @@
 package com.marianbastiurea.lifeofbees;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,6 +15,8 @@ public class LifeOfBeesController {
                 gameRequest.getLocation(),
                 gameRequest.getStartDate(),
                 gameRequest.getNumberOfStartingHives());
+
+
         return game.createApiary(gameRequest.getNumberOfStartingHives());
     }
 }

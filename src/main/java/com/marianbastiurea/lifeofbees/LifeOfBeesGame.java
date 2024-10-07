@@ -58,7 +58,7 @@ public class LifeOfBeesGame {
             }
             List<HoneyFrame> honeyFrames = new ArrayList<>();
             for (int k = 0; k < random.nextInt(4, 5); k++) {
-                honeyFrames.add(new HoneyFrame(random.nextDouble(2.5, 3), "WildFlower"));
+                honeyFrames.add(new HoneyFrame(random.nextDouble(2.5, 3),honeyType));
             }
             int numberOfBees = random.nextInt(2000, 2500) * (honeyFrames.size() + eggFrames.size());
             Hive hive = new Hive(apiary,
@@ -92,19 +92,5 @@ public class LifeOfBeesGame {
     public String serializeGameResponses(List<GameResponse> gameResponses) {
         Gson gson = new Gson();
         return gson.toJson(gameResponses);
-    }
-
-
-    public static void main(String[] args) {
-        LifeOfBeesGame game = new LifeOfBeesGame("Bee Game", "Location", "2024-06-01", 5);
-        List<GameResponse> gameResponses = game.createApiary(5);
-
-
-        String jsonResponse = game.serializeGameResponses(gameResponses);
-        System.out.println(gameResponses);
-        System.out.println(jsonResponse);
-
-
-
     }
 }

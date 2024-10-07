@@ -5,7 +5,7 @@ public class GameRequest {
     private String name;
     private String location;
     private String startDate;
-    private Integer numberOfStartingHives;
+    private int numberOfStartingHives;
 
     public String getName() {
         return name;
