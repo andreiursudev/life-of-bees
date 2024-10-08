@@ -1,0 +1,14 @@
+package com.marianbastiurea.lifeofbees;
+
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class LifeOfBeesApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(LifeOfBeesApplication.class, args);
+    }
+
+}

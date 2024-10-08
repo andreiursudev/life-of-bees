@@ -1,7 +1,6 @@
 package com.marianbastiurea.lifeofbees;
 
 import com.marianbastiurea.lifeofbees.eggframe.EggFrame;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -42,6 +41,10 @@ public class MainLifeOfBees {
             for (int k = 0; k < random.nextInt(4, 5); k++) {
                 honeyFrames.add(new HoneyFrame(random.nextDouble(2.5, 3), "WildFlower"));
             }
+            double kgOfHoney = 0;
+            for (HoneyFrame honeyFrame : honeyFrames) {
+                kgOfHoney += honeyFrame.getKgOfHoney();
+            }
             int numberOfBees = random.nextInt(2000, 2500) * (honeyFrames.size() + eggFrames.size());
             Hive hive = new Hive(apiary,
                     i,
@@ -54,7 +57,8 @@ public class MainLifeOfBees {
                     new ArrayList<>(),
                     new Honey(honeyType),
                     new Queen(ageOfQueen),
-                    numberOfBees);
+                    numberOfBees,
+                    kgOfHoney);
             hives.add(hive);
         }
 

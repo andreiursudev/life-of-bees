@@ -20,6 +20,8 @@ public class Hive {
     private List<HoneyFrame> honeyFrames;
     private List<HoneyBatch> honeyBatches;
     private Apiary apiary; // Add an Apiary field to store the associated apiary
+    private double kgOfHoney;
+
 
     public Hive(Apiary apiary, List<EggFrame> eggFrames, List<BeesBatch> beesBatches,
                 List<HoneyFrame> honeyFrames, List<HoneyBatch> honeyBatches) {
@@ -59,7 +61,8 @@ public class Hive {
             List<HoneyBatch> honeyBatches,
             Honey honey,
             Queen queen,
-            int numberOfBees) {
+            int numberOfBees,
+            double kgOfHoney) {
         this.apiary = apiary;
         this.id = hiveIdCounter;
         this.itWasSplit = itWasSplit;
@@ -72,6 +75,7 @@ public class Hive {
         this.honey = honey;
         this.queen = queen;
         this.numberOfBees = numberOfBees;
+        this.kgOfHoney=kgOfHoney;
     }
 
     public boolean isItWasSplit() {
@@ -143,6 +147,14 @@ public class Hive {
     public Queen getQueen() {
 
         return queen;
+    }
+
+    public double getKgOfHoney() {
+        return kgOfHoney;
+    }
+
+    public void setKgOfHoney(double kgOfHoney) {
+        this.kgOfHoney = kgOfHoney;
     }
 
     public void setQueen(Queen queen) {
