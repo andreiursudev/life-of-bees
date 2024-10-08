@@ -13,7 +13,7 @@ const ApiaryCardsRow = () => {
     const chunkedApiaries = chunkArray(getGameInfos, 6);
 
     return (
-        <div className="container">//TODO for add a new row every time index % 6 ==0
+        <div className="container">
             {chunkedApiaries.map((group, index) => (
                 <div className="row" key={index}>
                     {group.map((apiary, idx) => (

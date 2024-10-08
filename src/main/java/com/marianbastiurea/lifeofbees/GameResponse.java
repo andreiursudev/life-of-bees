@@ -9,10 +9,13 @@ public class GameResponse {
     private int numberOfBees;
     private int eggsFrameSize;
     private int honeyFrameSize;
+    private String honeyType;
     private double speedWind;// in km/h
     private double temperature;// in Celsius Degree
     private double precipitation;
     private String currentDate;
+    private double kgOfHoney;
+    private boolean itWasSplit;
 
     public int getHiveId() {
         return hiveId;
@@ -84,5 +87,29 @@ public class GameResponse {
 
     public void setCurrentDate(String currentDate) {
         this.currentDate = currentDate;
+    }
+
+    public String getHoneyType() {
+        return honeyType;
+    }
+
+    public void setHoneyType(String honeyType) {
+        this.honeyType = honeyType;
+    }
+
+    public boolean isItWasSplit() {
+        return itWasSplit;
+    }
+
+    public void setItWasSplit(boolean itWasSplit) {
+        this.itWasSplit = itWasSplit;
+    }
+
+    public double getKgOfHoney() {
+        return kgOfHoney;
+    }
+
+    public void setKgOfHoney(double kgOfHoney) {
+        this.kgOfHoney = kgOfHoney;
     }
 }

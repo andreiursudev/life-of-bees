@@ -31,6 +31,9 @@ public class LifeOfBeesGame {
         this.numberOfStartingHives = numberOfStartingHives;
     }
 
+    public int getNumberOfStartingHives() {
+        return numberOfStartingHives;
+    }
 
     public List<GameResponse> createApiary(int numberOfStartingHives) {
         List<GameResponse> gameResponses = new ArrayList<>();
@@ -57,9 +60,14 @@ public class LifeOfBeesGame {
                 eggFrames.add(new EggFrame());
             }
             List<HoneyFrame> honeyFrames = new ArrayList<>();
-            for (int k = 0; k < random.nextInt(4, 5); k++) {
+            double kgOfHoney = 0;
+            for (int k = 0; k < random.nextInt(3, 4); k++) {
                 honeyFrames.add(new HoneyFrame(random.nextDouble(2.5, 3),honeyType));
             }
+            for (HoneyFrame honeyFrame : honeyFrames) {
+                kgOfHoney += honeyFrame.getKgOfHoney();
+            }
+
             int numberOfBees = random.nextInt(2000, 2500) * (honeyFrames.size() + eggFrames.size());
             Hive hive = new Hive(apiary,
                     i,
@@ -72,7 +80,8 @@ public class LifeOfBeesGame {
                     new ArrayList<>(),
                     new Honey(honeyType),
                     new Queen(ageOfQueen),
-                    numberOfBees);
+                    numberOfBees,
+                    kgOfHoney);
             hives.add(hive);
 
             GameResponse gameResponse = new GameResponse();
@@ -81,11 +90,16 @@ public class LifeOfBeesGame {
             gameResponse.setNumberOfBees(numberOfBees);
             gameResponse.setEggsFrameSize(eggFrames.size());
             gameResponse.setHoneyFrameSize(honeyFrames.size());
+            gameResponse.setKgOfHoney(kgOfHoney);
             gameResponse.setSpeedWind(speedWind);
             gameResponse.setTemperature(temperature);
             gameResponse.setPrecipitation(precipitation);
-            gameResponse.setCurrentDate(startingDate);
+            gameResponse.setCurrentDate(date.toString());
+            gameResponse.setItWasSplit(hive.isItWasSplit());
+            gameResponse.setHoneyType(honeyType);
+
             gameResponses.add(gameResponse);
+
         }
         return gameResponses;
     }

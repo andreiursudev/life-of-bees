@@ -1,18 +1,30 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
 import HiveCard from './HiveCard';
 import { getGame } from './BeesApiService';
 import rapeseedFlower from '../rapeseed-flower.jpg';
 
-const GameView = (id) => {
+const GameView = () => {
     const navigate = useNavigate();
+    const [gameData, setGameData] = useState(null);
 
-    const globalGameData = getGame;
+    useEffect(() => {
+        async function fetchGameData() {
+            try {
+                const data = await getGame();
+                console.log('Game data:', data);
+                setGameData(data);
+            } catch (error) {
+                console.error('Error fetching game data:', error);
+            }
+        }
+        fetchGameData();
+    }, []);
 
     const handleAnswer = (answer) => {
         console.log(`User answered: ${answer}`);
-        // dacă Da se scad banii din Money in The Bank, dacă nu se reduce numărul albinelor cu 20%
+        // acțiunile pentru răspunsul utilizatorului
     };
 
     return (
@@ -20,9 +32,15 @@ const GameView = (id) => {
             <div className="row">
                 <div className="col-md-6">
                     <div className="row">
-                        {getGame.hives.map((hive) => (
-                            <HiveCard key={hive.id} hive={hive} /> // Creează un HiveCard pentru fiecare hive
-                        ))}
+                        {gameData && gameData.length > 0 ? (
+                            gameData.map((hive, index) => (
+                                <div className="col-md-6 mb-3" key={hive.hiveId}>
+                                    <HiveCard hive={hive} />
+                                </div>
+                            ))
+                        ) : (
+                            <p>No hives available or data not loaded yet.</p>
+                        )}
                     </div>
                 </div>
                 <div className="col-md-3">
@@ -40,11 +58,10 @@ const GameView = (id) => {
                 </div>
                 <div className="col-md-3">
                     <div className="d-flex flex-column">
-                        <p className="btn-custom p-custom mb-2">Date: {globalGameData.date}</p>
-                        <p className="btn-custom p-custom mb-2">Temp: {globalGameData.temp}</p>
-                        <p className="btn-custom p-custom mb-2">Wind speed: {globalGameData.windSpeed} m/s</p>
-                        <p className="btn-custom p-custom mb-2">Total honey: {globalGameData.totalHoney}</p>
-                        <p className="btn-custom p-custom mb-2">Money in the bank: {globalGameData.moneyInTheBank}</p>
+                        <p className="btn-custom p-custom mb-2">Date: {gameData ? gameData[0].currentDate : 'Loading...'}</p>
+                        <p className="btn-custom p-custom mb-2">Temp: {gameData ? gameData[0].temperature.toFixed(2) : 'Loading...'}</p>
+                        <p className="btn-custom p-custom mb-2">Wind speed: {gameData ? gameData[0].speedWind.toFixed(2) : 'Loading...'}</p>
+                        <p className="btn-custom p-custom mb-2">Total honey: {gameData ? gameData.reduce((sum, hive) => sum + hive.kgOfHoney, 0).toFixed(2) : 'Loading...'}</p>
                         <img src={rapeseedFlower} alt="Imagine Buton 5" className="img-custom mb-2" />
                         <button className="btn btn-custom p-custom mb-2" onClick={() => navigate('/sell-honey')}>Sell Honey</button>
                         <button className="btn btn-custom mb-2">Buy Hives</button>
@@ -53,7 +70,7 @@ const GameView = (id) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 

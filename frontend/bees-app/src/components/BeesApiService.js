@@ -10,6 +10,17 @@ export const createGame = async (gameData) => {
     }
 };
 
+export const getGame = async () => {
+    try {
+        const response = await axios.get('http://localhost:8080/api/bees/hives'); 
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching game data:', error);
+        throw error;
+    }
+};
+
+
 
 export const getGameInfos = [
     {
@@ -62,18 +73,6 @@ export const getGameInfos = [
         honey: "46677"
     }
 ];
-
-
-export const getGame = async () => {
-    try {
-        const response = await axios.get('http://localhost:8080/api/bees/create-hives'); 
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching game data:', error);
-        throw error;
-    }
-};
-
 
 
 export const sellHoney = [

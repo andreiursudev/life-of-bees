@@ -1,6 +1,5 @@
 package com.marianbastiurea.lifeofbees;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,15 +8,26 @@ import java.util.List;
 @RequestMapping("/api/bees")
 public class LifeOfBeesController {
 
+    private LifeOfBeesGame game;
+
+
     @PostMapping("/create-hives")
     public List<GameResponse> createHives(@RequestBody GameRequest gameRequest) {
-        LifeOfBeesGame game = new LifeOfBeesGame(gameRequest.getName(),
+        game = new LifeOfBeesGame(gameRequest.getName(),
                 gameRequest.getLocation(),
                 gameRequest.getStartDate(),
                 gameRequest.getNumberOfStartingHives());
 
-
         return game.createApiary(gameRequest.getNumberOfStartingHives());
     }
-}
 
+
+    @GetMapping("/hives")
+    public List<GameResponse> getHives() {
+        if (game != null) {
+            return game.createApiary(game.getNumberOfStartingHives());
+        } else {
+            throw new IllegalStateException("No game has been created yet.");
+        }
+    }
+}

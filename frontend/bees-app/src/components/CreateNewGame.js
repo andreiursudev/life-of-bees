@@ -6,7 +6,7 @@ const NewGameModal = ({ handleClose }) => {
     const [name, setName] = useState('');
     const [location, setLocation] = useState('');
     const [startDate, setStartDate] = useState('');
-    const [hives, setHives] = useState(0);
+    const [numberOfStartingHives, setNumberOfStartingHives] = useState(0);
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
@@ -17,7 +17,7 @@ const NewGameModal = ({ handleClose }) => {
                 name, 
                 location, 
                 startDate, 
-                numberOfStartingHives: hives 
+                numberOfStartingHives
             });
             console.log('Game started:', gameData);
             navigate('/gameView');
@@ -86,16 +86,16 @@ const NewGameModal = ({ handleClose }) => {
 
                             <div className="row mb-3 align-items-center">
                                 <div className="col">
-                                    <label htmlFor="hives" className="col-form-label">Hives</label>
+                                    <label htmlFor="numberOfStartingHives" className="col-form-label">Hives</label>
                                 </div>
                                 <div className="col">
                                     <input
                                         type="number"
                                         className="form-control"
-                                        id="hives"
-                                        name="hives"
-                                        value={hives}
-                                        onChange={(e) => setHives(e.target.value)}
+                                        id="numberOfStartingHives"
+                                        name="numberOfStartingHives"
+                                        value={numberOfStartingHives}
+                                        onChange={(e) => setNumberOfStartingHives(e.target.value)}
                                         min="0"
                                         max="5"
                                         required
