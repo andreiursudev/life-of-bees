@@ -20,7 +20,28 @@ export const getGame = async () => {
     }
 };
 
+export const getHoneyQuantities = async () => {
+    const response = await fetch('http://localhost:8080/api/bees/honey-quantities', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    if (!response.ok) {
+        throw new Error('Failed to fetch honey quantities');
+    }
+    return await response.json();
+};
 
+export const iterateWeek = async () => {
+    try {
+        const response = await axios.post('http://localhost:8080/api/bees/iterate');
+        return response.data;
+    } catch (error) {
+        console.error('Error iterating week:', error);
+        throw error;
+    }
+};
 
 export const getGameInfos = [
     {
@@ -71,17 +92,5 @@ export const getGameInfos = [
         hives: "20000000000000",
         bees: "34567890",
         honey: "46677"
-    }
-];
-
-
-export const sellHoney = [
-    {
-        rapeseed: "50",
-        acacia: "30",
-        linden: "50.6",
-        wildFlower: "22.8",
-        sunFlower: "50.9",
-        falseIndigoFlower: "10"
     }
 ];

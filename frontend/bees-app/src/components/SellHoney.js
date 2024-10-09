@@ -1,40 +1,48 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../App.css';
 import { useNavigate } from 'react-router-dom';
-import { sellHoney } from './BeesApiService';
+import { getHoneyQuantities } from './BeesApiService';
 
-class RowHeader extends Component {
-    render() {
-        return (
-            <div className="row-text">
-                <p className="btn-custom-sell mb-2">Honey Type</p>
-                <p className="btn-custom-sell mb-2">Quantity[kg]</p>
-                <p className="btn-custom-sell mb-2">Price[$/kg]:</p>
-                <p className="btn-custom-sell mb-2">You sell:</p>
-            </div>
-        );
-    }
-}
+const RowHeader = () => (
+    <div className="row-text">
+        <p className="btn-custom-sell mb-2">Honey Type</p>
+        <p className="btn-custom-sell mb-2">Quantity[kg]</p>
+        <p className="btn-custom-sell mb-2">Price[$/kg]:</p>
+        <p className="btn-custom-sell mb-2">You sell:</p>
+    </div>
+);
 
-class RowText extends Component {
-    render() {
-        const { honeyType, quantity, price } = this.props;
-        return (
-            <div className="row-text">
-                <p className="btn-custom-sell mb-2">{honeyType}</p>
-                <p className="btn-custom-sell mb-2">{quantity}</p>
-                <p className="btn-custom-sell mb-2">{price}</p>
-                <form>
-                    <input type="text" className="input-custom" id="name" name="name" />
-                </form>
-            </div>
-        );
-    }
-}
+const RowText = ({ honeyType, quantity, price }) => (
+    <div className="row-text">
+        <p className="btn-custom-sell mb-2">{honeyType}</p>
+        <p className="btn-custom-sell mb-2">{quantity}</p>
+        <p className="btn-custom-sell mb-2">{price}</p>
+        <form>
+            <input type="text" className="input-custom" id="name" name="name" />
+        </form>
+    </div>
+);
 
 const SellHoney = () => {
+    const [honeyData, setHoneyData] = useState(null);
     const navigate = useNavigate();
-    const honeyData = sellHoney[0];
+
+    useEffect(() => {
+        const fetchHoneyData = async () => {
+            try {
+                const data = await getHoneyQuantities();
+                setHoneyData(data[0]); // presupunând că răspunsul este un array și vrem primul element
+            } catch (error) {
+                console.error('Error fetching honey data:', error);
+            }
+        };
+        fetchHoneyData();
+    }, []);
+
+    if (!honeyData) {
+        return <p>Loading honey data...</p>;
+    }
+
     return (
         <div className="body-sell">
             <h1>Total honey: 450kg</h1>

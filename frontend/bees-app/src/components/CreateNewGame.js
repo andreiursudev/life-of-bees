@@ -13,10 +13,10 @@ const NewGameModal = ({ handleClose }) => {
         event.preventDefault();
 
         try {
-            const gameData = await createGame({ 
-                name, 
-                location, 
-                startDate, 
+            const gameData = await createGame({
+                name,
+                location,
+                startDate,
                 numberOfStartingHives
             });
             console.log('Game started:', gameData);
@@ -80,8 +80,11 @@ const NewGameModal = ({ handleClose }) => {
                                         name="startDate"
                                         value={startDate}
                                         onChange={(e) => setStartDate(e.target.value)}
+                                        min={`${new Date().getFullYear()}-03-01`}
+                                        max={`${new Date().getFullYear()}-09-30`}
                                     />
                                 </div>
+
                             </div>
 
                             <div className="row mb-3 align-items-center">
