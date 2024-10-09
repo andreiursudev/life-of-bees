@@ -11,32 +11,11 @@ import java.util.Locale;
 
 import static com.marianbastiurea.lifeofbees.Honey.getHarvestingMonth;
 
-public class LifeOfBeesGame {
+public class LifeOfBeesFactory {
 
-    private Apiary apiary;// apiary is the place where it will be stored all hives
-    private int hiveIdCounter = 1;
-    private String name;
-    private String location;
-    private String startingDate;
-    private int numberOfStartingHives;
-    private double speedWind;// in km/h
-    private double temperature;// in Celsius Degree
-    private double precipitation;
+    public static LifeOfBees createLifeOfBeesGame(Integer gameId, String name, String location, String startingDate, int numberOfStartingHives) {
 
 
-    public LifeOfBeesGame(String name, String location, String startingDate, int numberOfStartingHives) {
-        this.name = name;
-        this.location = location;
-        this.startingDate = startingDate;
-        this.numberOfStartingHives = numberOfStartingHives;
-    }
-
-    public int getNumberOfStartingHives() {
-        return numberOfStartingHives;
-    }
-
-    public List<GameResponse> createApiary(int numberOfStartingHives) {
-        List<GameResponse> gameResponses = new ArrayList<>();
         LocalDate date = LocalDate.parse(startingDate);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM", Locale.ENGLISH);
         int day = date.getDayOfMonth();
@@ -83,25 +62,8 @@ public class LifeOfBeesGame {
                     numberOfBees,
                     kgOfHoney);
             hives.add(hive);
-
-            GameResponse gameResponse = new GameResponse();
-            gameResponse.setHiveId(i);
-            gameResponse.setAgeOfQueen(ageOfQueen);
-            gameResponse.setNumberOfBees(numberOfBees);
-            gameResponse.setEggsFrameSize(eggFrames.size());
-            gameResponse.setHoneyFrameSize(honeyFrames.size());
-            gameResponse.setKgOfHoney(kgOfHoney);
-            gameResponse.setSpeedWind(speedWind);
-            gameResponse.setTemperature(temperature);
-            gameResponse.setPrecipitation(precipitation);
-            gameResponse.setCurrentDate(date.toString());
-            gameResponse.setItWasSplit(hive.isItWasSplit());
-            gameResponse.setHoneyType(honeyType);
-
-            gameResponses.add(gameResponse);
-
         }
-        return gameResponses;
+        return new LifeOfBees(apiary,gameId, name, location, startingDate, speedWind, temperature, precipitation);
     }
     public String serializeGameResponses(List<GameResponse> gameResponses) {
         Gson gson = new Gson();

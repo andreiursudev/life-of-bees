@@ -67,7 +67,7 @@ public class MainLifeOfBees {
         System.out.println("First " + numberOfStartingHives + " are " + hives);
 
 
-        LifeOfBees lifeOfBees = new LifeOfBees(new Apiary(hives, new ArrayList<>()));
+        LifeOfBees lifeOfBees = new LifeOfBees(new Apiary(hives, new ArrayList<>()), gameId, name, location, startingDate, speedWind, temperature, precipitation);
 
         lifeOfBees.iterateOverTwoYears(whether);
 

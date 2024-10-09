@@ -1,115 +1,108 @@
 package com.marianbastiurea.lifeofbees;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameResponse {
 
-    private int hiveId;
-    private int ageOfQueen;
-    private int numberOfBees;
-    private int eggsFrameSize;
-    private int honeyFrameSize;
-    private String honeyType;
-    private double speedWind;// in km/h
-    private double temperature;// in Celsius Degree
-    private double precipitation;
-    private String currentDate;
-    private double kgOfHoney;
-    private boolean itWasSplit;
+    /*
+    {
+    hives: [
+        {
+            id: 1,
+            ageOfQueen: "0",
+            bees: "12345",
+            rapeseedHoney: "136.6",
+            eggsFrame: "2",
+            honeyFrame: "3",
+            totalHoney: "316.6",
+        },
+        {
+            id: 2,
+            ageOfQueen: "0",
+            bees: "12345",
+            rapeseedHoney: "136.6",
+            eggsFrame: "2",
+            honeyFrame: "3",
+            totalHoney: "316.6",
+        }],
+    action: {
+        name: "Insect control"
+    },
+    date: "1-Apr-2024",
+    temp: "22",
+    windSpeed: "3",
+    moneyInTheBank: "3000",
+    flower: "rapeseed"
 
-    public int getHiveId() {
-        return hiveId;
+
+}
+     */
+
+    private List<HivesView> hives = new ArrayList<>();
+    private String action;
+    private double temp;
+    private String windSpeed;
+    private String moneyInTheBank;
+
+    public List<HivesView> getHives() {
+        return hives;
     }
 
-    public void setHiveId(int hiveId) {
-        this.hiveId = hiveId;
+    public void setHives(List<HivesView> hives) {
+        this.hives = hives;
     }
 
-    public int getAgeOfQueen() {
-        return ageOfQueen;
+    public String getAction() {
+        return action;
     }
 
-    public void setAgeOfQueen(int ageOfQueen) {
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public double getTemp() {
+        return temp;
+    }
+
+    public void setTemp(double temp) {
+        this.temp = temp;
+    }
+
+    public String getWindSpeed() {
+        return windSpeed;
+    }
+
+    public void setWindSpeed(String windSpeed) {
+        this.windSpeed = windSpeed;
+    }
+
+    public String getMoneyInTheBank() {
+        return moneyInTheBank;
+    }
+
+    public void setMoneyInTheBank(String moneyInTheBank) {
+        this.moneyInTheBank = moneyInTheBank;
+    }
+}
+
+class HivesView {
+
+    public HivesView(int id, int ageOfQueen, int bees, int rapeseedHoney, int eggsFrame, int honeyFrame, int totalHoney) {
+        this.id = id;
         this.ageOfQueen = ageOfQueen;
+        this.bees = bees;
+        this.rapeseedHoney = rapeseedHoney;
+        this.eggsFrame = eggsFrame;
+        this.honeyFrame = honeyFrame;
+        this.totalHoney = totalHoney;
     }
 
-    public int getNumberOfBees() {
-        return numberOfBees;
-    }
-
-    public void setNumberOfBees(int numberOfBees) {
-        this.numberOfBees = numberOfBees;
-    }
-
-    public int getEggsFrameSize() {
-        return eggsFrameSize;
-    }
-
-    public void setEggsFrameSize(int eggsFrameSize) {
-        this.eggsFrameSize = eggsFrameSize;
-    }
-
-    public int getHoneyFrameSize() {
-        return honeyFrameSize;
-    }
-
-    public void setHoneyFrameSize(int honeyFrameSize) {
-        this.honeyFrameSize = honeyFrameSize;
-    }
-
-    public double getSpeedWind() {
-        return speedWind;
-    }
-
-    public void setSpeedWind(double speedWind) {
-        this.speedWind = speedWind;
-    }
-
-    public double getTemperature() {
-        return temperature;
-    }
-
-    public void setTemperature(double temperature) {
-        this.temperature = temperature;
-    }
-
-    public double getPrecipitation() {
-        return precipitation;
-    }
-
-    public void setPrecipitation(double precipitation) {
-        this.precipitation = precipitation;
-    }
-
-    public String getCurrentDate() {
-        return currentDate;
-    }
-
-    public void setCurrentDate(String currentDate) {
-        this.currentDate = currentDate;
-    }
-
-    public String getHoneyType() {
-        return honeyType;
-    }
-
-    public void setHoneyType(String honeyType) {
-        this.honeyType = honeyType;
-    }
-
-    public boolean isItWasSplit() {
-        return itWasSplit;
-    }
-
-    public void setItWasSplit(boolean itWasSplit) {
-        this.itWasSplit = itWasSplit;
-    }
-
-    public double getKgOfHoney() {
-        return kgOfHoney;
-    }
-
-    public void setKgOfHoney(double kgOfHoney) {
-        this.kgOfHoney = kgOfHoney;
-    }
+    int id;
+    int ageOfQueen;
+    int bees;
+    int rapeseedHoney;
+    int eggsFrame;
+    int honeyFrame;
+    int totalHoney;
 }

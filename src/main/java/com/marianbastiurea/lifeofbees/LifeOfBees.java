@@ -9,8 +9,24 @@ public class LifeOfBees {
     private Apiary apiary;// apiary is the place where it will be stored all hives
     private int hiveIdCounter = 1;
 
-    public LifeOfBees(Apiary apiary) {
+    private Integer gameId;
+    private String name;
+    private String location;
+    private String startingDate;
+    private int numberOfStartingHives;
+    private double speedWind;// in km/h
+    private double temperature;// in Celsius Degree
+    private double precipitation;
+
+    public LifeOfBees(Apiary apiary, Integer gameId, String name, String location, String startingDate, double speedWind, double temperature, double precipitation) {
         this.apiary = apiary;
+        this.gameId = gameId;
+        this.name = name;
+        this.location = location;
+        this.startingDate = startingDate;
+        this.speedWind = speedWind;
+        this.temperature = temperature;
+        this.precipitation = precipitation;
     }
 
     @Override
@@ -87,5 +103,18 @@ public class LifeOfBees {
 
             System.out.println("your apiary at the beginning of new  year is: " + apiary);
         }
+    }
+
+    public Integer getGameId() {
+        return gameId;
+    }
+
+
+    public Apiary getApiary() {
+        return apiary;
+    }
+
+    public double getTemperature() {
+        return temperature;
     }
 }

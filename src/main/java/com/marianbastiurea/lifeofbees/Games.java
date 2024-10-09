@@ -5,6 +5,6 @@ import java.util.List;
 
 public enum Games {
     INSTANCE;
-    public List<LifeOfBeesGame> games  = new ArrayList<>();
+    public List<LifeOfBeesFactory> games  = new ArrayList<>();
 
 }
