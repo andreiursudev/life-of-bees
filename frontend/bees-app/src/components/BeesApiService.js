@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const createGame = async (gameData) => {
     try {
-        const response = await axios.post('http://localhost:8080/api/bees/create-hives', gameData);
+        const response = await axios.post('http://localhost:8080/api/bees/game', gameData);
         return response.data;
     } catch (error) {
         console.error('Error fetching game data:', error);
@@ -12,7 +12,7 @@ export const createGame = async (gameData) => {
 
 export const getGame = async () => {
     try {
-        const response = await axios.get('http://localhost:8080/api/bees/hives'); 
+        const response = await axios.get('http://localhost:8080/api/bees/game/0'); 
         return response.data;
     } catch (error) {
         console.error('Error fetching game data:', error);

@@ -8,7 +8,7 @@ import java.util.List;
 public class LifeOfBees {
     private Apiary apiary;// apiary is the place where it will be stored all hives
     private int hiveIdCounter = 1;
-
+    private Action action;
     private Integer gameId;
     private String name;
     private String location;
@@ -17,8 +17,9 @@ public class LifeOfBees {
     private double speedWind;// in km/h
     private double temperature;// in Celsius Degree
     private double precipitation;
-
-    public LifeOfBees(Apiary apiary, Integer gameId, String name, String location, String startingDate, double speedWind, double temperature, double precipitation) {
+    private  String actionOfTheWeek;
+    private double moneyInTheBank;
+    public LifeOfBees(Apiary apiary, Integer gameId, String name, String location, String startingDate, double speedWind, double temperature, double precipitation, String actionOfTheWeek, double moneyInTheBank) {
         this.apiary = apiary;
         this.gameId = gameId;
         this.name = name;
@@ -27,25 +28,27 @@ public class LifeOfBees {
         this.speedWind = speedWind;
         this.temperature = temperature;
         this.precipitation = precipitation;
+        this.moneyInTheBank = moneyInTheBank;
+        this.action = new Action();
+
+        String[] dateParts = startingDate.split("-");
+        int month = Integer.parseInt(dateParts[1]);
+        int dayOfMonth = Integer.parseInt(dateParts[2]);
+
+        HarvestingMonths harvestingMonth = HarvestingMonths.values()[month - 1];
+        this.actionOfTheWeek = this.action.actionType(harvestingMonth, dayOfMonth);
     }
 
-    @Override
-    public String toString() {
-        return "LifeOfBees{" +
-                "apiary=" + apiary +
-                ", hiveIdCounter=" + hiveIdCounter +
-                '}';
-    }
 
 
     // Method to iterate over 2 years and execute daily operations
-    public void iterateOverTwoYears(IWeather whether) {
+    public void iterateOneWeek(IWeather whether) {
 
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) - 1); // Set the calendar to one year ago
         calendar.set(Calendar.MONTH, Calendar.MARCH); // Start the year on March 1st
         calendar.set(Calendar.DAY_OF_MONTH, 1);
-        System.out.println("apiary at beginning of game is: "+apiary);
+        System.out.println("apiary at beginning of game is: " + apiary);
         // Iterate over 2 years
         for (int year = 0; year < 2; year++) {
             while (calendar.get(Calendar.MONTH) != Calendar.OCTOBER) {
@@ -64,9 +67,9 @@ public class LifeOfBees {
                 ArrayList<Hive> oldHives = new ArrayList<>(hives);
                 for (Hive hive : oldHives) {
                     Queen queen = hive.getQueen();
-                    hive.getHoney().honeyTypes(harvestingMonth, dayOfMonth);
+                    hive.getHoney().honeyType(harvestingMonth, dayOfMonth);
                     double numberRandom = Math.random();
-                    if(numberRandom < 0.5 && harvestingMonth.equals(HarvestingMonths.MAY) && dayOfMonth >1 && dayOfMonth < 20 || queen.getAgeOfQueen() == 5){
+                    if (numberRandom < 0.5 && harvestingMonth.equals(HarvestingMonths.MAY) && dayOfMonth > 1 && dayOfMonth < 20 || queen.getAgeOfQueen() == 5) {
                         hive.changeQueen();
                     }
                     Honey honey = hive.getHoney();
@@ -91,7 +94,7 @@ public class LifeOfBees {
             }
 
             apiary.honeyHarvestedByHoneyType();
-            System.out.println("your apiary at the end of the year "+year+" is: " + apiary);
+            System.out.println("your apiary at the end of the year " + year + " is: " + apiary);
 
             List<Hive> hives = apiary.getHives();// have to build a hibernate method
 
@@ -116,5 +119,49 @@ public class LifeOfBees {
 
     public double getTemperature() {
         return temperature;
+    }
+
+    public Action getAction() {
+        return action;
+    }
+
+    public double getSpeedWind() {
+        return speedWind;
+    }
+
+    public double getPrecipitation() {
+        return precipitation;
+    }
+
+    public String getActionOfTheWeek() {
+        return actionOfTheWeek;
+    }
+
+    public double getMoneyInTheBank() {
+        return moneyInTheBank;
+    }
+
+    public void setMoneyInTheBank(double moneyInTheBank) {
+        this.moneyInTheBank = moneyInTheBank;
+    }
+
+    public int getHiveIdCounter() {
+        return hiveIdCounter;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public String getStartingDate() {
+        return startingDate;
+    }
+
+    public int getNumberOfStartingHives() {
+        return numberOfStartingHives;
     }
 }

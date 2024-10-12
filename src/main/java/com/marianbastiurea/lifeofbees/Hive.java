@@ -185,6 +185,9 @@ public class Hive {
     public int getAgeOfQueen() {
         return getQueen().getAgeOfQueen();
     }
+    public  String getHoneyType(){
+        return getHoney().getHoneyType();
+    }
 
     public int getNumberOfBees() {
         return numberOfBees;
@@ -273,6 +276,7 @@ public class Hive {
                 String answer;
                 if (!this.answerIfWantToSplit) {
                     do {
+
                         System.out.println("this is year: " + year);
                         System.out.println("You can choose to split or not hive number " + this.getId());
                         System.out.println("You can split this hive only once in a year and is only one question per year");

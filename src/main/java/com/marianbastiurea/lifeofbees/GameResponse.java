@@ -42,8 +42,8 @@ public class GameResponse {
     private List<HivesView> hives = new ArrayList<>();
     private String action;
     private double temp;
-    private String windSpeed;
-    private String moneyInTheBank;
+    private double windSpeed;
+    private double moneyInTheBank;
 
     public List<HivesView> getHives() {
         return hives;
@@ -69,40 +69,69 @@ public class GameResponse {
         this.temp = temp;
     }
 
-    public String getWindSpeed() {
+    public double getWindSpeed() {
         return windSpeed;
     }
 
-    public void setWindSpeed(String windSpeed) {
+    public void setWindSpeed(double windSpeed) {
         this.windSpeed = windSpeed;
     }
 
-    public String getMoneyInTheBank() {
+    public double getMoneyInTheBank() {
         return moneyInTheBank;
     }
 
-    public void setMoneyInTheBank(String moneyInTheBank) {
+    public void setMoneyInTheBank(double moneyInTheBank) {
         this.moneyInTheBank = moneyInTheBank;
     }
 }
 
 class HivesView {
 
-    public HivesView(int id, int ageOfQueen, int bees, int rapeseedHoney, int eggsFrame, int honeyFrame, int totalHoney) {
+    int id;
+    int ageOfQueen;
+    int bees;
+    String honeyType;
+    int eggsFrame;
+    int honeyFrame;
+    double totalHoney;
+
+
+    public HivesView(int id, int ageOfQueen, int bees, String honeyType, int eggsFrame, int honeyFrame, double totalHoney) {
         this.id = id;
         this.ageOfQueen = ageOfQueen;
         this.bees = bees;
-        this.rapeseedHoney = rapeseedHoney;
+        this.honeyType = honeyType;
         this.eggsFrame = eggsFrame;
         this.honeyFrame = honeyFrame;
         this.totalHoney = totalHoney;
     }
 
-    int id;
-    int ageOfQueen;
-    int bees;
-    int rapeseedHoney;
-    int eggsFrame;
-    int honeyFrame;
-    int totalHoney;
+    public int getId() {
+        return id;
+    }
+
+    public int getAgeOfQueen() {
+        return ageOfQueen;
+    }
+
+    public int getBees() {
+        return bees;
+    }
+
+    public String getHoneyType() {
+        return honeyType;
+    }
+
+    public int getEggsFrame() {
+        return eggsFrame;
+    }
+
+    public int getHoneyFrame() {
+        return honeyFrame;
+    }
+
+    public double getTotalHoney() {
+        return totalHoney;
+    }
 }

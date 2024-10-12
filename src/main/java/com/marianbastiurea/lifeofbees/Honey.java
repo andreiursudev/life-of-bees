@@ -36,7 +36,7 @@ public class Honey {
         return HarvestingMonths.values()[monthValue - 1];
     }
 
-    public String honeyTypes(HarvestingMonths month, int dayOfMonth) {
+    public String honeyType(HarvestingMonths month, int dayOfMonth) {
         switch (month) {
             case MARCH, AUGUST, SEPTEMBER:
                     return  "WildFlower";

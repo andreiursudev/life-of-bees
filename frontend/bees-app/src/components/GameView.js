@@ -26,15 +26,15 @@ const GameView = () => {
         console.log(`User answered: ${answer}`);
     };
 
-    const handleIterateWeek = async () => {
-        try {
-            const updatedGameData = await iterateWeek(); // Apelează backend-ul
-            console.log('Updated game data:', updatedGameData);
-            setGameData(updatedGameData); // Actualizează datele jocului
-        } catch (error) {
-            console.error('Error iterating week:', error);
-        }
-    };
+    // const handleIterateWeek = async () => {
+    //     try {
+    //         const updatedGameData = await iterateWeek(); // Apelează backend-ul
+    //         console.log('Updated game data:', updatedGameData);
+    //         setGameData(updatedGameData); // Actualizează datele jocului
+    //     } catch (error) {
+    //         console.error('Error iterating week:', error);
+    //     }
+    // };
 
 
     return (
@@ -75,7 +75,7 @@ const GameView = () => {
                         <img src={rapeseedFlower} alt="Imagine Buton 5" className="img-custom mb-2" />
                         <button className="btn btn-custom p-custom mb-2" onClick={() => navigate('/sell-honey')}>Sell Honey</button>
                         <button className="btn btn-custom mb-2">Buy Hives</button>
-                        <button className="btn btn-custom mb-2" onClick={handleIterateWeek}>Iterate next week</button>
+                        {/* <button className="btn btn-custom mb-2" onClick={handleIterateWeek}>Iterate next week</button> */}
                         <button className="btn btn-danger btn-custom mb-2" onClick={() => navigate('/')}>Exit</button>
                     </div>
                 </div>
