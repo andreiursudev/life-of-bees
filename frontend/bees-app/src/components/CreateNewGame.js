@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { createGame } from './BeesApiService';
 
 const NewGameModal = ({ handleClose }) => {
-    const [name, setName] = useState('');
+    const [gameName, setgameName] = useState('');
     const [location, setLocation] = useState('');
     const [startDate, setStartDate] = useState('');
     const [numberOfStartingHives, setNumberOfStartingHives] = useState(0);
@@ -14,7 +14,7 @@ const NewGameModal = ({ handleClose }) => {
 
         try {
             const gameData = await createGame({
-                name,
+                gameName,
                 location,
                 startDate,
                 numberOfStartingHives
@@ -44,10 +44,10 @@ const NewGameModal = ({ handleClose }) => {
                                     <input
                                         type="text"
                                         className="form-control"
-                                        id="name"
-                                        name="name"
-                                        value={name}
-                                        onChange={(e) => setName(e.target.value)}
+                                        id="gameName"
+                                        name="gameName"
+                                        value={gameName}
+                                        onChange={(e) => setgameName(e.target.value)}
                                     />
                                 </div>
                             </div>

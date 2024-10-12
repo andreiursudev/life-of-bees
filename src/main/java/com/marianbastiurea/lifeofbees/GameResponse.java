@@ -5,45 +5,21 @@ import java.util.List;
 
 public class GameResponse {
 
-    /*
-    {
-    hives: [
-        {
-            id: 1,
-            ageOfQueen: "0",
-            bees: "12345",
-            rapeseedHoney: "136.6",
-            eggsFrame: "2",
-            honeyFrame: "3",
-            totalHoney: "316.6",
-        },
-        {
-            id: 2,
-            ageOfQueen: "0",
-            bees: "12345",
-            rapeseedHoney: "136.6",
-            eggsFrame: "2",
-            honeyFrame: "3",
-            totalHoney: "316.6",
-        }],
-    action: {
-        name: "Insect control"
-    },
-    date: "1-Apr-2024",
-    temp: "22",
-    windSpeed: "3",
-    moneyInTheBank: "3000",
-    flower: "rapeseed"
-
-
-}
-     */
-
     private List<HivesView> hives = new ArrayList<>();
     private String action;
-    private double temp;
+    private double temperature;
     private double windSpeed;
+    private double precipitation;
     private double moneyInTheBank;
+    private String currentDate;
+
+    public String getCurrentDate() {
+        return currentDate;
+    }
+
+    public void setCurrentDate(String currentDate) {
+        this.currentDate = currentDate;
+    }
 
     public List<HivesView> getHives() {
         return hives;
@@ -61,12 +37,12 @@ public class GameResponse {
         this.action = action;
     }
 
-    public double getTemp() {
-        return temp;
+    public double getTemperature() {
+        return temperature;
     }
 
-    public void setTemp(double temp) {
-        this.temp = temp;
+    public void setTemperature(double temperature) {
+        this.temperature = temperature;
     }
 
     public double getWindSpeed() {
@@ -84,7 +60,16 @@ public class GameResponse {
     public void setMoneyInTheBank(double moneyInTheBank) {
         this.moneyInTheBank = moneyInTheBank;
     }
+
+    public double getPrecipitation() {
+        return precipitation;
+    }
+
+    public void setPrecipitation(double precipitation) {
+        this.precipitation = precipitation;
+    }
 }
+
 
 class HivesView {
 

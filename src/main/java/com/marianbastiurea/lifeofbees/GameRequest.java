@@ -2,17 +2,17 @@ package com.marianbastiurea.lifeofbees;
 
 
 public class GameRequest {
-    private String name;
+    private String gameName;
     private String location;
     private String startDate;
     private int numberOfStartingHives;
 
-    public String getName() {
-        return name;
+    public String getGameName() {
+        return gameName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setGameName(String gameName) {
+        this.gameName = gameName;
     }
 
     public String getLocation() {
@@ -35,7 +35,7 @@ public class GameRequest {
         return numberOfStartingHives;
     }
 
-    public void setNumberOfStartingHives(Integer numberOfStartingHives) {
+    public void setNumberOfStartingHives(int numberOfStartingHives) {
         this.numberOfStartingHives = numberOfStartingHives;
     }
 }
