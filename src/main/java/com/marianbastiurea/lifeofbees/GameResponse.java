@@ -7,9 +7,9 @@ public class GameResponse {
 
     private List<HivesView> hives = new ArrayList<>();
     private String action;
-    private String temperature;
-    private String windSpeed;
-    private String precipitation;
+    private double temperature;
+    private double windSpeed;
+    private double precipitation;
     private double moneyInTheBank;
     private String currentDate;
 
@@ -37,19 +37,19 @@ public class GameResponse {
         this.action = action;
     }
 
-    public String getTemperature() {
+    public double getTemperature() {
         return temperature;
     }
 
-    public void setTemperature(String temperature) {
+    public void setTemperature(double temperature) {
         this.temperature = temperature;
     }
 
-    public String getWindSpeed() {
+    public double getWindSpeed() {
         return windSpeed;
     }
 
-    public void setWindSpeed(String windSpeed) {
+    public void setWindSpeed(double windSpeed) {
         this.windSpeed = windSpeed;
     }
 
@@ -61,11 +61,11 @@ public class GameResponse {
         this.moneyInTheBank = moneyInTheBank;
     }
 
-    public String getPrecipitation() {
+    public double getPrecipitation() {
         return precipitation;
     }
 
-    public void setPrecipitation(String precipitation) {
+    public void setPrecipitation(double precipitation) {
         this.precipitation = precipitation;
     }
 }

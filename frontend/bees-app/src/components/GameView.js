@@ -36,8 +36,8 @@ const GameView = () => {
     //     }
     // };
 
-    
-    
+
+
     return (
         <div className="body-gameView">
             <div className="row">
@@ -65,12 +65,12 @@ const GameView = () => {
                         </div>
                     </div>
                 </div>
-                <div className="col-md-3"> 
+                <div className="col-md-3">
                     <div className="d-flex flex-column">
                         <p className="btn-custom p-custom mb-2">Date: {gameData ? gameData.currentDate : 'Loading...'}</p>
-                        <p className="btn-custom p-custom mb-2">Temp: {gameData ? gameData.temperature : 'Loading...'}</p>
-                        <p className="btn-custom p-custom mb-2">Wind speed: {gameData ? gameData.windSpeed : 'Loading...'}</p>
-                        <p className="btn-custom p-custom mb-2">Precipitation: {gameData ? gameData.precipitation : 'Loading...'}</p>
+                        <p className="btn-custom p-custom mb-2">Temp: {gameData && gameData.temperature ? gameData.temperature.toFixed(2) : 'Loading...'}</p>
+                        <p className="btn-custom p-custom mb-2">Wind speed: {gameData && gameData.windSpeed ? gameData.windSpeed.toFixed(2) : 'Loading...'}</p>
+                        <p className="btn-custom p-custom mb-2">Precipitation: {gameData && gameData.precipitation ? gameData.precipitation.toFixed(2) : 'Loading...'}</p>
                         <p className="btn-custom p-custom mb-2">Total honey: {gameData && gameData.hives ? gameData.hives.reduce((sum, hive) => sum + hive.totalHoney, 0).toFixed(2) : 'Loading...'}</p>
                         <img src={rapeseedFlower} alt="Imagine Buton 5" className="img-custom mb-2" />
                         <button className="btn btn-custom p-custom mb-2" onClick={() => navigate('/sell-honey')}>Sell Honey</button>

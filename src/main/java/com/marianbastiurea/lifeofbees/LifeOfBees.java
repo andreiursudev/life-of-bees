@@ -15,13 +15,13 @@ public class LifeOfBees {
     private String startingDate;
     private String currentDate;
     private int numberOfStartingHives;
-    private String speedWind;// in km/h
-    private String temperature;// in Celsius Degree
-    private String precipitation;
+    private double speedWind;// in km/h
+    private double temperature;// in Celsius Degree
+    private double   precipitation;
     private  String actionOfTheWeek;
     private double moneyInTheBank;
 
-    public LifeOfBees(Apiary apiary, Integer gameId, String gameName, String location,String currentDate, String speedWind, String temperature, String precipitation, String actionOfTheWeek, double moneyInTheBank) {
+    public LifeOfBees(Apiary apiary, Integer gameId, String gameName, String location,String currentDate, double speedWind, double temperature, double precipitation, String actionOfTheWeek, double moneyInTheBank) {
         this.apiary = apiary;
         this.gameId = gameId;
         this.gameName = gameName;
@@ -136,7 +136,7 @@ public class LifeOfBees {
         return apiary;
     }
 
-    public String getTemperature() {
+    public double getTemperature() {
         return temperature;
     }
 
@@ -144,11 +144,11 @@ public class LifeOfBees {
         return action;
     }
 
-    public String getSpeedWind() {
+    public double getSpeedWind() {
         return speedWind;
     }
 
-    public String getPrecipitation() {
+    public double getPrecipitation() {
         return precipitation;
     }
 

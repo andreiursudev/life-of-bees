@@ -24,10 +24,9 @@ public class LifeOfBeesFactory {
 
         Whether whether = new Whether();
         Whether todayWeather = whether.whetherToday(month, day);
-
-        String speedWind =String.format("%.2f",todayWeather.getSpeedWind());
-        String temperature =String.format("%.2f", todayWeather.getTemperature());
-        String precipitation =String.format("%.2f",todayWeather.getPrecipitation());
+        double speedWind = todayWeather.getSpeedWind();
+        double temperature = todayWeather.getTemperature();
+        double precipitation = todayWeather.getPrecipitation();
 
         double moneyInTheBank = 3000;
         List<Hive> hives = new ArrayList<>();
