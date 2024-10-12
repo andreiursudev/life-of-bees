@@ -5,45 +5,21 @@ import java.util.List;
 
 public class GameResponse {
 
-    /*
-    {
-    hives: [
-        {
-            id: 1,
-            ageOfQueen: "0",
-            bees: "12345",
-            rapeseedHoney: "136.6",
-            eggsFrame: "2",
-            honeyFrame: "3",
-            totalHoney: "316.6",
-        },
-        {
-            id: 2,
-            ageOfQueen: "0",
-            bees: "12345",
-            rapeseedHoney: "136.6",
-            eggsFrame: "2",
-            honeyFrame: "3",
-            totalHoney: "316.6",
-        }],
-    action: {
-        name: "Insect control"
-    },
-    date: "1-Apr-2024",
-    temp: "22",
-    windSpeed: "3",
-    moneyInTheBank: "3000",
-    flower: "rapeseed"
-
-
-}
-     */
-
     private List<HivesView> hives = new ArrayList<>();
     private String action;
-    private double temp;
-    private double windSpeed;
+    private String temperature;
+    private String windSpeed;
+    private String precipitation;
     private double moneyInTheBank;
+    private String currentDate;
+
+    public String getCurrentDate() {
+        return currentDate;
+    }
+
+    public void setCurrentDate(String currentDate) {
+        this.currentDate = currentDate;
+    }
 
     public List<HivesView> getHives() {
         return hives;
@@ -61,19 +37,19 @@ public class GameResponse {
         this.action = action;
     }
 
-    public double getTemp() {
-        return temp;
+    public String getTemperature() {
+        return temperature;
     }
 
-    public void setTemp(double temp) {
-        this.temp = temp;
+    public void setTemperature(String temperature) {
+        this.temperature = temperature;
     }
 
-    public double getWindSpeed() {
+    public String getWindSpeed() {
         return windSpeed;
     }
 
-    public void setWindSpeed(double windSpeed) {
+    public void setWindSpeed(String windSpeed) {
         this.windSpeed = windSpeed;
     }
 
@@ -84,7 +60,16 @@ public class GameResponse {
     public void setMoneyInTheBank(double moneyInTheBank) {
         this.moneyInTheBank = moneyInTheBank;
     }
+
+    public String getPrecipitation() {
+        return precipitation;
+    }
+
+    public void setPrecipitation(String precipitation) {
+        this.precipitation = precipitation;
+    }
 }
+
 
 class HivesView {
 

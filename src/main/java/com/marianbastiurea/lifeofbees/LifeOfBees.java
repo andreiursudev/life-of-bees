@@ -10,28 +10,30 @@ public class LifeOfBees {
     private int hiveIdCounter = 1;
     private Action action;
     private Integer gameId;
-    private String name;
+    private String gameName;
     private String location;
     private String startingDate;
+    private String currentDate;
     private int numberOfStartingHives;
-    private double speedWind;// in km/h
-    private double temperature;// in Celsius Degree
-    private double precipitation;
+    private String speedWind;// in km/h
+    private String temperature;// in Celsius Degree
+    private String precipitation;
     private  String actionOfTheWeek;
     private double moneyInTheBank;
-    public LifeOfBees(Apiary apiary, Integer gameId, String name, String location, String startingDate, double speedWind, double temperature, double precipitation, String actionOfTheWeek, double moneyInTheBank) {
+
+    public LifeOfBees(Apiary apiary, Integer gameId, String gameName, String location,String currentDate, String speedWind, String temperature, String precipitation, String actionOfTheWeek, double moneyInTheBank) {
         this.apiary = apiary;
         this.gameId = gameId;
-        this.name = name;
+        this.gameName = gameName;
         this.location = location;
-        this.startingDate = startingDate;
+        this.currentDate=currentDate;
         this.speedWind = speedWind;
         this.temperature = temperature;
         this.precipitation = precipitation;
         this.moneyInTheBank = moneyInTheBank;
         this.action = new Action();
 
-        String[] dateParts = startingDate.split("-");
+        String[] dateParts = currentDate.split("-");
         int month = Integer.parseInt(dateParts[1]);
         int dayOfMonth = Integer.parseInt(dateParts[2]);
 
@@ -39,7 +41,24 @@ public class LifeOfBees {
         this.actionOfTheWeek = this.action.actionType(harvestingMonth, dayOfMonth);
     }
 
-
+    @Override
+    public String toString() {
+        return "LifeOfBees{" +
+                "apiary=" + apiary +
+                ", hiveIdCounter=" + hiveIdCounter +
+                ", action=" + action +
+                ", gameId=" + gameId +
+                ", gameName='" + gameName + '\'' +
+                ", location='" + location + '\'' +
+                ", currentDate='" + currentDate + '\'' +
+                ", numberOfStartingHives=" + numberOfStartingHives +
+                ", speedWind=" + speedWind +
+                ", temperature=" + temperature +
+                ", precipitation=" + precipitation +
+                ", actionOfTheWeek='" + actionOfTheWeek + '\'' +
+                ", moneyInTheBank=" + moneyInTheBank +
+                '}';
+    }
 
     // Method to iterate over 2 years and execute daily operations
     public void iterateOneWeek(IWeather whether) {
@@ -117,7 +136,7 @@ public class LifeOfBees {
         return apiary;
     }
 
-    public double getTemperature() {
+    public String getTemperature() {
         return temperature;
     }
 
@@ -125,11 +144,11 @@ public class LifeOfBees {
         return action;
     }
 
-    public double getSpeedWind() {
+    public String getSpeedWind() {
         return speedWind;
     }
 
-    public double getPrecipitation() {
+    public String getPrecipitation() {
         return precipitation;
     }
 
@@ -149,19 +168,19 @@ public class LifeOfBees {
         return hiveIdCounter;
     }
 
-    public String getName() {
-        return name;
+    public String getGameName() {
+        return gameName;
     }
 
     public String getLocation() {
         return location;
     }
 
-    public String getStartingDate() {
-        return startingDate;
-    }
-
     public int getNumberOfStartingHives() {
         return numberOfStartingHives;
+    }
+
+    public String getCurrentDate() {
+        return currentDate;
     }
 }

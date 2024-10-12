@@ -230,6 +230,7 @@ public class Hive {
     }
 
 
+
     public void checkAndAddEggsToBees(Date currentDate) {
 /* this method check creation date of each eggs batch and difference between current date and creation date is more
         than 20 days, eggs will hatch into bees. Eggs batch will be removed from list and number of eggs will be add to

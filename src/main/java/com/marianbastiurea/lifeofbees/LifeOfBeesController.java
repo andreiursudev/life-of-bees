@@ -20,23 +20,16 @@ public class LifeOfBeesController {
     public Integer createGame(@RequestBody GameRequest gameRequest) {
         LifeOfBees lifeOfBeesGame = LifeOfBeesFactory.createLifeOfBeesGame(
                 gameId,
-                gameRequest.getName(),
+                gameRequest.getGameName(),
                 gameRequest.getLocation(),
                 gameRequest.getStartDate(),
                 gameRequest.getNumberOfStartingHives());
 
         games.put(lifeOfBeesGame.getGameId(), lifeOfBeesGame);
+
+        System.out.println(lifeOfBeesGame);
+
         gameId++;
-
-        System.out.println("Game created with ID: " + lifeOfBeesGame.getGameId());
-        System.out.println("Name: " + lifeOfBeesGame.getName());
-        System.out.println("Location: " + lifeOfBeesGame.getLocation());
-        System.out.println("Start Date: " + lifeOfBeesGame.getStartingDate());
-        System.out.println("Number of hives: " + lifeOfBeesGame.getApiary().getHives().size());
-        System.out.println("Hives: " + lifeOfBeesGame.getApiary().getHives());
-
-
-
         return lifeOfBeesGame.getGameId();
     }
 
@@ -62,10 +55,12 @@ public class LifeOfBeesController {
         for (Hive hive : game.getApiary().getHives()) {
             gameResponse.getHives().add(new HivesView(hive.getId(), hive.getAgeOfQueen(), hive.getNumberOfBees(), hive.getHoneyType(), hive.getEggsFrames().size(), hive.getHoneyFrames().size(), hive.getKgOfHoney()));
         }
-        gameResponse.setTemp(game.getTemperature());
+        gameResponse.setTemperature(game.getTemperature());
         gameResponse.setAction(game.getAction().getActionOfTheWeek());
         gameResponse.setWindSpeed(game.getSpeedWind());
         gameResponse.setMoneyInTheBank(game.getMoneyInTheBank());
+        gameResponse.setPrecipitation((game.getPrecipitation()));
+        gameResponse.setCurrentDate(game.getCurrentDate());
 
         return gameResponse;
     }

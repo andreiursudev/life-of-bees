@@ -14,9 +14,9 @@ import static com.marianbastiurea.lifeofbees.Honey.getHarvestingMonth;
 
 public class LifeOfBeesFactory {
 
-    public static LifeOfBees createLifeOfBeesGame(Integer gameId, String name, String location, String startingDate, int numberOfStartingHives) {
+    public static LifeOfBees createLifeOfBeesGame(Integer gameId, String gameName, String location, String startingDate, int numberOfStartingHives) {
 
-
+        String currentDate = startingDate;
         LocalDate date = LocalDate.parse(startingDate);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM", Locale.ENGLISH);
         int day = date.getDayOfMonth();
@@ -24,9 +24,11 @@ public class LifeOfBeesFactory {
 
         Whether whether = new Whether();
         Whether todayWeather = whether.whetherToday(month, day);
-        double speedWind = todayWeather.getSpeedWind();
-        double temperature = todayWeather.getTemperature();
-        double precipitation = todayWeather.getPrecipitation();
+
+        String speedWind =String.format("%.2f",todayWeather.getSpeedWind());
+        String temperature =String.format("%.2f", todayWeather.getTemperature());
+        String precipitation =String.format("%.2f",todayWeather.getPrecipitation());
+
         double moneyInTheBank = 3000;
         List<Hive> hives = new ArrayList<>();
         Honey honey = new Honey();
@@ -69,7 +71,8 @@ public class LifeOfBeesFactory {
                     kgOfHoney);
             hives.add(hive);
         }
-        return new LifeOfBees(apiary, gameId, name, location, startingDate, speedWind, temperature, precipitation, actionOfTheWeek, moneyInTheBank);
+
+        return new LifeOfBees(apiary, gameId, gameName, location, currentDate, speedWind, temperature, precipitation, actionOfTheWeek, moneyInTheBank);
     }
 
     public String serializeGameResponses(List<GameResponse> gameResponses) {
