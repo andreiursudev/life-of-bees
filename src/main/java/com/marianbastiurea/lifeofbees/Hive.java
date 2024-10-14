@@ -1,9 +1,11 @@
 package com.marianbastiurea.lifeofbees;
 
 
+//import com.marianbastiurea.lifeofbees.eggframe.EggBatch;
 import com.marianbastiurea.lifeofbees.eggframe.EggFrame;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 
@@ -231,7 +233,7 @@ public class Hive {
 
 
 
-    public void checkAndAddEggsToBees(Date currentDate) {
+    public void checkAndAddEggsToBees(LocalDate currentDate) {
 /* this method check creation date of each eggs batch and difference between current date and creation date is more
         than 20 days, eggs will hatch into bees. Eggs batch will be removed from list and number of eggs will be add to
         number of bees from hive
@@ -384,7 +386,7 @@ public class Hive {
     }
 
 
-    public void beesDie(Date currentDate) {
+    public void beesDie(LocalDate currentDate) {
 /*
 this method will check the date when bees hatched and if difference between hatched date and current date is more than 31 days
 they will die. bees number from each batch will subtract from total number of bees from hive
@@ -394,9 +396,8 @@ they will die. bees number from each batch will subtract from total number of be
         Iterator<BeesBatch> iterator = beesBatches.iterator();
         while (iterator.hasNext()) {
             BeesBatch beesBatch = iterator.next();
-            Date creationDate = beesBatch.getCreationDate();
-            long differenceInMillisecond = Math.abs(currentDate.getTime() - creationDate.getTime());
-            long differenceInDays = differenceInMillisecond / (24 * 60 * 60 * 1000);
+            LocalDate creationDate = beesBatch.getCreationDate();
+            long differenceInDays = ChronoUnit.DAYS.between(creationDate, currentDate);
             if (differenceInDays > 30) {
                 this.numberOfBees -= beesBatch.getNumberOfBees(); // Subtract number of bees from each beesBatch from total number
                 iterator.remove();
@@ -462,7 +463,7 @@ they will die. bees number from each batch will subtract from total number of be
         queen = new Queen(0);
     }
 
-    public void fillUpEggsFrame(Date currentDate, int numberOfEggs) {
+    public void fillUpEggsFrame(LocalDate currentDate, int numberOfEggs) {
 
         //  maxEggPerFrame is 6400 a frame have around 8500 cells. 75% more or less are used by the queen to lay eggs.
         // Remaining cells are fill up with honey or are damaged

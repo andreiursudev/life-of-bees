@@ -8,7 +8,7 @@ const HiveCard = ({ hive }) => {
                 <p>EggsFrame:{hive.eggsFrame}</p>
                 <p>HoneyFrame:{hive.honeyFrame}</p>
                 <p>Honey: {hive.honeyType}</p>
-                <p>Total honey: {hive.totalHoney.toFixed(2)}</p>
+                {hive.totalHoney > 0 && <p>Honey Harvested: {hive.totalHoney}</p>}
                 <p>Was split: {hive.itWasSplit ? 'Yes' : 'No'}</p>
                
             </div>

@@ -12,6 +12,7 @@ public class GameResponse {
     private double precipitation;
     private double moneyInTheBank;
     private String currentDate;
+    private double totalKgOfHoney;
 
     public String getCurrentDate() {
         return currentDate;
@@ -68,6 +69,14 @@ public class GameResponse {
     public void setPrecipitation(double precipitation) {
         this.precipitation = precipitation;
     }
+
+    public double getTotalKgOfHoney() {
+        return totalKgOfHoney;
+    }
+
+    public void setTotalKgOfHoney(double totalKgOfHoney) {
+        this.totalKgOfHoney = totalKgOfHoney;
+    }
 }
 
 
@@ -79,17 +88,17 @@ class HivesView {
     String honeyType;
     int eggsFrame;
     int honeyFrame;
-    double totalHoney;
+    double kgOfHoney;
 
 
-    public HivesView(int id, int ageOfQueen, int bees, String honeyType, int eggsFrame, int honeyFrame, double totalHoney) {
+    public HivesView(int id, int ageOfQueen, int bees, String honeyType, int eggsFrame, int honeyFrame, double kgOfHoney) {
         this.id = id;
         this.ageOfQueen = ageOfQueen;
         this.bees = bees;
         this.honeyType = honeyType;
         this.eggsFrame = eggsFrame;
         this.honeyFrame = honeyFrame;
-        this.totalHoney = totalHoney;
+        this.kgOfHoney=kgOfHoney;
     }
 
     public int getId() {
@@ -116,7 +125,7 @@ class HivesView {
         return honeyFrame;
     }
 
-    public double getTotalHoney() {
-        return totalHoney;
+    public double getKgOfHoney() {
+        return kgOfHoney;
     }
 }

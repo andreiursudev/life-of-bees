@@ -71,7 +71,8 @@ const GameView = () => {
                         <p className="btn-custom p-custom mb-2">Temp: {gameData && gameData.temperature ? gameData.temperature.toFixed(2) : 'Loading...'}</p>
                         <p className="btn-custom p-custom mb-2">Wind speed: {gameData && gameData.windSpeed ? gameData.windSpeed.toFixed(2) : 'Loading...'}</p>
                         <p className="btn-custom p-custom mb-2">Precipitation: {gameData && gameData.precipitation ? gameData.precipitation.toFixed(2) : 'Loading...'}</p>
-                        <p className="btn-custom p-custom mb-2">Total honey: {gameData && gameData.hives ? gameData.hives.reduce((sum, hive) => sum + hive.totalHoney, 0).toFixed(2) : 'Loading...'}</p>
+                        <p className="btn-custom p-custom mb-2">Total honey harvested: {gameData ? (gameData.totalKgOfHoney ?? 'Loading...').toFixed(2) : 'Loading...'}</p>
+                        <p className="btn-custom p-custom mb-2">Money in the bank: {gameData && gameData.moneyInTheBank? gameData.moneyInTheBank.toFixed(2) : 'Loading...'}</p>
                         <img src={rapeseedFlower} alt="Imagine Buton 5" className="img-custom mb-2" />
                         <button className="btn btn-custom p-custom mb-2" onClick={() => navigate('/sell-honey')}>Sell Honey</button>
                         <button className="btn btn-custom mb-2">Buy Hives</button>

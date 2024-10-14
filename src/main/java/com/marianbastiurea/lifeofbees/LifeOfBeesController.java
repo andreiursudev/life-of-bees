@@ -61,6 +61,7 @@ public class LifeOfBeesController {
         gameResponse.setMoneyInTheBank(game.getMoneyInTheBank());
         gameResponse.setPrecipitation((game.getPrecipitation()));
         gameResponse.setCurrentDate(game.getCurrentDate());
+        gameResponse.setTotalKgOfHoney(game.getTotalKgOfHoney());
 
         return gameResponse;
     }
