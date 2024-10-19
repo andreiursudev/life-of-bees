@@ -6,7 +6,7 @@ import java.util.List;
 public class GameResponse {
 
     private List<HivesView> hives = new ArrayList<>();
-    private String action;
+    private List<ActionOfTheWeek> actionOfTheWeek;
     private double temperature;
     private double windSpeed;
     private double precipitation;
@@ -30,12 +30,12 @@ public class GameResponse {
         this.hives = hives;
     }
 
-    public String getAction() {
-        return action;
+    public List<ActionOfTheWeek> getActionOfTheWeek() {
+        return actionOfTheWeek;
     }
 
-    public void setAction(String action) {
-        this.action = action;
+    public void setActionOfTheWeek(List<ActionOfTheWeek> actionOfTheWeek) {
+        this.actionOfTheWeek = actionOfTheWeek;
     }
 
     public double getTemperature() {
@@ -77,10 +77,23 @@ public class GameResponse {
     public void setTotalKgOfHoney(double totalKgOfHoney) {
         this.totalKgOfHoney = totalKgOfHoney;
     }
+
+    @Override
+    public String toString() {
+        return "GameResponse{" +
+                "hives=" + hives +
+                ", actionOfTheWeek=" + actionOfTheWeek +
+                ", temperature=" + temperature +
+                ", windSpeed=" + windSpeed +
+                ", precipitation=" + precipitation +
+                ", moneyInTheBank=" + moneyInTheBank +
+                ", currentDate='" + currentDate + '\'' +
+                ", totalKgOfHoney=" + totalKgOfHoney +
+                '}';
+    }
 }
 
-
-class HivesView {
+    class HivesView {
 
     int id;
     int ageOfQueen;
@@ -127,5 +140,18 @@ class HivesView {
 
     public double getKgOfHoney() {
         return kgOfHoney;
+    }
+
+    @Override
+    public String toString() {
+        return "HivesView{" +
+                "id=" + id +
+                ", ageOfQueen=" + ageOfQueen +
+                ", bees=" + bees +
+                ", honeyType='" + honeyType + '\'' +
+                ", eggsFrame=" + eggsFrame +
+                ", honeyFrame=" + honeyFrame +
+                ", kgOfHoney=" + kgOfHoney +
+                '}';
     }
 }

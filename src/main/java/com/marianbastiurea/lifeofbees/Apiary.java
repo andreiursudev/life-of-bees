@@ -56,6 +56,16 @@ public class Apiary {
                 '}';
     }
 
+
+    public Hive getHiveById(Integer hiveId) {
+        for (Hive hive : hives) {
+            if (hive.getId() == hiveId){
+                return hive;
+            }
+        }
+        return null;  // Dacă nu găsește stupul, returnează null
+    }
+
     public void splitHive(Hive hive) {
 
         /*

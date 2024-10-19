@@ -2,7 +2,7 @@ const HiveCard = ({ hive }) => {
     return (
         <div className="card mb-2">
             <div className="card-body">
-                <p>Hive ID: {hive.hiveId}</p>
+                <p>Hive ID: {hive.id}</p>
                 <p>Queen's age: {hive.ageOfQueen}</p>
                 <p>Bees: {hive.bees}</p>
                 <p>EggsFrame:{hive.eggsFrame}</p>
