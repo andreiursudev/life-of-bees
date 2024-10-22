@@ -9,8 +9,6 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
-import static com.marianbastiurea.lifeofbees.Honey.getHarvestingMonth;
-
 
 public class Hive {
     private int id;
@@ -297,7 +295,7 @@ public class Hive {
     }
 
 
-    public boolean checkIfCanAddNAewEggsFrameInHive() {
+    public boolean checkIfCanAddNewEggsFrameInHive() {
         int eggsFrameFull = 0;
         for (EggFrame eggFrame : this.eggFrames) {
             if (eggFrame.getNumberOfEggs() > 6000) {
@@ -311,6 +309,15 @@ public class Hive {
             }
         }
         return false;
+    }
+
+    public void addNewEggsFrameInHive() {
+        if (this.eggFrames.size() < 6) {
+            eggFrames.add(new EggFrame());
+            System.out.println("New eggs frame added. Total: " + this.eggFrames.size());
+        } else {
+            System.out.println("Cannot add more eggs frames. Maximum reached.");
+        }
     }
 
 
@@ -333,14 +340,7 @@ public class Hive {
     }
 
 
-    public void addNewEggsFrameInHive() {
-        if (this.eggFrames.size() < 6) {
-            eggFrames.add(new EggFrame());
-            System.out.println("New eggs frame added. Total: " + this.eggFrames.size());
-        } else {
-            System.out.println("Cannot add more eggs frames. Maximum reached.");
-        }
-    }
+
 
     public void fillUpExistingHoneyFrameFromHive(LocalDate currentDate) {
         double maxKgOfHoneyPerFrame = 4.5;

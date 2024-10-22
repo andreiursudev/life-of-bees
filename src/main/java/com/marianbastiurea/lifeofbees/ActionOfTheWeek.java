@@ -47,5 +47,25 @@ public class ActionOfTheWeek {
                 ", hiveIds=" + hiveIds +
                 '}';
     }
+
+    public static void addOrUpdateAction(List<ActionOfTheWeek> actionsOfTheWeek, String newAction, String actionMarker, int hiveId) {
+
+        Optional<ActionOfTheWeek> existingAction = actionsOfTheWeek.stream()
+                .filter(action -> action.getActionOfTheWeekMarker().equals(actionMarker))
+                .findFirst();
+
+
+        if (existingAction.isPresent()) {
+            if (!existingAction.get().getHiveIds().contains(hiveId)) {
+                existingAction.get().getHiveIds().add(hiveId);
+            }
+        } else {
+
+            List<Integer> newHiveIds = new ArrayList<>();
+            newHiveIds.add(hiveId);
+            ActionOfTheWeek actionOfTheWeek = new ActionOfTheWeek(newAction, actionMarker, newHiveIds);
+            actionsOfTheWeek.add(actionOfTheWeek);
+        }
+    }
 }
 

@@ -130,6 +130,8 @@ public class Apiary {
         List<HarvestedHoney> lindenHoney = new ArrayList<>();
         List<HarvestedHoney> sunflowerHoney = new ArrayList<>();
         List<HarvestedHoney> falseIndigoHoney = new ArrayList<>();
+
+
         double annualKgOfRapeseedHoney = 0;
         double annualKgOfAcaciaHoney = 0;
         double annualKgOfLindenHoney = 0;

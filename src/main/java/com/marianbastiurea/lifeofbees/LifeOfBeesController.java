@@ -115,6 +115,7 @@ public class LifeOfBeesController {
                 }
             }
         }
+        lifeOfBeesGame.getActionOfTheWeek().clear();
         GameResponse response = getGameResponse(lifeOfBeesGame);
         System.out.println("GameResponse after submit action of the week: " + response);
         return response;
