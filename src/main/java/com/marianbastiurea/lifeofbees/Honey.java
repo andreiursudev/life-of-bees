@@ -2,8 +2,8 @@ package com.marianbastiurea.lifeofbees;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public class Honey {
     private String honeyType;
@@ -33,9 +33,7 @@ public class Honey {
 
     public static HarvestingMonths getHarvestingMonth(LocalDate date) {
         int monthValue = date.getMonthValue();
-        if (monthValue < 3 || monthValue > 9) {
-            throw new IllegalArgumentException("Luna nu este în intervalul de recoltare (martie-septembrie).");
-        }
+        System.out.println("luna curenta este: " + monthValue);
         return HarvestingMonths.values()[monthValue - 3];  // Martie corespunde indexului 0
     }
 
@@ -43,10 +41,10 @@ public class Honey {
     public String honeyType(HarvestingMonths month, int dayOfMonth) {
         switch (month) {
             case MARCH, AUGUST, SEPTEMBER:
-                    return  "WildFlower";
+                return "WildFlower";
             case APRIL:
                 if (dayOfMonth >= 1 && dayOfMonth <= 20) {
-                   return "Rapeseed";
+                    return "Rapeseed";
                 } else if (dayOfMonth >= 21 && dayOfMonth <= 30) {
                     return "WildFlower";
                 }
@@ -87,28 +85,53 @@ public class Honey {
         };
     }
 
-    public List<HoneyBatch> makeHoneyBatch(Hive hive, LocalDate currentDate) {
+    public List<HoneyBatch> harvestHoney(Hive hive, HarvestingMonths month, int dayOfMonth, List<ActionOfTheWeek> actionsOfTheWeek) {
         List<HoneyBatch> honeyBatches = new ArrayList<>();
-
         double kgOfHoney = 0;
-        int frameCounter = 0;
 
-        if (hive.isAnswerIfWantToSplit() && hive.checkIfAll6EggsFrameAre80PercentFull()) {
-            List<HoneyFrame> hiveHoneyFrames = hive.getHoneyFrames();
-            for (HoneyFrame honeyFrame : hiveHoneyFrames) {
-                if (honeyFrame.getKgOfHoney() > 3) {
-                    frameCounter++;
-                    kgOfHoney += honeyFrame.getKgOfHoney();
-                    honeyFrame.setKgOfHoney(0);
+
+        if ((month.equals(HarvestingMonths.APRIL) || month.equals(HarvestingMonths.MAY) ||
+                month.equals(HarvestingMonths.JUNE) || month.equals(HarvestingMonths.JULY)) &&
+                (dayOfMonth == 10 || dayOfMonth == 20)) {
+
+
+            if (!hive.isItWasSplit()) {
+                List<HoneyFrame> hiveHoneyFrames = hive.getHoneyFrames();
+                for (HoneyFrame honeyFrame : hiveHoneyFrames) {
+                    if (honeyFrame.getKgOfHoney() > 4) {
+                        kgOfHoney += honeyFrame.getKgOfHoney();
+                        honeyFrame.setKgOfHoney(0);
+                    }
+                }
+                hive.setKgOfHoney(kgOfHoney);
+                if (kgOfHoney > 0) {
+                    HoneyBatch honeyBatch = new HoneyBatch(hive.getId(), kgOfHoney, getHoneyType());
+                    honeyBatches.add(honeyBatch);
+
+                    // Adăugăm acțiunea de recoltare a mierii în `actionsOfTheWeek`
+                    String newAction = "Harvest honey from Hive ";
+                    String actionMarker = "HARVEST_HONEY";
+
+                    Optional<ActionOfTheWeek> existingAction = actionsOfTheWeek.stream()
+                            .filter(action -> action.getActionOfTheWeekMarker().equals(actionMarker))
+                            .findFirst();
+
+                    if (existingAction.isPresent()) {
+                        if (!existingAction.get().getHiveIds().contains(hive.getId())) {
+                            existingAction.get().getHiveIds().add(hive.getId());
+                        }
+                    } else {
+                        List<Integer> newHiveIds = new ArrayList<>();
+                        newHiveIds.add(hive.getId());
+                        ActionOfTheWeek actionOfTheWeek = new ActionOfTheWeek(newAction, actionMarker, newHiveIds);
+                        actionsOfTheWeek.add(actionOfTheWeek);
+                    }
                 }
             }
-
-            if (kgOfHoney > 0) {
-                HoneyBatch honeyBatch = new HoneyBatch(hive.getId(), currentDate, kgOfHoney,
-                        getHoneyType(), frameCounter);
-                honeyBatches.add(honeyBatch);
-            }
         }
+
         return honeyBatches;
     }
+
 }
+

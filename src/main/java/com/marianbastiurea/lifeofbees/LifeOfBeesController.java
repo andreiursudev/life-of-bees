@@ -2,9 +2,14 @@ package com.marianbastiurea.lifeofbees;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+
+import static com.marianbastiurea.lifeofbees.Honey.getHarvestingMonth;
 
 @RestController
 @RequestMapping("/api/bees")
@@ -54,6 +59,13 @@ public class LifeOfBeesController {
     public GameResponse submitApprovedHives(@PathVariable Integer gameId, @RequestBody List<ActionOfTheWeek> approvedActions) {
         LifeOfBees lifeOfBeesGame = games.get(gameId);
         Apiary apiary = lifeOfBeesGame.getApiary();
+
+        LocalDate date = LocalDate.parse(lifeOfBeesGame.getCurrentDate());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM", Locale.ENGLISH);
+        HarvestingMonths month = getHarvestingMonth(date);
+        int dayOfMonth = date.getDayOfMonth();
+
+
         for (ActionOfTheWeek action : approvedActions) {
             List<Integer> approvedHiveIds = action.getHiveIds();
             System.out.println("Processing action: " + action.getActionOfTheWeekMarker());
@@ -70,10 +82,11 @@ public class LifeOfBeesController {
                             break;
                         case "ADD_NEW_HONEY_FRAME":
                             hive.addNewHoneyFrameInHive();
-                            System.out.println("Collected honey from hive: " + hiveId);
+                            System.out.println("Add new honey from hive: " + hiveId);
                             break;
                         case "SPLIT_HIVE":
-                           // hive.checkIfCanAddANewHoneyFrameInHive();
+                           hive.checkIfHiveCouldBeSplit(month,dayOfMonth);
+                           apiary.splitHive(hive);
                            // System.out.println("Collected honey from hive: " + hiveId);
                             break;
                         case "COLLECT_HONEY":
@@ -85,6 +98,10 @@ public class LifeOfBeesController {
 //                            System.out.println("Collected honey from hive: " + hiveId);
                             break;
                         case "HIBERNATE":
+//                            hive.checkIfCanAddANewHoneyFrameInHive();
+//                            System.out.println("Collected honey from hive: " + hiveId);
+                            break;
+                        case "INSECT_CONTROL":
 //                            hive.checkIfCanAddANewHoneyFrameInHive();
 //                            System.out.println("Collected honey from hive: " + hiveId);
                             break;
@@ -107,7 +124,7 @@ public class LifeOfBeesController {
         public GameResponse getGameResponse(LifeOfBees game) {
         GameResponse gameResponse = new GameResponse();
         for (Hive hive : game.getApiary().getHives()) {
-            gameResponse.getHives().add(new HivesView(hive.getId(), hive.getAgeOfQueen(), hive.getNumberOfBees(), hive.getHoneyType(), hive.getEggsFrames().size(), hive.getHoneyFrames().size(), hive.getKgOfHoney()));
+            gameResponse.getHives().add(new HivesView(hive.getId(), hive.getAgeOfQueen(), hive.getNumberOfBees(), hive.getHoneyType(), hive.getEggsFrames().size(), hive.getHoneyFrames().size(), hive.getKgOfHoney(), hive.isItWasSplit()));
         }
         gameResponse.setTemperature(game.getTemperature());
         gameResponse.setActionOfTheWeek(game.getActionOfTheWeek());
@@ -115,7 +132,7 @@ public class LifeOfBeesController {
         gameResponse.setMoneyInTheBank(game.getMoneyInTheBank());
         gameResponse.setPrecipitation(game.getPrecipitation());
         gameResponse.setCurrentDate(game.getCurrentDate());
-        gameResponse.setTotalKgOfHoney(game.getTotalKgOfHoney());
+        gameResponse.setTotalKgOfHoneyHarvested(game.getTotalKgOfHoneyHarvested());
 
         return gameResponse;
     }

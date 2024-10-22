@@ -91,6 +91,9 @@ const GameView = () => {
         }
     };
     
+    
+    
+
 
     const getFlowerImage = () => {
         if (!gameData || !gameData.currentDate) {
@@ -147,20 +150,34 @@ const GameView = () => {
                                         {updatedGameData.actionOfTheWeek.map((actionItem, actionIndex) => (
                                             <div key={actionIndex}>
                                                 <p>{actionItem.actionOfTheWeekMessage}:</p>
-                                                {actionItem.hiveIds.map((hiveId, hiveIndex) => (
-                                                    <div key={`${actionIndex}-${hiveIndex}`} className="form-check">
-                                                        <input
-                                                            type="checkbox"
-                                                            className="form-check-input"
-                                                            id={`hive-${actionItem.actionOfTheWeekMarker}-${hiveId}`}
-                                                            checked={selectedActions[`${actionItem.actionOfTheWeekMarker}-${hiveId}`] || false}
-                                                            onChange={() => handleCheckboxChange(actionItem.actionOfTheWeekMarker, hiveId)}
-                                                        />
-                                                        <label className="form-check-label" htmlFor={`hive-${actionItem.actionOfTheWeekMarker}-${hiveId}`}>
-                                                            Hive {hiveId}
-                                                        </label>
-                                                    </div>
-                                                ))}
+
+                                                {actionItem.actionOfTheWeekMarker === "HARVEST_HONEY"|| actionItem.actionOfTheWeekMarker === "HIBERNATE" ? (
+                                                    // Afișăm doar text pentru stupii din care s-a extras mierea
+                                                    <p>
+                                                        {actionItem.hiveIds.map((hiveId, hiveIndex) => (
+                                                            <span key={`${actionIndex}-${hiveIndex}`}>
+                                                                {hiveId}{hiveIndex < actionItem.hiveIds.length - 1 ? ', ' : ''}
+                                                            </span>
+                                                        ))}
+                                                    </p>
+                                                ) : (
+                                                    // Afișăm checkbox-uri pentru alte tipuri de acțiuni
+                                                    actionItem.hiveIds.map((hiveId, hiveIndex) => (
+                                                        <div key={`${actionIndex}-${hiveIndex}`} className="form-check">
+                                                            <input
+                                                                type="checkbox"
+                                                                className="form-check-input"
+                                                                id={`hive-${actionItem.actionOfTheWeekMarker}-${hiveId}`}
+                                                                checked={selectedActions[`${actionItem.actionOfTheWeekMarker}-${hiveId}`] || false}
+                                                                onChange={() => handleCheckboxChange(actionItem.actionOfTheWeekMarker, hiveId)}
+                                                            />
+                                                            <label className="form-check-label" htmlFor={`hive-${actionItem.actionOfTheWeekMarker}-${hiveId}`}>
+                                                                Hive {hiveId}
+                                                            </label>
+                                                        </div>
+                                                    ))
+                                                )}
+                                                <hr />
                                             </div>
                                         ))}
                                     </form>
@@ -179,7 +196,7 @@ const GameView = () => {
                         <p className="btn-custom p-custom mb-2">Temp: {gameData && gameData.temperature ? gameData.temperature.toFixed(2) : 'Loading...'}</p>
                         <p className="btn-custom p-custom mb-2">Wind speed: {gameData && gameData.windSpeed ? gameData.windSpeed.toFixed(2) : 'Loading...'}</p>
                         <p className="btn-custom p-custom mb-2">Precipitation: {gameData && gameData.precipitation ? gameData.precipitation.toFixed(2) : 'Loading...'}</p>
-                        <p className="btn-custom p-custom mb-2">Total honey harvested: {gameData ? (gameData.totalKgOfHoney ?? 'Loading...').toFixed(2) : 'Loading...'}</p>
+                        <p className="btn-custom p-custom mb-2">Total honey harvested: {gameData && gameData.totalKgOfHoneyHarvested? gameData.totalKgOfHoneyHarvested.toFixed(2):  'Loading'}</p>
                         <p className="btn-custom p-custom mb-2">Money in the bank: {gameData && gameData.moneyInTheBank ? gameData.moneyInTheBank.toFixed(2) : 'Loading...'}</p>
                         <img src={getFlowerImage()} alt="Flower based on date" className="img-custom mb-2" />
                         <button className="btn btn-custom p-custom mb-2" onClick={handleIterateWeek}>Iterate one week</button>

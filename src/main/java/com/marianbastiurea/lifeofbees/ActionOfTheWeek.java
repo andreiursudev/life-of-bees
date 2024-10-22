@@ -1,6 +1,8 @@
 package com.marianbastiurea.lifeofbees;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ActionOfTheWeek {
     private String actionOfTheWeekMessage;
@@ -46,3 +48,4 @@ public class ActionOfTheWeek {
                 '}';
     }
 }
+

@@ -12,7 +12,7 @@ public class GameResponse {
     private double precipitation;
     private double moneyInTheBank;
     private String currentDate;
-    private double totalKgOfHoney;
+    private double totalKgOfHoneyHarvested;
 
     public String getCurrentDate() {
         return currentDate;
@@ -70,12 +70,12 @@ public class GameResponse {
         this.precipitation = precipitation;
     }
 
-    public double getTotalKgOfHoney() {
-        return totalKgOfHoney;
+    public double getTotalKgOfHoneyHarvested() {
+        return totalKgOfHoneyHarvested;
     }
 
-    public void setTotalKgOfHoney(double totalKgOfHoney) {
-        this.totalKgOfHoney = totalKgOfHoney;
+    public void setTotalKgOfHoneyHarvested(double totalKgOfHoneyHarvested) {
+        this.totalKgOfHoneyHarvested = totalKgOfHoneyHarvested;
     }
 
     @Override
@@ -88,12 +88,12 @@ public class GameResponse {
                 ", precipitation=" + precipitation +
                 ", moneyInTheBank=" + moneyInTheBank +
                 ", currentDate='" + currentDate + '\'' +
-                ", totalKgOfHoney=" + totalKgOfHoney +
+                ", totalKgOfHoneyHarvested=" + totalKgOfHoneyHarvested +
                 '}';
     }
 }
 
-    class HivesView {
+class HivesView {
 
     int id;
     int ageOfQueen;
@@ -102,16 +102,17 @@ public class GameResponse {
     int eggsFrame;
     int honeyFrame;
     double kgOfHoney;
+    private boolean itWasSplit;
 
-
-    public HivesView(int id, int ageOfQueen, int bees, String honeyType, int eggsFrame, int honeyFrame, double kgOfHoney) {
+    public HivesView(int id, int ageOfQueen, int bees, String honeyType, int eggsFrame, int honeyFrame, double kgOfHoney, boolean itWasSplit) {
         this.id = id;
         this.ageOfQueen = ageOfQueen;
         this.bees = bees;
         this.honeyType = honeyType;
         this.eggsFrame = eggsFrame;
         this.honeyFrame = honeyFrame;
-        this.kgOfHoney=kgOfHoney;
+        this.kgOfHoney = kgOfHoney;
+        this.itWasSplit=itWasSplit;
     }
 
     public int getId() {
@@ -140,6 +141,14 @@ public class GameResponse {
 
     public double getKgOfHoney() {
         return kgOfHoney;
+    }
+
+    public boolean isItWasSplit() {
+        return itWasSplit;
+    }
+
+    public void setItWasSplit(boolean itWasSplit) {
+        this.itWasSplit = itWasSplit;
     }
 
     @Override
