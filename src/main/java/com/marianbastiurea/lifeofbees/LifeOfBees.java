@@ -69,7 +69,7 @@ public class LifeOfBees {
         List<ActionOfTheWeek> actionsOfTheWeek = new ArrayList<>();
         Whether todayWeather = null;
         for (int dailyIterator = 0; dailyIterator < 7; dailyIterator++) {
-            System.out.println("today is "+date.getDayOfMonth());
+            System.out.println("today is " + date.getDayOfMonth());
             System.out.println("daily iterator is: " + dailyIterator);
             todayWeather = whether.whetherToday(month, date.getDayOfMonth());
             List<Hive> hives = apiary.getHives();
@@ -95,44 +95,40 @@ public class LifeOfBees {
                 hive.beesDie(date);
 
 
-               // boolean checkIfCanAddNAewEggsFrameInHive = hive.checkIfCanAddNAewEggsFrameInHive();
                 if (hive.checkIfCanAddNewEggsFrameInHive()) {
-                    // Folosim metoda nouă pentru a adăuga sau actualiza acțiunea
                     ActionOfTheWeek.addOrUpdateAction(actionsOfTheWeek,
                             "Add new eggs frame in Hive " + hive.getId(),
                             "ADD_NEW_EGGS_FRAME",
                             hive.getId());
-
-                    // Actualizăm acțiunile săptămânii în joc
                     lifeOfBeesGame.setActionOfTheWeek(actionsOfTheWeek);
                 }
 
-                // hive.moveAnEggsFrameFromUnsplitHiveToASplitOne();
+                hive.checkIfCanMoveAnEggsFrame();
+
+                ActionOfTheWeek.addOrUpdateActionForEggsFrameMove(actionsOfTheWeek,
+                        "Move an eggs frame from first hive in second one",
+                        "MOVE_EGGS_FRAME",
+                        hive.checkIfCanMoveAnEggsFrame());
+                lifeOfBeesGame.setActionOfTheWeek(actionsOfTheWeek);
+
+
 
                 if (hive.checkIfCanAddANewHoneyFrameInHive()) {
-                    // Folosim metoda nouă pentru a adăuga sau actualiza acțiunea
                     ActionOfTheWeek.addOrUpdateAction(actionsOfTheWeek,
                             "Add new honey frame in Hive " + hive.getId(),
                             "ADD_NEW_HONEY_FRAME",
                             hive.getId());
-
-                    // Actualizăm acțiunile săptămânii în joc
                     lifeOfBeesGame.setActionOfTheWeek(actionsOfTheWeek);
                 }
 
-
-               // hive.checkIfHiveCouldBeSplit(month, date.getDayOfMonth());
-               // boolean checkIfHiveCouldBeSplit = hive.checkIfHiveCouldBeSplit(month, date.getDayOfMonth());
                 if (hive.checkIfHiveCouldBeSplit(month, date.getDayOfMonth())) {
                     ActionOfTheWeek.addOrUpdateAction(actionsOfTheWeek,
-                            "You can split this hive "+ hive.getId(),
+                            "You can split this hive " + hive.getId(),
                             "SPLIT_HIVE",
                             hive.getId());
-
-                    // Actualizăm acțiunile săptămânii în joc
                     lifeOfBeesGame.setActionOfTheWeek(actionsOfTheWeek);
 
-                    }
+                }
 
                 hive.addHoneyBatches(honey.harvestHoney(hive, month, date.getDayOfMonth(), actionsOfTheWeek));
 
@@ -162,7 +158,7 @@ public class LifeOfBees {
                 break;
             }
 
-            System.out.println("Action of the day "+ date.getDayOfMonth()+" is "+ lifeOfBeesGame.getActionOfTheWeek());
+            System.out.println("Action of the day " + date.getDayOfMonth() + " is " + lifeOfBeesGame.getActionOfTheWeek());
             date = date.plusDays(1); // Actualizează data
             month = getHarvestingMonth(date);
 

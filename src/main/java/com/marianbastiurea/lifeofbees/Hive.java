@@ -426,22 +426,69 @@ they will die. bees number from each batch will subtract from total number of be
         return honeyFrameFull;
     }
 
-    public void moveAnEggsFrameFromUnsplitHiveToASplitOne() {
+    public List<List<Integer>> checkIfCanMoveAnEggsFrame() {
+        List<List<Integer>> hivePairs = new ArrayList<>();
+
         if (this.checkIfAll6EggsFrameAre80PercentFull() && !this.itWasSplit && !this.wasMovedAnEggsFrame) {
             List<Hive> hives = this.getApiary().getHives();
+
             for (Hive hive : hives) {
                 if (hive.itWasSplit) {
-                    System.out.println("We move an eggs frame " + this.eggFrames.get(0) +
-                            " from hive " + this.getId() + " to hive " + hive.getId());
-
-                    EggFrame frameToMove = this.getEggsFrames().remove(hive.getEggsFrames().size() - 1);
-                    hive.eggFrames.add(frameToMove);
-                    this.setWasMovedAnEggsFrame(true);// Move only one frame to one split hive
-                    break;
+                    System.out.println("We move an eggs frame from hive " + this.getId() + " to hive " + hive.getId());
+                    hivePairs.add(Arrays.asList(this.getId(), hive.getId()));
                 }
             }
         }
+        return hivePairs.isEmpty() ? Collections.emptyList() : hivePairs;
     }
+
+
+
+    public void moveAnEggsFrameFromUnsplitHiveToASplitOne(List<List<Integer>> hiveIdPair) {
+        // Verificăm dacă lista de perechi nu este null sau goală
+        if (hiveIdPair == null || hiveIdPair.isEmpty()) {
+            throw new IllegalArgumentException("The list of hive ID pairs must not be null or empty.");
+        }
+
+        // Iterăm prin fiecare pereche de ID-uri din listă
+        for (List<Integer> hiveIds : hiveIdPair) {
+            // Verificăm dacă fiecare pereche conține exact 2 ID-uri
+            if (hiveIds == null || hiveIds.size() != 2) {
+                throw new IllegalArgumentException("Each pair of hive IDs must contain exactly two IDs (source and destination).");
+            }
+
+            int sourceHiveId = hiveIds.get(0); // Primul ID este stupul sursă
+            int destinationHiveId = hiveIds.get(1); // Al doilea ID este stupul destinație
+
+            // Obținem stupii pe baza ID-urilor
+            Hive sourceHive = this.getApiary().getHiveById(sourceHiveId);
+            Hive destinationHive = this.getApiary().getHiveById(destinationHiveId);
+
+            // Verificăm dacă stupii existenți sunt valizi
+            if (sourceHive == null) {
+                throw new IllegalArgumentException("Source hive with ID " + sourceHiveId + " not found.");
+            }
+            if (destinationHive == null) {
+                throw new IllegalArgumentException("Destination hive with ID " + destinationHiveId + " not found.");
+            }
+
+            // Verificăm dacă stupul sursă are rame de ouă de mutat
+            if (sourceHive.getEggsFrames().isEmpty()) {
+                throw new IllegalStateException("Source hive with ID " + sourceHiveId + " has no eggs frames to move.");
+            }
+
+            // Mutăm ultima ramă de ouă din stupul sursă în stupul destinație
+            EggFrame frameToMove = sourceHive.getEggsFrames().remove(sourceHive.getEggsFrames().size() - 1);
+            destinationHive.getEggsFrames().add(frameToMove);
+
+            // Setăm că a fost mutată o ramă de ouă
+            sourceHive.setWasMovedAnEggsFrame(true);
+
+            // Opțional: poți adăuga un mesaj de confirmare/logging
+            System.out.println("Eggs frame moved from Hive " + sourceHiveId + " to Hive " + destinationHiveId);
+        }
+    }
+
 
     public void changeQueen() {
         queen = new Queen(0);

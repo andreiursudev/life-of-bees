@@ -90,9 +90,25 @@ const GameView = () => {
             console.error('Error iterating week:', error);
         }
     };
-    
-    
-    
+
+    const renderCheckboxes = (actionItem, hiveIds, actionIndex) => {
+        return hiveIds.map((hiveId, hiveIndex) => (
+            <div key={`${actionIndex}-${hiveIndex}`} className="form-check">
+                <input
+                    type="checkbox"
+                    className="form-check-input"
+                    id={`hive-${actionItem.actionOfTheWeekMarker}-${hiveId}`}
+                    checked={selectedActions[`${actionItem.actionOfTheWeekMarker}-${hiveId}`] || false}
+                    onChange={() => handleCheckboxChange(actionItem.actionOfTheWeekMarker, hiveId)}
+                />
+                <label className="form-check-label" htmlFor={`hive-${actionItem.actionOfTheWeekMarker}-${hiveId}`}>
+                    Hive {hiveId}
+                </label>
+            </div>
+        ));
+    };
+
+
 
 
     const getFlowerImage = () => {
@@ -143,49 +159,41 @@ const GameView = () => {
                 <div className="col-md-3">
                     <div className="card mb-3">
                         <div className="card-body">
-                            {updatedGameData && Array.isArray(updatedGameData.actionOfTheWeek) && updatedGameData.actionOfTheWeek.length > 0 ? (
-                                <div>
-                                    <p>Action of the week:</p>
-                                    <form>
-                                        {updatedGameData.actionOfTheWeek.map((actionItem, actionIndex) => (
-                                            <div key={actionIndex}>
-                                                <p>{actionItem.actionOfTheWeekMessage}:</p>
+                            {updatedGameData.actionOfTheWeek.map((actionItem, actionIndex) => (
+                                <div key={actionIndex}>
+                                    <p>{actionItem.actionOfTheWeekMessage}:</p>
 
-                                                {actionItem.actionOfTheWeekMarker === "HARVEST_HONEY"|| actionItem.actionOfTheWeekMarker === "HIBERNATE" ? (
-                                                    // Afișăm doar text pentru stupii din care s-a extras mierea
-                                                    <p>
-                                                        {actionItem.hiveIds.map((hiveId, hiveIndex) => (
-                                                            <span key={`${actionIndex}-${hiveIndex}`}>
-                                                                {hiveId}{hiveIndex < actionItem.hiveIds.length - 1 ? ', ' : ''}
-                                                            </span>
-                                                        ))}
-                                                    </p>
-                                                ) : (
-                                                    // Afișăm checkbox-uri pentru alte tipuri de acțiuni
-                                                    actionItem.hiveIds.map((hiveId, hiveIndex) => (
-                                                        <div key={`${actionIndex}-${hiveIndex}`} className="form-check">
-                                                            <input
-                                                                type="checkbox"
-                                                                className="form-check-input"
-                                                                id={`hive-${actionItem.actionOfTheWeekMarker}-${hiveId}`}
-                                                                checked={selectedActions[`${actionItem.actionOfTheWeekMarker}-${hiveId}`] || false}
-                                                                onChange={() => handleCheckboxChange(actionItem.actionOfTheWeekMarker, hiveId)}
-                                                            />
-                                                            <label className="form-check-label" htmlFor={`hive-${actionItem.actionOfTheWeekMarker}-${hiveId}`}>
-                                                                Hive {hiveId}
-                                                            </label>
-                                                        </div>
-                                                    ))
-                                                )}
-                                                <hr />
+                                    {actionItem.actionOfTheWeekMarker === "HARVEST_HONEY" || actionItem.actionOfTheWeekMarker === "HIBERNATE" ? (
+                                        <p>
+                                            {actionItem.hiveIds.map((hiveId, hiveIndex) => (
+                                                <span key={`${actionIndex}-${hiveIndex}`}>
+                                                    {hiveId}{hiveIndex < actionItem.hiveIds.length - 1 ? ', ' : ''}
+                                                </span>
+                                            ))}
+                                        </p>
+                                    ) : actionItem.actionOfTheWeekMarker === "MOVE_EGGS_FRAME" ? (
+                                        actionItem.hiveIds.map((hivePair, pairIndex) => (
+                                            <div key={`${actionIndex}-${pairIndex}`} className="form-check">
+                                                <input
+                                                    type="checkbox"
+                                                    className="form-check-input"
+                                                    id={`hive-${actionItem.actionOfTheWeekMarker}-${hivePair[0]}-${hivePair[1]}`}
+                                                    checked={selectedActions[`${actionItem.actionOfTheWeekMarker}-${hivePair[0]}-${hivePair[1]}`] || false}
+                                                    onChange={() => handleCheckboxChange(actionItem.actionOfTheWeekMarker, `${hivePair[0]}-${hivePair[1]}`)}
+                                                />
+                                                <label className="form-check-label" htmlFor={`hive-${actionItem.actionOfTheWeekMarker}-${hivePair[0]}-${hivePair[1]}`}>
+                                                    Move eggs from Hive {hivePair[0]} to Hive {hivePair[1]}
+                                                </label>
                                             </div>
-                                        ))}
-                                    </form>
-                                    <button className="btn btn-success mt-3" onClick={handleSubmit}>Submit</button>
+                                        ))
+                                    ) : (
+                                        renderCheckboxes(actionItem, actionItem.hiveIds, actionIndex)
+                                    )}
+
+                                    <hr />
                                 </div>
-                            ) : (
-                                <p>Weekly checking</p>
-                            )}
+                            ))}
+
                         </div>
 
                     </div>
@@ -196,7 +204,7 @@ const GameView = () => {
                         <p className="btn-custom p-custom mb-2">Temp: {gameData && gameData.temperature ? gameData.temperature.toFixed(2) : 'Loading...'}</p>
                         <p className="btn-custom p-custom mb-2">Wind speed: {gameData && gameData.windSpeed ? gameData.windSpeed.toFixed(2) : 'Loading...'}</p>
                         <p className="btn-custom p-custom mb-2">Precipitation: {gameData && gameData.precipitation ? gameData.precipitation.toFixed(2) : 'Loading...'}</p>
-                        <p className="btn-custom p-custom mb-2">Total honey harvested: {gameData && gameData.totalKgOfHoneyHarvested? gameData.totalKgOfHoneyHarvested.toFixed(2):  'Loading'}</p>
+                        <p className="btn-custom p-custom mb-2">Total honey harvested: {gameData && gameData.totalKgOfHoneyHarvested ? gameData.totalKgOfHoneyHarvested.toFixed(2) : 'Loading'}</p>
                         <p className="btn-custom p-custom mb-2">Money in the bank: {gameData && gameData.moneyInTheBank ? gameData.moneyInTheBank.toFixed(2) : 'Loading...'}</p>
                         <img src={getFlowerImage()} alt="Flower based on date" className="img-custom mb-2" />
                         <button className="btn btn-custom p-custom mb-2" onClick={handleIterateWeek}>Iterate one week</button>
