@@ -7,6 +7,7 @@ public class GameResponse {
 
     private List<HivesView> hives = new ArrayList<>();
     private List<ActionOfTheWeek> actionOfTheWeek;
+    private List<ActionMoveEggsFrame> actionMoveEggsFrames;
     private double temperature;
     private double windSpeed;
     private double precipitation;
@@ -78,11 +79,20 @@ public class GameResponse {
         this.totalKgOfHoneyHarvested = totalKgOfHoneyHarvested;
     }
 
+    public List<ActionMoveEggsFrame> getActionMoveEggsFrames() {
+        return actionMoveEggsFrames;
+    }
+
+    public void setActionMoveEggsFrames(List<ActionMoveEggsFrame> actionMoveEggsFrames) {
+        this.actionMoveEggsFrames = actionMoveEggsFrames;
+    }
+
     @Override
     public String toString() {
         return "GameResponse{" +
                 "hives=" + hives +
                 ", actionOfTheWeek=" + actionOfTheWeek +
+                ", actionMoveEggsFrames=" + actionMoveEggsFrames +
                 ", temperature=" + temperature +
                 ", windSpeed=" + windSpeed +
                 ", precipitation=" + precipitation +

@@ -433,13 +433,14 @@ they will die. bees number from each batch will subtract from total number of be
             List<Hive> hives = this.getApiary().getHives();
 
             for (Hive hive : hives) {
-                if (hive.itWasSplit) {
+                if (hive.itWasSplit&&hive.getQueen().getAgeOfQueen()==0) {
                     System.out.println("We move an eggs frame from hive " + this.getId() + " to hive " + hive.getId());
                     hivePairs.add(Arrays.asList(this.getId(), hive.getId()));
+                    System.out.println(" perechile de stupi sunt:"+ hivePairs);
                 }
             }
         }
-        return hivePairs.isEmpty() ? Collections.emptyList() : hivePairs;
+        return hivePairs;
     }
 
 

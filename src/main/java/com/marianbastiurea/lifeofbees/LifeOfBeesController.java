@@ -60,6 +60,8 @@ public class LifeOfBeesController {
         LifeOfBees lifeOfBeesGame = games.get(gameId);
         Apiary apiary = lifeOfBeesGame.getApiary();
 
+        approvedActions.forEach(action -> System.out.println(action));
+
         LocalDate date = LocalDate.parse(lifeOfBeesGame.getCurrentDate());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM", Locale.ENGLISH);
         HarvestingMonths month = getHarvestingMonth(date);
@@ -68,31 +70,8 @@ public class LifeOfBeesController {
         for (ActionOfTheWeek action : approvedActions) {
             List<Integer> approvedHiveIds = action.getHiveIds();
             System.out.println("Processing action: " + action.getActionOfTheWeekMarker());
-
-            // Verificăm acțiunea
             switch (action.getActionOfTheWeekMarker()) {
-                case "MOVE_EGGS_FRAME":
-                    // Pentru acțiunea MOVE_EGGS_FRAME, verificăm dacă lista de stupi conține exact 2 ID-uri
-                    if (approvedHiveIds.size() != 2) {
-                        throw new IllegalArgumentException("MOVE_EGGS_FRAME action requires exactly two hive IDs: source and destination.");
-                    }
-
-                    // Extragem stupul sursă și stupul destinație
-                    Hive sourceHive = apiary.getHiveById(approvedHiveIds.get(0));
-                    Hive destinationHive = apiary.getHiveById(approvedHiveIds.get(1));
-
-                    // Verificăm dacă ambele stupi există
-                    if (sourceHive == null || destinationHive == null) {
-                        throw new IllegalArgumentException("Invalid hive IDs provided for MOVE_EGGS_FRAME.");
-                    }
-
-                    // Apelăm metoda de mutare a ramei de ouă
-                    sourceHive.moveAnEggsFrameFromUnsplitHiveToASplitOne(List.of(approvedHiveIds));
-                    System.out.println("Moved eggs frame from Hive " + approvedHiveIds.get(0) + " to Hive " + approvedHiveIds.get(1));
-                    break;
-
                 default:
-                    // Procesăm celelalte acțiuni
                     for (Integer hiveId : approvedHiveIds) {
                         Hive hive = apiary.getHiveById(hiveId);
                         if (hive != null) {
@@ -142,6 +121,7 @@ public class LifeOfBeesController {
         }
         gameResponse.setTemperature(game.getTemperature());
         gameResponse.setActionOfTheWeek(game.getActionOfTheWeek());
+        gameResponse.setActionMoveEggsFrames(game.getActionMoveEggsFrames());
         gameResponse.setWindSpeed(game.getSpeedWind());
         gameResponse.setMoneyInTheBank(game.getMoneyInTheBank());
         gameResponse.setPrecipitation(game.getPrecipitation());

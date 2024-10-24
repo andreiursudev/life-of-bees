@@ -12,6 +12,7 @@ public class LifeOfBees {
     private Apiary apiary;// apiary is the place where it will be stored all hives
     private int hiveIdCounter = 1;
     private List<ActionOfTheWeek> actionOfTheWeek;
+    private List<ActionMoveEggsFrame> actionMoveEggsFrames;
     private Integer gameId;
     private String gameName;
     private String location;
@@ -24,9 +25,10 @@ public class LifeOfBees {
     private double moneyInTheBank;
     private double totalKgOfHoneyHarvested;
 
+
     public LifeOfBees(Apiary apiary, Integer gameId,
                       String gameName, String location, String currentDate,
-                      double speedWind, double temperature, double precipitation, double moneyInTheBank, double totalKgOfHoneyHarvested, List<ActionOfTheWeek> actionOfTheWeek) {
+                      double speedWind, double temperature, double precipitation, double moneyInTheBank, double totalKgOfHoneyHarvested, List<ActionOfTheWeek> actionOfTheWeek, List<ActionMoveEggsFrame> actionMoveEggsFrames) {
         this.apiary = apiary;
         this.gameId = gameId;
         this.gameName = gameName;
@@ -38,6 +40,7 @@ public class LifeOfBees {
         this.moneyInTheBank = moneyInTheBank;
         this.totalKgOfHoneyHarvested = totalKgOfHoneyHarvested;
         this.actionOfTheWeek = actionOfTheWeek;
+        this.actionMoveEggsFrames=actionMoveEggsFrames;
     }
 
     @Override
@@ -67,6 +70,7 @@ public class LifeOfBees {
         HarvestingMonths month = getHarvestingMonth(date);
         Whether whether = new Whether();
         List<ActionOfTheWeek> actionsOfTheWeek = new ArrayList<>();
+        List<ActionMoveEggsFrame> actionsMoveEggsFrame=new ArrayList<>();
         Whether todayWeather = null;
         for (int dailyIterator = 0; dailyIterator < 7; dailyIterator++) {
             System.out.println("today is " + date.getDayOfMonth());
@@ -103,14 +107,13 @@ public class LifeOfBees {
                     lifeOfBeesGame.setActionOfTheWeek(actionsOfTheWeek);
                 }
 
-                hive.checkIfCanMoveAnEggsFrame();
-
-                ActionOfTheWeek.addOrUpdateActionForEggsFrameMove(actionsOfTheWeek,
-                        "Move an eggs frame from first hive in second one",
-                        "MOVE_EGGS_FRAME",
-                        hive.checkIfCanMoveAnEggsFrame());
-                lifeOfBeesGame.setActionOfTheWeek(actionsOfTheWeek);
-
+                if(!hive.checkIfCanMoveAnEggsFrame().isEmpty()) {
+                    ActionMoveEggsFrame.addOrUpdateActionForEggsFrameMove(actionsMoveEggsFrame,
+                            "Move an eggs frame from first hive in second one",
+                            "MOVE_EGGS_FRAME",
+                            hive.checkIfCanMoveAnEggsFrame());
+                    lifeOfBeesGame.setActionMoveEggsFrames(actionsMoveEggsFrame);
+                }
 
 
                 if (hive.checkIfCanAddANewHoneyFrameInHive()) {
@@ -168,7 +171,7 @@ public class LifeOfBees {
         String newCurrentDate = date.format(DateTimeFormatter.ISO_LOCAL_DATE);
         lifeOfBeesGame.setCurrentDate(newCurrentDate);
         double totalKgOfHoneyHarvested = apiary.honeyHarvestedByHoneyType();
-        return new LifeOfBees(apiary, gameId, gameName, location, newCurrentDate, todayWeather.getSpeedWind(), todayWeather.getTemperature(), todayWeather.getPrecipitation(), moneyInTheBank, totalKgOfHoneyHarvested, actionOfTheWeek);
+        return new LifeOfBees(apiary, gameId, gameName, location, newCurrentDate, todayWeather.getSpeedWind(), todayWeather.getTemperature(), todayWeather.getPrecipitation(), moneyInTheBank, totalKgOfHoneyHarvested, actionOfTheWeek, actionMoveEggsFrames);
     }
 
 
@@ -241,5 +244,13 @@ public class LifeOfBees {
 
     public void setActionOfTheWeek(List<ActionOfTheWeek> actionOfTheWeek) {
         this.actionOfTheWeek = actionOfTheWeek;
+    }
+
+    public List<ActionMoveEggsFrame> getActionMoveEggsFrames() {
+        return actionMoveEggsFrames;
+    }
+
+    public void setActionMoveEggsFrames(List<ActionMoveEggsFrame> actionMoveEggsFrames) {
+        this.actionMoveEggsFrames = actionMoveEggsFrames;
     }
 }

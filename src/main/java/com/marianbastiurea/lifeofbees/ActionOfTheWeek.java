@@ -8,7 +8,7 @@ public class ActionOfTheWeek {
     private String actionOfTheWeekMessage;
     private String actionOfTheWeekMarker;
     private List<Integer> hiveIds;
-    private List<List<Integer>> hiveIdPair;
+
 
     public ActionOfTheWeek(String actionOfTheWeekMessage, String actionOfTheWeekMarker, List<Integer> hiveIds) {
         this.actionOfTheWeekMessage = actionOfTheWeekMessage;
@@ -42,13 +42,6 @@ public class ActionOfTheWeek {
         this.hiveIds = hiveIds;
     }
 
-    public List<List<Integer>> getHiveIdPair() {
-        return hiveIdPair;
-    }
-
-    public void setHiveIdPair(List<List<Integer>> hiveIdPair) {
-        this.hiveIdPair = hiveIdPair;
-    }
 
     @Override
     public String toString() {
@@ -78,34 +71,5 @@ public class ActionOfTheWeek {
             actionsOfTheWeek.add(actionOfTheWeek);
         }
     }
-
-    public static void addOrUpdateActionForEggsFrameMove(List<ActionOfTheWeek> actionsOfTheWeek, String newAction, String actionMarker, List<List<Integer>> hiveIdPair) {
-
-        Optional<ActionOfTheWeek> existingAction = actionsOfTheWeek.stream()
-                .filter(action -> action.getActionOfTheWeekMarker().equals(actionMarker))
-                .findFirst();
-
-        if (existingAction.isPresent()) {
-            for (List<Integer> newPair : hiveIdPair) {
-
-                boolean pairExists = existingAction.get().getHiveIds().containsAll(newPair);
-                if (!pairExists) {
-                    existingAction.get().getHiveIds().addAll(newPair);  // Adaugăm întreaga pereche
-                }
-            }
-
-        } else {
-            List<Integer> newHiveIds = new ArrayList<>();
-            for (List<Integer> pair : hiveIdPair) {
-                newHiveIds.addAll(pair);  // Adăugăm toate perechile în lista nouă
-            }
-            ActionOfTheWeek actionOfTheWeek = new ActionOfTheWeek(newAction, actionMarker, newHiveIds);
-            actionsOfTheWeek.add(actionOfTheWeek);
-        }
-    }
-
-
-
-
 }
 
