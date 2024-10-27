@@ -54,13 +54,12 @@ public class LifeOfBeesController {
         return response;
     }
 
-
     @PostMapping("/submitActionsOfTheWeek/{gameId}")
-    public GameResponse submitApprovedHives(@PathVariable Integer gameId, @RequestBody List<ActionOfTheWeek> approvedActions) {
+    public GameResponse submitActionsOfTheWeek(@PathVariable Integer gameId, @RequestBody List<ActionOfTheWeek> approvedActions) {
         LifeOfBees lifeOfBeesGame = games.get(gameId);
         Apiary apiary = lifeOfBeesGame.getApiary();
 
-        approvedActions.forEach(action -> System.out.println(action));
+        System.out.println("Received actions: " + approvedActions);
 
         LocalDate date = LocalDate.parse(lifeOfBeesGame.getCurrentDate());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM", Locale.ENGLISH);
@@ -68,50 +67,81 @@ public class LifeOfBeesController {
         int dayOfMonth = date.getDayOfMonth();
 
         for (ActionOfTheWeek action : approvedActions) {
-            List<Integer> approvedHiveIds = action.getHiveIds();
-            System.out.println("Processing action: " + action.getActionOfTheWeekMarker());
-            switch (action.getActionOfTheWeekMarker()) {
-                default:
-                    for (Integer hiveId : approvedHiveIds) {
-                        Hive hive = apiary.getHiveById(hiveId);
-                        if (hive != null) {
-                            switch (action.getActionOfTheWeekMarker()) {
-                                case "ADD_NEW_EGGS_FRAME":
-                                    hive.addNewEggsFrameInHive();
-                                    break;
-                                case "ADD_NEW_HONEY_FRAME":
-                                    hive.addNewHoneyFrameInHive();
-                                    break;
-                                case "SPLIT_HIVE":
-                                    hive.checkIfHiveCouldBeSplit(month, dayOfMonth);
-                                    apiary.splitHive(hive);
-                                    break;
-                                case "COLLECT_HONEY":
-                                    // Implementarea pentru colectare
-                                    break;
-                                case "HIBERNATE":
-                                    // Implementarea pentru hibernare
-                                    break;
-                                case "INSECT_CONTROL":
-                                    // Implementarea pentru controlul insectelor
-                                    break;
-                                default:
-                                    System.out.println("Unknown action marker: " + action.getActionOfTheWeekMarker());
-                                    break;
-                            }
-                        } else {
-                            System.out.println("Hive not found with ID: " + hiveId);
+            System.out.println("Processing action: " + action.getActionType());
+
+            // Transmitem direct data metodei corespunzătoare în funcție de actionType
+            switch (action.getActionType()) {
+                case "ADD_EGGS_FRAME":
+                    List<Integer> eggHiveIds = (List<Integer>) action.getData().get("hiveIds");
+                    if (eggHiveIds != null) {
+                        for (Integer hiveId : eggHiveIds) {
+                            Hive hive = apiary.getHiveById(hiveId);
+                                hive.addNewEggsFrameInHive();
                         }
                     }
+                    break;
+
+                case "ADD_HONEY_FRAME":
+                    List<Integer> honeyHiveIds = (List<Integer>) action.getData().get("hiveIds");
+                    if (honeyHiveIds != null) {
+                        for (Integer hiveId : honeyHiveIds) {
+                            Hive hive = apiary.getHiveById(hiveId);
+                            if (hive != null) {
+                                hive.addNewHoneyFrameInHive();
+                            }
+                        }
+                    }
+                    break;
+
+                case "MOVE_EGGS_FRAME":
+                    List<List<Integer>> hiveIdPairs = (List<List<Integer>>) action.getData().get("hiveIdPairs");
+                    if (hiveIdPairs != null) {
+                                    apiary.moveAnEggsFrame(hiveIdPairs);
+                    }
+                    break;
+
+                case "FEED_BEES":
+                    String feedResponse = (String) action.getData().get("feedConfirmation");
+                        apiary.doFeedBees(feedResponse,lifeOfBeesGame);
+                    break;
+
+                case "SPLIT_HIVE":
+                    List<Integer> splitHiveIds = (List<Integer>) action.getData().get("hiveIds");
+                    if (splitHiveIds != null) {
+                        for (Integer hiveId : splitHiveIds) {
+                            Hive hive = apiary.getHiveById(hiveId);
+                            if (hive != null) {
+                                apiary.splitHive(hive);
+                            }
+                        }
+                    }
+                    break;
+
+                case "INSECT_CONTROL":
+                    // Extragem valoarea din `data` ca un `Map`
+                    Map<String, Object> insectControlData = (Map<String, Object>) action.getData();
+
+                    // Extragem răspunsul specific pentru cheia `answer`
+                    String insectControlResponse = (String) insectControlData.get("answer");
+
+                    // Apelează metoda `doInsectControl` cu răspunsul obținut
+                    apiary.doInsectControl(insectControlResponse, lifeOfBeesGame);
+                    break;
+
+
+                default:
+                    System.out.println("Unknown action type: " + action.getActionType());
                     break;
             }
         }
 
+        // Curățăm acțiunile săptămânale după procesare
         lifeOfBeesGame.getActionOfTheWeek().clear();
         GameResponse response = getGameResponse(lifeOfBeesGame);
         System.out.println("GameResponse after submit action of the week: " + response);
         return response;
     }
+
 
 
     public GameResponse getGameResponse(LifeOfBees game) {
@@ -121,7 +151,6 @@ public class LifeOfBeesController {
         }
         gameResponse.setTemperature(game.getTemperature());
         gameResponse.setActionOfTheWeek(game.getActionOfTheWeek());
-        gameResponse.setActionMoveEggsFrames(game.getActionMoveEggsFrames());
         gameResponse.setWindSpeed(game.getSpeedWind());
         gameResponse.setMoneyInTheBank(game.getMoneyInTheBank());
         gameResponse.setPrecipitation(game.getPrecipitation());

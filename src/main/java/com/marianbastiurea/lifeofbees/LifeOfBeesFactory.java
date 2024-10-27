@@ -22,7 +22,7 @@ public class LifeOfBeesFactory {
         int day = date.getDayOfMonth();
         HarvestingMonths month = getHarvestingMonth(date);
         List<ActionOfTheWeek> actionOfTheWeek = new ArrayList<>();
-        List<ActionMoveEggsFrame> actionMoveEggsFrames=new ArrayList<>();
+
         Whether whether = new Whether();
         Whether todayWeather = whether.whetherToday(month, day);
         double speedWind = todayWeather.getSpeedWind();
@@ -70,7 +70,7 @@ public class LifeOfBeesFactory {
                     kgOfHoney);
             hives.add(hive);
         }
-        return new LifeOfBees(apiary, gameId, gameName, location, currentDate, speedWind, temperature, precipitation, moneyInTheBank, totalKgOfHoney, actionOfTheWeek, actionMoveEggsFrames);
+        return new LifeOfBees(apiary, gameId, gameName, location, currentDate, speedWind, temperature, precipitation, moneyInTheBank, totalKgOfHoney, actionOfTheWeek);
     }
 
     public String serializeGameResponses(List<GameResponse> gameResponses) {

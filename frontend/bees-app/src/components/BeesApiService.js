@@ -34,6 +34,7 @@ export const iterateWeek = async () => {
 };
 
 export const submitActionsOfTheWeek = async (actionsData) => {
+    console.log('Actions data being sent:', actionsData); // Adaugă asta pentru a verifica
     try {
         const response = await axios.post('http://localhost:8080/api/bees/submitActionsOfTheWeek/0', actionsData);
         if (response.status !== 200) {

@@ -85,7 +85,7 @@ public class Honey {
         };
     }
 
-    public List<HoneyBatch> harvestHoney(Hive hive, HarvestingMonths month, int dayOfMonth, List<ActionOfTheWeek> actionsOfTheWeek) {
+    public List<HoneyBatch> harvestHoney(Hive hive, HarvestingMonths month, int dayOfMonth) {
         List<HoneyBatch> honeyBatches = new ArrayList<>();
         double kgOfHoney = 0;
 
@@ -107,25 +107,6 @@ public class Honey {
                 if (kgOfHoney > 0) {
                     HoneyBatch honeyBatch = new HoneyBatch(hive.getId(), kgOfHoney, getHoneyType());
                     honeyBatches.add(honeyBatch);
-
-                    // Adăugăm acțiunea de recoltare a mierii în `actionsOfTheWeek`
-                    String newAction = "Harvest honey from Hive ";
-                    String actionMarker = "HARVEST_HONEY";
-
-                    Optional<ActionOfTheWeek> existingAction = actionsOfTheWeek.stream()
-                            .filter(action -> action.getActionOfTheWeekMarker().equals(actionMarker))
-                            .findFirst();
-
-                    if (existingAction.isPresent()) {
-                        if (!existingAction.get().getHiveIds().contains(hive.getId())) {
-                            existingAction.get().getHiveIds().add(hive.getId());
-                        }
-                    } else {
-                        List<Integer> newHiveIds = new ArrayList<>();
-                        newHiveIds.add(hive.getId());
-                        ActionOfTheWeek actionOfTheWeek = new ActionOfTheWeek(newAction, actionMarker, newHiveIds);
-                        actionsOfTheWeek.add(actionOfTheWeek);
-                    }
                 }
             }
         }

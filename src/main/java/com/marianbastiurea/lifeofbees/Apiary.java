@@ -59,7 +59,7 @@ public class Apiary {
 
     public Hive getHiveById(Integer hiveId) {
         for (Hive hive : hives) {
-            if (hive.getId() == hiveId){
+            if (hive.getId() == hiveId) {
                 return hive;
             }
         }
@@ -81,7 +81,7 @@ public class Apiary {
             hive.setAnswerIfWantToSplit(true);
 
 
-            Hive newHive=new Hive(this,this.getHives().size()+1,true,true,hive.getNumberOfBees()/2, new Queen());
+            Hive newHive = new Hive(this, this.getHives().size() + 1, true, true, hive.getNumberOfBees() / 2, new Queen());
             newHive.getQueen().setAgeOfQueen(0);
             newHive.setHoney(hive.getHoney());
             newHive.setApiary(this);
@@ -123,6 +123,7 @@ public class Apiary {
 
         hives.addAll(newHives);
     }
+
     public double honeyHarvestedByHoneyType() {
         List<HarvestedHoney> rapeseedHoney = new ArrayList<>();
         List<HarvestedHoney> acaciaHoney = new ArrayList<>();
@@ -228,6 +229,73 @@ public class Apiary {
         hive.getEggsFrames().remove(hive.getEggsFrames().size() - 1);
         hive.getHoneyFrames().remove(hive.getHoneyFrames().size() - 1);
         hive.getHoneyFrames().remove(hive.getHoneyFrames().size() - 1);
+    }
+
+    public boolean checkInsectControl(HarvestingMonths month, int dayOfMonth) {
+        if ((month.equals(HarvestingMonths.APRIL) || month.equals(HarvestingMonths.MAY) ||
+                month.equals(HarvestingMonths.JUNE) || month.equals(HarvestingMonths.JULY)) &&
+                (dayOfMonth == 11 || dayOfMonth == 21)) {
+            return true;
+        }
+        return false;
+    }
+
+    public void doInsectControl(String answer, LifeOfBees lifeOfBeesGame) {
+        if ("yes".equals(answer)) {
+            // Scade costul de control al insectelor din bani
+            lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() - (numberOfHives * 10));
+        } else {
+            // Redu numărul de albine din fiecare stup
+            for (Hive hive : hives) {
+                hive.setNumberOfBees((int) (hive.getNumberOfBees() * 0.09));
+            }
+        }
+    }
+
+    public  boolean checkFeedBees(HarvestingMonths month, int dayOfMonth) {
+        if (month.equals(HarvestingMonths.SEPTEMBER)&&
+                (dayOfMonth == 1)) {
+            return true;
+        }
+        return false;
+    }
+
+    public void doFeedBees(String answer, LifeOfBees lifeOfBeesGame) {
+        if ("yes".equals(answer)) {
+            // Scade costul hranire al insectelor din bani. costul e 1$/zi/stup
+            lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() - numberOfHives*7);
+        } else {
+            // Redu numărul de albine din fiecare stup
+            for (Hive hive : hives) {
+                for (int day = 0; day < 7; day++) {
+                    hive.setNumberOfBees((int) (hive.getNumberOfBees() * 0.95));
+                }
+            }
+        }
+    }
+
+
+    public void moveAnEggsFrame(List<List<Integer>> hiveIdPair) {
+
+
+        // Iterăm prin fiecare pereche de ID-uri din listă
+        for (List<Integer> hiveIds : hiveIdPair) {
+            int sourceHiveId = hiveIds.get(0); // Primul ID este stupul sursă
+            int destinationHiveId = hiveIds.get(1); // Al doilea ID este stupul destinație
+
+            // Obținem stupii pe baza ID-urilor
+            Hive sourceHive = this.getHiveById(sourceHiveId);
+            Hive destinationHive = this.getHiveById(destinationHiveId);
+
+
+
+            // Mutăm ultima ramă de ouă din stupul sursă în stupul destinație
+            EggFrame frameToMove = sourceHive.getEggsFrames().remove(sourceHive.getEggsFrames().size() - 1);
+            destinationHive.getEggsFrames().add(frameToMove);
+
+            // Setăm că a fost mutată o ramă de ouă
+            sourceHive.setWasMovedAnEggsFrame(true);
+        }
     }
 }
 
