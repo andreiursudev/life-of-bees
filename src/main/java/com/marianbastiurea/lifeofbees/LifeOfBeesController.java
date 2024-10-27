@@ -40,7 +40,7 @@ public class LifeOfBeesController {
     public GameResponse getGame(@PathVariable Integer gameId) {
         LifeOfBees lifeOfBeesGame = games.get(gameId);
 
-        System.out.println( "acestea sunt datele trimise catre React: "+   getGameResponse( lifeOfBeesGame));
+        System.out.println("acestea sunt datele trimise catre React: " + getGameResponse(lifeOfBeesGame));
 
         return getGameResponse(lifeOfBeesGame);
     }
@@ -76,7 +76,7 @@ public class LifeOfBeesController {
                     if (eggHiveIds != null) {
                         for (Integer hiveId : eggHiveIds) {
                             Hive hive = apiary.getHiveById(hiveId);
-                                hive.addNewEggsFrameInHive();
+                            hive.addNewEggsFrameInHive();
                         }
                     }
                     break;
@@ -96,13 +96,14 @@ public class LifeOfBeesController {
                 case "MOVE_EGGS_FRAME":
                     List<List<Integer>> hiveIdPairs = (List<List<Integer>>) action.getData().get("hiveIdPairs");
                     if (hiveIdPairs != null) {
-                                    apiary.moveAnEggsFrame(hiveIdPairs);
+                        apiary.moveAnEggsFrame(hiveIdPairs);
                     }
                     break;
 
                 case "FEED_BEES":
-                    String feedResponse = (String) action.getData().get("feedConfirmation");
-                        apiary.doFeedBees(feedResponse,lifeOfBeesGame);
+                    Map<String, Object> feedBeesData = (Map<String, Object>) action.getData();
+                    String feedBeesAnswer = (String) feedBeesData.get("answer");
+                    apiary.doFeedBees(feedBeesAnswer, lifeOfBeesGame);
                     break;
 
                 case "SPLIT_HIVE":
@@ -118,13 +119,9 @@ public class LifeOfBeesController {
                     break;
 
                 case "INSECT_CONTROL":
-                    // Extragem valoarea din `data` ca un `Map`
+
                     Map<String, Object> insectControlData = (Map<String, Object>) action.getData();
-
-                    // Extragem răspunsul specific pentru cheia `answer`
                     String insectControlResponse = (String) insectControlData.get("answer");
-
-                    // Apelează metoda `doInsectControl` cu răspunsul obținut
                     apiary.doInsectControl(insectControlResponse, lifeOfBeesGame);
                     break;
 
@@ -141,7 +138,6 @@ public class LifeOfBeesController {
         System.out.println("GameResponse after submit action of the week: " + response);
         return response;
     }
-
 
 
     public GameResponse getGameResponse(LifeOfBees game) {
