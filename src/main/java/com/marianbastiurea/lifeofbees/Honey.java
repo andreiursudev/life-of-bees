@@ -3,7 +3,7 @@ package com.marianbastiurea.lifeofbees;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 
 public class Honey {
     private String honeyType;
@@ -105,7 +105,7 @@ public class Honey {
                 }
                 hive.setKgOfHoney(kgOfHoney);
                 if (kgOfHoney > 0) {
-                    HoneyBatch honeyBatch = new HoneyBatch(hive.getId(), kgOfHoney, getHoneyType());
+                    HoneyBatch honeyBatch = new HoneyBatch(hive.getId(), kgOfHoney, honeyType(month,dayOfMonth));
                     honeyBatches.add(honeyBatch);
                 }
             }

@@ -116,9 +116,13 @@ public class LifeOfBees {
                 }
 
 
-                hive.addHoneyBatches(honey.harvestHoney(hive, month,date.getDayOfMonth()));
+               // hive.addHoneyBatches(honey.harvestHoney(hive, month,date.getDayOfMonth()));
                 hive.setKgOfHoney(hive.findTotalKgOfHoney());
-                if(hive.getKgOfHoney()>0){
+                List<HoneyBatch> harvestedHoneyBatches = honey.harvestHoney(hive, month, date.getDayOfMonth());
+                hive.addHoneyBatches(harvestedHoneyBatches);
+
+                hive.setKgOfHoney(hive.findTotalKgOfHoney());
+                if (!harvestedHoneyBatches.isEmpty()) {
                     Map<String, Object> data = ActionOfTheWeek.findOrCreateAction("HARVEST_HONEY", actionsOfTheWeek).getData();
                     addOrUpdateAction("HARVEST_HONEY", hive.getId(), data, actionsOfTheWeek);
                 }
