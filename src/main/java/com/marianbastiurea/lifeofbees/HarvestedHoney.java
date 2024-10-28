@@ -1,20 +1,19 @@
 package com.marianbastiurea.lifeofbees;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class HarvestedHoney {
     private int hiveId;
     private String honeyType;
     private double kgOfHoney;
-    private final Date date;
 
     public HarvestedHoney(int hiveId,
-                          String honeyType, double kgOfHoney, Date date) {
+                          String honeyType, double kgOfHoney) {
 
         this.hiveId = hiveId;
         this.honeyType = honeyType;
         this.kgOfHoney = kgOfHoney;
-        this.date=date;
     }
 
 
@@ -25,7 +24,6 @@ public class HarvestedHoney {
     public void setHiveId(int hiveId) {
         this.hiveId = hiveId;
     }
-
 
     public String getHoneyType() {
         return honeyType;
@@ -43,9 +41,7 @@ public class HarvestedHoney {
         this.kgOfHoney = kgOfHoney;
     }
 
-    public Date getDate() {
-        return date;
-    }
+
 
     @Override
     public String toString() {
@@ -53,7 +49,6 @@ public class HarvestedHoney {
                 "hiveID=" + hiveId +
                 ", honeyType='" + honeyType + '\'' +
                 ", kgOfHoney=" + kgOfHoney +
-                ", date=" + date +
                 '}';
     }
 
