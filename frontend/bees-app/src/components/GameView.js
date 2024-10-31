@@ -9,7 +9,7 @@ import acaciaFlower from '../acacia-flower.jpg';
 import lindenFlower from '../linden-flower.jpg';
 import sunFlower from '../sun-flower.jpg';
 import falseIndigoFlower from '../false-indigo-flower.jpg';
-
+import { getHoneyQuantities } from './BeesApiService';
 
 
 
@@ -23,6 +23,7 @@ const GameView = () => {
     useEffect(() => {
         async function fetchGameData() {
             try {
+                console.log('Fetching game data...');
                 const data = await getGame();
                 console.log('Game data:', data);
                 setGameData(data);
@@ -165,6 +166,8 @@ const GameView = () => {
             .replace(/_/g, ' ') // Înlocuiește underscore cu spațiu
             .replace(/\b\w/g, char => char.toUpperCase()); // Fă majusculă prima literă a fiecărui cuvânt
     };
+
+
 
     return (
         <div className="body-gameView">

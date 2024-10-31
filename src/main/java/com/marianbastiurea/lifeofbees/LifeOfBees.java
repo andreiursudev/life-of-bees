@@ -154,7 +154,8 @@ public class LifeOfBees {
             lifeOfBeesGame.setActionOfTheWeek(actionsOfTheWeek);
 
             apiary.honeyHarvestedByHoneyType();
-            System.out.println("your honey harvested  is:");
+            System.out.println("your honey harvested  until now:");
+            System.out.println(apiary.getTotalHarvestedHoney());
 
             if (date.isEqual(LocalDate.of(date.getYear(), 9, 30))) {
                 for (Hive hive : hives) {
@@ -187,7 +188,7 @@ public class LifeOfBees {
 
         String newCurrentDate = date.format(DateTimeFormatter.ISO_LOCAL_DATE);
         lifeOfBeesGame.setCurrentDate(newCurrentDate);
-        double totalKgOfHoneyHarvested = apiary.honeyHarvestedByHoneyType();
+
         return new LifeOfBees(apiary, gameId, gameName, location, newCurrentDate, todayWeather.getSpeedWind(), todayWeather.getTemperature(), todayWeather.getPrecipitation(), moneyInTheBank, totalKgOfHoneyHarvested, actionOfTheWeek);
     }
 

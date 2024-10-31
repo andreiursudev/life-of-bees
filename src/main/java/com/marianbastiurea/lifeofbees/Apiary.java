@@ -2,8 +2,7 @@ package com.marianbastiurea.lifeofbees;
 
 import com.marianbastiurea.lifeofbees.eggframe.EggFrame;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Apiary {
     /* An apiary is a location where beehives of honey bees are kept.
@@ -16,12 +15,23 @@ public class Apiary {
     private int numberOfHives;
     private List<Hive> hives;
     private List<HarvestedHoney> harvestedHoneys;
-
+    private LifeOfBees lifeOfBees;
+    private Map<String, Object> totalHarvestedHoney = new HashMap<>();
 
     public Apiary(List<Hive> hives, List<HarvestedHoney> harvestedHoneys) {
         this.hives = hives;
         this.harvestedHoneys = harvestedHoneys;
     }
+
+    public Apiary() {
+        totalHarvestedHoney.put("Acacia", 0.0);
+        totalHarvestedHoney.put("Rapeseed", 0.0);
+        totalHarvestedHoney.put("WildFlower", 0.0);
+        totalHarvestedHoney.put("Linden", 0.0);
+        totalHarvestedHoney.put("SunFlower", 0.0);
+        totalHarvestedHoney.put("FalseIndigo", 0.0);
+    }
+
 
     public int getNumberOfHives() {
         return numberOfHives;
@@ -64,6 +74,14 @@ public class Apiary {
             }
         }
         return null;  // Dacă nu găsește stupul, returnează null
+    }
+
+    public Map<String, Object> getTotalHarvestedHoney() {
+        return totalHarvestedHoney;
+    }
+
+    public void setTotalHarvestedHoney(Map<String, Object> totalHarvestedHoney) {
+        this.totalHarvestedHoney = totalHarvestedHoney;
     }
 
     public void splitHive(Hive hive) {
@@ -124,100 +142,6 @@ public class Apiary {
         hives.addAll(newHives);
     }
 
-    public double honeyHarvestedByHoneyType() {
-        List<HarvestedHoney> rapeseedHoney = new ArrayList<>();
-        List<HarvestedHoney> acaciaHoney = new ArrayList<>();
-        List<HarvestedHoney> wildFlowerHoney = new ArrayList<>();
-        List<HarvestedHoney> lindenHoney = new ArrayList<>();
-        List<HarvestedHoney> sunflowerHoney = new ArrayList<>();
-        List<HarvestedHoney> falseIndigoHoney = new ArrayList<>();
-
-
-        double annualKgOfRapeseedHoney = 0;
-        double annualKgOfAcaciaHoney = 0;
-        double annualKgOfLindenHoney = 0;
-        double annualKgOfWildFlowerHoney = 0;
-        double annualKgOfSunflowerHoney = 0;
-        double annualKgOfFalseIndigoHoney = 0;
-        double totalKgOfHoney = 0;
-
-        for (Hive hive : hives) {
-            List<HoneyBatch> hiveHoneyBatches = hive.getHoneyBatches();
-            for (HoneyBatch honeyBatch : hiveHoneyBatches) {
-                HarvestedHoney harvestedHoney = new HarvestedHoney(
-                        hive.getId(),
-                        honeyBatch.getHoneyType(),
-                        honeyBatch.getKgOfHoney()
-                );
-
-                switch (honeyBatch.getHoneyType()) {
-                    case "Acacia":
-                        acaciaHoney.add(harvestedHoney);
-                        annualKgOfAcaciaHoney += honeyBatch.getKgOfHoney();
-                        break;
-                    case "Rapeseed":
-                        rapeseedHoney.add(harvestedHoney);
-                        annualKgOfRapeseedHoney += harvestedHoney.getKgOfHoney();
-                        break;
-                    case "WildFlower":
-                        wildFlowerHoney.add(harvestedHoney);
-                        annualKgOfWildFlowerHoney += honeyBatch.getKgOfHoney();
-                        break;
-                    case "Linden":
-                        lindenHoney.add(harvestedHoney);
-                        annualKgOfLindenHoney += honeyBatch.getKgOfHoney();
-                        break;
-                    case "SunFlower":
-                        sunflowerHoney.add(harvestedHoney);
-                        annualKgOfSunflowerHoney += honeyBatch.getKgOfHoney();
-                        break;
-                    case "FalseIndigo":
-                        falseIndigoHoney.add(harvestedHoney);
-                        annualKgOfFalseIndigoHoney += honeyBatch.getKgOfHoney();
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-
-        // Calculează totalul de kg de miere culeasă pe parcursul sezonului
-        totalKgOfHoney = annualKgOfAcaciaHoney + annualKgOfRapeseedHoney + annualKgOfWildFlowerHoney +
-                annualKgOfLindenHoney + annualKgOfSunflowerHoney + annualKgOfFalseIndigoHoney;
-
-        // Afișează detaliile pentru fiecare tip de miere
-        if (!acaciaHoney.isEmpty()) {
-            System.out.println("Acacia Honey: " + acaciaHoney);
-            System.out.println("Annual quantity of acacia honey is: " + annualKgOfAcaciaHoney);
-        }
-        if (!rapeseedHoney.isEmpty()) {
-            System.out.println("Rapeseed Honey: " + rapeseedHoney);
-            System.out.println("Annual quantity of rapeseed Honey: " + annualKgOfRapeseedHoney);
-        }
-        if (!wildFlowerHoney.isEmpty()) {
-            System.out.println("WildFlower Honey: " + wildFlowerHoney);
-            System.out.println("Annual quantity of wildflower Honey: " + annualKgOfWildFlowerHoney);
-        }
-        if (!lindenHoney.isEmpty()) {
-            System.out.println("Linden Honey: " + lindenHoney);
-            System.out.println("Annual quantity of linden Honey: " + annualKgOfLindenHoney);
-        }
-        if (!sunflowerHoney.isEmpty()) {
-            System.out.println("SunFlower Honey: " + sunflowerHoney);
-            System.out.println("Annual quantity of sunflower Honey: " + annualKgOfSunflowerHoney);
-        }
-        if (!falseIndigoHoney.isEmpty()) {
-            System.out.println("FalseIndigo Honey: " + falseIndigoHoney);
-            System.out.println("Annual quantity of false indigo Honey: " + annualKgOfFalseIndigoHoney);
-        }
-
-        // Afișează totalul de miere culeasă
-        System.out.println("Total quantity of honey harvested during the season: " + totalKgOfHoney + " kg");
-
-        // Returnează totalul de miere culeasă
-        return totalKgOfHoney;
-    }
-
 
     public void hibernate(Hive hive) {
         hive.getQueen().setAgeOfQueen(hive.getQueen().getAgeOfQueen() + 1);
@@ -252,8 +176,8 @@ public class Apiary {
         }
     }
 
-    public  boolean checkFeedBees(HarvestingMonths month, int dayOfMonth) {
-        if (month.equals(HarvestingMonths.SEPTEMBER)&&
+    public boolean checkFeedBees(HarvestingMonths month, int dayOfMonth) {
+        if (month.equals(HarvestingMonths.SEPTEMBER) &&
                 (dayOfMonth == 1)) {
             return true;
         }
@@ -263,7 +187,7 @@ public class Apiary {
     public void doFeedBees(String answer, LifeOfBees lifeOfBeesGame) {
         if ("yes".equals(answer)) {
             // Scade costul hranire al insectelor din bani. costul e 1$/zi/stup
-            lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() - numberOfHives*7);
+            lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() - numberOfHives * 7);
         } else {
             // Redu numărul de albine din fiecare stup
             for (Hive hive : hives) {
@@ -277,25 +201,44 @@ public class Apiary {
 
     public void moveAnEggsFrame(List<List<Integer>> hiveIdPair) {
 
-
-        // Iterăm prin fiecare pereche de ID-uri din listă
         for (List<Integer> hiveIds : hiveIdPair) {
-            int sourceHiveId = hiveIds.get(0); // Primul ID este stupul sursă
-            int destinationHiveId = hiveIds.get(1); // Al doilea ID este stupul destinație
+            int sourceHiveId = hiveIds.get(0);
+            int destinationHiveId = hiveIds.get(1);
 
-            // Obținem stupii pe baza ID-urilor
             Hive sourceHive = this.getHiveById(sourceHiveId);
             Hive destinationHive = this.getHiveById(destinationHiveId);
-
-
-
-            // Mutăm ultima ramă de ouă din stupul sursă în stupul destinație
             EggFrame frameToMove = sourceHive.getEggsFrames().remove(sourceHive.getEggsFrames().size() - 1);
             destinationHive.getEggsFrames().add(frameToMove);
-
-            // Setăm că a fost mutată o ramă de ouă
             sourceHive.setWasMovedAnEggsFrame(true);
         }
     }
+
+    public void honeyHarvestedByHoneyType() {
+        for (Hive hive : hives) {
+            for (HoneyBatch honeyBatch : hive.getHoneyBatches()) {
+                if (!honeyBatch.isProcessed()) {
+                    String honeyType = honeyBatch.getHoneyType();
+                    double kgOfHoney = honeyBatch.getKgOfHoney();
+                    getTotalHarvestedHoney().merge(honeyType, kgOfHoney, (oldValue, newValue) ->
+                            Double.valueOf(oldValue.toString()) + (Double) newValue
+                    );
+                    honeyBatch.setProcessed(true);
+                }
+            }
+        }
+    }
+
+
+    public void updateHoneyStock(Map<String, Object> soldHoneyData) {
+        for (Map.Entry<String, Object> entry : soldHoneyData.entrySet()) {
+            String honeyType = entry.getKey();
+            double soldQuantity = ((Number) entry.getValue()).doubleValue();
+            totalHarvestedHoney.merge(honeyType, soldQuantity, (currentQuantity, quantitySold) ->
+                    Double.valueOf(currentQuantity.toString()) - (Double) quantitySold
+            );
+        }
+    }
+
+
 }
 

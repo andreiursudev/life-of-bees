@@ -1,13 +1,12 @@
 package com.marianbastiurea.lifeofbees;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 import static com.marianbastiurea.lifeofbees.Honey.getHarvestingMonth;
 
@@ -131,14 +130,11 @@ public class LifeOfBeesController {
                     break;
             }
         }
-
-        // Curățăm acțiunile săptămânale după procesare
         lifeOfBeesGame.getActionOfTheWeek().clear();
         GameResponse response = getGameResponse(lifeOfBeesGame);
         System.out.println("GameResponse after submit action of the week: " + response);
         return response;
     }
-
 
     public GameResponse getGameResponse(LifeOfBees game) {
         GameResponse gameResponse = new GameResponse();
@@ -155,4 +151,40 @@ public class LifeOfBeesController {
 
         return gameResponse;
     }
+
+
+
+    @GetMapping("/getHoneyQuantities/{gameId}")
+    public ResponseEntity<Map<String, Object>> getHoneyQuantities(@PathVariable Integer gameId) {
+        System.out.println("getHoneyQuantities called with gameId: " + gameId);
+        LifeOfBees lifeOfBeesGame = games.get(gameId);
+        Apiary apiary = lifeOfBeesGame.getApiary();
+
+        Map<String, Object> honeyData = apiary.getTotalHarvestedHoney(); // Obținem direct map-ul de miere
+
+        System.out.println("Aceasta e mierea culeasă până în acest moment: " + honeyData);
+        return ResponseEntity.ok(honeyData);
+    }
+
+
+
+    @PostMapping("/sellHoney/{gameId}")
+    public ResponseEntity<String> sendSellHoneyQuantities(
+            @PathVariable Integer gameId,
+            @RequestBody Map<String, Object> requestData) {
+        System.out.println("Selling Honey Quantities called with gameId: " + gameId);
+        Map<String, Object> soldHoneyData = (Map<String, Object>) requestData.get("soldData");
+        System.out.println(soldHoneyData);
+        double revenue = Double.parseDouble((String) requestData.get("totalValue"));
+        System.out.println("valoarea vanzrii este:"+revenue);
+        LifeOfBees lifeOfBeesGame = games.get(gameId);
+        Apiary apiary = lifeOfBeesGame.getApiary();
+        apiary.updateHoneyStock(soldHoneyData);
+        lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() + revenue);
+
+        return ResponseEntity.ok("Stock and revenue updated successfully.");
+    }
+
+
+
 }

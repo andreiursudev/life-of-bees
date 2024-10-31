@@ -8,14 +8,11 @@ public class HarvestedHoney {
     private String honeyType;
     private double kgOfHoney;
 
-    public HarvestedHoney(int hiveId,
-                          String honeyType, double kgOfHoney) {
-
+    public HarvestedHoney(int hiveId, String honeyType, double kgOfHoney) {
         this.hiveId = hiveId;
         this.honeyType = honeyType;
         this.kgOfHoney = kgOfHoney;
     }
-
 
     public int getHiveId() {
         return hiveId;
@@ -41,16 +38,12 @@ public class HarvestedHoney {
         this.kgOfHoney = kgOfHoney;
     }
 
-
-
     @Override
     public String toString() {
         return "HarvestedHoney{" +
-                "hiveID=" + hiveId +
+                "hiveId=" + hiveId +
                 ", honeyType='" + honeyType + '\'' +
                 ", kgOfHoney=" + kgOfHoney +
                 '}';
     }
-
 }
-
