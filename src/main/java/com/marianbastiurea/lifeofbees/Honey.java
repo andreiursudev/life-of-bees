@@ -105,7 +105,7 @@ public class Honey {
                 }
                 hive.setKgOfHoney(kgOfHoney);
                 if (kgOfHoney > 0) {
-                    HoneyBatch honeyBatch = new HoneyBatch(hive.getId(), kgOfHoney, honeyType(month,dayOfMonth));
+                    HoneyBatch honeyBatch = new HoneyBatch(hive.getId(), kgOfHoney, honeyType(month,dayOfMonth),false);
                     honeyBatches.add(honeyBatch);
                 }
             }

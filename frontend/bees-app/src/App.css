@@ -86,11 +86,3 @@ body {
   color: black;
   flex-basis: 150px;
 }
-
-.input-custom {
-  background-color: rgb(224, 133, 13);
-  color: black;
-  width: 70px;
-  border: none;
-  padding: 5px; 
-}
