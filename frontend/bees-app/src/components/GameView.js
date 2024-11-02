@@ -2,15 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
 import HiveCard from './HiveCard';
-import { getGame, iterateWeek, submitActionsOfTheWeek } from './BeesApiService';
+import { getGame, iterateWeek, submitActionsOfTheWeek, buyHives } from './BeesApiService';
 import rapeseedFlower from '../rapeseed-flower.jpg';
 import wildFlower from '../wild-flower.jpg';
 import acaciaFlower from '../acacia-flower.jpg';
 import lindenFlower from '../linden-flower.jpg';
 import sunFlower from '../sun-flower.jpg';
 import falseIndigoFlower from '../false-indigo-flower.jpg';
-import { getHoneyQuantities } from './BeesApiService';
-
+import BuyHivesModal from './BuyHivesModal';
 
 
 
@@ -58,18 +57,15 @@ const GameView = () => {
                     }
 
                     if (['ADD_EGGS_FRAME', 'ADD_HONEY_FRAME', 'SPLIT_HIVE'].includes(actionType)) {
-                        // Convertim `sourceHiveId` într-un număr și îl adăugăm la `hiveIds`
                         if (!acc[actionType].data.hiveIds) acc[actionType].data.hiveIds = [];
                         acc[actionType].data.hiveIds.push(parseInt(sourceHiveId));
                     }
 
-                    // Pentru acțiunea `MOVE_EGGS_FRAME`, folosim perechi de stupi
                     else if (actionType === 'MOVE_EGGS_FRAME' && sourceHiveId && destinationHiveId) {
                         if (!acc[actionType].data.hiveIdPairs) acc[actionType].data.hiveIdPairs = [];
                         acc[actionType].data.hiveIdPairs.push([parseInt(sourceHiveId), parseInt(destinationHiveId)]);
                     }
 
-                    // Setăm `answer` pentru acțiuni de tip `FEED_BEES`, `INSECT_CONTROL`
                     else {
                         acc[actionType].data.answer = selectedActions[key];
                     }
@@ -77,7 +73,6 @@ const GameView = () => {
                     return acc;
                 }, {});
 
-            // Transforma obiectul de acțiuni într-o listă și eliminăm duplicatele
             const aggregatedActions = Object.values(actionsByType).map(action => {
                 if (action.data.hiveIds) {
                     action.data.hiveIds = [...new Set(action.data.hiveIds)];
@@ -105,18 +100,13 @@ const GameView = () => {
     };
 
 
-    // Funcția handleYesNoChange pentru a seta "yes" sau "no"
+
     const handleYesNoChange = (actionType, response) => {
         setSelectedActions((prevSelectedActions) => ({
             ...prevSelectedActions,
-            [actionType]: response, // Salvează "yes" sau "no" corespunzător
+            [actionType]: response,
         }));
     };
-
-
-
-
-
 
 
     const handleIterateWeek = async () => {
@@ -162,9 +152,77 @@ const GameView = () => {
 
     const formatActionType = (actionType) => {
         return actionType
-            .toLowerCase() // Transforma tot textul în litere mici
-            .replace(/_/g, ' ') // Înlocuiește underscore cu spațiu
-            .replace(/\b\w/g, char => char.toUpperCase()); // Fă majusculă prima literă a fiecărui cuvânt
+            .toLowerCase()
+            .replace(/_/g, ' ')
+            .replace(/\b\w/g, char => char.toUpperCase());
+    };
+
+
+
+    const [showBuyHivesForm, setShowBuyHivesForm] = useState(false);
+    const [hivesToBuy, setHivesToBuy] = useState(1);
+    const [error, setError] = useState(null);
+    const maxHives = gameData ? 10 - gameData.hives.length : 0;
+    const [month, setMonth] = useState(null);
+
+    useEffect(() => {
+        async function fetchGameData() {
+            try {
+                const data = await getGame();
+                setGameData(data);
+                setMonth(new Date(data.currentDate).getMonth() + 1); // Obține luna curentă
+            } catch (error) {
+                console.error('Error fetching game data:', error);
+            }
+        }
+        fetchGameData();
+    }, []);
+
+    const handleBuyHivesClick = () => {
+        if (month === 3 || month === 4) {
+            setShowBuyHivesForm(true);
+            setError(null);
+        } else {
+            setError("You can only buy hives in March or April.");
+            setShowBuyHivesForm(false);
+        }
+    };
+
+    const handleHivesToBuyChange = (e) => {
+        setHivesToBuy(e.target.value);
+    };
+
+    const handleSubmitHivesPurchase = async () => {
+        if (hivesToBuy > maxHives) {
+            setError(`You can only buy up to ${maxHives} hives.`);
+            return;
+        }
+        if (gameData.moneyInTheBank < hivesToBuy * 500) {
+            setError("Insufficient funds to buy hives.");
+            return;
+        }
+
+        try {
+            const response = await buyHives(hivesToBuy);
+            if (response) {
+                setShowBuyHivesForm(false);
+                setError(null);
+                setGameData(await getGame());
+            } else {
+                setError('Failed to buy hives.');
+            }
+        } catch (error) {
+            setError('An error occurred.');
+        }
+    };
+
+
+    const isMarchOrApril = () => {
+        if (!gameData || !gameData.currentDate) {
+            return false;
+        }
+        const currentMonth = new Date(gameData.currentDate).getMonth() + 1;
+        return currentMonth === 3 || currentMonth === 4;
     };
 
 
@@ -186,7 +244,6 @@ const GameView = () => {
                     </div>
                 </div>
 
-                {/* A doua coloană cu acțiunile săptămânale */}
                 <div className="col-md-3">
                     <div className="card mb-3">
                         <div className="card-body">
@@ -196,15 +253,10 @@ const GameView = () => {
                                     <form>
                                         {updatedGameData.actionOfTheWeek.map((actionItem, actionIndex) => (
                                             <div key={actionIndex}>
-                                                {/* Afișează mesajul acțiunii, doar dacă este definit */}
                                                 {actionItem.actionOfTheWeekMessage && (
                                                     <p>{actionItem.actionOfTheWeekMessage}</p>
                                                 )}
-
-                                                {/* Afișează tipul acțiunii cu formatare corectă */}
                                                 <h5>{formatActionType(actionItem.actionType)}</h5>
-
-                                                {/* Condiții în funcție de tipul acțiunii */}
                                                 {(() => {
                                                     switch (actionItem.actionType) {
                                                         case "ADD_EGGS_FRAME":
@@ -230,7 +282,7 @@ const GameView = () => {
                                                             return actionItem.data.hiveIdPairs && Array.isArray(actionItem.data.hiveIdPairs) ? (
                                                                 actionItem.data.hiveIdPairs.map((pair, pairIndex) => {
                                                                     const checkboxKey = `${actionItem.actionType}-${pair[0]}-${pair[1]}`;
-                                                                    const isSourceSelected = selectedActions[checkboxKey]; // Verifică dacă sursa a fost selectată
+                                                                    // const isSourceSelected = selectedActions[checkboxKey]; // Verifică dacă sursa a fost selectată
                                                                     const isInactive = Object.keys(selectedActions).some(key =>
                                                                         key.startsWith(`${actionItem.actionType}-${pair[0]}-`) && selectedActions[key]
                                                                     );
@@ -242,24 +294,20 @@ const GameView = () => {
                                                                                     type="checkbox"
                                                                                     checked={!!selectedActions[checkboxKey]}
                                                                                     onChange={() => {
-                                                                                        if (!isInactive) { // Dacă nu sunt inactivi
+                                                                                        if (!isInactive) {
                                                                                             setSelectedActions((prevSelectedActions) => {
                                                                                                 const newSelectedActions = { ...prevSelectedActions };
-
-                                                                                                // Debifează opțiunile anterioare cu aceeași sursă
                                                                                                 Object.keys(newSelectedActions).forEach(key => {
                                                                                                     if (key.startsWith(`${actionItem.actionType}-${pair[0]}-`)) {
                                                                                                         delete newSelectedActions[key];
                                                                                                     }
                                                                                                 });
-
-                                                                                                // Bifează sau debifează opțiunea curentă
                                                                                                 newSelectedActions[checkboxKey] = !prevSelectedActions[checkboxKey];
                                                                                                 return newSelectedActions;
                                                                                             });
                                                                                         }
                                                                                     }}
-                                                                                    disabled={isInactive} // Dezactivează checkbox-ul dacă este inactiv
+                                                                                    disabled={isInactive}
                                                                                 />
                                                                                 Move frame from hive {pair[0]} to hive {pair[1]}
                                                                             </label>
@@ -303,7 +351,6 @@ const GameView = () => {
 
 
                                                         case "HARVEST_HONEY":
-                                                        case "HIBERNATE":
                                                             return (
                                                                 <p>
                                                                     {actionItem.data.hiveIds.map((hiveId, hiveIndex) => (
@@ -313,6 +360,16 @@ const GameView = () => {
                                                                     ))}
                                                                 </p>
                                                             );
+                                                            case "HIBERNATE":
+                                                                return (
+                                                                    <p>
+                                                                        {actionItem.data.hiveIds.map((hiveId, hiveIndex) => (
+                                                                            <span key={`${actionIndex}-${hiveIndex}`}>
+                                                                                Your hive with id: {hiveId} died during last winter
+                                                                            </span>
+                                                                        ))}
+                                                                    </p>
+                                                                );                                                        
 
                                                         default:
                                                             return null;
@@ -334,7 +391,6 @@ const GameView = () => {
                     </div>
                 </div>
 
-                {/* A treia coloană pentru detalii despre vreme și acțiuni generale */}
                 <div className="col-md-3">
                     <div className="d-flex flex-column align-items-center">
                         <p className="btn-custom p-custom mb-2">Date: {gameData ? gameData.currentDate : 'Loading...'}</p>
@@ -346,7 +402,36 @@ const GameView = () => {
                         <img src={getFlowerImage()} alt="Flower based on date" className="img-custom mb-2" />
                         <button className="btn btn-custom p-custom mb-2" onClick={handleIterateWeek}>Iterate one week</button>
                         <button className="btn btn-custom p-custom mb-2" onClick={() => navigate('/sell-honey')}>Sell Honey</button>
-                        <button className="btn btn-custom mb-2">Buy Hives</button>
+
+                        <div style={{ position: "relative", display: "inline-block", textAlign: "center" }}>
+                            <button
+                                onClick={handleBuyHivesClick}
+                                className="btn btn-custom p-custom mb-2"
+                                disabled={!isMarchOrApril()}
+                            >
+                                Buy Hives
+                            </button>
+
+
+                            {!isMarchOrApril() && (
+                                <p className="error-message" style={{ color: "red", marginTop: "5px" }}>
+                                    You can only buy hives in March or April.
+                                </p>
+                            )}
+                        </div>
+
+                        {showBuyHivesForm && (
+                            <BuyHivesModal
+                                hivesToBuy={hivesToBuy}
+                                maxHives={maxHives}
+                                availableFunds={gameData.moneyInTheBank}
+                                onClose={() => setShowBuyHivesForm(false)}
+                                onSubmit={handleSubmitHivesPurchase}
+                                error={error}
+                                onChangeHivesToBuy={handleHivesToBuyChange}
+                            />
+                        )}
+
                         <button className="btn btn-danger btn-custom mb-2" onClick={() => navigate('/')}>Exit</button>
                     </div>
                 </div>

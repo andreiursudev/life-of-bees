@@ -2,7 +2,11 @@ package com.marianbastiurea.lifeofbees;
 
 import com.marianbastiurea.lifeofbees.eggframe.EggFrame;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+
+import static com.marianbastiurea.lifeofbees.Honey.getHarvestingMonth;
 
 public class Apiary {
     /* An apiary is a location where beehives of honey bees are kept.
@@ -143,17 +147,31 @@ public class Apiary {
     }
 
 
-    public void hibernate(Hive hive) {
-        hive.getQueen().setAgeOfQueen(hive.getQueen().getAgeOfQueen() + 1);
-        hive.setItWasSplit(false);
-        hive.setAnswerIfWantToSplit(false);
-        hive.setWasMovedAnEggsFrame(false);
-        hive.getHoneyBatches().clear();
-        hive.getEggsFrames().remove(hive.getEggsFrames().size() - 1);
-        hive.getEggsFrames().remove(hive.getEggsFrames().size() - 1);
-        hive.getHoneyFrames().remove(hive.getHoneyFrames().size() - 1);
-        hive.getHoneyFrames().remove(hive.getHoneyFrames().size() - 1);
+    public int hibernate() {
+        // Incrementăm vârsta reginei pentru fiecare stup
+        for (Hive hive : hives) {
+            hive.getQueen().setAgeOfQueen(hive.getQueen().getAgeOfQueen() + 1);
+            hive.setItWasSplit(false);
+            hive.setAnswerIfWantToSplit(false);
+            hive.setWasMovedAnEggsFrame(false);
+            hive.getHoneyBatches().clear();
+            hive.getEggsFrames().remove(hive.getEggsFrames().size() - 1);
+            hive.getEggsFrames().remove(hive.getEggsFrames().size() - 1);
+            hive.getHoneyFrames().remove(hive.getHoneyFrames().size() - 1);
+            hive.getHoneyFrames().remove(hive.getHoneyFrames().size() - 1);
+        }
+
+
+        Random random = new Random();
+        int indexToRemove = random.nextInt(hives.size());
+        Hive hiveToRemove = hives.get(indexToRemove);
+        int hiveIdRemoved = hiveToRemove.getId();  // Obținem ID-ul stupului înainte de a-l șterge
+        hives.remove(hiveToRemove);  // Îndepărtăm stupul din lista hives
+
+        // Returnăm ID-ul stupului șters
+        return hiveIdRemoved;
     }
+
 
     public boolean checkInsectControl(HarvestingMonths month, int dayOfMonth) {
         if ((month.equals(HarvestingMonths.APRIL) || month.equals(HarvestingMonths.MAY) ||
@@ -236,6 +254,53 @@ public class Apiary {
             totalHarvestedHoney.merge(honeyType, soldQuantity, (currentQuantity, quantitySold) ->
                     Double.valueOf(currentQuantity.toString()) - (Double) quantitySold
             );
+        }
+    }
+
+    public void createHive(int numberOfStartingHives) {
+
+
+        Apiary apiary = LifeOfBees.getApiary();
+        LocalDate date = LocalDate.parse(LifeOfBees.getCurrentDate());
+
+        int day = date.getDayOfMonth();
+        HarvestingMonths month = getHarvestingMonth(date);
+        Honey honey = new Honey();
+        String honeyType = honey.honeyType(month, day);
+
+        double kgOfHoney = 0;
+        Random random = new Random();
+
+        // Lista de stupi existentă
+        List<Hive> hives = apiary.getHives();
+
+        for (int i = 1; i <= numberOfStartingHives; i++) {
+            int ageOfQueen = random.nextInt(1, 6);
+            List<EggFrame> eggFrames = new ArrayList<>();
+            for (int j = 0; j < random.nextInt(3, 4); j++) {
+                eggFrames.add(new EggFrame());
+            }
+
+            List<HoneyFrame> honeyFrames = new ArrayList<>();
+            for (int k = 0; k < random.nextInt(3, 5); k++) {
+                honeyFrames.add(new HoneyFrame(random.nextDouble(2.5, 3), honeyType));
+            }
+
+            int numberOfBees = random.nextInt(2000, 2500) * (honeyFrames.size() + eggFrames.size());
+            Hive hive = new Hive(apiary,
+                    hives.size() + 1,  // ID-ul stupului
+                    false,
+                    false,
+                    false,
+                    eggFrames,
+                    honeyFrames,
+                    new ArrayList<>(),
+                    new ArrayList<>(),
+                    new Honey(honeyType),
+                    new Queen(ageOfQueen),
+                    numberOfBees,
+                    kgOfHoney);
+            hives.add(hive);
         }
     }
 

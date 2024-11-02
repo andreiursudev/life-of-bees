@@ -11,14 +11,14 @@ import static com.marianbastiurea.lifeofbees.Honey.getHarvestingMonth;
 
 
 public class LifeOfBees {
-    private Apiary apiary;// apiary is the place where it will be stored all hives
+    private static Apiary apiary;// apiary is the place where it will be stored all hives
     private int hiveIdCounter = 1;
     private List<ActionOfTheWeek> actionOfTheWeek;
     private Integer gameId;
     private String gameName;
     private String location;
     private String startingDate;
-    private String currentDate;
+    private static String currentDate;
     private int numberOfStartingHives;
     private double speedWind;// in km/h
     private double temperature;// in Celsius Degree
@@ -158,25 +158,25 @@ public class LifeOfBees {
             System.out.println(apiary.getTotalHarvestedHoney());
 
             if (date.isEqual(LocalDate.of(date.getYear(), 9, 30))) {
-                for (Hive hive : hives) {
-                    apiary.hibernate(hive);
-                }
+                // Apelăm metoda `hibernate`, care va returna ID-ul stupului șters
+                int idHiveRemoved = apiary.hibernate();
 
                 // Setăm noua dată pentru începutul următorului an
                 date = LocalDate.of(date.getYear() + 1, 3, 1);
                 System.out.println("Your apiary at the end of the year is: " + apiary);
 
-                // Creăm sau actualizăm acțiunea "HIBERNATE" pentru începutul perioadei de hibernare
+                // Creăm sau actualizăm acțiunea "HIBERNATE" și includem ID-ul stupului șters
                 Map<String, Object> data = new HashMap<>();
                 data.put("totalHives", apiary.getHives().size());
                 data.put("hibernateStartDate", date.toString());
+                data.put("hiveIds", List.of(idHiveRemoved));  // Transmitem lista cu un singur ID
 
-                ActionOfTheWeek.addOrUpdateAction("HIBERNATE", 0, data, actionsOfTheWeek);
+                ActionOfTheWeek.addOrUpdateAction("HIBERNATE", idHiveRemoved, data, actionsOfTheWeek);
 
                 // Actualizăm acțiunile săptămânii în joc
                 lifeOfBeesGame.setActionOfTheWeek(actionsOfTheWeek);
-                break;
             }
+
 
 
             System.out.println("Action of the day " + date.getDayOfMonth() + " is " + lifeOfBeesGame.getActionOfTheWeek());
@@ -198,7 +198,7 @@ public class LifeOfBees {
     }
 
 
-    public Apiary getApiary() {
+    public static Apiary getApiary() {
         return apiary;
     }
 
@@ -240,7 +240,7 @@ public class LifeOfBees {
         return numberOfStartingHives;
     }
 
-    public String getCurrentDate() {
+    public static String getCurrentDate() {
         return currentDate;
     }
 

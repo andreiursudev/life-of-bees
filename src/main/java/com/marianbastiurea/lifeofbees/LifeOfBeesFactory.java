@@ -29,8 +29,9 @@ public class LifeOfBeesFactory {
         double temperature = todayWeather.getTemperature();
         double precipitation = todayWeather.getPrecipitation();
 
-        double moneyInTheBank = 3000;
+        double moneyInTheBank = 3000.0;
         double totalKgOfHoney = 0;
+
         List<Hive> hives = new ArrayList<>();
         Honey honey = new Honey();
         String honeyType = honey.honeyType(month, day);

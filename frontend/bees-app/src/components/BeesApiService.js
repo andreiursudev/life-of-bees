@@ -78,7 +78,21 @@ export const sendSellHoneyQuantities = {
     },
 };
 
+export const buyHives = async (numberOfHives) => {
+    try {
+        console.log("Number of hives to buy:", numberOfHives);
 
+        const response = await axios.post('http://localhost:8080/api/bees/buyHives/0', {
+            numberOfHives: numberOfHives
+        }, {
+            headers: { 'Content-Type': 'application/json' }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error buying hives:', error);
+        throw error;
+    }
+};
 
 
 

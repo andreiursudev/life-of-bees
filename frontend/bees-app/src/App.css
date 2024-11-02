@@ -1,8 +1,11 @@
-html,
-body {
+
+html, body {
   height: 100%;
+  overflow-y: auto;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 
 .body-sell {
@@ -10,14 +13,14 @@ body {
   min-height: 100vh;
 }
 
+.body-gameView {
+  background-color: orange;
+}
+
 .warning-message {
   color: red;
   font-size: 0.9em;
   margin-bottom: 10px;
-}
-
-.body-gameView {
-  background-color: orange;
 }
 
 .card {
@@ -41,7 +44,6 @@ body {
   background-color: red !important;
   color: white !important;
   width: 250px;
-  /* Asigură că are aceeași lățime */
 }
 
 .btn-custom:hover {
@@ -54,6 +56,7 @@ body {
   height: 250px;
   border: 1px solid black;
 }
+
 
 .button-right-bottom {
   position: fixed;
@@ -71,13 +74,14 @@ body {
 .button-right-bottom:hover {
   background-color: #45a049;
 }
+
 .row-text {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  width: 70%; 
-  margin: 0 auto; 
-  gap: 30px; 
+  width: 70%;
+  margin: 0 auto;
+  gap: 30px;
 }
 
 .btn-custom-sell {
@@ -85,4 +89,25 @@ body {
   background-color: rgb(224, 133, 13);
   color: black;
   flex-basis: 150px;
+}
+
+
+.modal.show {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-dialog {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 100%;
 }

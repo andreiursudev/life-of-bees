@@ -1,13 +1,10 @@
 package com.marianbastiurea.lifeofbees;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-
 import static com.marianbastiurea.lifeofbees.Honey.getHarvestingMonth;
 
 @RestController
@@ -160,7 +157,7 @@ public class LifeOfBeesController {
         LifeOfBees lifeOfBeesGame = games.get(gameId);
         Apiary apiary = lifeOfBeesGame.getApiary();
 
-        Map<String, Object> honeyData = apiary.getTotalHarvestedHoney(); // Obținem direct map-ul de miere
+        Map<String, Object> honeyData = apiary.getTotalHarvestedHoney(); 
 
         System.out.println("Aceasta e mierea culeasă până în acest moment: " + honeyData);
         return ResponseEntity.ok(honeyData);
@@ -176,7 +173,7 @@ public class LifeOfBeesController {
         Map<String, Object> soldHoneyData = (Map<String, Object>) requestData.get("soldData");
         System.out.println(soldHoneyData);
         double revenue = Double.parseDouble((String) requestData.get("totalValue"));
-        System.out.println("valoarea vanzrii este:"+revenue);
+        System.out.println("valoarea vanzarii este:"+revenue);
         LifeOfBees lifeOfBeesGame = games.get(gameId);
         Apiary apiary = lifeOfBeesGame.getApiary();
         apiary.updateHoneyStock(soldHoneyData);
@@ -184,6 +181,27 @@ public class LifeOfBeesController {
 
         return ResponseEntity.ok("Stock and revenue updated successfully.");
     }
+
+
+    @PostMapping("/buyHives/{gameId}")
+    public ResponseEntity<?> buyHives(@PathVariable Integer gameId, @RequestBody Map<String, Object> request) {
+        System.out.println("Buy hives called with gameId: " + gameId);
+        System.out.println("Request content: " + request);
+        Integer numberOfHives = Integer.parseInt((String) request.get("numberOfHives"));
+
+        System.out.println("Number of hives to buy: " + numberOfHives);
+
+        LifeOfBees lifeOfBeesGame = games.get(gameId);
+        System.out.println("Your lifeofBeesGame is "+lifeOfBeesGame);
+        Apiary apiary = lifeOfBeesGame.getApiary();
+        System.out.println("Your apiary is: "+apiary);
+
+        apiary.createHive(numberOfHives);
+        lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() - numberOfHives*500);
+
+        return ResponseEntity.ok("Hives bought successfully");
+    }
+
 
 
 
