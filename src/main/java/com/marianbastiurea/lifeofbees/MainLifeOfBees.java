@@ -62,7 +62,7 @@ public class MainLifeOfBees {
             hives.add(hive);
         }
 
-        IWeather whether = new Whether();
+        IWeather whether = new Weather();
 
         System.out.println("First " + numberOfStartingHives + " are " + hives);
 

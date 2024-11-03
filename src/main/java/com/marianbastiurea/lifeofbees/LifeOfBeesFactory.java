@@ -23,8 +23,8 @@ public class LifeOfBeesFactory {
         HarvestingMonths month = getHarvestingMonth(date);
         List<ActionOfTheWeek> actionOfTheWeek = new ArrayList<>();
 
-        Whether whether = new Whether();
-        Whether todayWeather = whether.whetherToday(month, day);
+        Weather weather = new Weather();
+        Weather todayWeather = weather.whetherToday(month, day);
         double speedWind = todayWeather.getSpeedWind();
         double temperature = todayWeather.getTemperature();
         double precipitation = todayWeather.getPrecipitation();

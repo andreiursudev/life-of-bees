@@ -68,16 +68,16 @@ public class LifeOfBees {
         LocalDate date = LocalDate.parse(lifeOfBeesGame.getCurrentDate());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM", Locale.ENGLISH);
         HarvestingMonths month = getHarvestingMonth(date);
-        Whether whether = new Whether();
+        Weather weather = new Weather();
 
         List<ActionOfTheWeek> actionsOfTheWeek = new ArrayList<>();
 
 
-        Whether todayWeather = null;
+        Weather todayWeather = null;
         for (int dailyIterator = 0; dailyIterator < 7; dailyIterator++) {
             System.out.println("today is " + date.getDayOfMonth());
             System.out.println("daily iterator is: " + dailyIterator);
-            todayWeather = whether.whetherToday(month, date.getDayOfMonth());
+            todayWeather = weather.whetherToday(month, date.getDayOfMonth());
             List<Hive> hives = apiary.getHives();
             apiary.setNumberOfHives(hives.size());
             ArrayList<Hive> oldHives = new ArrayList<>(hives);
@@ -92,7 +92,7 @@ public class LifeOfBees {
                 }
 
                 Honey honey = hive.getHoney();
-                double whetherIndex = whether.whetherIndex(month, date.getDayOfMonth());
+                double whetherIndex = weather.whetherIndex(month, date.getDayOfMonth());
                 int numberOfEggs = queen.makeEggs(honey, whetherIndex);
 
                 hive.fillUpEggsFrame(date, numberOfEggs);
