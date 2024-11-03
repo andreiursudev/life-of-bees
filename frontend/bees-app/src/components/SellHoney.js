@@ -13,14 +13,14 @@ const RowHeader = () => (
     </div>
 );
 
-// Componenta RowText din SellHoney.js
+
 const RowText = ({ honeyType, quantity, price, onQuantityChange }) => {
-    const [sellQuantity, setSellQuantity] = useState(0); // Setează valoarea inițială la 0
+    const [sellQuantity, setSellQuantity] = useState(0); 
 
     const handleInputChange = (event) => {
-        const value = Math.max(0, Math.min(Number(event.target.value), quantity)) || 0; // Asigură-te că este numeric
+        const value = Math.max(0, Math.min(Number(event.target.value), quantity)) || 0; 
         setSellQuantity(value);
-        onQuantityChange(value, honeyType); // Trimite valoarea vânzării și tipul mierii
+        onQuantityChange(value, honeyType); 
     };
 
     const totalValue = (sellQuantity * price).toFixed(2);
@@ -55,7 +55,6 @@ const SellHoney = () => {
         const fetchHoneyData = async () => {
             try {
                 const data = await getHoneyQuantities();
-                // Transforma map-ul într-o listă de obiecte cu `honeyType` și `quantity`
                 const parsedData = Object.entries(data).map(([honeyType, quantity]) => ({
                     honeyType,
                     quantity,
@@ -72,7 +71,7 @@ const SellHoney = () => {
     const updateTotalSoldValue = (sellQuantity, honeyType) => {
         setSoldValues((prevSoldValues) => ({
             ...prevSoldValues,
-            [honeyType]: sellQuantity || 0, // Cantitatea, nu valoarea totală
+            [honeyType]: sellQuantity || 0, 
         }));
     };
     
@@ -84,11 +83,9 @@ const SellHoney = () => {
 
 
     const handleSubmit = async () => {
-        // Creăm un Map de tip { honeyType: quantity } similar cu Map<String, Object>
         const formattedSoldData = new Map(Object.entries(soldValues));
 
         try {
-            // Trimitem Map-ul către backend
             await sendSellHoneyQuantities.updateHoneyStock(formattedSoldData, totalSoldValue);
             console.log('Total honey sold value submitted:', totalSoldValue);
             navigate('/gameView');

@@ -34,7 +34,7 @@ export const iterateWeek = async () => {
 };
 
 export const submitActionsOfTheWeek = async (actionsData) => {
-    console.log('Actions data being sent:', actionsData); // Adaugă asta pentru a verifica
+    console.log('Actions data being sent:', actionsData); 
     try {
         const response = await axios.post('http://localhost:8080/api/bees/submitActionsOfTheWeek/0', actionsData);
         if (response.status !== 200) {
@@ -52,7 +52,7 @@ export const submitActionsOfTheWeek = async (actionsData) => {
 export const getHoneyQuantities = async () => {
     try {
         const response = await axios.get(`http://localhost:8080/api/bees/getHoneyQuantities/0`);
-        return response.data; // response.data este acum un Map cu chei (tipuri de miere) și valori (cantități)
+        return response.data; 
     } catch (error) {
         console.error('Error fetching honey quantities:', error);
         throw error;
@@ -62,7 +62,6 @@ export const getHoneyQuantities = async () => {
 export const sendSellHoneyQuantities = {
     updateHoneyStock: async (soldData, totalValue) => {
         try {
-            // Convertim Map-ul într-un obiect JSON serializabil
             const payload = Object.fromEntries(soldData);
             console.log('Sending data to:', `http://localhost:8080/api/bees/sellHoney/0`, payload);
 

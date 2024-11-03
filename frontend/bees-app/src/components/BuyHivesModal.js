@@ -6,7 +6,6 @@ const BuyHivesModal = ({ hivesToBuy, maxHives, availableFunds, onClose, onSubmit
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title">Buy Hives</h5>
-                        
                     </div>
                     <div className="modal-body">
                         <p>Available funds: ${availableFunds}</p>

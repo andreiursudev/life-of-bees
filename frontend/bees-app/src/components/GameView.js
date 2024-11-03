@@ -41,7 +41,6 @@ const GameView = () => {
         }));
     };
 
-
     const handleSubmit = async () => {
         try {
             const actionsByType = Object.keys(selectedActions)
@@ -99,15 +98,12 @@ const GameView = () => {
         }
     };
 
-
-
     const handleYesNoChange = (actionType, response) => {
         setSelectedActions((prevSelectedActions) => ({
             ...prevSelectedActions,
             [actionType]: response,
         }));
     };
-
 
     const handleIterateWeek = async () => {
         try {
@@ -157,8 +153,6 @@ const GameView = () => {
             .replace(/\b\w/g, char => char.toUpperCase());
     };
 
-
-
     const [showBuyHivesForm, setShowBuyHivesForm] = useState(false);
     const [hivesToBuy, setHivesToBuy] = useState(1);
     const [error, setError] = useState(null);
@@ -170,7 +164,7 @@ const GameView = () => {
             try {
                 const data = await getGame();
                 setGameData(data);
-                setMonth(new Date(data.currentDate).getMonth() + 1); // Obține luna curentă
+                setMonth(new Date(data.currentDate).getMonth() + 1); 
             } catch (error) {
                 console.error('Error fetching game data:', error);
             }
@@ -215,7 +209,6 @@ const GameView = () => {
             setError('An error occurred.');
         }
     };
-
 
     const isMarchOrApril = () => {
         if (!gameData || !gameData.currentDate) {
@@ -278,15 +271,12 @@ const GameView = () => {
                                                             ));
 
                                                         case "MOVE_EGGS_FRAME":
-                                                            // Verificăm dacă `hiveIdPairs` există și este un array înainte de a folosi `map`
                                                             return actionItem.data.hiveIdPairs && Array.isArray(actionItem.data.hiveIdPairs) ? (
                                                                 actionItem.data.hiveIdPairs.map((pair, pairIndex) => {
                                                                     const checkboxKey = `${actionItem.actionType}-${pair[0]}-${pair[1]}`;
-                                                                    // const isSourceSelected = selectedActions[checkboxKey]; // Verifică dacă sursa a fost selectată
                                                                     const isInactive = Object.keys(selectedActions).some(key =>
                                                                         key.startsWith(`${actionItem.actionType}-${pair[0]}-`) && selectedActions[key]
                                                                     );
-
                                                                     return (
                                                                         <div key={pairIndex}>
                                                                             <label>
@@ -315,7 +305,6 @@ const GameView = () => {
                                                                     );
                                                                 })
                                                             ) : null;
-
 
                                                         case "FEED_BEES":
                                                         case "INSECT_CONTROL":
@@ -349,7 +338,6 @@ const GameView = () => {
                                                                 </div>
                                                             );
 
-
                                                         case "HARVEST_HONEY":
                                                             return (
                                                                 <p>
@@ -360,6 +348,7 @@ const GameView = () => {
                                                                     ))}
                                                                 </p>
                                                             );
+
                                                             case "HIBERNATE":
                                                                 return (
                                                                     <p>
@@ -386,7 +375,6 @@ const GameView = () => {
                             ) : (
                                 <p>Weekly checking</p>
                             )}
-
                         </div>
                     </div>
                 </div>
@@ -411,15 +399,12 @@ const GameView = () => {
                             >
                                 Buy Hives
                             </button>
-
-
                             {!isMarchOrApril() && (
                                 <p className="error-message" style={{ color: "red", marginTop: "5px" }}>
                                     You can only buy hives in March or April.
                                 </p>
                             )}
                         </div>
-
                         {showBuyHivesForm && (
                             <BuyHivesModal
                                 hivesToBuy={hivesToBuy}
@@ -431,7 +416,6 @@ const GameView = () => {
                                 onChangeHivesToBuy={handleHivesToBuyChange}
                             />
                         )}
-
                         <button className="btn btn-danger btn-custom mb-2" onClick={() => navigate('/')}>Exit</button>
                     </div>
                 </div>
