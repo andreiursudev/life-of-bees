@@ -13,14 +13,13 @@ const RowHeader = () => (
     </div>
 );
 
-
 const RowText = ({ honeyType, quantity, price, onQuantityChange }) => {
     const [sellQuantity, setSellQuantity] = useState(0); 
 
     const handleInputChange = (event) => {
         const value = Math.max(0, Math.min(Number(event.target.value), quantity)) || 0; 
         setSellQuantity(value);
-        onQuantityChange(value, honeyType); 
+        onQuantityChange(value, honeyType, price); 
     };
 
     const totalValue = (sellQuantity * price).toFixed(2);
@@ -45,10 +44,10 @@ const RowText = ({ honeyType, quantity, price, onQuantityChange }) => {
     );
 };
 
-
 const SellHoney = () => {
     const [honeyData, setHoneyData] = useState([]);
     const [soldValues, setSoldValues] = useState({});
+    const [soldValueTotals, setSoldValueTotals] = useState({});
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -67,20 +66,20 @@ const SellHoney = () => {
         fetchHoneyData();
     }, []);
 
-
-    const updateTotalSoldValue = (sellQuantity, honeyType) => {
+    const updateTotalSoldValue = (sellQuantity, honeyType, price) => {
         setSoldValues((prevSoldValues) => ({
             ...prevSoldValues,
-            [honeyType]: sellQuantity || 0, 
+            [honeyType]: sellQuantity || 0,
+        }));
+        setSoldValueTotals((prevSoldValueTotals) => ({
+            ...prevSoldValueTotals,
+            [honeyType]: (sellQuantity * price).toFixed(2),
         }));
     };
-    
 
-
-    const totalSoldValue = Number(
-        Object.values(soldValues).reduce((acc, val) => acc + (val || 0), 0)
-    ).toFixed(2);
-
+    const totalSoldValue = Object.values(soldValueTotals)
+        .reduce((acc, val) => acc + Number(val), 0)
+        .toFixed(2);
 
     const handleSubmit = async () => {
         const formattedSoldData = new Map(Object.entries(soldValues));
@@ -93,7 +92,6 @@ const SellHoney = () => {
             console.error('Error submitting total sold value:', error);
         }
     };
-
 
     return (
         <div className="body-sell">

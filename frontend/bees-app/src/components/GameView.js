@@ -354,7 +354,7 @@ const GameView = () => {
                                                                     <p>
                                                                         {actionItem.data.hiveIds.map((hiveId, hiveIndex) => (
                                                                             <span key={`${actionIndex}-${hiveIndex}`}>
-                                                                                Your hive with id: {hiveId} died during last winter
+                                                                                Your hive with id {hiveId} died during last winter
                                                                             </span>
                                                                         ))}
                                                                     </p>
