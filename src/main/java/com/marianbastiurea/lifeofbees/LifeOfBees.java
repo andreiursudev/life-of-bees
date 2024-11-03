@@ -92,7 +92,7 @@ public class LifeOfBees {
                 }
 
                 Honey honey = hive.getHoney();
-                double whetherIndex = weather.whetherIndex(month, date.getDayOfMonth());
+                double whetherIndex = weather.weatherIndex(month, date.getDayOfMonth());
                 int numberOfEggs = queen.makeEggs(honey, whetherIndex);
 
                 hive.fillUpEggsFrame(date, numberOfEggs);

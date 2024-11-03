@@ -201,7 +201,7 @@ public class Weather implements IWeather{
         return whetherIndex;
     }
 
-    public double whetherIndex(HarvestingMonths harvestingMonth, int dayOfMonth) {
+    public double weatherIndex(HarvestingMonths harvestingMonth, int dayOfMonth) {
         return whetherIndex(whetherToday(harvestingMonth, dayOfMonth));
     }
 }
