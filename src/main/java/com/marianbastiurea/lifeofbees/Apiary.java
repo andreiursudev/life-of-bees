@@ -1,6 +1,7 @@
 package com.marianbastiurea.lifeofbees;
 
 import com.marianbastiurea.lifeofbees.eggframe.EggFrame;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -240,9 +241,8 @@ public class Apiary {
         }
     }
 
-    public void createHive(int numberOfStartingHives) {
-        Apiary apiary = LifeOfBees.getApiary();
-        LocalDate date = LocalDate.parse(LifeOfBees.getCurrentDate());
+    public List<Hive> createHive(int numberOfHives, LocalDate date) {
+
         int day = date.getDayOfMonth();
         HarvestingMonths month = getHarvestingMonth(date);
         Honey honey = new Honey();
@@ -250,9 +250,9 @@ public class Apiary {
 
         double kgOfHoney = 0;
         Random random = new Random();
-        List<Hive> hives = apiary.getHives();
+        List<Hive> newHives = new ArrayList<>();
 
-        for (int i = 1; i <= numberOfStartingHives; i++) {
+        for (int i = 1; i <= numberOfHives; i++) {
             int ageOfQueen = random.nextInt(1, 6);
             List<EggFrame> eggFrames = new ArrayList<>();
             for (int j = 0; j < random.nextInt(3, 4); j++) {
@@ -263,9 +263,12 @@ public class Apiary {
             for (int k = 0; k < random.nextInt(3, 5); k++) {
                 honeyFrames.add(new HoneyFrame(random.nextDouble(2.5, 3), honeyType));
             }
+
             int numberOfBees = random.nextInt(2000, 2500) * (honeyFrames.size() + eggFrames.size());
-            Hive hive = new Hive(apiary,
-                    hives.size() + 1,  // ID-ul stupului
+
+            Hive hive = new Hive(
+                    null,  // Setăm apiary-ul la null pentru a nu-l atașa momentan
+                    newHives.size() + 1,  // ID temporar
                     false,
                     false,
                     false,
@@ -276,9 +279,11 @@ public class Apiary {
                     new Honey(honeyType),
                     new Queen(ageOfQueen),
                     numberOfBees,
-                    kgOfHoney);
-            hives.add(hive);
+                    kgOfHoney
+            );
+            newHives.add(hive);
         }
+        return newHives;
     }
 }
 

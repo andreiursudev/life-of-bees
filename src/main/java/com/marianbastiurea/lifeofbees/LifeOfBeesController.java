@@ -56,10 +56,10 @@ public class LifeOfBeesController {
     public GameResponse submitActionsOfTheWeek(@PathVariable Integer gameId, @RequestBody List<ActionOfTheWeek> approvedActions) {
         LifeOfBees lifeOfBeesGame = games.get(gameId);
         Apiary apiary = lifeOfBeesGame.getApiary();
-        LocalDate date = LocalDate.parse(lifeOfBeesGame.getCurrentDate());
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM", Locale.ENGLISH);
-        HarvestingMonths month = getHarvestingMonth(date);
-        int dayOfMonth = date.getDayOfMonth();
+        LocalDate date = lifeOfBeesGame.getCurrentDate();
+
+//        HarvestingMonths month = getHarvestingMonth(date);
+//        int dayOfMonth = date.getDayOfMonth();
         for (ActionOfTheWeek action : approvedActions) {
             switch (action.getActionType()) {
                 case "ADD_EGGS_FRAME":
@@ -172,7 +172,7 @@ public class LifeOfBeesController {
         Integer numberOfHives = Integer.parseInt((String) request.get("numberOfHives"));
         LifeOfBees lifeOfBeesGame = games.get(gameId);
         Apiary apiary = lifeOfBeesGame.getApiary();
-        apiary.createHive(numberOfHives);
+        Hive.addHivesToApiary(apiary, apiary.createHive(numberOfHives,lifeOfBeesGame.getCurrentDate()));
         lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() - numberOfHives * 500);
 
         return ResponseEntity.ok("Hives bought successfully");

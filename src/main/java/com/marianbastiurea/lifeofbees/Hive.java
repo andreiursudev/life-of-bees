@@ -463,4 +463,14 @@ they will die. bees number from each batch will subtract from total number of be
         }
         return totalKgOfHoney;
     }
+
+    public static void addHivesToApiary(Apiary apiary, List<Hive> newHives) {
+        List<Hive> existingHives = apiary.getHives();
+        for (Hive hive : newHives) {
+            hive.setApiary(apiary);  // Atașăm apiary-ul fiecărui stup
+            hive.setId(existingHives.size() + 1);  // Setăm ID-ul corect
+            existingHives.add(hive);  // Adăugăm stupul în lista existentă
+        }
+    }
+
 }
