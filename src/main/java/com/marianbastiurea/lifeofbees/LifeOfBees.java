@@ -72,7 +72,6 @@ public class LifeOfBees {
 
         List<ActionOfTheWeek> actionsOfTheWeek = new ArrayList<>();
 
-
         Weather todayWeather = null;
         for (int dailyIterator = 0; dailyIterator < 7; dailyIterator++) {
             System.out.println("today is " + date.getDayOfMonth());
@@ -115,8 +114,6 @@ public class LifeOfBees {
                     addOrUpdateAction("SPLIT_HIVE", hive.getId(), data, actionsOfTheWeek);
                 }
 
-
-               // hive.addHoneyBatches(honey.harvestHoney(hive, month,date.getDayOfMonth()));
                 hive.setKgOfHoney(hive.findTotalKgOfHoney());
                 List<HoneyBatch> harvestedHoneyBatches = honey.harvestHoney(hive, month, date.getDayOfMonth());
                 hive.addHoneyBatches(harvestedHoneyBatches);
@@ -127,16 +124,15 @@ public class LifeOfBees {
                     addOrUpdateAction("HARVEST_HONEY", hive.getId(), data, actionsOfTheWeek);
                 }
 
-                if(apiary.checkInsectControl(month,date.getDayOfMonth())){
+                if (apiary.checkInsectControl(month, date.getDayOfMonth())) {
                     Map<String, Object> data = ActionOfTheWeek.findOrCreateAction("INSECT_CONTROL", actionsOfTheWeek).getData();
                     addOrUpdateAction("INSECT_CONTROL", apiary.getNumberOfHives(), data, actionsOfTheWeek);
                 }
 
-                if(apiary.checkFeedBees(month,date.getDayOfMonth())){
+                if (apiary.checkFeedBees(month, date.getDayOfMonth())) {
                     Map<String, Object> data = ActionOfTheWeek.findOrCreateAction("FEED_BEES", actionsOfTheWeek).getData();
                     addOrUpdateAction("FEED_BEES", apiary.getNumberOfHives(), data, actionsOfTheWeek);
                 }
-
 
                 List<List<Integer>> hiveIdPairs = hive.checkIfCanMoveAnEggsFrame();
                 if (!hiveIdPairs.isEmpty()) {
@@ -148,8 +144,6 @@ public class LifeOfBees {
                     }
                 }
 
-
-
             }
             lifeOfBeesGame.setActionOfTheWeek(actionsOfTheWeek);
 
@@ -158,33 +152,24 @@ public class LifeOfBees {
             System.out.println(apiary.getTotalHarvestedHoney());
 
             if (date.isEqual(LocalDate.of(date.getYear(), 9, 30))) {
-                // Apelăm metoda `hibernate`, care va returna ID-ul stupului șters
                 int idHiveRemoved = apiary.hibernate();
-
-                // Setăm noua dată pentru începutul următorului an
                 date = LocalDate.of(date.getYear() + 1, 3, 1);
                 System.out.println("Your apiary at the end of the year is: " + apiary);
-
-                // Creăm sau actualizăm acțiunea "HIBERNATE" și includem ID-ul stupului șters
                 Map<String, Object> data = new HashMap<>();
                 data.put("totalHives", apiary.getHives().size());
                 data.put("hibernateStartDate", date.toString());
-                data.put("hiveIds", List.of(idHiveRemoved));  // Transmitem lista cu un singur ID
+                data.put("hiveIds", List.of(idHiveRemoved));
 
                 ActionOfTheWeek.addOrUpdateAction("HIBERNATE", idHiveRemoved, data, actionsOfTheWeek);
 
-                // Actualizăm acțiunile săptămânii în joc
                 lifeOfBeesGame.setActionOfTheWeek(actionsOfTheWeek);
             }
 
-
-
             System.out.println("Action of the day " + date.getDayOfMonth() + " is " + lifeOfBeesGame.getActionOfTheWeek());
-            date = date.plusDays(1); // Actualizează data
+            date = date.plusDays(1);
             month = getHarvestingMonth(date);
 
         }
-
 
         String newCurrentDate = date.format(DateTimeFormatter.ISO_LOCAL_DATE);
         lifeOfBeesGame.setCurrentDate(newCurrentDate);

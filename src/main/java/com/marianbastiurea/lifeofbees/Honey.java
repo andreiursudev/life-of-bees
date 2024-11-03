@@ -93,8 +93,6 @@ public class Honey {
         if ((month.equals(HarvestingMonths.APRIL) || month.equals(HarvestingMonths.MAY) ||
                 month.equals(HarvestingMonths.JUNE) || month.equals(HarvestingMonths.JULY)) &&
                 (dayOfMonth == 10 || dayOfMonth == 20)) {
-
-
             if (!hive.isItWasSplit()) {
                 List<HoneyFrame> hiveHoneyFrames = hive.getHoneyFrames();
                 for (HoneyFrame honeyFrame : hiveHoneyFrames) {
@@ -105,14 +103,12 @@ public class Honey {
                 }
                 hive.setKgOfHoney(kgOfHoney);
                 if (kgOfHoney > 0) {
-                    HoneyBatch honeyBatch = new HoneyBatch(hive.getId(), kgOfHoney, honeyType(month,dayOfMonth),false);
+                    HoneyBatch honeyBatch = new HoneyBatch(hive.getId(), kgOfHoney, honeyType(month, dayOfMonth), false);
                     honeyBatches.add(honeyBatch);
                 }
             }
         }
-
         return honeyBatches;
     }
-
 }
 

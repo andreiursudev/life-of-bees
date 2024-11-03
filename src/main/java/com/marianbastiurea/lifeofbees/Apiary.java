@@ -36,7 +36,6 @@ public class Apiary {
         totalHarvestedHoney.put("FalseIndigo", 0.0);
     }
 
-
     public int getNumberOfHives() {
         return numberOfHives;
     }
@@ -77,7 +76,7 @@ public class Apiary {
                 return hive;
             }
         }
-        return null;  // Dacă nu găsește stupul, returnează null
+        return null;
     }
 
     public Map<String, Object> getTotalHarvestedHoney() {
@@ -101,8 +100,6 @@ public class Apiary {
             hive.setNumberOfBees(hive.getNumberOfBees() / 2);
             hive.setItWasSplit(true);
             hive.setAnswerIfWantToSplit(true);
-
-
             Hive newHive = new Hive(this, this.getHives().size() + 1, true, true, hive.getNumberOfBees() / 2, new Queen());
             newHive.getQueen().setAgeOfQueen(0);
             newHive.setHoney(hive.getHoney());
@@ -114,7 +111,6 @@ public class Apiary {
             for (int i = 0; i < 3; i++) {
                 EggFrame frameToMove = hive.getEggsFrames().remove(hive.getEggsFrames().size() - 1);
                 newHiveEggFrames.add(frameToMove);
-
             }
             newHive.setEggsFrames(newHiveEggFrames);
 
@@ -146,9 +142,7 @@ public class Apiary {
         hives.addAll(newHives);
     }
 
-
     public int hibernate() {
-        // Incrementăm vârsta reginei pentru fiecare stup
         for (Hive hive : hives) {
             hive.getQueen().setAgeOfQueen(hive.getQueen().getAgeOfQueen() + 1);
             hive.setItWasSplit(false);
@@ -161,17 +155,13 @@ public class Apiary {
             hive.getHoneyFrames().remove(hive.getHoneyFrames().size() - 1);
         }
 
-
         Random random = new Random();
         int indexToRemove = random.nextInt(hives.size());
         Hive hiveToRemove = hives.get(indexToRemove);
-        int hiveIdRemoved = hiveToRemove.getId();  // Obținem ID-ul stupului înainte de a-l șterge
-        hives.remove(hiveToRemove);  // Îndepărtăm stupul din lista hives
-
-        // Returnăm ID-ul stupului șters
+        int hiveIdRemoved = hiveToRemove.getId();
+        hives.remove(hiveToRemove);
         return hiveIdRemoved;
     }
-
 
     public boolean checkInsectControl(HarvestingMonths month, int dayOfMonth) {
         if ((month.equals(HarvestingMonths.APRIL) || month.equals(HarvestingMonths.MAY) ||
@@ -184,10 +174,8 @@ public class Apiary {
 
     public void doInsectControl(String answer, LifeOfBees lifeOfBeesGame) {
         if ("yes".equals(answer)) {
-            // Scade costul de control al insectelor din bani
             lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() - (numberOfHives * 10));
         } else {
-            // Redu numărul de albine din fiecare stup
             for (Hive hive : hives) {
                 hive.setNumberOfBees((int) (hive.getNumberOfBees() * 0.09));
             }
@@ -204,10 +192,8 @@ public class Apiary {
 
     public void doFeedBees(String answer, LifeOfBees lifeOfBeesGame) {
         if ("yes".equals(answer)) {
-            // Scade costul hranire al insectelor din bani. costul e 1$/zi/stup
             lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() - numberOfHives * 7);
         } else {
-            // Redu numărul de albine din fiecare stup
             for (Hive hive : hives) {
                 for (int day = 0; day < 7; day++) {
                     hive.setNumberOfBees((int) (hive.getNumberOfBees() * 0.95));
@@ -216,13 +202,11 @@ public class Apiary {
         }
     }
 
-
     public void moveAnEggsFrame(List<List<Integer>> hiveIdPair) {
 
         for (List<Integer> hiveIds : hiveIdPair) {
             int sourceHiveId = hiveIds.get(0);
             int destinationHiveId = hiveIds.get(1);
-
             Hive sourceHive = this.getHiveById(sourceHiveId);
             Hive destinationHive = this.getHiveById(destinationHiveId);
             EggFrame frameToMove = sourceHive.getEggsFrames().remove(sourceHive.getEggsFrames().size() - 1);
@@ -246,7 +230,6 @@ public class Apiary {
         }
     }
 
-
     public void updateHoneyStock(Map<String, Object> soldHoneyData) {
         for (Map.Entry<String, Object> entry : soldHoneyData.entrySet()) {
             String honeyType = entry.getKey();
@@ -258,11 +241,8 @@ public class Apiary {
     }
 
     public void createHive(int numberOfStartingHives) {
-
-
         Apiary apiary = LifeOfBees.getApiary();
         LocalDate date = LocalDate.parse(LifeOfBees.getCurrentDate());
-
         int day = date.getDayOfMonth();
         HarvestingMonths month = getHarvestingMonth(date);
         Honey honey = new Honey();
@@ -270,8 +250,6 @@ public class Apiary {
 
         double kgOfHoney = 0;
         Random random = new Random();
-
-        // Lista de stupi existentă
         List<Hive> hives = apiary.getHives();
 
         for (int i = 1; i <= numberOfStartingHives; i++) {
@@ -285,7 +263,6 @@ public class Apiary {
             for (int k = 0; k < random.nextInt(3, 5); k++) {
                 honeyFrames.add(new HoneyFrame(random.nextDouble(2.5, 3), honeyType));
             }
-
             int numberOfBees = random.nextInt(2000, 2500) * (honeyFrames.size() + eggFrames.size());
             Hive hive = new Hive(apiary,
                     hives.size() + 1,  // ID-ul stupului
@@ -303,7 +280,5 @@ public class Apiary {
             hives.add(hive);
         }
     }
-
-
 }
 

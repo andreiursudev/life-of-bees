@@ -2,9 +2,11 @@ package com.marianbastiurea.lifeofbees;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+
 import static com.marianbastiurea.lifeofbees.Honey.getHarvestingMonth;
 
 @RestController
@@ -54,18 +56,11 @@ public class LifeOfBeesController {
     public GameResponse submitActionsOfTheWeek(@PathVariable Integer gameId, @RequestBody List<ActionOfTheWeek> approvedActions) {
         LifeOfBees lifeOfBeesGame = games.get(gameId);
         Apiary apiary = lifeOfBeesGame.getApiary();
-
-        System.out.println("Received actions: " + approvedActions);
-
         LocalDate date = LocalDate.parse(lifeOfBeesGame.getCurrentDate());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM", Locale.ENGLISH);
         HarvestingMonths month = getHarvestingMonth(date);
         int dayOfMonth = date.getDayOfMonth();
-
         for (ActionOfTheWeek action : approvedActions) {
-            System.out.println("Processing action: " + action.getActionType());
-
-            // Transmitem direct data metodei corespunzătoare în funcție de actionType
             switch (action.getActionType()) {
                 case "ADD_EGGS_FRAME":
                     List<Integer> eggHiveIds = (List<Integer>) action.getData().get("hiveIds");
@@ -115,12 +110,10 @@ public class LifeOfBeesController {
                     break;
 
                 case "INSECT_CONTROL":
-
                     Map<String, Object> insectControlData = (Map<String, Object>) action.getData();
                     String insectControlResponse = (String) insectControlData.get("answer");
                     apiary.doInsectControl(insectControlResponse, lifeOfBeesGame);
                     break;
-
 
                 default:
                     System.out.println("Unknown action type: " + action.getActionType());
@@ -150,30 +143,22 @@ public class LifeOfBeesController {
     }
 
 
-
     @GetMapping("/getHoneyQuantities/{gameId}")
     public ResponseEntity<Map<String, Object>> getHoneyQuantities(@PathVariable Integer gameId) {
-        System.out.println("getHoneyQuantities called with gameId: " + gameId);
         LifeOfBees lifeOfBeesGame = games.get(gameId);
         Apiary apiary = lifeOfBeesGame.getApiary();
-
-        Map<String, Object> honeyData = apiary.getTotalHarvestedHoney(); 
-
-        System.out.println("Aceasta e mierea culeasă până în acest moment: " + honeyData);
+        Map<String, Object> honeyData = apiary.getTotalHarvestedHoney();
         return ResponseEntity.ok(honeyData);
     }
-
 
 
     @PostMapping("/sellHoney/{gameId}")
     public ResponseEntity<String> sendSellHoneyQuantities(
             @PathVariable Integer gameId,
             @RequestBody Map<String, Object> requestData) {
-        System.out.println("Selling Honey Quantities called with gameId: " + gameId);
         Map<String, Object> soldHoneyData = (Map<String, Object>) requestData.get("soldData");
         System.out.println(soldHoneyData);
         double revenue = Double.parseDouble((String) requestData.get("totalValue"));
-        System.out.println("valoarea vanzarii este:"+revenue);
         LifeOfBees lifeOfBeesGame = games.get(gameId);
         Apiary apiary = lifeOfBeesGame.getApiary();
         apiary.updateHoneyStock(soldHoneyData);
@@ -182,27 +167,15 @@ public class LifeOfBeesController {
         return ResponseEntity.ok("Stock and revenue updated successfully.");
     }
 
-
     @PostMapping("/buyHives/{gameId}")
     public ResponseEntity<?> buyHives(@PathVariable Integer gameId, @RequestBody Map<String, Object> request) {
-        System.out.println("Buy hives called with gameId: " + gameId);
-        System.out.println("Request content: " + request);
         Integer numberOfHives = Integer.parseInt((String) request.get("numberOfHives"));
-
-        System.out.println("Number of hives to buy: " + numberOfHives);
-
         LifeOfBees lifeOfBeesGame = games.get(gameId);
-        System.out.println("Your lifeofBeesGame is "+lifeOfBeesGame);
         Apiary apiary = lifeOfBeesGame.getApiary();
-        System.out.println("Your apiary is: "+apiary);
-
         apiary.createHive(numberOfHives);
-        lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() - numberOfHives*500);
+        lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() - numberOfHives * 500);
 
         return ResponseEntity.ok("Hives bought successfully");
     }
-
-
-
 
 }

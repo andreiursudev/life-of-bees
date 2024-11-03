@@ -29,6 +29,6 @@ public class BeesBatch {
         return "BeesBatch{" +
                 "numberOfBees=" + numberOfBees +
                 ", creationDate=" + creationDate +
-                '}'+ "\n";
+                '}' + "\n";
     }
 }

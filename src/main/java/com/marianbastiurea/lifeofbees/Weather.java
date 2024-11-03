@@ -4,7 +4,7 @@ package com.marianbastiurea.lifeofbees;
 import java.util.*;
 
 
-public class Weather implements IWeather{
+public class Weather implements IWeather {
     private double speedWind;// in km/h
     private double temperature;// in Celsius Degree
     private double precipitation;// in mm
@@ -18,6 +18,7 @@ public class Weather implements IWeather{
         this.precipitation = precipitation;
 
     }
+
     public double getSpeedWind() {
         return speedWind;
     }
@@ -61,7 +62,7 @@ public class Weather implements IWeather{
                             random.nextDouble(0, 40)
                     );
                     return dailyWeather;
-                } else if (dayOfMonth >15 && dayOfMonth <= 30) {
+                } else if (dayOfMonth > 15 && dayOfMonth <= 30) {
                     dailyWeather = new Weather(random.nextDouble(0, 4),
                             random.nextDouble(9, 15),
                             random.nextDouble(0, 70)
@@ -162,7 +163,6 @@ public class Weather implements IWeather{
     }
 
     public double whetherIndex(Weather dailyWeather) {
-       // System.out.println("whether today is"+dailyWhether);
         double rainIndex = 0;
         double temperatureIndex = 0;
         double speedWindIndex = 0;

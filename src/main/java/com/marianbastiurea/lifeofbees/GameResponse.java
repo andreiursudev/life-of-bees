@@ -113,7 +113,7 @@ class HivesView {
         this.eggsFrame = eggsFrame;
         this.honeyFrame = honeyFrame;
         this.kgOfHoney = kgOfHoney;
-        this.itWasSplit=itWasSplit;
+        this.itWasSplit = itWasSplit;
     }
 
     public int getId() {
