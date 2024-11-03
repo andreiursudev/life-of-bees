@@ -28,15 +28,12 @@ public class LifeOfBeesFactory {
         double speedWind = todayWeather.getSpeedWind();
         double temperature = todayWeather.getTemperature();
         double precipitation = todayWeather.getPrecipitation();
-
         double moneyInTheBank = 3000.0;
         double totalKgOfHoney = 0;
 
         List<Hive> hives = new ArrayList<>();
         Honey honey = new Honey();
         String honeyType = honey.honeyType(month, day);
-
-
         double kgOfHoney = 0;
         Random random = new Random();
         Apiary apiary = new Apiary(hives, new ArrayList<>());
@@ -44,17 +41,13 @@ public class LifeOfBeesFactory {
         for (int i = 1; i < numberOfStartingHives + 1; i++) {
             int ageOfQueen = random.nextInt(1, 6);
             List<EggFrame> eggFrames = new ArrayList<>();
-           for (int j = 0; j < random.nextInt(3, 4); j++) {
-            //for(int j=0;j<6;j++){
-            eggFrames.add(new EggFrame());
+            for (int j = 0; j < random.nextInt(3, 4); j++) {
+                eggFrames.add(new EggFrame());
             }
-           List<HoneyFrame> honeyFrames = new ArrayList<>();
-          for (int k = 0; k < random.nextInt(3, 5); k++) {
-              // for (int k = 0; k <6; k++) {
-               honeyFrames.add(new HoneyFrame(random.nextDouble(2.5, 3), honeyType));
-              // honeyFrames.add(new HoneyFrame(4.5, honeyType));
+            List<HoneyFrame> honeyFrames = new ArrayList<>();
+            for (int k = 0; k < random.nextInt(3, 5); k++) {
+                honeyFrames.add(new HoneyFrame(random.nextDouble(2.5, 3), honeyType));
             }
-
             int numberOfBees = random.nextInt(2000, 2500) * (honeyFrames.size() + eggFrames.size());
             Hive hive = new Hive(apiary,
                     i,

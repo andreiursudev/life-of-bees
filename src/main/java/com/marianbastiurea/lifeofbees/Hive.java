@@ -346,17 +346,13 @@ public class Hive {
         Random random = new Random();
         int numberOfHoneyFrameNotFull = honeyFrames.size() - this.getNumberOfFullHoneyFrame();
         int numberOfFlight = random.nextInt(3, 6);
-        double kgOfHoneyToAdd = this.numberOfBees * numberOfFlight * 0.00002;//0.02gr/flight/bee
-        System.out.println("daily honey production for " + this.getId() + " is " + kgOfHoneyToAdd + " kg");
+        double kgOfHoneyToAdd = this.numberOfBees * numberOfFlight * 0.00002 * getHoney().honeyProductivity();//0.02gr/flight/bee
         for (HoneyFrame honeyFrame : honeyFrames) {
             if (honeyFrame.getKgOfHoney() < maxKgOfHoneyPerFrame) {
                 honeyFrame.setKgOfHoney(Math.min(maxKgOfHoneyPerFrame, honeyFrame.getKgOfHoney() + kgOfHoneyToAdd / numberOfHoneyFrameNotFull));
             }
         }
-        System.out.println(" date is " + currentDate);
-        System.out.println(" your hive is :" + this);
     }
-
 
     public void addNewHoneyFrameInHive() {
         if (honeyFrames.size() < 6) {
@@ -384,7 +380,6 @@ they will die. bees number from each batch will subtract from total number of be
                 this.numberOfBees -= beesBatch.getNumberOfBees(); // Subtract number of bees from each beesBatch from total number
                 iterator.remove();
             }
-
         }
     }
 
@@ -435,9 +430,7 @@ they will die. bees number from each batch will subtract from total number of be
             }
         }
         return hiveIdPair;
-
     }
-
 
     public void changeQueen() {
         queen = new Queen(0);
@@ -470,5 +463,4 @@ they will die. bees number from each batch will subtract from total number of be
         }
         return totalKgOfHoney;
     }
-
 }

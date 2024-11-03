@@ -39,7 +39,6 @@ public class EggFrame {
         //  maxEggPerFrame is 6400. A frame have around 8500 cells. 75% more or less are used by the queen to lay eggs.
         // Remaining cells are fill up with honey or are damaged
 
-
         if (getNumberOfEggs() + numberOfEggs <= maxEggPerFrame) {
             eggBatches.add(new EggBatch(numberOfEggs, date));
         }
@@ -61,11 +60,13 @@ public class EggFrame {
         }
         return hatchedBatches;
     }
-    public boolean isEggFrameFull(){
+
+    public boolean isEggFrameFull() {
         return getNumberOfEggs() == maxEggPerFrame;
     }
-    public boolean is80PercentFull(){
-        return  getNumberOfEggs() <= 0.8 * maxEggPerFrame;
+
+    public boolean is80PercentFull() {
+        return getNumberOfEggs() <= 0.8 * maxEggPerFrame;
     }
 }
 
