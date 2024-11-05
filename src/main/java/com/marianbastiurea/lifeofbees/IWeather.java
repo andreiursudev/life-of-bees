@@ -1,5 +1,5 @@
 package com.marianbastiurea.lifeofbees;
 
 public interface IWeather {
-    double whetherIndex(HarvestingMonths harvestingMonth, int dayOfMonth);
+    double weatherIndex(HarvestingMonths harvestingMonth, int dayOfMonth);
 }

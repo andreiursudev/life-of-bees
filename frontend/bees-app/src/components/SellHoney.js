@@ -13,14 +13,13 @@ const RowHeader = () => (
     </div>
 );
 
-// Componenta RowText din SellHoney.js
 const RowText = ({ honeyType, quantity, price, onQuantityChange }) => {
-    const [sellQuantity, setSellQuantity] = useState(0); // Setează valoarea inițială la 0
+    const [sellQuantity, setSellQuantity] = useState(0);
 
     const handleInputChange = (event) => {
-        const value = Math.max(0, Math.min(Number(event.target.value), quantity)) || 0; // Asigură-te că este numeric
+        const value = Math.max(0, Math.min(Number(event.target.value), quantity)) || 0;
         setSellQuantity(value);
-        onQuantityChange(value, honeyType); // Trimite valoarea vânzării și tipul mierii
+        onQuantityChange(value, honeyType, price);
     };
 
     const totalValue = (sellQuantity * price).toFixed(2);
@@ -44,23 +43,24 @@ const RowText = ({ honeyType, quantity, price, onQuantityChange }) => {
         </div>
     );
 };
-
-
 const SellHoney = () => {
     const [honeyData, setHoneyData] = useState([]);
     const [soldValues, setSoldValues] = useState({});
+    const [soldValueTotals, setSoldValueTotals] = useState({});
+    const [totalHoneyQuantity, setTotalHoneyQuantity] = useState(0); 
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchHoneyData = async () => {
             try {
                 const data = await getHoneyQuantities();
-                // Transforma map-ul într-o listă de obiecte cu `honeyType` și `quantity`
                 const parsedData = Object.entries(data).map(([honeyType, quantity]) => ({
                     honeyType,
                     quantity,
                 }));
                 setHoneyData(parsedData);
+                const totalQuantity = parsedData.reduce((acc, item) => acc + item.quantity, 0);
+                setTotalHoneyQuantity(totalQuantity); 
             } catch (error) {
                 console.error('Error fetching honey data:', error);
             }
@@ -68,38 +68,38 @@ const SellHoney = () => {
         fetchHoneyData();
     }, []);
 
-
-    const updateTotalSoldValue = (sellQuantity, honeyType) => {
+    const updateTotalSoldValue = (sellQuantity, honeyType, price) => {
         setSoldValues((prevSoldValues) => ({
             ...prevSoldValues,
-            [honeyType]: sellQuantity || 0, // Cantitatea, nu valoarea totală
+            [honeyType]: sellQuantity || 0,
+        }));
+        setSoldValueTotals((prevSoldValueTotals) => ({
+            ...prevSoldValueTotals,
+            [honeyType]: (sellQuantity * price).toFixed(2),
         }));
     };
-    
 
+    const totalSoldValue = Object.values(soldValueTotals)
+        .reduce((acc, val) => acc + Number(val), 0)
+        .toFixed(2);
 
-    const totalSoldValue = Number(
-        Object.values(soldValues).reduce((acc, val) => acc + (val || 0), 0)
-    ).toFixed(2);
-
-
-    const handleSubmit = async () => {
-        // Creăm un Map de tip { honeyType: quantity } similar cu Map<String, Object>
-        const formattedSoldData = new Map(Object.entries(soldValues));
-
-        try {
-            // Trimitem Map-ul către backend
-            await sendSellHoneyQuantities.updateHoneyStock(formattedSoldData, totalSoldValue);
-            console.log('Total honey sold value submitted:', totalSoldValue);
-            navigate('/gameView');
-        } catch (error) {
-            console.error('Error submitting total sold value:', error);
-        }
-    };
-
-
+        const handleSubmit = async () => {
+            const formattedSoldData = new Map(
+                Object.entries(soldValues).map(([key, value]) => [key, parseFloat(value)]) 
+            );
+        
+            try {
+                await sendSellHoneyQuantities.updateHoneyStock(formattedSoldData, totalSoldValue);
+                console.log('Total honey sold value submitted:', totalSoldValue);
+                navigate('/gameView');
+            } catch (error) {
+                console.error('Error submitting total sold value:', error);
+            }
+        };
+        
     return (
         <div className="body-sell">
+            <h3>Total Honey in stock: {totalHoneyQuantity.toFixed(2)} kg</h3> 
             <div className="container" style={{ marginTop: '50px' }}>
                 <RowHeader />
                 {honeyData.map(({ honeyType, quantity }) => (
@@ -112,9 +112,7 @@ const SellHoney = () => {
                     />
                 ))}
             </div>
-
             <h3>Total value of honey sold: ${totalSoldValue}</h3>
-
             <button className="btn btn-primary mb-3" onClick={handleSubmit}>Submit</button>
             <button className="btn btn-danger button-right-bottom" onClick={() => navigate('/gameView')}>Back</button>
         </div>

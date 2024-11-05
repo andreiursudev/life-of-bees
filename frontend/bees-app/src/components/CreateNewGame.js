@@ -1,16 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createGame } from './BeesApiService';
+import { createGame, fetchLocations } from './BeesApiService';
 
 const NewGameModal = ({ handleClose }) => {
     const [gameName, setgameName] = useState('');
     const [location, setLocation] = useState('');
-    const [startDate, setStartDate] = useState('');
+    const [suggestions, setSuggestions] = useState([]);
     const [numberOfStartingHives, setNumberOfStartingHives] = useState(0);
     const navigate = useNavigate();
 
+    const [numYears, setNumYears] = useState(1);
+    const currentYear = new Date().getFullYear();
+    const startYear = currentYear - numYears;
+
     const handleSubmit = async (event) => {
         event.preventDefault();
+        const startDate = `${startYear}-03-01`;
 
         try {
             const gameData = await createGame({
@@ -24,6 +29,23 @@ const NewGameModal = ({ handleClose }) => {
         } catch (error) {
             console.error('Error starting game:', error);
         }
+    };
+
+    const handleLocationChange = async (e) => {
+        const query = e.target.value;
+        setLocation(query);
+
+        if (query.length >= 3) { 
+            const locationSuggestions = await fetchLocations(query);
+            setSuggestions(locationSuggestions);
+        } else {
+            setSuggestions([]);
+        }
+    };
+
+    const handleSuggestionClick = (suggestion) => {
+        setLocation(suggestion);
+        setSuggestions([]); 
     };
 
     return (
@@ -51,7 +73,6 @@ const NewGameModal = ({ handleClose }) => {
                                     />
                                 </div>
                             </div>
-
                             <div className="row mb-3 align-items-center">
                                 <div className="col">
                                     <label htmlFor="location" className="col-form-label">Location</label>
@@ -63,30 +84,38 @@ const NewGameModal = ({ handleClose }) => {
                                         id="location"
                                         name="location"
                                         value={location}
-                                        onChange={(e) => setLocation(e.target.value)}
+                                        onChange={handleLocationChange}
                                     />
+                                    {suggestions.length > 0 && (
+                                        <ul className="suggestions-list">
+                                            {suggestions.map((suggestion, index) => (
+                                                <li key={index} onClick={() => handleSuggestionClick(suggestion)}>
+                                                    {suggestion}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
                                 </div>
-                            </div>
 
+                            </div>
                             <div className="row mb-3 align-items-center">
                                 <div className="col">
-                                    <label htmlFor="startDate" className="form-label">Start Date:</label>
+                                    <label htmlFor="numYears" className="form-label">Years to play:</label>
                                 </div>
                                 <div className="col">
                                     <input
-                                        type="date"
+                                        type="number"
                                         className="form-control"
-                                        id="startDate"
-                                        name="startDate"
-                                        value={startDate}
-                                        onChange={(e) => setStartDate(e.target.value)}
-                                        min={`${new Date().getFullYear()}-03-01`}
-                                        max={`${new Date().getFullYear()}-09-30`}
+                                        id="numYears"
+                                        name="numYears"
+                                        value={numYears}
+                                        onChange={(e) => setNumYears(Math.min(20, Math.max(1, e.target.value)))}
+                                        min="1"
+                                        max="20"
+                                        required
                                     />
                                 </div>
-
                             </div>
-
                             <div className="row mb-3 align-items-center">
                                 <div className="col">
                                     <label htmlFor="numberOfStartingHives" className="col-form-label">Hives</label>

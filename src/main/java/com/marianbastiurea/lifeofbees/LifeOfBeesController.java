@@ -1,14 +1,11 @@
 package com.marianbastiurea.lifeofbees;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import static com.marianbastiurea.lifeofbees.Honey.getHarvestingMonth;
 
 @RestController
 @RequestMapping("/api/bees")
@@ -32,6 +29,7 @@ public class LifeOfBeesController {
 
         games.put(lifeOfBeesGame.getGameId(), lifeOfBeesGame);
         gameId++;
+        System.out.println(" acestea sunt datele de start: "+lifeOfBeesGame);
         return lifeOfBeesGame.getGameId();
     }
 
@@ -57,18 +55,8 @@ public class LifeOfBeesController {
     public GameResponse submitActionsOfTheWeek(@PathVariable Integer gameId, @RequestBody List<ActionOfTheWeek> approvedActions) {
         LifeOfBees lifeOfBeesGame = games.get(gameId);
         Apiary apiary = lifeOfBeesGame.getApiary();
-
-        System.out.println("Received actions: " + approvedActions);
-
-        LocalDate date = LocalDate.parse(lifeOfBeesGame.getCurrentDate());
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM", Locale.ENGLISH);
-        HarvestingMonths month = getHarvestingMonth(date);
-        int dayOfMonth = date.getDayOfMonth();
-
+        LocalDate date = lifeOfBeesGame.getCurrentDate();
         for (ActionOfTheWeek action : approvedActions) {
-            System.out.println("Processing action: " + action.getActionType());
-
-            // Transmitem direct data metodei corespunzătoare în funcție de actionType
             switch (action.getActionType()) {
                 case "ADD_EGGS_FRAME":
                     List<Integer> eggHiveIds = (List<Integer>) action.getData().get("hiveIds");
@@ -118,12 +106,10 @@ public class LifeOfBeesController {
                     break;
 
                 case "INSECT_CONTROL":
-
                     Map<String, Object> insectControlData = (Map<String, Object>) action.getData();
                     String insectControlResponse = (String) insectControlData.get("answer");
                     apiary.doInsectControl(insectControlResponse, lifeOfBeesGame);
                     break;
-
 
                 default:
                     System.out.println("Unknown action type: " + action.getActionType());
@@ -152,39 +138,36 @@ public class LifeOfBeesController {
         return gameResponse;
     }
 
-
-
     @GetMapping("/getHoneyQuantities/{gameId}")
     public ResponseEntity<Map<String, Object>> getHoneyQuantities(@PathVariable Integer gameId) {
-        System.out.println("getHoneyQuantities called with gameId: " + gameId);
         LifeOfBees lifeOfBeesGame = games.get(gameId);
         Apiary apiary = lifeOfBeesGame.getApiary();
-
-        Map<String, Object> honeyData = apiary.getTotalHarvestedHoney(); // Obținem direct map-ul de miere
-
-        System.out.println("Aceasta e mierea culeasă până în acest moment: " + honeyData);
+        Map<String, Object> honeyData = apiary.getTotalHarvestedHoney();
         return ResponseEntity.ok(honeyData);
     }
-
-
 
     @PostMapping("/sellHoney/{gameId}")
     public ResponseEntity<String> sendSellHoneyQuantities(
             @PathVariable Integer gameId,
-            @RequestBody Map<String, Object> requestData) {
-        System.out.println("Selling Honey Quantities called with gameId: " + gameId);
-        Map<String, Object> soldHoneyData = (Map<String, Object>) requestData.get("soldData");
-        System.out.println(soldHoneyData);
-        double revenue = Double.parseDouble((String) requestData.get("totalValue"));
-        System.out.println("valoarea vanzrii este:"+revenue);
+            @RequestBody Map<String, Double> requestData) {
+        double revenue = requestData.getOrDefault("totalValue", 0.0);
+        Map<String, Double> soldHoneyData = new HashMap<>(requestData);
+        soldHoneyData.remove("totalValue");
         LifeOfBees lifeOfBeesGame = games.get(gameId);
         Apiary apiary = lifeOfBeesGame.getApiary();
         apiary.updateHoneyStock(soldHoneyData);
+        lifeOfBeesGame.setTotalKgOfHoneyHarvested(apiary.getTotalKgHoneyHarvested());
         lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() + revenue);
-
         return ResponseEntity.ok("Stock and revenue updated successfully.");
     }
 
-
-
+    @PostMapping("/buyHives/{gameId}")
+    public ResponseEntity<?> buyHives(@PathVariable Integer gameId, @RequestBody Map<String, Object> request) {
+        Integer numberOfHives = Integer.parseInt((String) request.get("numberOfHives"));
+        LifeOfBees lifeOfBeesGame = games.get(gameId);
+        Apiary apiary = lifeOfBeesGame.getApiary();
+        Hive.addHivesToApiary(apiary, apiary.createHive(numberOfHives, lifeOfBeesGame.getCurrentDate()));
+        lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() - numberOfHives * 500);
+        return ResponseEntity.ok("Hives bought successfully");
+    }
 }

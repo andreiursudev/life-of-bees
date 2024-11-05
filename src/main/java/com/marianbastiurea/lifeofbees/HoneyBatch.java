@@ -1,6 +1,6 @@
 package com.marianbastiurea.lifeofbees;
-import java.time.LocalDate;
 
+import java.time.LocalDate;
 
 
 class HoneyBatch {
@@ -9,11 +9,11 @@ class HoneyBatch {
     private final String honeyType;
     private boolean isProcessed;
 
-    public HoneyBatch(int hiveId, double kgOfHoney, String honeyType,boolean isProcessed) {
+    public HoneyBatch(int hiveId, double kgOfHoney, String honeyType, boolean isProcessed) {
         this.hiveId = hiveId;
         this.kgOfHoney = kgOfHoney;
         this.honeyType = honeyType;
-        this.isProcessed=isProcessed;
+        this.isProcessed = isProcessed;
     }
 
     public int getHiveId() {

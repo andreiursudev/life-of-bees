@@ -1,5 +1,6 @@
 package com.marianbastiurea.lifeofbees;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,14 +12,14 @@ public class GameResponse {
     private double windSpeed;
     private double precipitation;
     private double moneyInTheBank;
-    private String currentDate;
+    private LocalDate currentDate;
     private double totalKgOfHoneyHarvested;
 
-    public String getCurrentDate() {
+    public LocalDate getCurrentDate() {
         return currentDate;
     }
 
-    public void setCurrentDate(String currentDate) {
+    public void setCurrentDate(LocalDate currentDate) {
         this.currentDate = currentDate;
     }
 
@@ -113,7 +114,7 @@ class HivesView {
         this.eggsFrame = eggsFrame;
         this.honeyFrame = honeyFrame;
         this.kgOfHoney = kgOfHoney;
-        this.itWasSplit=itWasSplit;
+        this.itWasSplit = itWasSplit;
     }
 
     public int getId() {

@@ -1,10 +1,6 @@
 package com.marianbastiurea.lifeofbees;
 
-
-//import com.marianbastiurea.lifeofbees.eggframe.EggBatch;
-
 import com.marianbastiurea.lifeofbees.eggframe.EggFrame;
-
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -34,9 +30,13 @@ public class Hive {
         this.beesBatches = new ArrayList<>(beesBatches);
         this.honeyFrames = new ArrayList<>(honeyFrames);
         this.honeyBatches = new ArrayList<>(honeyBatches);
+        this.actionOfTheWeek = new ActionOfTheWeek();
 
     }
 
+    public Hive() {
+        this.actionOfTheWeek = new ActionOfTheWeek(); // inițializează obiectul
+    }
 
     public Hive(Apiary apiary, int id, boolean itWasSplit, boolean answerIfWantToSplit, int numberOfBees, Queen queen) {
         this.apiary = apiary;
@@ -168,10 +168,6 @@ public class Hive {
         this.queen = queen;
     }
 
-
-    public Hive() {
-    }
-
     public Honey getHoney() {
         return honey;
     }
@@ -208,10 +204,6 @@ public class Hive {
         this.beesBatches.addAll(beesBatches);
     }
 
-    public void addHoneyBatches(List<HoneyBatch> honeyBatches) {
-        this.honeyBatches.addAll(honeyBatches);
-    }
-
     public void addHoneyFrames(List<HoneyFrame> honeyFrames) {
         this.honeyFrames.addAll(honeyFrames);
     }
@@ -245,13 +237,7 @@ public class Hive {
     }
 
     public void checkAndAddEggsToBees(LocalDate currentDate) {
-/* this method check creation date of each eggs batch and difference between current date and creation date is more
-        than 20 days, eggs will hatch into bees. Eggs batch will be removed from list and number of eggs will be add to
-        number of bees from hive
-
- */
         int numberOfBeesFromEggsBatch = 0;
-
         for (EggFrame eggFrame : eggFrames) {
             List<BeesBatch> hatchedBatches = eggFrame.checkAndHatchEggs(currentDate);
             for (BeesBatch batch : hatchedBatches) {
@@ -265,18 +251,10 @@ public class Hive {
         }
     }
 
-    public boolean checkIfHiveCouldBeSplit(HarvestingMonths month, int dayOfMonth) {
-
-    /*
-       This method will add new empty eggs frame in hive. If total number of egg frames full in hive is equal to 6,
-       it will call the method to split the hive in two hives.
-       A frame has around 8500 cells. 75% more or less are used by the queen to lay eggs.
-       Remaining cells are filled with honey or are damaged.
-    */
-        if (!this.itWasSplit) {
+    public List<ActionOfTheWeek> checkIfHiveCouldBeSplit(HarvestingMonths month, int dayOfMonth, List<ActionOfTheWeek> actionsOfTheWeek, LifeOfBees lifeOfBeesGame) {
+        if (!this.itWasSplit && lifeOfBeesGame.getApiary().getNumberOfHives() < 10) {
             if ((month.equals(HarvestingMonths.APRIL) || month.equals(HarvestingMonths.MAY)) &&
                     (dayOfMonth == 1 || dayOfMonth == 10)) {
-
                 if (this.eggFrames.size() == 6) {
                     boolean allFramesAreFull = true;
                     for (EggFrame eggFrame : this.eggFrames) {
@@ -286,29 +264,29 @@ public class Hive {
                         }
                     }
                     if (allFramesAreFull) {
-                        return true;
+                        Map<String, Object> data = ActionOfTheWeek.findOrCreateAction("SPLIT_HIVE", actionsOfTheWeek).getData();
+                        ActionOfTheWeek actionInstance = new ActionOfTheWeek();
+                        actionInstance.addOrUpdateAction("SPLIT_HIVE", getId(), data, actionsOfTheWeek);
                     }
                 }
             }
         }
-        return false;
+        return actionsOfTheWeek;
     }
 
-
-    public boolean checkIfCanAddNewEggsFrameInHive() {
+    public List<ActionOfTheWeek> checkIfCanAddNewEggsFrameInHive(List<ActionOfTheWeek> actionsOfTheWeek) {
         int eggsFrameFull = 0;
         for (EggFrame eggFrame : this.eggFrames) {
             if (eggFrame.getNumberOfEggs() > 6000) {
                 eggsFrameFull += 1;
             }
         }
-
-        if (this.eggFrames.size() < 6) {
-            if (eggsFrameFull == this.eggFrames.size()) {
-                return true;
-            }
+        if (this.eggFrames.size() < 6 && eggsFrameFull == this.eggFrames.size()) {
+            Map<String, Object> data = ActionOfTheWeek.findOrCreateAction("ADD_EGGS_FRAME", actionsOfTheWeek).getData();
+            ActionOfTheWeek actionInstance = new ActionOfTheWeek();
+            actionInstance.addOrUpdateAction("ADD_EGGS_FRAME", getId(), data, actionsOfTheWeek);
         }
-        return false;
+        return actionsOfTheWeek;
     }
 
     public void addNewEggsFrameInHive() {
@@ -320,8 +298,7 @@ public class Hive {
         }
     }
 
-
-    public boolean checkIfCanAddANewHoneyFrameInHive() {
+    public List<ActionOfTheWeek> checkIfCanAddANewHoneyFrameInHive(List<ActionOfTheWeek> actionsOfTheWeek) {
         int honeyFrameFull = 0;
 
         for (HoneyFrame honeyFrame : this.honeyFrames) {
@@ -329,16 +306,26 @@ public class Hive {
                 honeyFrameFull += 1;
             }
         }
-
-
         if (this.honeyFrames.size() < 6) {
             if (honeyFrameFull == this.honeyFrames.size()) {
-                return true;
+                Map<String, Object> data = ActionOfTheWeek.findOrCreateAction("ADD_HONEY_FRAME", actionsOfTheWeek).getData();
+                ActionOfTheWeek actionInstance = new ActionOfTheWeek();
+                actionInstance.addOrUpdateAction("ADD_HONEY_FRAME", getId(), data, actionsOfTheWeek);
             }
         }
-        return false;
+        return actionsOfTheWeek;
     }
 
+    public List<ActionOfTheWeek> addHoneyBatches(List<HoneyBatch> honeyBatches, List<ActionOfTheWeek> actionsOfTheWeek) {
+        if (honeyBatches != null && !honeyBatches.isEmpty()) {
+            this.honeyBatches.addAll(honeyBatches);
+            System.out.println("acesta e mierea culeasa in stupul" + this.getId() + " " + honeyBatches);
+            Map<String, Object> data = ActionOfTheWeek.findOrCreateAction("HARVEST_HONEY", actionsOfTheWeek).getData();
+            ActionOfTheWeek actionInstance = new ActionOfTheWeek();
+            actionInstance.addOrUpdateAction("HARVEST_HONEY", getId(), data, actionsOfTheWeek);
+        }
+        return actionsOfTheWeek;
+    }
 
     public void fillUpExistingHoneyFrameFromHive(LocalDate currentDate) {
         double maxKgOfHoneyPerFrame = 4.5;
@@ -346,17 +333,13 @@ public class Hive {
         Random random = new Random();
         int numberOfHoneyFrameNotFull = honeyFrames.size() - this.getNumberOfFullHoneyFrame();
         int numberOfFlight = random.nextInt(3, 6);
-        double kgOfHoneyToAdd = this.numberOfBees * numberOfFlight * 0.00002;//0.02gr/flight/bee
-        System.out.println("daily honey production for " + this.getId() + " is " + kgOfHoneyToAdd + " kg");
+        double kgOfHoneyToAdd = this.numberOfBees * numberOfFlight * 0.00002 * getHoney().honeyProductivity();//0.02gr/flight/bee
         for (HoneyFrame honeyFrame : honeyFrames) {
             if (honeyFrame.getKgOfHoney() < maxKgOfHoneyPerFrame) {
                 honeyFrame.setKgOfHoney(Math.min(maxKgOfHoneyPerFrame, honeyFrame.getKgOfHoney() + kgOfHoneyToAdd / numberOfHoneyFrameNotFull));
             }
         }
-        System.out.println(" date is " + currentDate);
-        System.out.println(" your hive is :" + this);
     }
-
 
     public void addNewHoneyFrameInHive() {
         if (honeyFrames.size() < 6) {
@@ -367,13 +350,7 @@ public class Hive {
         }
     }
 
-
     public void beesDie(LocalDate currentDate) {
-/*
-this method will check the date when bees hatched and if difference between hatched date and current date is more than 31 days
-they will die. bees number from each batch will subtract from total number of bees from hive
- */
-
         List<BeesBatch> beesBatches = this.getBeesBatches();
         Iterator<BeesBatch> iterator = beesBatches.iterator();
         while (iterator.hasNext()) {
@@ -384,7 +361,6 @@ they will die. bees number from each batch will subtract from total number of be
                 this.numberOfBees -= beesBatch.getNumberOfBees(); // Subtract number of bees from each beesBatch from total number
                 iterator.remove();
             }
-
         }
     }
 
@@ -411,7 +387,6 @@ they will die. bees number from each batch will subtract from total number of be
     }
 
     public int getNumberOfFullHoneyFrame() {
-
         int honeyFrameFull = 0;
         double maxKgOfHoneyPerFrame = 4.5;
         for (int i = 0; i < this.honeyFrames.size(); i++) {
@@ -422,37 +397,32 @@ they will die. bees number from each batch will subtract from total number of be
         return honeyFrameFull;
     }
 
-    public List<List<Integer>> checkIfCanMoveAnEggsFrame() {
-        List<List<Integer>> hiveIdPair = new ArrayList<>();
+    public List<ActionOfTheWeek> checkIfCanMoveAnEggsFrame(List<ActionOfTheWeek> actionsOfTheWeek, LifeOfBees lifeOfBeesGame) {
+        List<Integer> hiveIdPair;
 
         if (this.checkIfAll6EggsFrameAre80PercentFull() && !this.itWasSplit && !this.wasMovedAnEggsFrame) {
-            List<Hive> hives = this.getApiary().getHives();
-
+            List<Hive> hives = lifeOfBeesGame.getApiary().getHives();
             for (Hive hive : hives) {
                 if (hive.itWasSplit && hive.getQueen().getAgeOfQueen() == 0) {
-                    hiveIdPair.add(Arrays.asList(this.getId(), hive.getId()));
+                    hiveIdPair = Arrays.asList(this.getId(), hive.getId());
+
+                    Map<String, Object> data = ActionOfTheWeek.findOrCreateAction("MOVE_EGGS_FRAME", actionsOfTheWeek).getData();
+                    ActionOfTheWeek actionInstance = new ActionOfTheWeek();
+                    actionInstance.addOrUpdateAction1("MOVE_EGGS_FRAME", hiveIdPair, data, actionsOfTheWeek);
                 }
             }
         }
-        return hiveIdPair;
-
+        return actionsOfTheWeek;
     }
-
 
     public void changeQueen() {
         queen = new Queen(0);
     }
 
     public void fillUpEggsFrame(LocalDate currentDate, int numberOfEggs) {
-
-        //  maxEggPerFrame is 6400 a frame have around 8500 cells. 75% more or less are used by the queen to lay eggs.
-        // Remaining cells are fill up with honey or are damaged
-
         int size = getEggsFrames().size() - this.getNumberOfFullEggsFrame();
-
         if (size != 0) {
             int numberOfEggsToPutInFrame = numberOfEggs / size;
-
             for (EggFrame eggFrame : getEggsFrames()) {
                 if (eggFrame.getNumberOfEggs() + numberOfEggsToPutInFrame < eggFrame.getMaxEggPerFrame()) {
                     eggFrame.addEggs(numberOfEggsToPutInFrame, currentDate);
@@ -471,4 +441,12 @@ they will die. bees number from each batch will subtract from total number of be
         return totalKgOfHoney;
     }
 
+    public static void addHivesToApiary(Apiary apiary, List<Hive> newHives) {
+        List<Hive> existingHives = apiary.getHives();
+        for (Hive hive : newHives) {
+            hive.setApiary(apiary);
+            hive.setId(existingHives.size() + 1);
+            existingHives.add(hive);
+        }
+    }
 }
