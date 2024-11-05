@@ -58,17 +58,14 @@ export const getHoneyQuantities = async () => {
         throw error;
     }
 };
-
 export const sendSellHoneyQuantities = {
     updateHoneyStock: async (soldData, totalValue) => {
         try {
-            const payload = Object.fromEntries(soldData);
-            console.log('Sending data to:', `http://localhost:8080/api/bees/sellHoney/0`, payload);
+            // Creează payload-ul
+            const payload = { ...Object.fromEntries(soldData), totalValue };
+            console.log('Payload trimis:', JSON.stringify(payload, null, 2));
 
-            const response = await axios.post(`http://localhost:8080/api/bees/sellHoney/0`, {
-                soldData: payload,
-                totalValue,
-            });
+            const response = await axios.post(`http://localhost:8080/api/bees/sellHoney/0`, payload);
             return response.data;
         } catch (error) {
             console.error('Error updating honey stock:', error);
@@ -76,6 +73,7 @@ export const sendSellHoneyQuantities = {
         }
     },
 };
+
 
 export const buyHives = async (numberOfHives) => {
     try {

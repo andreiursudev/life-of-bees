@@ -4,10 +4,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import static com.marianbastiurea.lifeofbees.Honey.getHarvestingMonth;
 
 @RestController
 @RequestMapping("/api/bees")
@@ -57,9 +55,6 @@ public class LifeOfBeesController {
         LifeOfBees lifeOfBeesGame = games.get(gameId);
         Apiary apiary = lifeOfBeesGame.getApiary();
         LocalDate date = lifeOfBeesGame.getCurrentDate();
-
-//        HarvestingMonths month = getHarvestingMonth(date);
-//        int dayOfMonth = date.getDayOfMonth();
         for (ActionOfTheWeek action : approvedActions) {
             switch (action.getActionType()) {
                 case "ADD_EGGS_FRAME":
@@ -142,7 +137,6 @@ public class LifeOfBeesController {
         return gameResponse;
     }
 
-
     @GetMapping("/getHoneyQuantities/{gameId}")
     public ResponseEntity<Map<String, Object>> getHoneyQuantities(@PathVariable Integer gameId) {
         LifeOfBees lifeOfBeesGame = games.get(gameId);
@@ -151,19 +145,18 @@ public class LifeOfBeesController {
         return ResponseEntity.ok(honeyData);
     }
 
-
     @PostMapping("/sellHoney/{gameId}")
     public ResponseEntity<String> sendSellHoneyQuantities(
             @PathVariable Integer gameId,
-            @RequestBody Map<String, Object> requestData) {
-        Map<String, Object> soldHoneyData = (Map<String, Object>) requestData.get("soldData");
-        System.out.println(soldHoneyData);
-        double revenue = Double.parseDouble((String) requestData.get("totalValue"));
+            @RequestBody Map<String, Double> requestData) {
+        double revenue = requestData.getOrDefault("totalValue", 0.0);
+        Map<String, Double> soldHoneyData = new HashMap<>(requestData);
+        soldHoneyData.remove("totalValue");
         LifeOfBees lifeOfBeesGame = games.get(gameId);
         Apiary apiary = lifeOfBeesGame.getApiary();
         apiary.updateHoneyStock(soldHoneyData);
+        lifeOfBeesGame.setTotalKgOfHoneyHarvested(apiary.getTotalKgHoneyHarvested());
         lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() + revenue);
-
         return ResponseEntity.ok("Stock and revenue updated successfully.");
     }
 
@@ -172,10 +165,8 @@ public class LifeOfBeesController {
         Integer numberOfHives = Integer.parseInt((String) request.get("numberOfHives"));
         LifeOfBees lifeOfBeesGame = games.get(gameId);
         Apiary apiary = lifeOfBeesGame.getApiary();
-        Hive.addHivesToApiary(apiary, apiary.createHive(numberOfHives,lifeOfBeesGame.getCurrentDate()));
+        Hive.addHivesToApiary(apiary, apiary.createHive(numberOfHives, lifeOfBeesGame.getCurrentDate()));
         lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() - numberOfHives * 500);
-
         return ResponseEntity.ok("Hives bought successfully");
     }
-
 }

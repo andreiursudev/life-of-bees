@@ -14,6 +14,9 @@ public class ActionOfTheWeek {
         this.data = data;
     }
 
+    public ActionOfTheWeek() {
+    }
+
     public Map<String, Object> getData() {
         return data;
     }
@@ -39,50 +42,37 @@ public class ActionOfTheWeek {
     }
 
     public static ActionOfTheWeek findOrCreateAction(String actionType, List<ActionOfTheWeek> actionsOfTheWeek) {
-        for (ActionOfTheWeek action : actionsOfTheWeek) {
-            if (action.getActionType().equals(actionType)) {
-                return action;
-            }
-        }
-        ActionOfTheWeek newAction = new ActionOfTheWeek(actionType, new HashMap<>());
-        actionsOfTheWeek.add(newAction);
-        return newAction;
+        return actionsOfTheWeek.stream()
+                .filter(action -> action.getActionType().equals(actionType))
+                .findFirst()
+                .orElseGet(() -> {
+                    ActionOfTheWeek newAction = new ActionOfTheWeek(actionType, new HashMap<>());
+                    actionsOfTheWeek.add(newAction);
+                    return newAction;
+                });
     }
 
+    public void addOrUpdateAction(String actionType, int hiveId, Map<String, Object> data, List<ActionOfTheWeek> actionsOfTheWeek) {
+        ActionOfTheWeek action = findOrCreateAction(actionType, actionsOfTheWeek);
 
-    public static void addOrUpdateAction(String actionType, int hiveId, Map<String, Object> data, List<ActionOfTheWeek> actionsOfTheWeek) {
-        ActionOfTheWeek action = actionsOfTheWeek.stream()
-                .filter(a -> a.actionType.equals(actionType))
-                .findFirst()
-                .orElse(null);
-
-        if (action == null) {
-            action = new ActionOfTheWeek(actionType, new HashMap<>());
-            action.actionType = actionType;
-            action.data = new HashMap<>();
-            actionsOfTheWeek.add(action);
-        }
-
-        List<Integer> hiveIds = (List<Integer>) action.data.getOrDefault("hiveIds", new ArrayList<>());
+        List<Integer> hiveIds = (List<Integer>) action.getData().getOrDefault("hiveIds", new ArrayList<>());
         if (!hiveIds.contains(hiveId)) {
             hiveIds.add(hiveId);
-            action.data.put("hiveIds", hiveIds);
+            action.getData().put("hiveIds", hiveIds);
         }
     }
 
-    public static void addOrUpdateAction1(String actionType, List<Integer> hiveIdPair, Map<String, Object> data, List<ActionOfTheWeek> actionsOfTheWeek) {
+    public void addOrUpdateAction1(String actionType, List<Integer> hiveIdPair, Map<String, Object> data, List<ActionOfTheWeek> actionsOfTheWeek) {
         ActionOfTheWeek action = actionsOfTheWeek.stream()
                 .filter(a -> a.actionType.equals(actionType))
                 .findFirst()
                 .orElse(null);
-
         if (action == null) {
             action = new ActionOfTheWeek(actionType, new HashMap<>());
             action.actionType = actionType;
             action.data = new HashMap<>();
             actionsOfTheWeek.add(action);
         }
-
         List<List<Integer>> hiveIdPairs = (List<List<Integer>>) action.data.getOrDefault("hiveIdPairs", new ArrayList<>());
         if (!hiveIdPairs.contains(hiveIdPair)) {
             hiveIdPairs.add(hiveIdPair);

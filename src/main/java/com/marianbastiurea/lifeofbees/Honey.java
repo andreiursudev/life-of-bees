@@ -27,16 +27,13 @@ public class Honey {
     public String toString() {
         return "Honey{" +
                 "honeyType='" + honeyType + '\'' +
-                // ", honeyKg=" + honeyKg +
                 '}';
     }
 
-    public static HarvestingMonths getHarvestingMonth(LocalDate date) {
+    public HarvestingMonths getHarvestingMonth(LocalDate date) {
         int monthValue = date.getMonthValue();
-        System.out.println("luna curenta este: " + monthValue);
-        return HarvestingMonths.values()[monthValue - 3];  // Martie corespunde indexului 0
+        return HarvestingMonths.values()[monthValue - 3];
     }
-
 
     public String honeyType(HarvestingMonths month, int dayOfMonth) {
         switch (month) {
@@ -74,21 +71,19 @@ public class Honey {
     public double honeyProductivity() {
         int indexHoneyProductivity = 0;
         return switch (honeyType) {
-            case "Acacia" -> 1;//kgOnHa=1600
-            case "Rapeseed" -> 0.8; //kgOnHa=50
-            case "WildFlower" -> 0.75;//kgOnHa=40
-            case "Linden" -> 1;//kgOnHa=1200
-            case "SunFlower" -> 0.8;//kgOnHa=60
+            case "Acacia" -> 1;
+            case "Rapeseed" -> 0.8;
+            case "WildFlower" -> 0.75;
+            case "Linden" -> 1;
+            case "SunFlower" -> 0.8;
             case "FalseIndigo" -> 0.7;
-            default ->//kgOnHa=70
-                    indexHoneyProductivity;
+            default -> indexHoneyProductivity;
         };
     }
 
     public List<HoneyBatch> harvestHoney(Hive hive, HarvestingMonths month, int dayOfMonth) {
         List<HoneyBatch> honeyBatches = new ArrayList<>();
         double kgOfHoney = 0;
-
 
         if ((month.equals(HarvestingMonths.APRIL) || month.equals(HarvestingMonths.MAY) ||
                 month.equals(HarvestingMonths.JUNE) || month.equals(HarvestingMonths.JULY)) &&

@@ -164,7 +164,7 @@ const GameView = () => {
             try {
                 const data = await getGame();
                 setGameData(data);
-                setMonth(new Date(data.currentDate).getMonth() + 1); 
+                setMonth(new Date(data.currentDate).getMonth() + 1);
             } catch (error) {
                 console.error('Error fetching game data:', error);
             }
@@ -349,16 +349,16 @@ const GameView = () => {
                                                                 </p>
                                                             );
 
-                                                            case "HIBERNATE":
-                                                                return (
-                                                                    <p>
-                                                                        {actionItem.data.hiveIds.map((hiveId, hiveIndex) => (
-                                                                            <span key={`${actionIndex}-${hiveIndex}`}>
-                                                                                Your hive with id {hiveId} died during last winter
-                                                                            </span>
-                                                                        ))}
-                                                                    </p>
-                                                                );                                                        
+                                                        case "HIBERNATE":
+                                                            return (
+                                                                <p>
+                                                                    {actionItem.data.hiveIds.map((hiveId, hiveIndex) => (
+                                                                        <span key={`${actionIndex}-${hiveIndex}`}>
+                                                                            Your hive with id {hiveId} died during last winter
+                                                                        </span>
+                                                                    ))}
+                                                                </p>
+                                                            );
 
                                                         default:
                                                             return null;
@@ -385,7 +385,11 @@ const GameView = () => {
                         <p className="btn-custom p-custom mb-2">Temp: {gameData && gameData.temperature ? gameData.temperature.toFixed(2) : 'Loading...'}</p>
                         <p className="btn-custom p-custom mb-2">Wind speed: {gameData && gameData.windSpeed ? gameData.windSpeed.toFixed(2) : 'Loading...'}</p>
                         <p className="btn-custom p-custom mb-2">Precipitation: {gameData && gameData.precipitation ? gameData.precipitation.toFixed(2) : 'Loading...'}</p>
-                        <p className="btn-custom p-custom mb-2">Total honey harvested: {gameData && gameData.totalKgOfHoneyHarvested ? gameData.totalKgOfHoneyHarvested.toFixed(2) : 'Loading'}</p>
+
+                        <p className="btn-custom p-custom mb-2">
+                            Total honey harvested: {gameData && gameData.totalKgOfHoneyHarvested !== undefined ? gameData.totalKgOfHoneyHarvested.toFixed(2) : 'Loading'}
+                        </p>
+
                         <p className="btn-custom p-custom mb-2">Money in the bank: {gameData && gameData.moneyInTheBank ? gameData.moneyInTheBank.toFixed(2) : 'Loading...'}</p>
                         <img src={getFlowerImage()} alt="Flower based on date" className="img-custom mb-2" />
                         <button className="btn btn-custom p-custom mb-2" onClick={handleIterateWeek}>Iterate one week</button>

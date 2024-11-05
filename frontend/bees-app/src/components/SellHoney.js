@@ -14,12 +14,12 @@ const RowHeader = () => (
 );
 
 const RowText = ({ honeyType, quantity, price, onQuantityChange }) => {
-    const [sellQuantity, setSellQuantity] = useState(0); 
+    const [sellQuantity, setSellQuantity] = useState(0);
 
     const handleInputChange = (event) => {
-        const value = Math.max(0, Math.min(Number(event.target.value), quantity)) || 0; 
+        const value = Math.max(0, Math.min(Number(event.target.value), quantity)) || 0;
         setSellQuantity(value);
-        onQuantityChange(value, honeyType, price); 
+        onQuantityChange(value, honeyType, price);
     };
 
     const totalValue = (sellQuantity * price).toFixed(2);
@@ -43,11 +43,11 @@ const RowText = ({ honeyType, quantity, price, onQuantityChange }) => {
         </div>
     );
 };
-
 const SellHoney = () => {
     const [honeyData, setHoneyData] = useState([]);
     const [soldValues, setSoldValues] = useState({});
     const [soldValueTotals, setSoldValueTotals] = useState({});
+    const [totalHoneyQuantity, setTotalHoneyQuantity] = useState(0); 
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -59,6 +59,8 @@ const SellHoney = () => {
                     quantity,
                 }));
                 setHoneyData(parsedData);
+                const totalQuantity = parsedData.reduce((acc, item) => acc + item.quantity, 0);
+                setTotalHoneyQuantity(totalQuantity); 
             } catch (error) {
                 console.error('Error fetching honey data:', error);
             }
@@ -81,20 +83,23 @@ const SellHoney = () => {
         .reduce((acc, val) => acc + Number(val), 0)
         .toFixed(2);
 
-    const handleSubmit = async () => {
-        const formattedSoldData = new Map(Object.entries(soldValues));
-
-        try {
-            await sendSellHoneyQuantities.updateHoneyStock(formattedSoldData, totalSoldValue);
-            console.log('Total honey sold value submitted:', totalSoldValue);
-            navigate('/gameView');
-        } catch (error) {
-            console.error('Error submitting total sold value:', error);
-        }
-    };
-
+        const handleSubmit = async () => {
+            const formattedSoldData = new Map(
+                Object.entries(soldValues).map(([key, value]) => [key, parseFloat(value)]) 
+            );
+        
+            try {
+                await sendSellHoneyQuantities.updateHoneyStock(formattedSoldData, totalSoldValue);
+                console.log('Total honey sold value submitted:', totalSoldValue);
+                navigate('/gameView');
+            } catch (error) {
+                console.error('Error submitting total sold value:', error);
+            }
+        };
+        
     return (
         <div className="body-sell">
+            <h3>Total Honey in stock: {totalHoneyQuantity.toFixed(2)} kg</h3> 
             <div className="container" style={{ marginTop: '50px' }}>
                 <RowHeader />
                 {honeyData.map(({ honeyType, quantity }) => (
@@ -107,9 +112,7 @@ const SellHoney = () => {
                     />
                 ))}
             </div>
-
             <h3>Total value of honey sold: ${totalSoldValue}</h3>
-
             <button className="btn btn-primary mb-3" onClick={handleSubmit}>Submit</button>
             <button className="btn btn-danger button-right-bottom" onClick={() => navigate('/gameView')}>Back</button>
         </div>
