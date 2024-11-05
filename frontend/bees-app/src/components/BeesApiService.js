@@ -58,6 +58,7 @@ export const getHoneyQuantities = async () => {
         throw error;
     }
 };
+
 export const sendSellHoneyQuantities = {
     updateHoneyStock: async (soldData, totalValue) => {
         try {
@@ -88,6 +89,30 @@ export const buyHives = async (numberOfHives) => {
     } catch (error) {
         console.error('Error buying hives:', error);
         throw error;
+    }
+};
+
+export const fetchLocations = async (query) => {
+    const apiKey = 'tiMHwUADw1sxyLnOfrbf2a6oyXhRHFBe';
+    const url = `https://api.os.uk/search/names/v1/find?key=${apiKey}&query=${query}&fq=local_type:City`;
+
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log(data); 
+        if (data.results && Array.isArray(data.results)) {
+            return data.results.map(result => result.GAZETTEER_ENTRY.NAME1);
+        } else {
+            console.warn('No results found in the API response');
+            return [];  
+        }
+    } catch (error) {
+        console.error('Failed to fetch locations:', error);
+        return []; 
     }
 };
 
