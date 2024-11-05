@@ -5,12 +5,17 @@ import { createGame } from './BeesApiService';
 const NewGameModal = ({ handleClose }) => {
     const [gameName, setgameName] = useState('');
     const [location, setLocation] = useState('');
-    const [startDate, setStartDate] = useState('');
     const [numberOfStartingHives, setNumberOfStartingHives] = useState(0);
     const navigate = useNavigate();
 
+    const [numYears, setNumYears] = useState(1); // Numărul de ani implicit
+    const currentYear = new Date().getFullYear();
+    const startYear = currentYear - numYears; // Anul de start calculat automat
+
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        const startDate = `${startYear}-03-01`; // Setăm automat data de început la 1 martie în anul calculat
 
         try {
             const gameData = await createGame({
@@ -70,21 +75,21 @@ const NewGameModal = ({ handleClose }) => {
 
                             <div className="row mb-3 align-items-center">
                                 <div className="col">
-                                    <label htmlFor="startDate" className="form-label">Start Date:</label>
+                                    <label htmlFor="numYears" className="form-label">Years to play:</label>
                                 </div>
                                 <div className="col">
                                     <input
-                                        type="date"
+                                        type="number"
                                         className="form-control"
-                                        id="startDate"
-                                        name="startDate"
-                                        value={startDate}
-                                        onChange={(e) => setStartDate(e.target.value)}
-                                        min={`${new Date().getFullYear()}-03-01`}
-                                        max={`${new Date().getFullYear()}-09-30`}
+                                        id="numYears"
+                                        name="numYears"
+                                        value={numYears}
+                                        onChange={(e) => setNumYears(Math.min(20, Math.max(1, e.target.value)))}
+                                        min="1"
+                                        max="20"
+                                        required
                                     />
                                 </div>
-
                             </div>
 
                             <div className="row mb-3 align-items-center">
