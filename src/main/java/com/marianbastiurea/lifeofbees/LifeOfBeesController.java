@@ -162,12 +162,13 @@ public class LifeOfBeesController {
     }
 
     @PostMapping("/buyHives/{gameId}")
-    public ResponseEntity<?> buyHives(@PathVariable Integer gameId, @RequestBody Map<String, Object> request) {
-        Integer numberOfHives = Integer.parseInt((String) request.get("numberOfHives"));
+    public ResponseEntity<?> buyHives(@PathVariable Integer gameId, @RequestBody Map<String, Integer> request) {
+        Integer numberOfHives = request.get("numberOfHives"); // Fără conversie, fiind deja Integer
         LifeOfBees lifeOfBeesGame = games.get(gameId);
         Apiary apiary = lifeOfBeesGame.getApiary();
         Hive.addHivesToApiary(apiary, apiary.createHive(numberOfHives, lifeOfBeesGame.getCurrentDate()));
         lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() - numberOfHives * 500);
         return ResponseEntity.ok("Hives bought successfully");
     }
+
 }

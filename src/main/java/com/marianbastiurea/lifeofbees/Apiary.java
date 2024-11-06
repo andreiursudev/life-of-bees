@@ -9,8 +9,6 @@ import java.util.*;
 public class Apiary {
 
     private List<Hive> hives;
-    //todo: remove harvestedHoneys field
-    private List<HarvestedHoney> harvestedHoneys;
 
 
     //todo
@@ -26,9 +24,9 @@ public class Apiary {
 
     private Map<String, Object> totalHarvestedHoney = new HashMap<>();
 
-    public Apiary(List<Hive> hives, List<HarvestedHoney> harvestedHoneys) {
+    public Apiary(List<Hive> hives) {
         this.hives = hives;
-        this.harvestedHoneys = harvestedHoneys;
+
     }
 
     public Apiary() {
@@ -40,28 +38,16 @@ public class Apiary {
         totalHarvestedHoney.put("FalseIndigo", 0.0);
     }
 
-    public List<HarvestedHoney> getHarvestedHoneys() {
-        return harvestedHoneys;
-    }
-
-    public void setHarvestedHoneys(List<HarvestedHoney> harvestedHoneys) {
-        this.harvestedHoneys = harvestedHoneys;
-    }
-
     public List<Hive> getHives() {
         return hives;
     }
 
-    public void addHoneyHarvested(List<HarvestedHoney> harvestedHoneys) {
-        this.harvestedHoneys.addAll(harvestedHoneys);
-    }
 
     @Override
     public String toString() {
         return "{" +
                 "numberOfHives=" + this.getHives().size() +
                 ", hives=" + this.hives +
-                ", honeys harvested=" + this.harvestedHoneys +
                 '}';
     }
 

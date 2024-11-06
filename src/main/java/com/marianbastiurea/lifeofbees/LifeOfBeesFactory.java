@@ -21,7 +21,7 @@ public class LifeOfBeesFactory {
         double moneyInTheBank = 3000.0;
         double totalKgOfHoney = 0;
 
-        Apiary apiary = new Apiary(new ArrayList<>(), new ArrayList<>());
+        Apiary apiary = new Apiary(new ArrayList<>());
         List<Hive> newHives = apiary.createHive(numberOfStartingHives, date);
         apiary.getHives().addAll(newHives);
         return new LifeOfBees(apiary, gameId, gameName, location, date, speedWind, temperature, precipitation, moneyInTheBank, totalKgOfHoney, actionOfTheWeek);

@@ -183,8 +183,15 @@ const GameView = () => {
     };
 
     const handleHivesToBuyChange = (e) => {
-        setHivesToBuy(e.target.value);
+        const value = Math.min(e.target.value, maxHives); // Limitează la maxHives
+        if (value * 500 <= gameData.moneyInTheBank) { // Verifică și fondurile disponibile
+            setHivesToBuy(value);
+            setError(null);
+        } else {
+            setError("Insufficient funds to buy that many hives.");
+        }
     };
+    
 
     const handleSubmitHivesPurchase = async () => {
         if (hivesToBuy > maxHives) {
