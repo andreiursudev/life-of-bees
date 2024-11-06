@@ -2,7 +2,7 @@ package com.marianbastiurea.lifeofbees.eggframe;
 
 import java.time.LocalDate;
 
-
+//remove EggBatch class
 class EggBatch {
     private int numberOfEggs;
     private final LocalDate creationDate;

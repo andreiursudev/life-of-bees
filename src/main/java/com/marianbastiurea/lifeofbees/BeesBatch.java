@@ -3,6 +3,7 @@ package com.marianbastiurea.lifeofbees;
 
 import java.time.LocalDate;
 
+//todo remove this class
 public class BeesBatch {
     private int numberOfBees;
     private final LocalDate creationDate;

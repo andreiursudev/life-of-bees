@@ -9,16 +9,25 @@ import java.util.*;
 public class Hive {
     private int id;
     private boolean itWasSplit;
-    private boolean answerIfWantToSplit;
     private boolean wasMovedAnEggsFrame;
     private List<EggFrame> eggFrames;
+    //todo: remove numberOfBees field
     private int numberOfBees;
     private Queen queen;
+    //todo: remove honey field, i think you should use honeyBatches
     private Honey honey;
+
+    //todo:
+    //replace  private List<EggBatch> beesBatches;
+    //with
+    // private static final int MAX_AGE = 30;
+    // private int[] beesBatches = new int[MAX_AGE];
     private List<BeesBatch> beesBatches;
     private List<HoneyFrame> honeyFrames;
     private List<HoneyBatch> honeyBatches;
+    //todo: remove apiary field
     private Apiary apiary; // Add an Apiary field to store the associated apiary
+    //todo: remove kgOfHoney field
     private double kgOfHoney;
     private ActionOfTheWeek actionOfTheWeek;
 
@@ -38,11 +47,10 @@ public class Hive {
         this.actionOfTheWeek = new ActionOfTheWeek(); // inițializează obiectul
     }
 
-    public Hive(Apiary apiary, int id, boolean itWasSplit, boolean answerIfWantToSplit, int numberOfBees, Queen queen) {
+    public Hive(Apiary apiary, int id, boolean itWasSplit, int numberOfBees, Queen queen) {
         this.apiary = apiary;
         this.id = id;
         this.itWasSplit = itWasSplit;
-        this.answerIfWantToSplit = answerIfWantToSplit;
         this.numberOfBees = numberOfBees;
         this.queen = queen;
     }
@@ -73,7 +81,6 @@ public class Hive {
         this.id = hiveIdCounter;
         this.itWasSplit = itWasSplit;
         this.wasMovedAnEggsFrame = wasMovedAnEggsFrame;
-        this.answerIfWantToSplit = answerIfWantToSplit;
         this.eggFrames = eggFrames;
         this.honeyFrames = honeyFrames;
         this.beesBatches = beesBatches;
@@ -100,14 +107,6 @@ public class Hive {
         this.itWasSplit = itWasSplit;
     }
 
-    public boolean isAnswerIfWantToSplit() {
-        return answerIfWantToSplit;
-    }
-
-    public void setAnswerIfWantToSplit(boolean answerIfWantToSplit) {
-        this.answerIfWantToSplit = answerIfWantToSplit;
-    }
-
     public void setApiary(Apiary apiary) {
         this.apiary = apiary;
     }
@@ -121,7 +120,6 @@ public class Hive {
         return "Hive{" +
                 "id=" + id +
                 ", itWasSplit=" + this.itWasSplit +
-                ", answerIfWantToSplit=" + this.answerIfWantToSplit +
                 ",wasMovedAnEggsFrame=" + this.wasMovedAnEggsFrame +
                 ", numberOfHoneyFrame=" + this.honeyFrames.size() +
                 ", numberOfEggsFrame=" + this.eggFrames.size() + "\n" +
@@ -252,7 +250,7 @@ public class Hive {
     }
 
     public List<ActionOfTheWeek> checkIfHiveCouldBeSplit(HarvestingMonths month, int dayOfMonth, List<ActionOfTheWeek> actionsOfTheWeek, LifeOfBees lifeOfBeesGame) {
-        if (!this.itWasSplit && lifeOfBeesGame.getApiary().getNumberOfHives() < 10) {
+        if (!this.itWasSplit && lifeOfBeesGame.getApiary().getHives().size() < 10) {
             if ((month.equals(HarvestingMonths.APRIL) || month.equals(HarvestingMonths.MAY)) &&
                     (dayOfMonth == 1 || dayOfMonth == 10)) {
                 if (this.eggFrames.size() == 6) {

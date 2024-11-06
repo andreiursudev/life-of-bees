@@ -2,6 +2,7 @@ package com.marianbastiurea.lifeofbees;
 
 class HoneyFrame {
     private double kgOfHoney;
+    //todo : remove honeyType field.
     private String honeyType;
 
     public HoneyFrame(double kgOfHoney, String honeyType) {

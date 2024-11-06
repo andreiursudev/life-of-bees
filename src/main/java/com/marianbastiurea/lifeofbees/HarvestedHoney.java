@@ -3,6 +3,7 @@ package com.marianbastiurea.lifeofbees;
 import java.time.LocalDate;
 import java.util.Date;
 
+//todo remove this class
 public class HarvestedHoney {
     private int hiveId;
     private String honeyType;

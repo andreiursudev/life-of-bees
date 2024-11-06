@@ -6,6 +6,8 @@ import java.util.List;
 
 
 public class Honey {
+    //todo: remove honeyType field
+
     private String honeyType;
 
     public Honey(String honeyType) {
@@ -68,7 +70,8 @@ public class Honey {
         return "No honey type available";
     }
 
-    public double honeyProductivity() {
+    // create HoneyType enum and pass it as argument to this method
+    public double honeyProductivity(/*HoneyType honeyType*/) {
         int indexHoneyProductivity = 0;
         return switch (honeyType) {
             case "Acacia" -> 1;

@@ -7,10 +7,23 @@ import java.util.*;
 
 
 public class Apiary {
-    private int numberOfHives;
+
     private List<Hive> hives;
+    //todo: remove harvestedHoneys field
     private List<HarvestedHoney> harvestedHoneys;
-    private LifeOfBees lifeOfBees;
+
+
+    //todo
+    // replace totalHarvestedHoney field with:
+    // class HarvestHoney{
+    //  double acacia = 0.0;
+    //  double rapeseed = 0.0;
+    //  double wildFlower = 0.0;
+    //  etc.
+    //}
+
+
+
     private Map<String, Object> totalHarvestedHoney = new HashMap<>();
 
     public Apiary(List<Hive> hives, List<HarvestedHoney> harvestedHoneys) {
@@ -25,14 +38,6 @@ public class Apiary {
         totalHarvestedHoney.put("Linden", 0.0);
         totalHarvestedHoney.put("SunFlower", 0.0);
         totalHarvestedHoney.put("FalseIndigo", 0.0);
-    }
-
-    public int getNumberOfHives() {
-        return numberOfHives;
-    }
-
-    public void setNumberOfHives(int numberOfHives) {
-        this.numberOfHives = numberOfHives;
     }
 
     public List<HarvestedHoney> getHarvestedHoneys() {
@@ -78,8 +83,7 @@ public class Apiary {
         if (hive.getEggsFrames().size() == 6 && !hive.isItWasSplit()) {
             hive.setNumberOfBees(hive.getNumberOfBees() / 2);
             hive.setItWasSplit(true);
-            hive.setAnswerIfWantToSplit(true);
-            Hive newHive = new Hive(this, this.getHives().size() + 1, true, true, hive.getNumberOfBees() / 2, new Queen());
+            Hive newHive = new Hive(this, this.getHives().size() + 1, true, hive.getNumberOfBees() / 2, new Queen());
             newHive.getQueen().setAgeOfQueen(0);
             newHive.setHoney(hive.getHoney());
             newHive.setApiary(this);
@@ -109,7 +113,6 @@ public class Apiary {
             newHive.setBeesBatches(newHiveBeesBatches);
             newHive.setHoneyBatches(new ArrayList<>());
             newHives.add(newHive);
-            this.setNumberOfHives(this.getNumberOfHives() + 1);
         }
         hives.addAll(newHives);
     }
@@ -121,7 +124,6 @@ public class Apiary {
         for (Hive hive : hives) {
             hive.getQueen().setAgeOfQueen(hive.getQueen().getAgeOfQueen() + 1);
             hive.setItWasSplit(false);
-            hive.setAnswerIfWantToSplit(false);
             hive.setWasMovedAnEggsFrame(false);
             hive.getHoneyBatches().clear();
             hive.getEggsFrames().remove(hive.getEggsFrames().size() - 1);
@@ -150,14 +152,14 @@ public class Apiary {
                 (dayOfMonth == 11 || dayOfMonth == 21)) {
             Map<String, Object> data = ActionOfTheWeek.findOrCreateAction("INSECT_CONTROL", actionsOfTheWeek).getData();
             ActionOfTheWeek actionInstance = new ActionOfTheWeek();
-            actionInstance.addOrUpdateAction("INSECT_CONTROL", this.getNumberOfHives(), data, actionsOfTheWeek);
+            actionInstance.addOrUpdateAction("INSECT_CONTROL", this.getHives().size(), data, actionsOfTheWeek);
         }
         return actionsOfTheWeek;
     }
 
     public void doInsectControl(String answer, LifeOfBees lifeOfBeesGame) {
         if ("yes".equals(answer)) {
-            lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() - (numberOfHives * 10));
+            lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() - (lifeOfBeesGame.getApiary().getHives().size() * 10));
         } else {
             for (Hive hive : hives) {
                 hive.setNumberOfBees((int) (hive.getNumberOfBees() * 0.09));
@@ -170,7 +172,7 @@ public class Apiary {
                 (dayOfMonth == 1)) {
             Map<String, Object> data = ActionOfTheWeek.findOrCreateAction("FEED_BEES", actionsOfTheWeek).getData();
             ActionOfTheWeek actionInstance = new ActionOfTheWeek();
-            actionInstance.addOrUpdateAction("FEED_BEES", this.getNumberOfHives(), data, actionsOfTheWeek);
+            actionInstance.addOrUpdateAction("FEED_BEES", this.getHives().size(), data, actionsOfTheWeek);
 
         }
         return actionsOfTheWeek;
@@ -178,7 +180,7 @@ public class Apiary {
 
     public void doFeedBees(String answer, LifeOfBees lifeOfBeesGame) {
         if ("yes".equals(answer)) {
-            lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() - numberOfHives * 7);
+            lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() - lifeOfBeesGame.getApiary().getHives().size() * 7);
         } else {
             for (Hive hive : hives) {
                 for (int day = 0; day < 7; day++) {

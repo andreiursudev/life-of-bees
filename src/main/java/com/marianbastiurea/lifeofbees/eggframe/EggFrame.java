@@ -13,6 +13,11 @@ public class EggFrame {
 
     private final int maxEggPerFrame = 6400;
 
+    //todo:
+    //replace  private List<EggBatch> eggBatches;
+    //with
+    // private static final int MAX_AGE = 20;
+    // private int[] eggBatches = new int[MAX_AGE];
     private List<EggBatch> eggBatches;
 
     public EggFrame() {

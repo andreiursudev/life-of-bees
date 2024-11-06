@@ -7,13 +7,13 @@ import java.util.List;
 
 public class LifeOfBees {
     private Apiary apiary;
-    private int hiveIdCounter = 1;
     private List<ActionOfTheWeek> actionOfTheWeek;
     private Integer gameId;
     private String gameName;
     private String location;
     private LocalDate currentDate;
-    private int numberOfStartingHives;
+
+    //todo: group speedWind, temperature and precipitation in a class separate class
     private double speedWind;// in km/h
     private double temperature;// in Celsius Degree
     private double precipitation;
@@ -41,13 +41,11 @@ public class LifeOfBees {
     public String toString() {
         return "LifeOfBees{" +
                 "apiary=" + apiary +
-                ", hiveIdCounter=" + hiveIdCounter +
                 ", action=" + actionOfTheWeek +
                 ", gameId=" + gameId +
                 ", gameName='" + gameName + '\'' +
                 ", location='" + location + '\'' +
                 ", currentDate='" + currentDate + '\'' +
-                ", numberOfStartingHives=" + numberOfStartingHives +
                 ", speedWind=" + speedWind +
                 ", temperature=" + temperature +
                 ", precipitation=" + precipitation +
@@ -66,7 +64,6 @@ public class LifeOfBees {
 
         for (int dailyIterator = 0; dailyIterator < 7; dailyIterator++) {
             List<Hive> hives = apiary.getHives();
-            apiary.setNumberOfHives(hives.size());
             ArrayList<Hive> oldHives = new ArrayList<>(hives);
             for (Hive hive : oldHives) {
                 Honey honey = hive.getHoney();
@@ -150,10 +147,6 @@ public class LifeOfBees {
 
     public String getLocation() {
         return location;
-    }
-
-    public int getNumberOfStartingHives() {
-        return numberOfStartingHives;
     }
 
     public LocalDate getCurrentDate() {
