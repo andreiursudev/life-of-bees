@@ -90,8 +90,6 @@ const SellHoney = () => {
 
 
     const handleSubmit = async () => {
-
-        setIsSubmitting(true);
         const formattedSoldData = Object.entries(soldValues)
             .filter(([_, quantity]) => quantity > 0)
             .reduce((acc, [honeyType, quantity]) => {

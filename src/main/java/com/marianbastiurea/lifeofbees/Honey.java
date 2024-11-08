@@ -10,28 +10,7 @@ import static com.marianbastiurea.lifeofbees.HoneyType.*;
 public class Honey {
     //todo: remove honeyType field
 
-    private String honeyType;
-
-    public Honey(String honeyType) {
-        this.honeyType = honeyType;
-    }
-
     public Honey() {
-    }
-
-    public String getHoneyType() {
-        return honeyType;
-    }
-
-    public void setHoneyType(String honeyType) {
-        this.honeyType = honeyType;
-    }
-
-    @Override
-    public String toString() {
-        return "Honey{" +
-                "honeyType='" + honeyType + '\'' +
-                '}';
     }
 
     public HarvestingMonths getHarvestingMonth(LocalDate date) {
@@ -66,8 +45,6 @@ public class Honey {
         }
         return null;
     }
-
-
 
     public double honeyProductivity(HoneyType honeyType) {
         int indexHoneyProductivity = 0;
