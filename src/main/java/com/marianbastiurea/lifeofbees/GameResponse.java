@@ -106,11 +106,10 @@ class HivesView {
     double kgOfHoney;
     private boolean itWasSplit;
 
-    public HivesView(int id, int ageOfQueen, int bees, String honeyType, int eggsFrame, int honeyFrame, double kgOfHoney, boolean itWasSplit) {
+    public HivesView(int id, int ageOfQueen, int bees, int eggsFrame, int honeyFrame, double kgOfHoney, boolean itWasSplit) {
         this.id = id;
         this.ageOfQueen = ageOfQueen;
         this.bees = bees;
-        this.honeyType = honeyType;
         this.eggsFrame = eggsFrame;
         this.honeyFrame = honeyFrame;
         this.kgOfHoney = kgOfHoney;

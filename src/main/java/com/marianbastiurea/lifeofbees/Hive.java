@@ -14,8 +14,7 @@ public class Hive {
     //todo: remove numberOfBees field
     private int numberOfBees;
     private Queen queen;
-    //todo: remove honey field, i think you should use honeyBatches
-    private Honey honey;
+
 
     //todo:
     //replace  private List<EggBatch> beesBatches;
@@ -44,7 +43,7 @@ public class Hive {
     }
 
     public Hive() {
-        this.actionOfTheWeek = new ActionOfTheWeek(); // inițializează obiectul
+        this.actionOfTheWeek = new ActionOfTheWeek();
     }
 
     public Hive(Apiary apiary, int id, boolean itWasSplit, int numberOfBees, Queen queen) {
@@ -55,9 +54,6 @@ public class Hive {
         this.queen = queen;
     }
 
-    public Hive(Honey honey) {
-        this.honey = honey;
-    }
 
     public Hive(boolean wasMovedAnEggsFrame) {
         this.wasMovedAnEggsFrame = wasMovedAnEggsFrame;
@@ -68,12 +64,10 @@ public class Hive {
             int hiveIdCounter,
             boolean itWasSplit,
             boolean wasMovedAnEggsFrame,
-            boolean answerIfWantToSplit,
             List<EggFrame> eggFrames,
             List<HoneyFrame> honeyFrames,
             List<BeesBatch> beesBatches,
             List<HoneyBatch> honeyBatches,
-            Honey honey,
             Queen queen,
             int numberOfBees,
             double kgOfHoney) {
@@ -85,7 +79,6 @@ public class Hive {
         this.honeyFrames = honeyFrames;
         this.beesBatches = beesBatches;
         this.honeyBatches = honeyBatches;
-        this.honey = honey;
         this.queen = queen;
         this.numberOfBees = numberOfBees;
         this.kgOfHoney = kgOfHoney;
@@ -166,14 +159,6 @@ public class Hive {
         this.queen = queen;
     }
 
-    public Honey getHoney() {
-        return honey;
-    }
-
-    public void setHoney(Honey honey) {
-        this.honey = honey;
-    }
-
     public int getId() {
         return id;
     }
@@ -184,10 +169,6 @@ public class Hive {
 
     public int getAgeOfQueen() {
         return getQueen().getAgeOfQueen();
-    }
-
-    public String getHoneyType() {
-        return getHoney().getHoneyType();
     }
 
     public int getNumberOfBees() {
@@ -325,13 +306,19 @@ public class Hive {
         return actionsOfTheWeek;
     }
 
-    public void fillUpExistingHoneyFrameFromHive(LocalDate currentDate) {
+    public void fillUpExistingHoneyFrameFromHive(LifeOfBees lifeOfBeesGame) {
         double maxKgOfHoneyPerFrame = 4.5;
         // a frame could be loaded with around  4.5Kg of honey
         Random random = new Random();
+        Honey honey=new Honey();
+        LocalDate date = lifeOfBeesGame.getCurrentDate();
+        int day = date.getDayOfMonth();
+        int monthValue = date.getMonthValue();
+        HarvestingMonths month =HarvestingMonths.values()[monthValue - 3];
+
         int numberOfHoneyFrameNotFull = honeyFrames.size() - this.getNumberOfFullHoneyFrame();
         int numberOfFlight = random.nextInt(3, 6);
-        double kgOfHoneyToAdd = this.numberOfBees * numberOfFlight * 0.00002 * getHoney().honeyProductivity();//0.02gr/flight/bee
+        double kgOfHoneyToAdd = this.numberOfBees * numberOfFlight * 0.00002 * honey.honeyProductivity(honey.honeyType(month,day));//0.02gr/flight/bee
         for (HoneyFrame honeyFrame : honeyFrames) {
             if (honeyFrame.getKgOfHoney() < maxKgOfHoneyPerFrame) {
                 honeyFrame.setKgOfHoney(Math.min(maxKgOfHoneyPerFrame, honeyFrame.getKgOfHoney() + kgOfHoneyToAdd / numberOfHoneyFrameNotFull));
@@ -341,7 +328,7 @@ public class Hive {
 
     public void addNewHoneyFrameInHive() {
         if (honeyFrames.size() < 6) {
-            honeyFrames.add(new HoneyFrame(0, honey.getHoneyType()));
+            honeyFrames.add(new HoneyFrame(0));
             System.out.println("New honey frame added. Total: " + this.eggFrames.size());
         } else {
             System.out.println("Cannot add more eggs frames. Maximum reached.");

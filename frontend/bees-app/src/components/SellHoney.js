@@ -31,14 +31,15 @@ const RowText = ({ honeyType, quantity, price, onQuantityChange }) => {
             <p className="btn-custom-sell mb-2">{price}</p>
             <form>
                 <input
-                    type="number"
                     className="btn-custom-sell mb-2"
+                    type="number"
                     min="0"
                     max={quantity}
                     value={sellQuantity || ''}
                     onChange={handleInputChange}
                 />
             </form>
+
             <p className="btn-custom-sell mb-2">${totalValue}</p>
         </div>
     );
@@ -47,26 +48,29 @@ const SellHoney = () => {
     const [honeyData, setHoneyData] = useState([]);
     const [soldValues, setSoldValues] = useState({});
     const [soldValueTotals, setSoldValueTotals] = useState({});
-    const [totalHoneyQuantity, setTotalHoneyQuantity] = useState(0); 
+    const [totalHoneyQuantity, setTotalHoneyQuantity] = useState(0);
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchHoneyData = async () => {
             try {
                 const data = await getHoneyQuantities();
+
                 const parsedData = Object.entries(data).map(([honeyType, quantity]) => ({
                     honeyType,
                     quantity,
                 }));
                 setHoneyData(parsedData);
+
                 const totalQuantity = parsedData.reduce((acc, item) => acc + item.quantity, 0);
-                setTotalHoneyQuantity(totalQuantity); 
+                setTotalHoneyQuantity(totalQuantity);
             } catch (error) {
                 console.error('Error fetching honey data:', error);
             }
         };
         fetchHoneyData();
     }, []);
+
 
     const updateTotalSoldValue = (sellQuantity, honeyType, price) => {
         setSoldValues((prevSoldValues) => ({
@@ -83,31 +87,48 @@ const SellHoney = () => {
         .reduce((acc, val) => acc + Number(val), 0)
         .toFixed(2);
 
-        const handleSubmit = async () => {
-            const formattedSoldData = new Map(
-                Object.entries(soldValues).map(([key, value]) => [key, parseFloat(value)]) 
-            );
-        
-            try {
-                await sendSellHoneyQuantities.updateHoneyStock(formattedSoldData, totalSoldValue);
-                console.log('Total honey sold value submitted:', totalSoldValue);
-                navigate('/gameView');
-            } catch (error) {
-                console.error('Error submitting total sold value:', error);
-            }
-        };
-        
+
+
+    const handleSubmit = async () => {
+
+        setIsSubmitting(true);
+        const formattedSoldData = Object.entries(soldValues)
+            .filter(([_, quantity]) => quantity > 0)
+            .reduce((acc, [honeyType, quantity]) => {
+                acc[honeyType] = parseFloat(quantity);
+                return acc;
+            }, {});
+
+        try {
+            const payload = {
+                ...formattedSoldData,
+                totalValue: parseFloat(totalSoldValue)
+            };
+            console.log('Payload trimis din SellHoney:', JSON.stringify(payload, null, 2));
+
+            await sendSellHoneyQuantities.updateHoneyStock(formattedSoldData, parseFloat(totalSoldValue));
+            navigate('/gameView');
+        } catch (error) {
+            console.error('Error submitting total sold value:', error);
+        } 
+    };
+
+
+
+
+
     return (
         <div className="body-sell">
-            <h3>Total Honey in stock: {totalHoneyQuantity.toFixed(2)} kg</h3> 
+            <h3>Total Honey in stock: {totalHoneyQuantity.toFixed(2)} kg</h3>
             <div className="container" style={{ marginTop: '50px' }}>
                 <RowHeader />
                 {honeyData.map(({ honeyType, quantity }) => (
                     <RowText
+                        className="btn-custom-sell mb-2"
                         key={honeyType}
                         honeyType={honeyType}
                         quantity={quantity}
-                        price={honeyType === "Acacia" ? 6 : 3}
+                        price={honeyType === "acacia" ? 6 : 3}
                         onQuantityChange={updateTotalSoldValue}
                     />
                 ))}

@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.marianbastiurea.lifeofbees.HoneyType.*;
+
 
 public class Honey {
     //todo: remove honeyType field
@@ -37,49 +39,45 @@ public class Honey {
         return HarvestingMonths.values()[monthValue - 3];
     }
 
-    public String honeyType(HarvestingMonths month, int dayOfMonth) {
+    public HoneyType honeyType(HarvestingMonths month, int dayOfMonth) {
         switch (month) {
             case MARCH, AUGUST, SEPTEMBER:
-                return "WildFlower";
+                return HoneyType.WildFlower;
             case APRIL:
                 if (dayOfMonth >= 1 && dayOfMonth <= 20) {
-                    return "Rapeseed";
-                } else if (dayOfMonth >= 21 && dayOfMonth <= 30) {
-                    return "WildFlower";
+                    return HoneyType.Rapeseed;
+                } else {
+                    return HoneyType.WildFlower;
                 }
-                break;
             case MAY:
                 if (dayOfMonth >= 1 && dayOfMonth <= 20) {
-                    return "Acacia";
-                } else if (dayOfMonth >= 21 && dayOfMonth <= 31) {
-                    return "FalseIndigo";
+                    return HoneyType.Acacia;
+                } else {
+                    return HoneyType.FalseIndigo;
                 }
-                break;
             case JUNE:
                 if (dayOfMonth >= 1 && dayOfMonth <= 20) {
-                    return "Linden";
-                } else if (dayOfMonth >= 21 && dayOfMonth <= 30) {
-                    return "WildFlower";
+                    return HoneyType.Linden;
+                } else {
+                    return HoneyType.WildFlower;
                 }
-                break;
             case JULY:
-                return "SunFlower";
-            default:
-                return "No honey type available";
+                return HoneyType.SunFlower;
         }
-        return "No honey type available";
+        return null;
     }
 
-    // create HoneyType enum and pass it as argument to this method
-    public double honeyProductivity(/*HoneyType honeyType*/) {
+
+
+    public double honeyProductivity(HoneyType honeyType) {
         int indexHoneyProductivity = 0;
         return switch (honeyType) {
-            case "Acacia" -> 1;
-            case "Rapeseed" -> 0.8;
-            case "WildFlower" -> 0.75;
-            case "Linden" -> 1;
-            case "SunFlower" -> 0.8;
-            case "FalseIndigo" -> 0.7;
+            case Acacia -> 1;
+            case Rapeseed-> 0.8;
+            case WildFlower -> 0.75;
+            case Linden -> 1;
+            case SunFlower -> 0.8;
+            case FalseIndigo -> 0.7;
             default -> indexHoneyProductivity;
         };
     }

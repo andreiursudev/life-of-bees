@@ -58,6 +58,8 @@ public class LifeOfBees {
 
     public LifeOfBees iterateOneWeek(LifeOfBees lifeOfBeesGame) {
         LocalDate date = lifeOfBeesGame.getCurrentDate();
+        int day = date.getDayOfMonth();
+        int monthValue = date.getMonthValue();
         Weather weather = new Weather();
         List<ActionOfTheWeek> actionsOfTheWeek = new ArrayList<>();
         Weather todayWeather = null;
@@ -66,11 +68,10 @@ public class LifeOfBees {
             List<Hive> hives = apiary.getHives();
             ArrayList<Hive> oldHives = new ArrayList<>(hives);
             for (Hive hive : oldHives) {
-                Honey honey = hive.getHoney();
+                Honey honey = new Honey();
                 HarvestingMonths month = honey.getHarvestingMonth(date);
                 todayWeather = weather.whetherToday(month, date.getDayOfMonth());
                 Queen queen = hive.getQueen();
-                hive.getHoney().honeyType(month, date.getDayOfMonth());
                 double numberRandom = Math.random();
 
                 if ((numberRandom < 0.5 && month.equals(HarvestingMonths.MAY) && date.getDayOfMonth() > 1 && date.getDayOfMonth() < 20) || queen.getAgeOfQueen() == 5) {
@@ -80,7 +81,7 @@ public class LifeOfBees {
                 int numberOfEggs = queen.makeEggs(honey, whetherIndex);
                 hive.fillUpEggsFrame(date, numberOfEggs);
                 hive.checkAndAddEggsToBees(date);
-                hive.fillUpExistingHoneyFrameFromHive(date);
+                hive.fillUpExistingHoneyFrameFromHive(lifeOfBeesGame);
                 hive.beesDie(date);
                 hive.setKgOfHoney(hive.findTotalKgOfHoney());
                 List<HoneyBatch> harvestedHoneyBatches = honey.harvestHoney(hive, month, date.getDayOfMonth());
@@ -93,7 +94,6 @@ public class LifeOfBees {
                 apiary.checkFeedBees(month, date.getDayOfMonth(), actionsOfTheWeek);
             }
             apiary.honeyHarvestedByHoneyType();
-            System.out.println("your honey harvested  until now:");
             System.out.println(apiary.getTotalHarvestedHoney());
             lifeOfBeesGame.setTotalKgOfHoneyHarvested(apiary.getTotalKgHoneyHarvested());
 

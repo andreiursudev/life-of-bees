@@ -129,3 +129,7 @@ html, body {
 .suggestions-list li:hover {
   background-color: #f0f0f0;
 }
+.input-sell-quantity {
+  width: 150; 
+  text-align: left;
+}

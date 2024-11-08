@@ -125,7 +125,7 @@ public class LifeOfBeesController {
     public GameResponse getGameResponse(LifeOfBees game) {
         GameResponse gameResponse = new GameResponse();
         for (Hive hive : game.getApiary().getHives()) {
-            gameResponse.getHives().add(new HivesView(hive.getId(), hive.getAgeOfQueen(), hive.getNumberOfBees(), hive.getHoneyType(), hive.getEggsFrames().size(), hive.getHoneyFrames().size(), hive.getKgOfHoney(), hive.isItWasSplit()));
+            gameResponse.getHives().add(new HivesView(hive.getId(), hive.getAgeOfQueen(), hive.getNumberOfBees(), hive.getEggsFrames().size(), hive.getHoneyFrames().size(), hive.getKgOfHoney(), hive.isItWasSplit()));
         }
         gameResponse.setTemperature(game.getTemperature());
         gameResponse.setActionOfTheWeek(game.getActionOfTheWeek());
@@ -139,27 +139,68 @@ public class LifeOfBeesController {
     }
 
     @GetMapping("/getHoneyQuantities/{gameId}")
-    public ResponseEntity<Map<String, Object>> getHoneyQuantities(@PathVariable Integer gameId) {
+    public ResponseEntity<HarvestHoney> getHoneyQuantities(@PathVariable Integer gameId) {
         LifeOfBees lifeOfBeesGame = games.get(gameId);
         Apiary apiary = lifeOfBeesGame.getApiary();
-        Map<String, Object> honeyData = apiary.getTotalHarvestedHoney();
+        apiary.honeyHarvestedByHoneyType();
+        System.out.println(" acesta e geterul din apiary:"+apiary.getTotalHarvestedHoney());
+        HarvestHoney honeyData = apiary.getTotalHarvestedHoney();
+        System.out.println("aceasta e mierea trimisa catre SellHoney.js: " +honeyData);
         return ResponseEntity.ok(honeyData);
     }
+
 
     @PostMapping("/sellHoney/{gameId}")
     public ResponseEntity<String> sendSellHoneyQuantities(
             @PathVariable Integer gameId,
             @RequestBody Map<String, Double> requestData) {
+        System.out.println("cantitatile de miere vandute au sosit");
+
         double revenue = requestData.getOrDefault("totalValue", 0.0);
-        Map<String, Double> soldHoneyData = new HashMap<>(requestData);
-        soldHoneyData.remove("totalValue");
+        System.out.println("banii incasati sunt: " + revenue);
+
+        HarvestHoney soldHoneyData = new HarvestHoney();
+        System.out.println("mierea vanduta este: " + soldHoneyData);
+
+
+        for (Map.Entry<String, Double> entry : requestData.entrySet()) {
+            if (!entry.getKey().equals("totalValue")) {
+                switch (entry.getKey().toLowerCase()) {
+                    case "acacia":
+                        soldHoneyData.Acacia = entry.getValue();
+                        break;
+                    case "rapeseed":
+                        soldHoneyData.Rapeseed = entry.getValue();
+                        break;
+                    case "wildflower":
+                        soldHoneyData.WildFlower = entry.getValue();
+                        break;
+                    case "linden":
+                        soldHoneyData.Linden = entry.getValue();
+                        break;
+                    case "sunflower":
+                        soldHoneyData.SunFlower = entry.getValue();
+                        break;
+                    case "falseindigo":
+                        soldHoneyData.FalseIndigo = entry.getValue();
+                        break;
+                    default:
+                        return ResponseEntity.badRequest().body("Invalid honey type: " + entry.getKey());
+                }
+            }
+        }
+
         LifeOfBees lifeOfBeesGame = games.get(gameId);
         Apiary apiary = lifeOfBeesGame.getApiary();
+
+
         apiary.updateHoneyStock(soldHoneyData);
         lifeOfBeesGame.setTotalKgOfHoneyHarvested(apiary.getTotalKgHoneyHarvested());
         lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() + revenue);
+
         return ResponseEntity.ok("Stock and revenue updated successfully.");
     }
+
 
     @PostMapping("/buyHives/{gameId}")
     public ResponseEntity<?> buyHives(@PathVariable Integer gameId, @RequestBody Map<String, Integer> request) {

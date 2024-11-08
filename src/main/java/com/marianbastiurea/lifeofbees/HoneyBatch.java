@@ -6,10 +6,10 @@ import java.time.LocalDate;
 class HoneyBatch {
     private final int hiveId;
     private final double kgOfHoney;
-    private final String honeyType;
+    private final HoneyType honeyType;
     private boolean isProcessed;
 
-    public HoneyBatch(int hiveId, double kgOfHoney, String honeyType, boolean isProcessed) {
+    public HoneyBatch(int hiveId, double kgOfHoney, HoneyType honeyType, boolean isProcessed) {
         this.hiveId = hiveId;
         this.kgOfHoney = kgOfHoney;
         this.honeyType = honeyType;
@@ -24,13 +24,14 @@ class HoneyBatch {
         return kgOfHoney;
     }
 
-    public String getHoneyType() {
+    public HoneyType getHoneyType() {
         return honeyType;
     }
 
     public boolean isProcessed() {
         return isProcessed;
     }
+
 
     public void setProcessed(boolean processed) {
         isProcessed = processed;

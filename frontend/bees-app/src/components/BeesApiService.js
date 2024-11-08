@@ -63,8 +63,8 @@ export const sendSellHoneyQuantities = {
     updateHoneyStock: async (soldData, totalValue) => {
         try {
             // Creează payload-ul
-            const payload = { ...Object.fromEntries(soldData), totalValue };
-            console.log('Payload trimis:', JSON.stringify(payload, null, 2));
+            const payload = { ...soldData, totalValue };
+            console.log('Payload din BeesApiService:', JSON.stringify(payload, null, 2));
 
             const response = await axios.post(`http://localhost:8080/api/bees/sellHoney/0`, payload);
             return response.data;
