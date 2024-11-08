@@ -103,16 +103,14 @@ class HivesView {
     String honeyType;
     int eggsFrame;
     int honeyFrame;
-    double kgOfHoney;
     private boolean itWasSplit;
 
-    public HivesView(int id, int ageOfQueen, int bees, int eggsFrame, int honeyFrame, double kgOfHoney, boolean itWasSplit) {
+    public HivesView(int id, int ageOfQueen, int bees, int eggsFrame, int honeyFrame, boolean itWasSplit) {
         this.id = id;
         this.ageOfQueen = ageOfQueen;
         this.bees = bees;
         this.eggsFrame = eggsFrame;
         this.honeyFrame = honeyFrame;
-        this.kgOfHoney = kgOfHoney;
         this.itWasSplit = itWasSplit;
     }
 
@@ -140,10 +138,6 @@ class HivesView {
         return honeyFrame;
     }
 
-    public double getKgOfHoney() {
-        return kgOfHoney;
-    }
-
     public boolean isItWasSplit() {
         return itWasSplit;
     }
@@ -161,7 +155,6 @@ class HivesView {
                 ", honeyType='" + honeyType + '\'' +
                 ", eggsFrame=" + eggsFrame +
                 ", honeyFrame=" + honeyFrame +
-                ", kgOfHoney=" + kgOfHoney +
                 '}';
     }
 }

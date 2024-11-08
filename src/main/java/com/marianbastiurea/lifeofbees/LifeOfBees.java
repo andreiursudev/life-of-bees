@@ -83,7 +83,6 @@ public class LifeOfBees {
                 hive.checkAndAddEggsToBees(date);
                 hive.fillUpExistingHoneyFrameFromHive(lifeOfBeesGame);
                 hive.beesDie(date);
-                hive.setKgOfHoney(hive.findTotalKgOfHoney());
                 List<HoneyBatch> harvestedHoneyBatches = honey.harvestHoney(hive, month, date.getDayOfMonth());
                 hive.addHoneyBatches(harvestedHoneyBatches, actionsOfTheWeek);
                 hive.checkIfHiveCouldBeSplit(month, date.getDayOfMonth(), actionsOfTheWeek, lifeOfBeesGame);

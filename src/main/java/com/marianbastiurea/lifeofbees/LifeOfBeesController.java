@@ -125,7 +125,7 @@ public class LifeOfBeesController {
     public GameResponse getGameResponse(LifeOfBees game) {
         GameResponse gameResponse = new GameResponse();
         for (Hive hive : game.getApiary().getHives()) {
-            gameResponse.getHives().add(new HivesView(hive.getId(), hive.getAgeOfQueen(), hive.getNumberOfBees(), hive.getEggsFrames().size(), hive.getHoneyFrames().size(), hive.getKgOfHoney(), hive.isItWasSplit()));
+            gameResponse.getHives().add(new HivesView(hive.getId(), hive.getAgeOfQueen(), hive.getNumberOfBees(), hive.getEggsFrames().size(), hive.getHoneyFrames().size(), hive.isItWasSplit()));
         }
         gameResponse.setTemperature(game.getTemperature());
         gameResponse.setActionOfTheWeek(game.getActionOfTheWeek());

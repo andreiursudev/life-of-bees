@@ -27,7 +27,7 @@ public class Hive {
     //todo: remove apiary field
     private Apiary apiary; // Add an Apiary field to store the associated apiary
     //todo: remove kgOfHoney field
-    private double kgOfHoney;
+
     private ActionOfTheWeek actionOfTheWeek;
 
 
@@ -81,7 +81,6 @@ public class Hive {
         this.honeyBatches = honeyBatches;
         this.queen = queen;
         this.numberOfBees = numberOfBees;
-        this.kgOfHoney = kgOfHoney;
     }
 
     public boolean isItWasSplit() {
@@ -144,14 +143,6 @@ public class Hive {
     public Queen getQueen() {
 
         return queen;
-    }
-
-    public double getKgOfHoney() {
-        return kgOfHoney;
-    }
-
-    public void setKgOfHoney(double kgOfHoney) {
-        this.kgOfHoney = kgOfHoney;
     }
 
     public void setQueen(Queen queen) {
@@ -416,14 +407,6 @@ public class Hive {
                 }
             }
         }
-    }
-
-    public double findTotalKgOfHoney() {
-        double totalKgOfHoney = 0.0;
-        for (HoneyBatch honeyBatch : honeyBatches) {
-            totalKgOfHoney += honeyBatch.getKgOfHoney();
-        }
-        return totalKgOfHoney;
     }
 
     public static void addHivesToApiary(Apiary apiary, List<Hive> newHives) {

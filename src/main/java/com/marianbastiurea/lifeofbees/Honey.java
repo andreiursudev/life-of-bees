@@ -8,7 +8,6 @@ import static com.marianbastiurea.lifeofbees.HoneyType.*;
 
 
 public class Honey {
-    //todo: remove honeyType field
 
     public Honey() {
     }
@@ -74,7 +73,6 @@ public class Honey {
                         honeyFrame.setKgOfHoney(0);
                     }
                 }
-                hive.setKgOfHoney(kgOfHoney);
                 if (kgOfHoney > 0) {
                     HoneyBatch honeyBatch = new HoneyBatch(hive.getId(), kgOfHoney, honeyType(month, dayOfMonth), false);
                     honeyBatches.add(honeyBatch);

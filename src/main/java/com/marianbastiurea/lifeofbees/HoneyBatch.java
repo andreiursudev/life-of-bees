@@ -1,7 +1,5 @@
 package com.marianbastiurea.lifeofbees;
 
-import java.time.LocalDate;
-
 
 class HoneyBatch {
     private final int hiveId;
