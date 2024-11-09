@@ -111,10 +111,6 @@ const SellHoney = () => {
         } 
     };
 
-
-
-
-
     return (
         <div className="body-sell">
             <h3>Total Honey in stock: {totalHoneyQuantity.toFixed(2)} kg</h3>

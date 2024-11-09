@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.marianbastiurea.lifeofbees.HoneyType.*;
-
 
 public class Honey {
 
@@ -49,22 +47,20 @@ public class Honey {
         int indexHoneyProductivity = 0;
         return switch (honeyType) {
             case Acacia -> 1;
-            case Rapeseed-> 0.8;
+            case Rapeseed -> 0.8;
             case WildFlower -> 0.75;
             case Linden -> 1;
             case SunFlower -> 0.8;
             case FalseIndigo -> 0.7;
-            default -> indexHoneyProductivity;
         };
     }
 
     public List<HoneyBatch> harvestHoney(Hive hive, HarvestingMonths month, int dayOfMonth) {
         List<HoneyBatch> honeyBatches = new ArrayList<>();
         double kgOfHoney = 0;
-
         if ((month.equals(HarvestingMonths.APRIL) || month.equals(HarvestingMonths.MAY) ||
-                month.equals(HarvestingMonths.JUNE) || month.equals(HarvestingMonths.JULY)) &&
-                (dayOfMonth == 10 || dayOfMonth == 20)) {
+                month.equals(HarvestingMonths.JUNE) || month.equals(HarvestingMonths.JULY) &&
+                        (dayOfMonth == 10 || dayOfMonth == 20))) {
             if (!hive.isItWasSplit()) {
                 List<HoneyFrame> hiveHoneyFrames = hive.getHoneyFrames();
                 for (HoneyFrame honeyFrame : hiveHoneyFrames) {

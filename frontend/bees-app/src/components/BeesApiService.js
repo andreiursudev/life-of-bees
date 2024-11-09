@@ -47,8 +47,6 @@ export const submitActionsOfTheWeek = async (actionsData) => {
     }
 };
 
-
-
 export const getHoneyQuantities = async () => {
     try {
         const response = await axios.get(`http://localhost:8080/api/bees/getHoneyQuantities/0`);
@@ -62,7 +60,6 @@ export const getHoneyQuantities = async () => {
 export const sendSellHoneyQuantities = {
     updateHoneyStock: async (soldData, totalValue) => {
         try {
-            // Creează payload-ul
             const payload = { ...soldData, totalValue };
             console.log('Payload din BeesApiService:', JSON.stringify(payload, null, 2));
 

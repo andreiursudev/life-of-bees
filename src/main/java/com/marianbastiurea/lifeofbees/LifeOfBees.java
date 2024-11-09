@@ -58,8 +58,6 @@ public class LifeOfBees {
 
     public LifeOfBees iterateOneWeek(LifeOfBees lifeOfBeesGame) {
         LocalDate date = lifeOfBeesGame.getCurrentDate();
-        int day = date.getDayOfMonth();
-        int monthValue = date.getMonthValue();
         Weather weather = new Weather();
         List<ActionOfTheWeek> actionsOfTheWeek = new ArrayList<>();
         Weather todayWeather = null;
@@ -79,13 +77,13 @@ public class LifeOfBees {
                 }
                 double whetherIndex = weather.weatherIndex(month, date.getDayOfMonth());
                 int numberOfEggs = queen.makeEggs(honey, whetherIndex);
-                hive.fillUpEggsFrame(date, numberOfEggs);
-                hive.checkAndAddEggsToBees(date);
+                hive.fillUpEggsFrame(numberOfEggs);
+                hive.checkIfHiveCouldBeSplit(month, date.getDayOfMonth(), actionsOfTheWeek, lifeOfBeesGame);
+                hive.checkAndAddEggsToBees();
                 hive.fillUpExistingHoneyFrameFromHive(lifeOfBeesGame);
-                hive.beesDie(date);
+                hive.getBeesBatches().removeLast();
                 List<HoneyBatch> harvestedHoneyBatches = honey.harvestHoney(hive, month, date.getDayOfMonth());
                 hive.addHoneyBatches(harvestedHoneyBatches, actionsOfTheWeek);
-                hive.checkIfHiveCouldBeSplit(month, date.getDayOfMonth(), actionsOfTheWeek, lifeOfBeesGame);
                 hive.checkIfCanAddNewEggsFrameInHive(actionsOfTheWeek);
                 hive.checkIfCanAddANewHoneyFrameInHive(actionsOfTheWeek);
                 hive.checkIfCanMoveAnEggsFrame(actionsOfTheWeek, lifeOfBeesGame);
