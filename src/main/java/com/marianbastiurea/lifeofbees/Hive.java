@@ -14,15 +14,10 @@ public class Hive {
     private List<HoneyFrame> honeyFrames;
     private List<HoneyBatch> honeyBatches;
 
-
-    //todo: remove apiary field
-    private Apiary apiary;
-
     private ActionOfTheWeek actionOfTheWeek;
 
-    public Hive(Apiary apiary, List<EggFrame> eggFrames, LinkedList<Integer> beesBatches,
+    public Hive( List<EggFrame> eggFrames, LinkedList<Integer> beesBatches,
                 List<HoneyFrame> honeyFrames, List<HoneyBatch> honeyBatches) {
-        this.apiary = apiary;
         this.eggFrames = new ArrayList<>(eggFrames);
         this.beesBatches = new LinkedList<>(beesBatches);
         this.honeyFrames = new ArrayList<>(honeyFrames);
@@ -35,8 +30,7 @@ public class Hive {
         this.actionOfTheWeek = new ActionOfTheWeek();
     }
 
-    public Hive(Apiary apiary, int id, boolean itWasSplit, Queen queen) {
-        this.apiary = apiary;
+    public Hive( int id, boolean itWasSplit, Queen queen) {
         this.id = id;
         this.itWasSplit = itWasSplit;
         this.queen = queen;
@@ -47,7 +41,6 @@ public class Hive {
     }
 
     public Hive(
-            Apiary apiary,
             int hiveIdCounter,
             boolean itWasSplit,
             boolean wasMovedAnEggsFrame,
@@ -56,7 +49,6 @@ public class Hive {
             LinkedList<Integer> beesBatches,
             List<HoneyBatch> honeyBatches,
             Queen queen) {
-        this.apiary = apiary;
         this.id = hiveIdCounter;
         this.itWasSplit = itWasSplit;
         this.wasMovedAnEggsFrame = wasMovedAnEggsFrame;
@@ -81,14 +73,6 @@ public class Hive {
 
     public void setItWasSplit(boolean itWasSplit) {
         this.itWasSplit = itWasSplit;
-    }
-
-    public void setApiary(Apiary apiary) {
-        this.apiary = apiary;
-    }
-
-    public Apiary getApiary() {
-        return apiary;
     }
 
     @Override
@@ -142,17 +126,17 @@ public class Hive {
         return getQueen().getAgeOfQueen();
     }
 
-    public void addBeesBatches(List<Integer> beesBatches) {
-        this.beesBatches.addAll(beesBatches);
-    }
-
-    public void addHoneyFrames(List<HoneyFrame> honeyFrames) {
-        this.honeyFrames.addAll(honeyFrames);
-    }
-
-    public void addEggsFrames(List<EggFrame> eggFrames) {
-        this.eggFrames.addAll(eggFrames);
-    }
+//    public void addBeesBatches(List<Integer> beesBatches) {
+//        this.beesBatches.addAll(beesBatches);
+//    }
+//
+//    public void addHoneyFrames(List<HoneyFrame> honeyFrames) {
+//        this.honeyFrames.addAll(honeyFrames);
+//    }
+//
+//    public void addEggsFrames(List<EggFrame> eggFrames) {
+//        this.eggFrames.addAll(eggFrames);
+//    }
 
     public List<HoneyBatch> getHoneyBatches() {
         return honeyBatches;
@@ -365,10 +349,9 @@ public class Hive {
         }
     }
 
-    public static void addHivesToApiary(Apiary apiary, List<Hive> newHives) {
-        List<Hive> existingHives = apiary.getHives();
+    public static void addHivesToApiary( List<Hive> newHives, LifeOfBees lifeOfBeesgame) {
+        List<Hive> existingHives =lifeOfBeesgame.getApiary().getHives();
         for (Hive hive : newHives) {
-            hive.setApiary(apiary);
             hive.setId(existingHives.size() + 1);
             existingHives.add(hive);
         }

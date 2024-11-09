@@ -195,7 +195,7 @@ public class LifeOfBeesController {
         Integer numberOfHives = request.get("numberOfHives"); // Fără conversie, fiind deja Integer
         LifeOfBees lifeOfBeesGame = games.get(gameId);
         Apiary apiary = lifeOfBeesGame.getApiary();
-        Hive.addHivesToApiary(apiary, apiary.createHive(numberOfHives, lifeOfBeesGame.getCurrentDate()));
+        Hive.addHivesToApiary(apiary.createHive(numberOfHives, lifeOfBeesGame.getCurrentDate()), lifeOfBeesGame);
         lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() - numberOfHives * 500);
         return ResponseEntity.ok("Hives bought successfully");
     }

@@ -43,10 +43,8 @@ public class Apiary {
         if (hive.getEggsFrames().size() == 6 && !hive.isItWasSplit()) {
             hive.setItWasSplit(true);
 
-            Hive newHive = new Hive(this,this.getHives().size()+1, true,new Queen(0));
-            newHive.setApiary(this);
+            Hive newHive = new Hive(this.getHives().size()+1, true,new Queen(0));
             newHive.setWasMovedAnEggsFrame(false);
-
             List<EggFrame> newHiveEggFrames = new ArrayList<>();
             for (int i = 0; i < 3; i++) {
                 EggFrame frameToMove = hive.getEggsFrames().remove(hive.getEggsFrames().size() - 1);
@@ -228,7 +226,6 @@ public class Apiary {
             }
 
             Hive hive = new Hive(
-                    null,
                     newHives.size() + 1,
                     false,
                     false,
@@ -237,7 +234,6 @@ public class Apiary {
                     beesBatches,
                     new ArrayList<>(),
                     new Queen(ageOfQueen)
-
             );
             newHives.add(hive);
         }
