@@ -2,7 +2,6 @@ package com.marianbastiurea.lifeofbees;
 
 import java.util.*;
 
-//TODO remove EggFrame
 public class EggFrame {
 
     private final int maxEggPerFrame = 6400;

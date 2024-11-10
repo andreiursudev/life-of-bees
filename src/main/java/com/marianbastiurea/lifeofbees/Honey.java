@@ -64,8 +64,9 @@ public class Honey {
             if (!hive.isItWasSplit()) {
                 List<HoneyFrame> hiveHoneyFrames = hive.getHoneyFrames();
                 for (HoneyFrame honeyFrame : hiveHoneyFrames) {
-                    if (honeyFrame.isHarvestable()) {
-                        kgOfHoney = honeyFrame.harvest();
+                    if (honeyFrame.getKgOfHoney() > 4) {
+                        kgOfHoney += honeyFrame.getKgOfHoney();
+                        honeyFrame.setKgOfHoney(0);
                     }
                 }
                 if (kgOfHoney > 0) {
@@ -76,7 +77,5 @@ public class Honey {
         }
         return honeyBatches;
     }
-
-
 }
 
