@@ -1,6 +1,8 @@
 package com.marianbastiurea.lifeofbees;
+
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class Apiary {
@@ -15,6 +17,7 @@ public class Apiary {
     public List<Hive> getHives() {
         return hives;
     }
+
     public Apiary(List<Hive> hives) {
         this.hives = hives;
         this.totalHarvestedHoney = new HarvestHoney(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
@@ -40,17 +43,19 @@ public class Apiary {
 
     public void splitHive(Hive hive) {
         List<Hive> newHives = new ArrayList<>();
-        if (hive.getEggsFrames().size() == 6 && !hive.isItWasSplit()) {
+        if (hive.getEggFrames().getNumberOfEggFrames() == 6 && !hive.isItWasSplit()) {
             hive.setItWasSplit(true);
 
-            Hive newHive = new Hive(this.getHives().size()+1, true,new Queen(0));
+            Hive newHive = new Hive(this.getHives().size() + 1, true, new Queen(0));
             newHive.setWasMovedAnEggsFrame(false);
-            List<EggFrame> newHiveEggFrames = new ArrayList<>();
-            for (int i = 0; i < 3; i++) {
-                EggFrame frameToMove = hive.getEggsFrames().remove(hive.getEggsFrames().size() - 1);
-                newHiveEggFrames.add(frameToMove);
+
+            LinkedList<Integer> newEggBatches = new LinkedList<>();
+            for (int i = 0; i < 10; i++) {
+                newEggBatches.add(hive.getEggFrames().getEggBatches().removeFirst());
             }
-            newHive.setEggsFrames(newHiveEggFrames);
+            EggFrames newHiveEggFrames = new EggFrames(3, newEggBatches);
+            hive.getEggFrames().setNumberOfEggFrames(3);
+            newHive.setEggFrames(newHiveEggFrames);
             List<HoneyFrame> newHiveHoneyFrames = new ArrayList<>();
             for (int i = 0; i < 3; i++) {
                 HoneyFrame frameToMove = hive.getHoneyFrames().remove(hive.getHoneyFrames().size() - 1);
@@ -82,8 +87,9 @@ public class Apiary {
             hive.setItWasSplit(false);
             hive.setWasMovedAnEggsFrame(false);
             hive.getHoneyBatches().clear();
-            hive.getEggsFrames().remove(hive.getEggsFrames().size() - 1);
-            hive.getEggsFrames().remove(hive.getEggsFrames().size() - 1);
+            hive.getEggFrames().getEggBatches().removeLast();
+            hive.getEggFrames().getEggBatches().removeLast();
+            hive.getEggFrames().setNumberOfEggFrames(hive.getEggFrames().getNumberOfEggFrames()-1);
             hive.getHoneyFrames().remove(hive.getHoneyFrames().size() - 1);
             hive.getHoneyFrames().remove(hive.getHoneyFrames().size() - 1);
             hive.getBeesBatches().removeLast();
@@ -106,8 +112,8 @@ public class Apiary {
 
     public List<ActionOfTheWeek> checkInsectControl(HarvestingMonths month, int dayOfMonth, List<ActionOfTheWeek> actionsOfTheWeek) {
         if ((month.equals(HarvestingMonths.APRIL) || month.equals(HarvestingMonths.MAY) ||
-                month.equals(HarvestingMonths.JUNE) || month.equals(HarvestingMonths.JULY)) &&
-                (dayOfMonth == 11 || dayOfMonth == 21)) {
+                month.equals(HarvestingMonths.JUNE) || month.equals(HarvestingMonths.JULY) || month.equals(HarvestingMonths.AUGUST) &&
+                (dayOfMonth == 11 || dayOfMonth == 21))) {
             Map<String, Object> data = ActionOfTheWeek.findOrCreateAction("INSECT_CONTROL", actionsOfTheWeek).getData();
             ActionOfTheWeek actionInstance = new ActionOfTheWeek();
             actionInstance.addOrUpdateAction("INSECT_CONTROL", this.getHives().size(), data, actionsOfTheWeek);
@@ -156,9 +162,17 @@ public class Apiary {
             int destinationHiveId = hiveIds.get(1);
             Hive sourceHive = this.getHiveById(sourceHiveId);
             Hive destinationHive = this.getHiveById(destinationHiveId);
-            EggFrame frameToMove = sourceHive.getEggsFrames().remove(sourceHive.getEggsFrames().size() - 1);
-            destinationHive.getEggsFrames().add(frameToMove);
+            List<Integer> eggBatchesToMove;
+            final int[] sum = {0};
+            eggBatchesToMove = sourceHive.getEggFrames().getEggBatches().stream()
+                    .takeWhile(batch -> sum[0] + batch <= 6400)
+                    .peek(batch -> sum[0] += batch)
+                    .collect(Collectors.toList());
+            destinationHive.getEggFrames().getEggBatches().addAll(eggBatchesToMove);
+            destinationHive.getEggFrames().setNumberOfEggFrames(destinationHive.getEggFrames().getNumberOfEggFrames()+1);
+            sourceHive.getEggFrames().getEggBatches().removeAll(eggBatchesToMove);
             sourceHive.setWasMovedAnEggsFrame(true);
+            sourceHive.getEggFrames().setNumberOfEggFrames(sourceHive.getEggFrames().getNumberOfEggFrames()-1);
         }
     }
 
@@ -198,7 +212,7 @@ public class Apiary {
         totalHarvestedHoney.setRapeseed(totalHarvestedHoney.getRapeseed() - soldHoneyData.Rapeseed);
         totalHarvestedHoney.setWildFlower(totalHarvestedHoney.getWildFlower() - soldHoneyData.WildFlower);
         totalHarvestedHoney.setLinden(totalHarvestedHoney.getLinden() - soldHoneyData.Linden);
-        totalHarvestedHoney.setSunFlower(totalHarvestedHoney.getSunFlower()- soldHoneyData.SunFlower);
+        totalHarvestedHoney.setSunFlower(totalHarvestedHoney.getSunFlower() - soldHoneyData.SunFlower);
         totalHarvestedHoney.setFalseIndigo(totalHarvestedHoney.getFalseIndigo() - soldHoneyData.FalseIndigo);
     }
 
@@ -207,24 +221,20 @@ public class Apiary {
         List<Hive> newHives = new ArrayList<>();
         for (int i = 1; i <= numberOfHives; i++) {
             int ageOfQueen = random.nextInt(1, 6);
-            List<EggFrame> eggFrames = new ArrayList<>();
-            for (int j = 0; j < random.nextInt(3, 4); j++) {
-                eggFrames.add(new EggFrame());
+            int numberOfEggFrames = random.nextInt(2) + 3;
+            LinkedList<Integer> eggBatches = new LinkedList<>();
+            for (int j = 0; j < 21; j++) {
+                eggBatches.add(random.nextInt(101) + 900);
             }
-            for (EggFrame eggFrame : eggFrames) {
-                for (int j = 0; j < 20; j++) {
-                    eggFrame.addEggs(random.nextInt(200, 250));
-                }
-            }
+            EggFrames eggFrames = new EggFrames(numberOfEggFrames, eggBatches);
             LinkedList<Integer> beesBatches = new LinkedList<>();
-            for(int k=0;k<30;k++){
-                beesBatches.add(random.nextInt(600,700));
+            for (int k = 0; k < 30; k++) {
+                beesBatches.add(random.nextInt(600, 700));
             }
             List<HoneyFrame> honeyFrames = new ArrayList<>();
             for (int k = 0; k < random.nextInt(3, 5); k++) {
                 honeyFrames.add(new HoneyFrame(random.nextDouble(2.5, 3)));
             }
-
             Hive hive = new Hive(
                     newHives.size() + 1,
                     false,
@@ -236,6 +246,7 @@ public class Apiary {
                     new Queen(ageOfQueen)
             );
             newHives.add(hive);
+            System.out.println("acesta este stupul tau: "+hive);
         }
         return newHives;
     }

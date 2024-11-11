@@ -37,6 +37,7 @@ const RowText = ({ honeyType, quantity, price, onQuantityChange }) => {
                     max={quantity}
                     value={sellQuantity || ''}
                     onChange={handleInputChange}
+                    style={{ width: '150px' }}
                 />
             </form>
 
@@ -108,7 +109,7 @@ const SellHoney = () => {
             navigate('/gameView');
         } catch (error) {
             console.error('Error submitting total sold value:', error);
-        } 
+        }
     };
 
     return (
@@ -121,7 +122,7 @@ const SellHoney = () => {
                         className="btn-custom-sell mb-2"
                         key={honeyType}
                         honeyType={honeyType}
-                        quantity={quantity}
+                        quantity={quantity.toFixed(2)}
                         price={honeyType === "acacia" ? 6 : 3}
                         onQuantityChange={updateTotalSoldValue}
                     />

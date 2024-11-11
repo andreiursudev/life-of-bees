@@ -44,7 +44,6 @@ public class Honey {
     }
 
     public double honeyProductivity(HoneyType honeyType) {
-        int indexHoneyProductivity = 0;
         return switch (honeyType) {
             case Acacia -> 1;
             case Rapeseed -> 0.8;
@@ -59,7 +58,7 @@ public class Honey {
         List<HoneyBatch> honeyBatches = new ArrayList<>();
         double kgOfHoney = 0;
         if ((month.equals(HarvestingMonths.APRIL) || month.equals(HarvestingMonths.MAY) ||
-                month.equals(HarvestingMonths.JUNE) || month.equals(HarvestingMonths.JULY) &&
+                month.equals(HarvestingMonths.JUNE) || month.equals(HarvestingMonths.JULY)||month.equals(HarvestingMonths.AUGUST) &&
                         (dayOfMonth == 10 || dayOfMonth == 20))) {
             if (!hive.isItWasSplit()) {
                 List<HoneyFrame> hiveHoneyFrames = hive.getHoneyFrames();
@@ -76,7 +75,5 @@ public class Honey {
         }
         return honeyBatches;
     }
-
-
 }
 

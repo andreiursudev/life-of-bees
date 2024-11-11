@@ -71,20 +71,19 @@ public class LifeOfBees {
                 todayWeather = weather.whetherToday(month, date.getDayOfMonth());
                 Queen queen = hive.getQueen();
                 double numberRandom = Math.random();
-
                 if ((numberRandom < 0.5 && month.equals(HarvestingMonths.MAY) && date.getDayOfMonth() > 1 && date.getDayOfMonth() < 20) || queen.getAgeOfQueen() == 5) {
                     hive.changeQueen();
                 }
                 double whetherIndex = weather.weatherIndex(month, date.getDayOfMonth());
                 int numberOfEggs = queen.makeEggs(honey, whetherIndex);
                 hive.fillUpEggsFrame(numberOfEggs);
+                hive.checkIfCanAddNewEggsFrameInHive(actionsOfTheWeek);
                 hive.checkIfHiveCouldBeSplit(month, date.getDayOfMonth(), actionsOfTheWeek, lifeOfBeesGame);
-                hive.checkAndAddEggsToBees();
+                hive.checkAndAddEggsToBees(hive.getEggFrames());
                 hive.fillUpExistingHoneyFrameFromHive(lifeOfBeesGame);
                 hive.getBeesBatches().removeLast();
                 List<HoneyBatch> harvestedHoneyBatches = honey.harvestHoney(hive, month, date.getDayOfMonth());
                 hive.addHoneyBatches(harvestedHoneyBatches, actionsOfTheWeek);
-                hive.checkIfCanAddNewEggsFrameInHive(actionsOfTheWeek);
                 hive.checkIfCanAddANewHoneyFrameInHive(actionsOfTheWeek);
                 hive.checkIfCanMoveAnEggsFrame(actionsOfTheWeek, lifeOfBeesGame);
                 apiary.checkInsectControl(month, date.getDayOfMonth(), actionsOfTheWeek);
