@@ -1,11 +1,14 @@
 package com.marianbastiurea.lifeofbees;
 
 
+import java.util.Map;
+
 public class GameRequest {
     private String gameName;
     private String location;
     private String startDate;
     private int numberOfStartingHives;
+    private Map<String, Object> allWeatherData;
 
     public String getGameName() {
         return gameName;
@@ -37,5 +40,24 @@ public class GameRequest {
 
     public void setNumberOfStartingHives(int numberOfStartingHives) {
         this.numberOfStartingHives = numberOfStartingHives;
+    }
+
+    public Map<String, Object> getAllWeatherData() {
+        return allWeatherData;
+    }
+
+    public void setAllWeatherData(Map<String, Object> allWeatherData) {
+        this.allWeatherData = allWeatherData;
+    }
+
+    @Override
+    public String toString() {
+        return "GameRequest{" +
+                "gameName='" + gameName + '\'' +
+                ", location='" + location + '\'' +
+                ", startDate='" + startDate + '\'' +
+                ", numberOfStartingHives=" + numberOfStartingHives +
+                ", allWeatherData=" + allWeatherData +
+                '}';
     }
 }

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../App.css';
 import HiveCard from './HiveCard';
-import { getGame, iterateWeek, submitActionsOfTheWeek, buyHives } from './BeesApiService';
+import { getGame, iterateWeek, submitActionsOfTheWeek, buyHives} from './BeesApiService';
 import rapeseedFlower from '../rapeseed-flower.jpg';
 import wildFlower from '../wild-flower.jpg';
 import acaciaFlower from '../acacia-flower.jpg';
@@ -12,12 +12,13 @@ import falseIndigoFlower from '../false-indigo-flower.jpg';
 import BuyHivesModal from './BuyHivesModal';
 
 
-
 const GameView = () => {
     const navigate = useNavigate();
     const [gameData, setGameData] = useState(null);
     const [selectedActions, setSelectedActions] = useState({});
     const [updatedGameData, setUpdatedGameData] = useState(null);
+    const locationData = useLocation();
+    const { location, startDate } = locationData.state;
 
     useEffect(() => {
         async function fetchGameData() {
@@ -117,6 +118,7 @@ const GameView = () => {
         }
     };
 
+
     const getFlowerImage = () => {
         if (!gameData || !gameData.currentDate) {
             return wildFlower;
@@ -183,15 +185,15 @@ const GameView = () => {
     };
 
     const handleHivesToBuyChange = (e) => {
-        const value = Math.min(e.target.value, maxHives); // Limitează la maxHives
-        if (value * 500 <= gameData.moneyInTheBank) { // Verifică și fondurile disponibile
+        const value = Math.min(e.target.value, maxHives);
+        if (value * 500 <= gameData.moneyInTheBank) {
             setHivesToBuy(value);
             setError(null);
         } else {
             setError("Insufficient funds to buy that many hives.");
         }
     };
-    
+
 
     const handleSubmitHivesPurchase = async () => {
         if (hivesToBuy > maxHives) {
@@ -224,6 +226,9 @@ const GameView = () => {
         const currentMonth = new Date(gameData.currentDate).getMonth() + 1;
         return currentMonth === 3 || currentMonth === 4;
     };
+
+
+
 
 
 
@@ -389,9 +394,17 @@ const GameView = () => {
                 <div className="col-md-3">
                     <div className="d-flex flex-column align-items-center">
                         <p className="btn-custom p-custom mb-2">Date: {gameData ? gameData.currentDate : 'Loading...'}</p>
-                        <p className="btn-custom p-custom mb-2">Temp: {gameData && gameData.temperature ? gameData.temperature.toFixed(2) : 'Loading...'}</p>
-                        <p className="btn-custom p-custom mb-2">Wind speed: {gameData && gameData.windSpeed ? gameData.windSpeed.toFixed(2) : 'Loading...'}</p>
-                        <p className="btn-custom p-custom mb-2">Precipitation: {gameData && gameData.precipitation ? gameData.precipitation.toFixed(2) : 'Loading...'}</p>
+                        <p className="btn-custom p-custom mb-2">
+                            Temp: {gameData && gameData.temperature !== undefined ? gameData.temperature.toFixed(2) : '0.00'}
+                        </p>
+                        <p className="btn-custom p-custom mb-2">
+                            Wind speed: {gameData && gameData.windSpeed !== undefined ? gameData.windSpeed.toFixed(2) : '0.00'}
+                        </p>
+
+
+                        <p className="btn-custom p-custom mb-2">
+                            Precipitation: {gameData && gameData.precipitation !== undefined ? gameData.precipitation.toFixed(2) : '0'}
+                        </p>
 
                         <p className="btn-custom p-custom mb-2">
                             Total honey harvested: {gameData && gameData.totalKgOfHoneyHarvested !== undefined ? gameData.totalKgOfHoneyHarvested.toFixed(2) : 'Loading'}

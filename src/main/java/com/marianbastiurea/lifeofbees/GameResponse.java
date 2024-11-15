@@ -79,6 +79,13 @@ public class GameResponse {
         this.totalKgOfHoneyHarvested = totalKgOfHoneyHarvested;
     }
 
+    public void setWeatherData(Weather weatherData) {
+        if (weatherData != null) {
+            this.temperature = weatherData.getTemperature();
+            this.precipitation = weatherData.getPrecipitation();
+            this.windSpeed = weatherData.getWindSpeed();
+        }
+    }
 
     @Override
     public String toString() {

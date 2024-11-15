@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createGame, fetchLocations } from './BeesApiService';
+import { createGame, fetchLocations, fetchWeatherForStartDate, fakeWeatherData } from './BeesApiService';
 
 const NewGameModal = ({ handleClose }) => {
     const [gameName, setgameName] = useState('');
@@ -12,20 +12,30 @@ const NewGameModal = ({ handleClose }) => {
     const [numYears, setNumYears] = useState(1);
     const currentYear = new Date().getFullYear();
     const startYear = currentYear - numYears;
+    const startDate = `${startYear}-03-01`;
 
+    
+    
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const startDate = `${startYear}-03-01`;
-
+        
         try {
-            const gameData = await createGame({
+           // const weatherData = await fetchWeatherForStartDate(location, startDate);
+           const allWeatherData = fakeWeatherData();
+
+            const gameData = {
                 gameName,
                 location,
                 startDate,
-                numberOfStartingHives
-            });
-            console.log('Game started:', gameData);
-            navigate('/gameView');
+                numberOfStartingHives,
+                allWeatherData
+            };
+
+            console.log('Game data being sent:', gameData);
+
+            const response = await createGame(gameData);
+            console.log('Game started:', response);
+            navigate('/gameView', { state: { location, startDate } });
         } catch (error) {
             console.error('Error starting game:', error);
         }
@@ -35,7 +45,7 @@ const NewGameModal = ({ handleClose }) => {
         const query = e.target.value;
         setLocation(query);
 
-        if (query.length >= 3) { 
+        if (query.length >= 3) {
             const locationSuggestions = await fetchLocations(query);
             setSuggestions(locationSuggestions);
         } else {
@@ -45,8 +55,10 @@ const NewGameModal = ({ handleClose }) => {
 
     const handleSuggestionClick = (suggestion) => {
         setLocation(suggestion);
-        setSuggestions([]); 
+        setSuggestions([]);
     };
+
+
 
     return (
         <div className="modal show" style={{ display: 'block' }}>

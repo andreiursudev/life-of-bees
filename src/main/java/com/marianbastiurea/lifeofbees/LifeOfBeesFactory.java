@@ -3,27 +3,41 @@ package com.marianbastiurea.lifeofbees;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
+import java.util.Map;
 
 
 public class LifeOfBeesFactory {
-
-    public static LifeOfBees createLifeOfBeesGame(Integer gameId, String gameName, String location, String startingDate, int numberOfStartingHives) {
+    public static LifeOfBees createLifeOfBeesGame(Integer gameId, String gameName, String location, String startingDate, int numberOfStartingHives, Map<String, Object> allWeatherData) {
+        // Convertește startingDate în LocalDate
         LocalDate date = LocalDate.parse(startingDate);
-        int day = date.getDayOfMonth();
-        int monthValue = date.getMonthValue();
-        HarvestingMonths month =HarvestingMonths.values()[monthValue - 3];
+
+        // Creează o listă de acțiuni
         List<ActionOfTheWeek> actionOfTheWeek = new ArrayList<>();
-        Weather weather = new Weather();
-        Weather todayWeather = weather.whetherToday(month, day);
-        double speedWind = todayWeather.getSpeedWind();
-        double temperature = todayWeather.getTemperature();
-        double precipitation = todayWeather.getPrecipitation();
+
+        // Inițializează variabilele jocului
         double moneyInTheBank = 3000.0;
         double totalKgOfHoney = 0;
 
+        // Creează obiectul Apiary
         Apiary apiary = new Apiary(new ArrayList<>());
+
+        // Creează stupii
         List<Hive> newHives = apiary.createHive(numberOfStartingHives, date);
         apiary.getHives().addAll(newHives);
-        return new LifeOfBees(apiary, gameId, gameName, location, date, speedWind, temperature, precipitation, moneyInTheBank, totalKgOfHoney, actionOfTheWeek);
+
+        System.out.println("acesta e allWeatherData primit in LifeOfBeesFactory:"+allWeatherData);
+
+        // Creează obiectul Weather pentru datele meteo completeÒ
+        Weather gameWeatherData = new Weather(allWeatherData);
+        System.out.println("acestea sunt datele meteo pentru tot jocul gameWeatherData"+gameWeatherData);
+
+        // Obține datele meteo pentru data respectivă
+        Weather weatherData = gameWeatherData.getDailyWeatherDataForDate(date, allWeatherData);
+
+
+
+        // Creează și returnează obiectul LifeOfBees
+        return new LifeOfBees(apiary, gameId, gameName, location, date, weatherData, moneyInTheBank, totalKgOfHoney, actionOfTheWeek);
     }
+
 }
