@@ -7,7 +7,7 @@ import java.util.Map;
 
 
 public class LifeOfBeesFactory {
-    public static LifeOfBees createLifeOfBeesGame(Integer gameId, String gameName, String location, String startingDate, int numberOfStartingHives, Map<String, Object> allWeatherData) {
+    public static LifeOfBees createLifeOfBeesGame(Integer gameId, String gameName, String location, String startingDate, int numberOfStartingHives, Map<String, WeatherData> allWeatherData) {
         // Convertește startingDate în LocalDate
         LocalDate date = LocalDate.parse(startingDate);
 
@@ -32,12 +32,12 @@ public class LifeOfBeesFactory {
         System.out.println("acestea sunt datele meteo pentru tot jocul gameWeatherData"+gameWeatherData);
 
         // Obține datele meteo pentru data respectivă
-        Weather weatherData = gameWeatherData.getDailyWeatherDataForDate(date, allWeatherData);
+        WeatherData weatherData = gameWeatherData.getDailyWeatherDataForDate(date, allWeatherData);
 
 
 
         // Creează și returnează obiectul LifeOfBees
-        return new LifeOfBees(apiary, gameId, gameName, location, date, weatherData, moneyInTheBank, totalKgOfHoney, actionOfTheWeek);
+        return new LifeOfBees(apiary, gameId, gameName, location, date, weatherData, moneyInTheBank, totalKgOfHoney, actionOfTheWeek,gameWeatherData);
     }
 
 }

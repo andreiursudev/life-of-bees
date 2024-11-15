@@ -8,7 +8,7 @@ public class GameRequest {
     private String location;
     private String startDate;
     private int numberOfStartingHives;
-    private Map<String, Object> allWeatherData;
+    private Map<String, WeatherData> allWeatherData;
 
     public String getGameName() {
         return gameName;
@@ -42,11 +42,11 @@ public class GameRequest {
         this.numberOfStartingHives = numberOfStartingHives;
     }
 
-    public Map<String, Object> getAllWeatherData() {
+    public Map<String, WeatherData> getAllWeatherData() {
         return allWeatherData;
     }
 
-    public void setAllWeatherData(Map<String, Object> allWeatherData) {
+    public void setAllWeatherData(Map<String, WeatherData> allWeatherData) {
         this.allWeatherData = allWeatherData;
     }
 

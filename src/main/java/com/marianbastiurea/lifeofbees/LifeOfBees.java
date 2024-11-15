@@ -12,8 +12,8 @@ public class LifeOfBees {
     private String gameName;
     private String location;
     private LocalDate currentDate;
-    private Weather weatherData;
-
+    private WeatherData weatherData;
+    private Weather gameWeatherData;
 
     //todo: group speedWind, temperature and precipitation in a class separate class
 //    private double speedWind;// in km/h
@@ -25,8 +25,8 @@ public class LifeOfBees {
 
     public LifeOfBees(Apiary apiary, Integer gameId,
                       String gameName, String location, LocalDate currentDate,
-                      Weather weatherData, double moneyInTheBank, double totalKgOfHoneyHarvested,
-                      List<ActionOfTheWeek> actionOfTheWeek) {
+                      WeatherData weatherData, double moneyInTheBank, double totalKgOfHoneyHarvested,
+                      List<ActionOfTheWeek> actionOfTheWeek, Weather gameWeatherData) {
         this.apiary = apiary;
         this.gameId = gameId;
         this.gameName = gameName;
@@ -36,8 +36,21 @@ public class LifeOfBees {
         this.totalKgOfHoneyHarvested = totalKgOfHoneyHarvested;
         this.actionOfTheWeek = actionOfTheWeek;
         this.weatherData = weatherData;
+        this.gameWeatherData=gameWeatherData;
     }
 
+
+    public LifeOfBees(Weather gameWeatherData) {
+        this.gameWeatherData = gameWeatherData;
+    }
+
+    public Weather getGameWeatherData() {
+        return gameWeatherData;
+    }
+
+    public void setGameWeatherData(Weather gameWeatherData) {
+        this.gameWeatherData = gameWeatherData;
+    }
 
     @Override
     public String toString() {
@@ -56,10 +69,16 @@ public class LifeOfBees {
 
     public LifeOfBees iterateOneWeek(LifeOfBees lifeOfBeesGame) {
         LocalDate date = lifeOfBeesGame.getCurrentDate();
-        Weather weather=new Weather();
 
-        Weather dailyWeather = weather.getDailyWeatherDataForDate(date, weather.getAllWeatherData());
-        System.out.println("Acestea sunt datele meteo pentru o azi: " + dailyWeather);
+        // Inițializează obiectul Weather cu toate datele meteo stocate în joc
+        Weather weather = lifeOfBeesGame.getGameWeatherData();
+        System.out.println("acestea sunt datele meteo in metoda iterateOneWeek: "+weather);
+
+        // Obține datele meteo zilnice pentru data curentă
+        WeatherData dailyWeather = weather.getDailyWeatherDataForDate(date, weather.getAllWeatherData());
+        System.out.println("Acestea sunt datele meteo pentru azi: " + dailyWeather);
+
+
 
         List<ActionOfTheWeek> actionsOfTheWeek = new ArrayList<>();
 
@@ -105,7 +124,7 @@ public class LifeOfBees {
             date = date.plusDays(1);
         }
         lifeOfBeesGame.setCurrentDate(date);
-        return new LifeOfBees(apiary, gameId, gameName, location, date, dailyWeather, moneyInTheBank, totalKgOfHoneyHarvested, actionOfTheWeek);
+        return new LifeOfBees(apiary, gameId, gameName, location, date, dailyWeather, moneyInTheBank, totalKgOfHoneyHarvested, actionOfTheWeek, gameWeatherData);
     }
 
     public Integer getGameId() {
@@ -117,11 +136,11 @@ public class LifeOfBees {
         return apiary;
     }
 
-    public Weather getWeatherData() {
+    public WeatherData getWeatherData() {
         return weatherData;
     }
 
-    public void setWeatherData(Weather weatherData) {
+    public void setWeatherData(WeatherData weatherData) {
         this.weatherData = weatherData;
     }
 
