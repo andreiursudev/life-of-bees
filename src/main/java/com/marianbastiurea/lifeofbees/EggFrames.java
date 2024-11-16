@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
+
 
 public class EggFrames {
 
@@ -22,10 +22,6 @@ public class EggFrames {
 
     public int getNumberOfEggFrames() {
         return numberOfEggFrames;
-    }
-
-    public void setNumberOfEggFrames(int numberOfEggFrames) {
-        this.numberOfEggFrames = numberOfEggFrames;
     }
 
     public EggFrames createEggFrames() {
@@ -103,8 +99,16 @@ public class EggFrames {
         return eggBatches.removeLast();
     }
 
-    public int numberOfEggs() {
-        return eggBatches.stream().mapToInt(Integer::intValue).sum();
+    public void incrementNumberOfEggFrames() {
+        if (this.numberOfEggFrames < 6) {
+            this.numberOfEggFrames++;
+        }
+    }
+
+    public void adjustNumberOfEggFramesAfterSplit(int remainingFrames) {
+        if (remainingFrames >= 0 && remainingFrames <= this.numberOfEggFrames) {
+            this.numberOfEggFrames = remainingFrames;
+        }
     }
 
     @Override

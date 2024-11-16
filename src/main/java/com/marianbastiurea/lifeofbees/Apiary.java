@@ -48,8 +48,10 @@ public class Apiary {
             Hive newHive = new Hive(this.getHives().size() + 1, true, new Queen(0));
             newHive.setWasMovedAnEggsFrame(false);
             EggFrames newHiveEggFrames = hive.getEggFrames().splitEggFrames();
-            hive.getEggFrames().setNumberOfEggFrames(3);
             newHive.setEggFrames(newHiveEggFrames);
+            hive.getEggFrames().adjustNumberOfEggFramesAfterSplit(3);
+
+
             List<HoneyFrame> newHiveHoneyFrames = new ArrayList<>();
             for (int i = 0; i < 3; i++) {
                 HoneyFrame frameToMove = hive.getHoneyFrames().remove(hive.getHoneyFrames().size() - 1);
@@ -85,7 +87,7 @@ public class Apiary {
             hive.setWasMovedAnEggsFrame(false);
             hive.getHoneyBatches().clear();
             hive.getEggFrames().removeLastTwoEggBatches();
-            hive.getEggFrames().setNumberOfEggFrames(hive.getEggFrames().getNumberOfEggFrames() - 1);
+            hive.getEggFrames().adjustNumberOfEggFramesAfterSplit(hive.getEggFrames().getNumberOfEggFrames() - 1);
             hive.getHoneyFrames().remove(hive.getHoneyFrames().size() - 1);
             hive.getHoneyFrames().remove(hive.getHoneyFrames().size() - 1);
             hive.getBeesBatches().removeLast();

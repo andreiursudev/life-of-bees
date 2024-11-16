@@ -180,8 +180,8 @@ public class Hive {
     }
 
     public void addNewEggsFrameInHive() {
-        if (this.eggFrames.getNumberOfEggFrames() < 6) {
-            this.eggFrames.setNumberOfEggFrames(this.eggFrames.getNumberOfEggFrames() + 1);
+        if (this.eggFrames != null) {
+            this.eggFrames.incrementNumberOfEggFrames();
         }
     }
 
