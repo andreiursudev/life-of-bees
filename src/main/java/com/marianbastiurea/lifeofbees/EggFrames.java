@@ -10,7 +10,7 @@ public class EggFrames {
 
     private final int maxEggPerFrame = 6400;
     private int numberOfEggFrames;
-    LinkedList<Integer> eggBatches = new LinkedList<>();
+    private LinkedList<Integer> eggBatches = new LinkedList<>();
 
     public EggFrames(int numberOfEggFrames, LinkedList<Integer> eggBatches) {
         this.numberOfEggFrames = numberOfEggFrames;
