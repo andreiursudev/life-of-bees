@@ -159,17 +159,11 @@ public class Hive {
     public List<ActionOfTheWeek> checkIfHiveCouldBeSplit(HarvestingMonths month, int dayOfMonth, List<ActionOfTheWeek> actionsOfTheWeek, LifeOfBees lifeOfBeesGame) {
         if (!this.itWasSplit && lifeOfBeesGame.getApiary().getHives().size() < 10) {
             if ((month.equals(HarvestingMonths.APRIL) || month.equals(HarvestingMonths.MAY)) &&
-                    (dayOfMonth == 1 || dayOfMonth == 10)) {
-                if (this.eggFrames.getNumberOfEggFrames() == 6) {
-                    boolean allFramesAreFull = true;
-                    if (this.eggFrames.getNumberOfEggs() < this.eggFrames.getMaxEggPerFrame() * this.eggFrames.getNumberOfEggFrames()) {
-                        allFramesAreFull = false;
-                    }
-                    if (allFramesAreFull) {
-                        Map<String, Object> data = ActionOfTheWeek.findOrCreateAction("SPLIT_HIVE", actionsOfTheWeek).getData();
-                        ActionOfTheWeek actionInstance = new ActionOfTheWeek();
-                        actionInstance.addOrUpdateAction("SPLIT_HIVE", getId(), data, actionsOfTheWeek);
-                    }
+                    (dayOfMonth == 1 || dayOfMonth == 10) && this.eggFrames.getNumberOfEggFrames() == 6) {
+                if (this.eggFrames.isFull(this.getEggFrames())) {
+                    Map<String, Object> data = ActionOfTheWeek.findOrCreateAction("SPLIT_HIVE", actionsOfTheWeek).getData();
+                    ActionOfTheWeek actionInstance = new ActionOfTheWeek();
+                    actionInstance.addOrUpdateAction("SPLIT_HIVE", getId(), data, actionsOfTheWeek);
                 }
             }
         }
@@ -178,8 +172,6 @@ public class Hive {
 
     public List<ActionOfTheWeek> checkIfCanAddNewEggsFrameInHive(List<ActionOfTheWeek> actionsOfTheWeek) {
         if (this.eggFrames.getNumberOfEggFrames() < 6 && this.eggFrames.is80PercentFull()) {
-            System.out.println("numarul de eggFrames: "+this.eggFrames.getNumberOfEggFrames());
-            System.out.println("eggFrames sunt pline "+this.eggFrames.is80PercentFull());
             Map<String, Object> data = ActionOfTheWeek.findOrCreateAction("ADD_EGGS_FRAME", actionsOfTheWeek).getData();
             ActionOfTheWeek actionInstance = new ActionOfTheWeek();
             actionInstance.addOrUpdateAction("ADD_EGGS_FRAME", getId(), data, actionsOfTheWeek);
@@ -209,7 +201,8 @@ public class Hive {
     }
 
 
-    public List<ActionOfTheWeek> addHoneyBatches(List<HoneyBatch> honeyBatches, List<ActionOfTheWeek> actionsOfTheWeek) {
+    public List<ActionOfTheWeek> addHoneyBatches
+            (List<HoneyBatch> honeyBatches, List<ActionOfTheWeek> actionsOfTheWeek) {
         if (honeyBatches != null && !honeyBatches.isEmpty()) {
             this.honeyBatches.addAll(honeyBatches);
             System.out.println("acesta e mierea culeasa in stupul" + this.getId() + " " + honeyBatches);
@@ -248,15 +241,6 @@ public class Hive {
         return this.eggFrames.getNumberOfEggFrames() == 6 || !this.eggFrames.is80PercentFull();
     }
 
-    public int getNumberOf80PercentEggsFrame() {
-        int eggsFrameFull = 0;
-        EggFrames eggFramesNew = new EggFrames();
-        eggFramesNew.is80PercentFull();
-        if (this.eggFrames.is80PercentFull() && eggsFrameFull < this.eggFrames.getNumberOfEggFrames()) {
-            eggsFrameFull += 1;
-        }
-        return eggsFrameFull;
-    }
 
     public int getNumberOfFullHoneyFrame() {
         int honeyFrameFull = 0;
@@ -269,7 +253,8 @@ public class Hive {
     }
 
 
-    public List<ActionOfTheWeek> checkIfCanMoveAnEggsFrame(List<ActionOfTheWeek> actionsOfTheWeek, LifeOfBees lifeOfBeesGame) {
+    public List<ActionOfTheWeek> checkIfCanMoveAnEggsFrame(List<ActionOfTheWeek> actionsOfTheWeek, LifeOfBees
+            lifeOfBeesGame) {
         List<Integer> hiveIdPair;
 
         if (this.checkIfAll6EggsFrameAre80PercentFull() && !this.itWasSplit && !this.wasMovedAnEggsFrame) {
@@ -291,13 +276,9 @@ public class Hive {
     }
 
     public void fillUpEggsFrame(int numberOfEggs) {
-        int size = this.getEggFrames().getNumberOfEggFrames() - this.getNumberOf80PercentEggsFrame();
+        int size = this.getEggFrames().getNumberOfEggFrames() - this.getEggFrames().getNumberOf80PercentEggsFrame(this.getEggFrames());
         if (size != 0) {
-            if (this.eggFrames.getNumberOfEggs() + numberOfEggs < this.eggFrames.getMaxEggPerFrame() * this.eggFrames.getNumberOfEggFrames()) {
-                eggFrames.getEggBatches().addFirst(numberOfEggs);
-            } else {
-                eggFrames.getEggBatches().addFirst(eggFrames.getMaxEggPerFrame() * this.eggFrames.getNumberOfEggFrames() - eggFrames.getNumberOfEggs());
-            }
+            this.getEggFrames().fillUpAnEggFrames(numberOfEggs, this.getEggFrames());
         }
     }
 
