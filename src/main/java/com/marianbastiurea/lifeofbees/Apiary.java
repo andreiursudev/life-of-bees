@@ -47,7 +47,7 @@ public class Apiary {
             hive.setItWasSplit(true);
             Hive newHive = new Hive(this.getHives().size() + 1, true, new Queen(0));
             newHive.setWasMovedAnEggsFrame(false);
-            EggFrames newHiveEggFrames = new EggFrames().splitEggFrames(hive.getEggFrames());
+            EggFrames newHiveEggFrames = hive.getEggFrames().splitEggFrames();
             hive.getEggFrames().setNumberOfEggFrames(3);
             newHive.setEggFrames(newHiveEggFrames);
             List<HoneyFrame> newHiveHoneyFrames = new ArrayList<>();
@@ -68,6 +68,8 @@ public class Apiary {
             newHive.setBeesBatches(newHiveBeesBatches);
             newHive.setHoneyBatches(new ArrayList<>());
             newHives.add(newHive);
+            System.out.println("acesta e stupul vechi: "+hive);
+            System.out.println("acesta e stupul nou: "+newHive);
         }
         hives.addAll(newHives);
     }
@@ -75,13 +77,14 @@ public class Apiary {
     public List<ActionOfTheWeek> hibernate(LifeOfBees lifeOfBeesGame, List<ActionOfTheWeek> actionsOfTheWeek) {
         LocalDate date = lifeOfBeesGame.getCurrentDate();
         Apiary apiary = lifeOfBeesGame.getApiary();
+        System.out.println("aceasta e apiary inainte de hibernate: " + apiary);
         List<Hive> hives = lifeOfBeesGame.getApiary().getHives();
         for (Hive hive : hives) {
             hive.getQueen().setAgeOfQueen(hive.getQueen().getAgeOfQueen() + 1);
             hive.setItWasSplit(false);
             hive.setWasMovedAnEggsFrame(false);
             hive.getHoneyBatches().clear();
-            hive.getEggFrames().removeLastTwoEggBatches(hive.getEggFrames());
+            hive.getEggFrames().removeLastTwoEggBatches();
             hive.getEggFrames().setNumberOfEggFrames(hive.getEggFrames().getNumberOfEggFrames() - 1);
             hive.getHoneyFrames().remove(hive.getHoneyFrames().size() - 1);
             hive.getHoneyFrames().remove(hive.getHoneyFrames().size() - 1);
@@ -99,6 +102,7 @@ public class Apiary {
         data.put("hiveIds", List.of(hiveIdRemoved));
         ActionOfTheWeek actionInstance = new ActionOfTheWeek();
         actionInstance.addOrUpdateAction("HIBERNATE", hiveIdRemoved, data, actionsOfTheWeek);
+        System.out.println("aceasta e apiary dupa hibernate: " + apiary);
 
         return actionsOfTheWeek;
     }
@@ -154,10 +158,15 @@ public class Apiary {
             int sourceHiveId = hiveIds.get(0);
             int destinationHiveId = hiveIds.get(1);
             Hive sourceHive = this.getHiveById(sourceHiveId);
+            System.out.println("acesta e stupul sursa inainte de a muta o rama de oua: "+sourceHive);
             Hive destinationHive = this.getHiveById(destinationHiveId);
+            System.out.println("acesta e stupul destinatie inainte de a primi o rama de oua: "+destinationHive);
             EggFrames sourceEggFrames = sourceHive.getEggFrames();
             sourceEggFrames.moveAnEggsFrameFromOneHiveToAnother(sourceHive, destinationHive);
             sourceHive.setWasMovedAnEggsFrame(true);
+            System.out.println("acesta e stupul sursa dupa ce am mutat o rama de oua: "+sourceHive);
+            System.out.println("acesta e stupul destinatie dupa ce a primit o rama de oua: "+destinationHive);
+
         }
     }
 

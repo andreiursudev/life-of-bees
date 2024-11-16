@@ -30,8 +30,6 @@ public class LifeOfBeesController {
 
         games.put(lifeOfBeesGame.getGameId(), lifeOfBeesGame);
         gameId++;
-        System.out.println(" acestea sunt datele de start: " + lifeOfBeesGame);
-
         return lifeOfBeesGame.getGameId();
     }
 

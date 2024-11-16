@@ -96,7 +96,7 @@ public class LifeOfBees {
                 }
                 double whetherIndex = dailyWeather.weatherIndex(dailyWeather);
                 int numberOfEggs = queen.makeEggs(honey, whetherIndex);
-                hive.fillUpEggsFrame(numberOfEggs);
+                hive.getEggFrames().fillUpAnEggFrames(numberOfEggs);
                 hive.checkIfCanAddNewEggsFrameInHive(actionsOfTheWeek);
                 hive.checkIfHiveCouldBeSplit(month, date.getDayOfMonth(), actionsOfTheWeek, lifeOfBeesGame);
                 hive.checkAndAddEggsToBees(hive.getEggFrames());

@@ -205,7 +205,6 @@ public class Hive {
             (List<HoneyBatch> honeyBatches, List<ActionOfTheWeek> actionsOfTheWeek) {
         if (honeyBatches != null && !honeyBatches.isEmpty()) {
             this.honeyBatches.addAll(honeyBatches);
-            System.out.println("acesta e mierea culeasa in stupul" + this.getId() + " " + honeyBatches);
             Map<String, Object> data = ActionOfTheWeek.findOrCreateAction("HARVEST_HONEY", actionsOfTheWeek).getData();
             ActionOfTheWeek actionInstance = new ActionOfTheWeek();
             actionInstance.addOrUpdateAction("HARVEST_HONEY", getId(), data, actionsOfTheWeek);
@@ -273,13 +272,6 @@ public class Hive {
 
     public void changeQueen() {
         queen = new Queen(0);
-    }
-
-    public void fillUpEggsFrame(int numberOfEggs) {
-        int size = this.getEggFrames().getNumberOfEggFrames() - this.getEggFrames().getNumberOf80PercentEggsFrame();
-        if (size != 0) {
-            this.getEggFrames().fillUpAnEggFrames(numberOfEggs, this.getEggFrames());
-        }
     }
 
     public static void addHivesToApiary(List<Hive> newHives, LifeOfBees lifeOfBeesgame) {
