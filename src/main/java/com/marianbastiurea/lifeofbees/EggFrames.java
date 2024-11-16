@@ -56,35 +56,35 @@ public class EggFrames {
     }
 
     public void moveAnEggsFrameFromOneHiveToAnother(Hive sourceHive, Hive destinationHive) {
-            List<Integer> eggBatchesToMove;
-            final int[] sum = {0};
-            eggBatchesToMove = sourceHive.getEggFrames().getEggBatches().stream()
-                    .takeWhile(batch -> sum[0] + batch <= 6400)
-                    .peek(batch -> sum[0] += batch)
-                    .collect(Collectors.toList());
-            destinationHive.getEggFrames().getEggBatches().addAll(eggBatchesToMove);
-            destinationHive.getEggFrames().setNumberOfEggFrames(destinationHive.getEggFrames().getNumberOfEggFrames() + 1);
-            sourceHive.getEggFrames().getEggBatches().removeAll(eggBatchesToMove);
-            sourceHive.getEggFrames().setNumberOfEggFrames(sourceHive.getEggFrames().getNumberOfEggFrames() - 1);
+        List<Integer> eggBatchesToMove;
+        final int[] sum = {0};
+        eggBatchesToMove = sourceHive.getEggFrames().getEggBatches().stream()
+                .takeWhile(batch -> sum[0] + batch <= 6400)
+                .peek(batch -> sum[0] += batch)
+                .collect(Collectors.toList());
+        destinationHive.getEggFrames().getEggBatches().addAll(eggBatchesToMove);
+        destinationHive.getEggFrames().setNumberOfEggFrames(destinationHive.getEggFrames().getNumberOfEggFrames() + 1);
+        sourceHive.getEggFrames().getEggBatches().removeAll(eggBatchesToMove);
+        sourceHive.getEggFrames().setNumberOfEggFrames(sourceHive.getEggFrames().getNumberOfEggFrames() - 1);
     }
 
 
-    public  boolean isFull(EggFrames eggFrames){
+    public boolean isFull(EggFrames eggFrames) {
         int totalEggs = eggFrames.getEggBatches().stream().mapToInt(Integer::intValue).sum();
         return totalEggs >= maxEggPerFrame * eggFrames.getNumberOfEggFrames();
     }
 
-    public int getNumberOf80PercentEggsFrame (EggFrames eggFrames) {
+    public int getNumberOf80PercentEggsFrame(EggFrames eggFrames) {
         int eggsFrameFull = 0;
         eggFrames.is80PercentFull();
-        if (eggFrames.is80PercentFull() && eggsFrameFull <eggFrames.getNumberOfEggFrames()) {
+        if (eggFrames.is80PercentFull() && eggsFrameFull < eggFrames.getNumberOfEggFrames()) {
             eggsFrameFull += 1;
         }
         return eggsFrameFull;
     }
 
     public EggFrames fillUpAnEggFrames(int numberOfEggs, EggFrames eggFrames) {
-        if (eggFrames.getNumberOfEggs() + numberOfEggs < eggFrames.getMaxEggPerFrame() *eggFrames.getNumberOfEggFrames()) {
+        if (eggFrames.getNumberOfEggs() + numberOfEggs < eggFrames.getMaxEggPerFrame() * eggFrames.getNumberOfEggFrames()) {
             eggFrames.getEggBatches().addFirst(numberOfEggs);
         } else {
             eggFrames.getEggBatches().addFirst(eggFrames.getMaxEggPerFrame() * eggFrames.getNumberOfEggFrames() - eggFrames.getNumberOfEggs());
@@ -92,7 +92,10 @@ public class EggFrames {
         return eggFrames;
     }
 
-
+    public void removeLastTwoEggBatches(EggFrames eggFrames) {
+        eggFrames.getEggBatches().removeLast();
+        eggFrames.getEggBatches().removeLast();
+    }
 
 
     public boolean is80PercentFull() {
