@@ -69,19 +69,20 @@ public class EggFrames {
     }
 
 
-    public boolean isFull(EggFrames eggFrames) {
-        int totalEggs = eggFrames.getEggBatches().stream().mapToInt(Integer::intValue).sum();
-        return totalEggs >= maxEggPerFrame * eggFrames.getNumberOfEggFrames();
+    public boolean isFull() {
+        int totalEggs = eggBatches.stream().mapToInt(Integer::intValue).sum();
+        return totalEggs >= maxEggPerFrame * numberOfEggFrames;
     }
 
-    public int getNumberOf80PercentEggsFrame(EggFrames eggFrames) {
-        int eggsFrameFull = 0;
-        eggFrames.is80PercentFull();
-        if (eggFrames.is80PercentFull() && eggsFrameFull < eggFrames.getNumberOfEggFrames()) {
-            eggsFrameFull += 1;
+    public int getNumberOf80PercentEggsFrame() {
+        int totalEggs = eggBatches.stream().mapToInt(Integer::intValue).sum();
+
+        if (totalEggs >= maxEggPerFrame * numberOfEggFrames * 0.8) {
+            return numberOfEggFrames;
         }
-        return eggsFrameFull;
+        return 0;
     }
+
 
     public EggFrames fillUpAnEggFrames(int numberOfEggs, EggFrames eggFrames) {
         if (eggFrames.getNumberOfEggs() + numberOfEggs < eggFrames.getMaxEggPerFrame() * eggFrames.getNumberOfEggFrames()) {
