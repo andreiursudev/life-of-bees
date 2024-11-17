@@ -202,41 +202,4 @@ public class LifeOfBeesController {
         return ResponseEntity.ok("Hives bought successfully");
     }
 
-
-    private WeatherAPI weatherAPI;  // Injectarea repository-ului
-
-    // Constructor cu injectarea repository-ului
-    public LifeOfBeesController(WeatherAPIRepository weatherAPIRepository) {
-        this.games = new HashMap<>();
-        this.weatherAPIRepository = weatherAPIRepository;
-    }
-
-    // Metoda pentru a obține datele meteo pentru o anumită zi
-    @GetMapping("/weather/{gameId}/{date}")
-    public ResponseEntity<Weather> getWeatherForDate(
-            @PathVariable Integer gameId,
-            @PathVariable String date) {
-        LocalDate requestedDate = LocalDate.parse(date);
-
-        // Solicită datele meteo din repository-ul local pentru această dată
-        Weather weather = weatherAPIRepository.getWeatherForDate(requestedDate);
-
-        return ResponseEntity.ok(weather);
-    }
-
-    // Metoda pentru a obține datele meteo pentru un interval de timp
-    @GetMapping("/weather/{gameId}/{startDate}/{endDate}")
-    public ResponseEntity<List<Weather>> getWeatherForRange(
-            @PathVariable Integer gameId,
-            @PathVariable String startDate,
-            @PathVariable String endDate) {
-        LocalDate start = LocalDate.parse(startDate);
-        LocalDate end = LocalDate.parse(endDate);
-
-        // Solicită datele meteo din repository-ul local pentru intervalul de timp
-        List<Weather> weatherData = weatherAPIRepository.getWeatherForRange(start, end);
-
-        return ResponseEntity.ok(weatherData);
-    }
-}
 }
