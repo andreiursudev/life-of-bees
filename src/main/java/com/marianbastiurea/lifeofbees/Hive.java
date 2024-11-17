@@ -13,7 +13,6 @@ public class Hive {
     LinkedList<Integer> beesBatches = new LinkedList<>();
     private List<HoneyFrame> honeyFrames;
     private List<HoneyBatch> honeyBatches;
-
     private ActionOfTheWeek actionOfTheWeek;
 
     public Hive(EggFrames eggFrames, LinkedList<Integer> beesBatches, List<HoneyFrame> honeyFrames, List<HoneyBatch> honeyBatches) {
@@ -58,10 +57,6 @@ public class Hive {
 
     public boolean isItWasSplit() {
         return itWasSplit;
-    }
-
-    public boolean isWasMovedAnEggsFrame() {
-        return wasMovedAnEggsFrame;
     }
 
     public void setWasMovedAnEggsFrame(boolean wasMovedAnEggsFrame) {
