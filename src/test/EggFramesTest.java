@@ -1,0 +1,34 @@
+package com.marianbastiurea.lifeofbees;
+
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+
+class EggFramesTest {
+
+    @Test
+    void eggsHatchAfter20Days() {
+        EggFrames eggFrames = new EggFrames(3);
+
+        for (int i = 0; i < 20; i++) {
+            eggFrames.ageOneDay(i);
+        }
+
+        for (int i = 0; i < 20; i++) {
+            assertEquals(i, eggFrames.ageOneDay(0));
+        }
+    }
+
+    @Test
+    void maxEggsCannotBeExceed() {
+        EggFrames eggFrames = new EggFrames(1);
+
+        eggFrames.ageOneDay(6500);
+
+        for (int i = 0; i < 19; i++) {
+            assertEquals(0, eggFrames.ageOneDay(0));
+        }
+        assertEquals(EggFrames.maxEggPerFrame, eggFrames.ageOneDay(0));
+    }
+}
