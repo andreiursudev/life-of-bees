@@ -146,15 +146,14 @@ public class Hive {
         this.actionOfTheWeek = actionOfTheWeek;
     }
 
-    public void checkAndAddEggsToBees(EggFrames eggFrames) {
-        int eggsToBees = eggFrames.checkAndHatchEggs();
-        this.getBeesBatches().add(eggsToBees);
+    public void checkAndAddEggsToBees(int bees) {
+        this.getBeesBatches().add(bees);
     }
 
     public List<ActionOfTheWeek> checkIfHiveCouldBeSplit(HarvestingMonths month, int dayOfMonth, List<ActionOfTheWeek> actionsOfTheWeek, LifeOfBees lifeOfBeesGame) {
         if (!this.itWasSplit && lifeOfBeesGame.getApiary().getHives().size() < 10) {
             if ((month.equals(HarvestingMonths.APRIL) || month.equals(HarvestingMonths.MAY)) &&
-                    (dayOfMonth == 1 || dayOfMonth == 10) && this.eggFrames.getNumberOfEggFrames() == 6) {
+                    (dayOfMonth == 1 || dayOfMonth == 10) && this.eggFrames.isFullEggFrames()) {
                 if (this.eggFrames.isFull()) {
                     Map<String, Object> data = ActionOfTheWeek.findOrCreateAction("SPLIT_HIVE", actionsOfTheWeek).getData();
                     ActionOfTheWeek actionInstance = new ActionOfTheWeek();
@@ -166,7 +165,7 @@ public class Hive {
     }
 
     public List<ActionOfTheWeek> checkIfCanAddNewEggsFrameInHive(List<ActionOfTheWeek> actionsOfTheWeek) {
-        if (this.eggFrames.getNumberOfEggFrames() < 6 && this.eggFrames.is80PercentFull()) {
+        if (this.eggFrames.isFullEggFrames() && this.eggFrames.is80PercentFull()) {
             Map<String, Object> data = ActionOfTheWeek.findOrCreateAction("ADD_EGGS_FRAME", actionsOfTheWeek).getData();
             ActionOfTheWeek actionInstance = new ActionOfTheWeek();
             actionInstance.addOrUpdateAction("ADD_EGGS_FRAME", getId(), data, actionsOfTheWeek);
@@ -231,8 +230,9 @@ public class Hive {
         }
     }
 
+    //TODO move to EggFrames
     public boolean checkIfAll6EggsFrameAre80PercentFull() {
-        return this.eggFrames.getNumberOfEggFrames() == 6 || !this.eggFrames.is80PercentFull();
+        return this.eggFrames.isFullEggFrames() || !this.eggFrames.is80PercentFull();
     }
 
 

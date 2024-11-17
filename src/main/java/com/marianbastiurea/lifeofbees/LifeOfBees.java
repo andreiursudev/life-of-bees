@@ -96,10 +96,10 @@ public class LifeOfBees {
                 }
                 double whetherIndex = dailyWeather.weatherIndex(dailyWeather);
                 int numberOfEggs = queen.makeEggs(honey, whetherIndex);
-                hive.getEggFrames().fillUpAnEggFrames(numberOfEggs);
+                int bees = hive.getEggFrames().ageOneDay(numberOfEggs);
                 hive.checkIfCanAddNewEggsFrameInHive(actionsOfTheWeek);
                 hive.checkIfHiveCouldBeSplit(month, date.getDayOfMonth(), actionsOfTheWeek, lifeOfBeesGame);
-                hive.checkAndAddEggsToBees(hive.getEggFrames());
+                hive.checkAndAddEggsToBees(bees);
                 hive.fillUpExistingHoneyFrameFromHive(lifeOfBeesGame);
                 hive.getBeesBatches().removeLast();
                 List<HoneyBatch> harvestedHoneyBatches = honey.harvestHoney(hive, month, date.getDayOfMonth());

@@ -43,14 +43,13 @@ public class Apiary {
 
     public void splitHive(Hive hive) {
         List<Hive> newHives = new ArrayList<>();
-        if (hive.getEggFrames().getNumberOfEggFrames() == 6 && !hive.isItWasSplit()) {
+        EggFrames eggFrames = hive.getEggFrames();
+        if (eggFrames.isFullEggFrames() && !hive.isItWasSplit()) {
             hive.setItWasSplit(true);
             Hive newHive = new Hive(this.getHives().size() + 1, true, new Queen(0));
             newHive.setWasMovedAnEggsFrame(false);
             EggFrames newHiveEggFrames = hive.getEggFrames().splitEggFrames();
             newHive.setEggFrames(newHiveEggFrames);
-            hive.getEggFrames().adjustNumberOfEggFramesAfterSplit(3);
-
 
             List<HoneyFrame> newHiveHoneyFrames = new ArrayList<>();
             for (int i = 0; i < 3; i++) {
@@ -76,6 +75,8 @@ public class Apiary {
         hives.addAll(newHives);
     }
 
+
+
     public List<ActionOfTheWeek> hibernate(LifeOfBees lifeOfBeesGame, List<ActionOfTheWeek> actionsOfTheWeek) {
         LocalDate date = lifeOfBeesGame.getCurrentDate();
         Apiary apiary = lifeOfBeesGame.getApiary();
@@ -87,6 +88,7 @@ public class Apiary {
             hive.setWasMovedAnEggsFrame(false);
             hive.getHoneyBatches().clear();
             hive.getEggFrames().removeLastTwoEggBatches();
+            //create method subtractEggFrame
             hive.getEggFrames().adjustNumberOfEggFramesAfterSplit(hive.getEggFrames().getNumberOfEggFrames() - 1);
             hive.getHoneyFrames().remove(hive.getHoneyFrames().size() - 1);
             hive.getHoneyFrames().remove(hive.getHoneyFrames().size() - 1);
@@ -217,7 +219,7 @@ public class Apiary {
         List<Hive> newHives = new ArrayList<>();
         for (int i = 1; i <= numberOfHives; i++) {
             int ageOfQueen = random.nextInt(1, 6);
-            EggFrames eggFrames = new EggFrames().createEggFrames();
+            EggFrames eggFrames = EggFrames.getRandomEggFrames();
             LinkedList<Integer> beesBatches = new LinkedList<>();
             for (int k = 0; k < 30; k++) {
                 beesBatches.add(random.nextInt(600, 700));
