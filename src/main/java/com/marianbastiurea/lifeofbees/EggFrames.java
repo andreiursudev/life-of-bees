@@ -5,7 +5,7 @@ import java.util.*;
 
 public class EggFrames {
 
-    private int daysToHatch = 21;
+    private int daysToHatch = 20;
     public final static int maxEggPerFrame = 6400;
     private int numberOfEggFrames;
     private LinkedList<Integer> eggsByDay;
@@ -26,7 +26,7 @@ public class EggFrames {
     public static EggFrames getRandomEggFrames() {
         Random random = new Random();
         EggFrames eggFrames = new EggFrames(random.nextInt(3, 5));
-        for (int j = 0; j < 21; j++) {
+        for (int j = 0; j < 20; j++) {
             eggFrames.ageOneDay(random.nextInt(800, 901));
         }
         return eggFrames;
@@ -36,18 +36,21 @@ public class EggFrames {
         return numberOfEggFrames;
     }
 
-//TODO write unit test
+
     public EggFrames splitEggFrames() {
         LinkedList<Integer> newEggBatches = new LinkedList<>();
-        for (int i = 0; i < 20; i++) {
-            newEggBatches.add(eggsByDay.get(i) / 2);
-            eggsByDay.add(eggsByDay.get(i) / 2);
+        LinkedList<Integer> updatedEggBatches = new LinkedList<>();
+        for (int eggs : eggsByDay) {
+            int halfEggs = eggs / 2;
+            newEggBatches.add(halfEggs);
+            updatedEggBatches.add(halfEggs);
         }
+        eggsByDay = updatedEggBatches;
         numberOfEggFrames = 3;
         return new EggFrames(3, newEggBatches);
     }
 
-    public List<Integer> extractEggBatchesForFrame() {
+    List<Integer> extractEggBatchesForFrame() {
         int currentSum = 0;
         int index = 0;
         while (index < eggsByDay.size() && currentSum + eggsByDay.get(index) <= maxEggPerFrame) {
@@ -55,24 +58,20 @@ public class EggFrames {
             index++;
         }
         List<Integer> extractedBatches = new ArrayList<>(eggsByDay.subList(0, index));
-        eggsByDay.subList(0, index).clear();
+        for (int i = 0; i < index; i++) {
+            eggsByDay.set(i, 0);
+        }
         numberOfEggFrames--;
-
         return extractedBatches;
     }
 
     public void addEggBatches(List<Integer> batchesToAdd) {
-        eggsByDay.addAll(batchesToAdd);
-        numberOfEggFrames++;
+        for (int i = 0; i < batchesToAdd.size(); i++) {
+                eggsByDay.set(i, eggsByDay.get(i) + batchesToAdd.get(i));
+        }
+            numberOfEggFrames++;
     }
 
-    //TODO split this method in two to decrease coupling,
-    public void moveAnEggsFrameFromOneHiveToAnother(Hive sourceHive, Hive destinationHive) {
-        EggFrames sourceEggFrames = sourceHive.getEggFrames();
-        EggFrames destinationEggFrames = destinationHive.getEggFrames();
-        List<Integer> eggBatchesToMove = sourceEggFrames.extractEggBatchesForFrame();
-        destinationEggFrames.addEggBatches(eggBatchesToMove);
-    }
 
     public boolean isFull() {
         int totalEggs = getEggs();
@@ -82,12 +81,6 @@ public class EggFrames {
 
     public int getEggs() {
         return eggsByDay.stream().mapToInt(Integer::intValue).sum();
-    }
-
-//TODO add unit test and fix age to hatch
-    public void removeLastTwoEggBatches() {
-        eggsByDay.removeLast();
-        eggsByDay.removeLast();
     }
 
     public boolean is80PercentFull() {
@@ -108,15 +101,14 @@ public class EggFrames {
         }
     }
 
-    public void adjustNumberOfEggFramesAfterSplit(int remainingFrames) {
-        if (remainingFrames >= 0 && remainingFrames <= this.numberOfEggFrames) {
-            this.numberOfEggFrames = remainingFrames;
-        }
-    }
-
     public boolean isFullEggFrames() {
         return numberOfEggFrames == maxEggFrames;
     }
+
+    public boolean checkIfAll6EggsFrameAre80PercentFull() {
+        return isFullEggFrames() || !is80PercentFull();
+    }
+
 
     @Override
     public String toString() {

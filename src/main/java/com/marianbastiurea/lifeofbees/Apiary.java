@@ -69,12 +69,11 @@ public class Apiary {
             newHive.setBeesBatches(newHiveBeesBatches);
             newHive.setHoneyBatches(new ArrayList<>());
             newHives.add(newHive);
-            System.out.println("acesta e stupul vechi: "+hive);
-            System.out.println("acesta e stupul nou: "+newHive);
+            System.out.println("acesta e stupul vechi: " + hive);
+            System.out.println("acesta e stupul nou: " + newHive);
         }
         hives.addAll(newHives);
     }
-
 
 
     public List<ActionOfTheWeek> hibernate(LifeOfBees lifeOfBeesGame, List<ActionOfTheWeek> actionsOfTheWeek) {
@@ -87,9 +86,7 @@ public class Apiary {
             hive.setItWasSplit(false);
             hive.setWasMovedAnEggsFrame(false);
             hive.getHoneyBatches().clear();
-            hive.getEggFrames().removeLastTwoEggBatches();
-            //create method subtractEggFrame
-            hive.getEggFrames().adjustNumberOfEggFramesAfterSplit(hive.getEggFrames().getNumberOfEggFrames() - 1);
+            hive.getEggFrames().extractEggBatchesForFrame();
             hive.getHoneyFrames().remove(hive.getHoneyFrames().size() - 1);
             hive.getHoneyFrames().remove(hive.getHoneyFrames().size() - 1);
             hive.getBeesBatches().removeLast();
@@ -154,23 +151,6 @@ public class Apiary {
                     hive.getBeesBatches().removeLast();
                 }
             }
-        }
-    }
-
-    public void moveAnEggsFrame(List<List<Integer>> hiveIdPair) {
-        for (List<Integer> hiveIds : hiveIdPair) {
-            int sourceHiveId = hiveIds.get(0);
-            int destinationHiveId = hiveIds.get(1);
-            Hive sourceHive = this.getHiveById(sourceHiveId);
-            System.out.println("acesta e stupul sursa inainte de a muta o rama de oua: "+sourceHive);
-            Hive destinationHive = this.getHiveById(destinationHiveId);
-            System.out.println("acesta e stupul destinatie inainte de a primi o rama de oua: "+destinationHive);
-            EggFrames sourceEggFrames = sourceHive.getEggFrames();
-            sourceEggFrames.moveAnEggsFrameFromOneHiveToAnother(sourceHive, destinationHive);
-            sourceHive.setWasMovedAnEggsFrame(true);
-            System.out.println("acesta e stupul sursa dupa ce am mutat o rama de oua: "+sourceHive);
-            System.out.println("acesta e stupul destinatie dupa ce a primit o rama de oua: "+destinationHive);
-
         }
     }
 
@@ -242,6 +222,22 @@ public class Apiary {
             System.out.println("acesta este stupul tau: " + hive);
         }
         return newHives;
+
     }
+
+
+    public void moveAnEggsFrame(List<List<Integer>> hiveIdPair) {
+        for (List<Integer> hiveIds : hiveIdPair) {
+            int sourceHiveId = hiveIds.get(0);
+            int destinationHiveId = hiveIds.get(1);
+            Hive sourceHive = this.getHiveById(sourceHiveId);
+            Hive destinationHive = this.getHiveById(destinationHiveId);
+            EggFrames sourceEggFrames = sourceHive.getEggFrames();
+            EggFrames destinationEggFrames = destinationHive.getEggFrames();
+            List<Integer> eggBatchesToMove = sourceEggFrames.extractEggBatchesForFrame();
+            destinationEggFrames.addEggBatches(eggBatchesToMove);
+        }
+    }
+
 }
 

@@ -230,11 +230,6 @@ public class Hive {
         }
     }
 
-    //TODO move to EggFrames
-    public boolean checkIfAll6EggsFrameAre80PercentFull() {
-        return this.eggFrames.isFullEggFrames() || !this.eggFrames.is80PercentFull();
-    }
-
 
     public int getNumberOfFullHoneyFrame() {
         int honeyFrameFull = 0;
@@ -251,7 +246,7 @@ public class Hive {
             lifeOfBeesGame) {
         List<Integer> hiveIdPair;
 
-        if (this.checkIfAll6EggsFrameAre80PercentFull() && !this.itWasSplit && !this.wasMovedAnEggsFrame) {
+        if (this.getEggFrames().checkIfAll6EggsFrameAre80PercentFull() && !this.itWasSplit && !this.wasMovedAnEggsFrame) {
             List<Hive> hives = lifeOfBeesGame.getApiary().getHives();
             for (Hive hive : hives) {
                 if (hive.itWasSplit && hive.getQueen().getAgeOfQueen() == 0) {
