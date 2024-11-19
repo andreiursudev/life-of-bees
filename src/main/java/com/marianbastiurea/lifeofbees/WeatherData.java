@@ -1,8 +1,6 @@
 package com.marianbastiurea.lifeofbees;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Map;
 
 public class WeatherData {
     private double windSpeed;// in km/h
@@ -91,15 +89,5 @@ public class WeatherData {
         }
         whetherIndex = rainIndex * temperatureIndex * speedWindIndex;
         return whetherIndex;
-    }
-    public WeatherData getDailyWeatherDataForDate(LocalDate date, Map<String, WeatherData> allWeatherData) {
-        // Formatăm data pentru a accesa `allWeatherData`
-        String formattedDate = date.format(DateTimeFormatter.ISO_LOCAL_DATE);
-
-        // Căutăm datele meteo pentru data respectivă
-        WeatherData weatherData = allWeatherData.get(formattedDate);
-
-        // Returnăm datele meteo găsite sau `null` dacă nu există
-        return weatherData;
     }
 }

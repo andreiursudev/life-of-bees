@@ -13,12 +13,6 @@ public class LifeOfBees {
     private String location;
     private LocalDate currentDate;
     private WeatherData weatherData;
-
-
-    //todo: group speedWind, temperature and precipitation in a class separate class
-//    private double speedWind;// in km/h
-//    private double temperature;// in Celsius Degree
-//    private double precipitation;
     private double moneyInTheBank;
     private double totalKgOfHoneyHarvested;
 
@@ -73,10 +67,6 @@ public class LifeOfBees {
                 double whetherIndex = dailyWeather.weatherIndex(dailyWeather);
                 int numberOfEggs = queen.makeEggs(honey, whetherIndex);
                 int bees = hive.getEggFrames().ageOneDay(numberOfEggs);
-                System.out.println("acestea sunt ramele in data de "+date+" "+hive.getEggFrames());
-                System.out.println("acesta e numarul de rame "+hive.getEggFrames().getNumberOfEggFrames()
-                        +"cu numarul total de oua "+hive.getEggFrames().getEggs());
-                System.out.println("numarul maxim de oua in rame este "+6400*hive.getEggFrames().getNumberOfEggFrames());
                 hive.checkIfCanAddNewEggsFrameInHive(actionsOfTheWeek);
                 hive.checkIfHiveCouldBeSplit(month, date.getDayOfMonth(), actionsOfTheWeek, lifeOfBeesGame);
                 hive.checkAndAddEggsToBees(bees);
