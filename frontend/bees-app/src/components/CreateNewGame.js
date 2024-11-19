@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createGame, fetchLocations, fetchWeatherForStartDate, fakeWeatherData } from './BeesApiService';
+import { createGame, fetchLocations, fetchWeatherForStartDate } from './BeesApiService';
 
 const NewGameModal = ({ handleClose }) => {
     const [gameName, setgameName] = useState('');
@@ -21,14 +21,13 @@ const NewGameModal = ({ handleClose }) => {
         
         try {
            // const weatherData = await fetchWeatherForStartDate(location, startDate);
-           const allWeatherData = fakeWeatherData();
+         
 
             const gameData = {
                 gameName,
                 location,
                 startDate,
                 numberOfStartingHives,
-                allWeatherData
             };
 
             console.log('Game data being sent:', gameData);

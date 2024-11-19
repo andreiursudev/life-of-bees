@@ -154,7 +154,7 @@ public class Hive {
         if (!this.itWasSplit && lifeOfBeesGame.getApiary().getHives().size() < 10) {
             if ((month.equals(HarvestingMonths.APRIL) || month.equals(HarvestingMonths.MAY)) &&
                     (dayOfMonth == 1 || dayOfMonth == 10) && this.eggFrames.isFullEggFrames()) {
-                if (this.eggFrames.isFull()) {
+                if (this.eggFrames.is80PercentFull()) {
                     Map<String, Object> data = ActionOfTheWeek.findOrCreateAction("SPLIT_HIVE", actionsOfTheWeek).getData();
                     ActionOfTheWeek actionInstance = new ActionOfTheWeek();
                     actionInstance.addOrUpdateAction("SPLIT_HIVE", getId(), data, actionsOfTheWeek);
@@ -165,7 +165,7 @@ public class Hive {
     }
 
     public List<ActionOfTheWeek> checkIfCanAddNewEggsFrameInHive(List<ActionOfTheWeek> actionsOfTheWeek) {
-        if (this.eggFrames.isFullEggFrames() && this.eggFrames.is80PercentFull()) {
+        if (!this.eggFrames.isFullEggFrames() && this.eggFrames.is80PercentFull()) {
             Map<String, Object> data = ActionOfTheWeek.findOrCreateAction("ADD_EGGS_FRAME", actionsOfTheWeek).getData();
             ActionOfTheWeek actionInstance = new ActionOfTheWeek();
             actionInstance.addOrUpdateAction("ADD_EGGS_FRAME", getId(), data, actionsOfTheWeek);

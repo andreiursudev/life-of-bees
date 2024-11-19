@@ -1,13 +1,14 @@
 package com.marianbastiurea.lifeofbees;
 
-import com.marianbastiurea.weatherapi.Weather;
-import com.marianbastiurea.weatherapi.WeatherService;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDate;
 import java.util.*;
+
+import org.springframework.web.client.RestTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+
 
 
 @RestController
@@ -17,22 +18,32 @@ public class LifeOfBeesController {
     private Map<Integer, LifeOfBees> games;
     private Integer gameId = 0;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     public LifeOfBeesController() {
         this.games = new HashMap<>();
     }
 
     @PostMapping("/game")
     public Integer createGame(@RequestBody GameRequest gameRequest) {
+        LocalDate date = LocalDate.parse(gameRequest.getStartDate());
+        String weatherApiUrl = "http://localhost:8081/api/weather/" + date;
+        WeatherData weatherData = restTemplate.getForObject(weatherApiUrl, WeatherData.class);
+        Map<String, WeatherData> allWeatherData = new HashMap<>();
+        allWeatherData.put(weatherData.getDate().toString(), weatherData);
         LifeOfBees lifeOfBeesGame = LifeOfBeesFactory.createLifeOfBeesGame(
                 gameId,
                 gameRequest.getGameName(),
                 gameRequest.getLocation(),
                 gameRequest.getStartDate(),
                 gameRequest.getNumberOfStartingHives(),
-                gameRequest.getAllWeatherData());
+                allWeatherData
+        );
 
         games.put(lifeOfBeesGame.getGameId(), lifeOfBeesGame);
         gameId++;
+
         return lifeOfBeesGame.getGameId();
     }
 
@@ -43,10 +54,12 @@ public class LifeOfBeesController {
         return getGameResponse(lifeOfBeesGame);
     }
 
+
     @PostMapping("/iterate/{gameId}")
     public GameResponse iterateGame(@PathVariable Integer gameId) {
+        LifeOfBeesService lifeOfBeesService = new LifeOfBeesService();
         LifeOfBees lifeOfBeesGame = games.get(gameId);
-        lifeOfBeesGame = lifeOfBeesGame.iterateOneWeek(lifeOfBeesGame);
+        lifeOfBeesGame = lifeOfBeesGame.iterateOneWeek(lifeOfBeesGame,lifeOfBeesService);
         GameResponse response = getGameResponse(lifeOfBeesGame);
         System.out.println("GameResponse după iterație: " + response);
         return response;

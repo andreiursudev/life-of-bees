@@ -53,18 +53,11 @@
       <scope>test</scope>
     </dependency>
 
-    <dependency>
-      <groupId>com.marianbastiurea</groupId>
-      <artifactId>weatherapi</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-      <scope>compile</scope>
-    </dependency>
+
 
 
   </dependencies>
-  <modules>
-    <module>../WeatherAPI</module>
-  </modules>
+  
 
 
   <build>

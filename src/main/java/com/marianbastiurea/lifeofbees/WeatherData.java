@@ -1,14 +1,21 @@
 package com.marianbastiurea.lifeofbees;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Map;
+
 public class WeatherData {
     private double windSpeed;// in km/h
     private double temperature;// in Celsius Degree
-    private double precipitation;// in mm
+    private double precipitation;//
+    private LocalDate date;// in mm
 
-    public WeatherData(double windSpeed, double temperature, double precipitation) {
+    public WeatherData(LocalDate date, double windSpeed, double temperature, double precipitation) {
+        this.date=date;
         this.windSpeed = windSpeed;
         this.temperature = temperature;
         this.precipitation = precipitation;
+
     }
 
     public double getWindSpeed() {
@@ -33,6 +40,14 @@ public class WeatherData {
 
     public void setPrecipitation(double precipitation) {
         this.precipitation = precipitation;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     @Override
@@ -77,5 +92,14 @@ public class WeatherData {
         whetherIndex = rainIndex * temperatureIndex * speedWindIndex;
         return whetherIndex;
     }
+    public WeatherData getDailyWeatherDataForDate(LocalDate date, Map<String, WeatherData> allWeatherData) {
+        // Formatăm data pentru a accesa `allWeatherData`
+        String formattedDate = date.format(DateTimeFormatter.ISO_LOCAL_DATE);
 
+        // Căutăm datele meteo pentru data respectivă
+        WeatherData weatherData = allWeatherData.get(formattedDate);
+
+        // Returnăm datele meteo găsite sau `null` dacă nu există
+        return weatherData;
+    }
 }

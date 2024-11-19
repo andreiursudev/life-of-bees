@@ -5,7 +5,7 @@ import java.util.*;
 
 public class EggFrames {
 
-    private int daysToHatch = 20;
+    private int daysToHatch = 21;
     public final static int maxEggPerFrame = 6400;
     private int numberOfEggFrames;
     private LinkedList<Integer> eggsByDay;
@@ -25,9 +25,9 @@ public class EggFrames {
     //static factory
     public static EggFrames getRandomEggFrames() {
         Random random = new Random();
-        EggFrames eggFrames = new EggFrames(random.nextInt(2, 5));
-        for (int j = 0; j < 20; j++) {
-            eggFrames.ageOneDay(random.nextInt(101, 901));
+        EggFrames eggFrames = new EggFrames(random.nextInt(3, 5));
+        for (int j = 0; j < 21; j++) {
+            eggFrames.ageOneDay(random.nextInt(800, 901));
         }
         return eggFrames;
     }
@@ -80,7 +80,7 @@ public class EggFrames {
     }
 
 
-    private int getEggs() {
+    public int getEggs() {
         return eggsByDay.stream().mapToInt(Integer::intValue).sum();
     }
 
@@ -113,8 +113,6 @@ public class EggFrames {
             this.numberOfEggFrames = remainingFrames;
         }
     }
-
-
 
     public boolean isFullEggFrames() {
         return numberOfEggFrames == maxEggFrames;
