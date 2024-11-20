@@ -236,6 +236,9 @@ public class Apiary {
             EggFrames destinationEggFrames = destinationHive.getEggFrames();
             List<Integer> eggBatchesToMove = sourceEggFrames.extractEggBatchesForFrame();
             destinationEggFrames.addEggBatches(eggBatchesToMove);
+            sourceHive.setWasMovedAnEggsFrame(true);
+            System.out.println("acesta e stupul sursa "+sourceEggFrames);
+            System.out.println("acestea sunt ramele destinatie"+destinationEggFrames);
         }
     }
 
