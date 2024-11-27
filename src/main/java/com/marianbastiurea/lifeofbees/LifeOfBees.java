@@ -1,14 +1,19 @@
 package com.marianbastiurea.lifeofbees;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
 
 
+@Document(collection = "games")
 public class LifeOfBees {
+    @Id
+    private String id;
     private Apiary apiary;
     private List<ActionOfTheWeek> actionOfTheWeek;
-    private Integer gameId;
     private String gameName;
     private String location;
     private LocalDate currentDate;
@@ -17,12 +22,12 @@ public class LifeOfBees {
     private double totalKgOfHoneyHarvested;
 
 
-    public LifeOfBees(Apiary apiary, Integer gameId,
+    public LifeOfBees(String id,Apiary apiary,
                       String gameName, String location, LocalDate currentDate,
                       WeatherData weatherData, double moneyInTheBank, double totalKgOfHoneyHarvested,
                       List<ActionOfTheWeek> actionOfTheWeek) {
+        this.id=id;
         this.apiary = apiary;
-        this.gameId = gameId;
         this.gameName = gameName;
         this.location = location;
         this.currentDate = currentDate;
@@ -33,13 +38,28 @@ public class LifeOfBees {
 
     }
 
+    public LifeOfBees(String gameName,Apiary apiary, List<ActionOfTheWeek> actionOfTheWeek,
+                     String location, LocalDate currentDate, WeatherData weatherData,
+                      double moneyInTheBank, double totalKgOfHoneyHarvested) {
+        this.apiary = apiary;
+        this.actionOfTheWeek = actionOfTheWeek;
+        this.gameName = gameName;
+        this.location = location;
+        this.currentDate = currentDate;
+        this.weatherData = weatherData;
+        this.moneyInTheBank = moneyInTheBank;
+        this.totalKgOfHoneyHarvested = totalKgOfHoneyHarvested;
+    }
+
+    public LifeOfBees() {
+    }
 
     @Override
     public String toString() {
         return "LifeOfBees{" +
+                "id="+id+
                 "apiary=" + apiary +
                 ", actionOfTheWeek=" + actionOfTheWeek +
-                ", gameId=" + gameId +
                 ", gameName='" + gameName + '\'' +
                 ", location='" + location + '\'' +
                 ", currentDate=" + currentDate +
@@ -94,11 +114,7 @@ public class LifeOfBees {
             date = date.plusDays(1);
         }
         lifeOfBeesGame.setCurrentDate(date);
-        return new LifeOfBees(apiary, gameId, gameName, location, date, dailyWeather, moneyInTheBank, totalKgOfHoneyHarvested, actionOfTheWeek);
-    }
-
-    public Integer getGameId() {
-        return gameId;
+        return new LifeOfBees(id,apiary, gameName, location, date, dailyWeather, moneyInTheBank, totalKgOfHoneyHarvested, actionOfTheWeek);
     }
 
 
@@ -152,5 +168,16 @@ public class LifeOfBees {
 
     public void setActionOfTheWeek(List<ActionOfTheWeek> actionOfTheWeek) {
         this.actionOfTheWeek = actionOfTheWeek;
+    }
+
+    public WeatherData getAllWeatherData() {
+    return weatherData;}
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

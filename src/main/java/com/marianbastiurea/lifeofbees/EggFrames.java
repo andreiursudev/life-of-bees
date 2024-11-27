@@ -16,6 +16,9 @@ public class EggFrames {
         this.eggsByDay = eggsByDay;
     }
 
+    public EggFrames() {
+    }
+
     public EggFrames(int numberOfEggFrames) {
         this.numberOfEggFrames = numberOfEggFrames;
 

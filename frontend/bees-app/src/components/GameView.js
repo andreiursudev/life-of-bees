@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import '../App.css';
 import HiveCard from './HiveCard';
-import { getGame, iterateWeek, submitActionsOfTheWeek, buyHives} from './BeesApiService';
+import { getGame, iterateWeek, submitActionsOfTheWeek, buyHives } from './BeesApiService';
 import rapeseedFlower from '../rapeseed-flower.jpg';
 import wildFlower from '../wild-flower.jpg';
 import acaciaFlower from '../acacia-flower.jpg';
@@ -19,21 +19,45 @@ const GameView = () => {
     const [updatedGameData, setUpdatedGameData] = useState(null);
     const locationData = useLocation();
     const { location, startDate } = locationData.state;
+    const { gameId } = locationData.state || {};
+    const [loading, setLoading] = useState(false);
+
+    const [month, setMonth] = useState(null);
+    const [day, setDay] = useState(null);
+
 
     useEffect(() => {
+        if (!gameId) {
+            console.error('Game ID is missing!');
+            return;
+        }
+
         async function fetchGameData() {
             try {
-                console.log('Fetching game data...');
-                const data = await getGame();
-                console.log('Game data:', data);
+                console.log('am primit datele in gameView pentru ID:', gameId);
+                const data = await getGame(gameId);
+                console.log('datele primite din Java:', data);
+                const currentDate = new Date(data.currentDate); // Extragere dată
+                setMonth(currentDate.getMonth() + 1); // Actualizează luna
+                setDay(currentDate.getDate()); 
+
+                
+
                 setGameData(data);
                 setUpdatedGameData(data);
+
+
             } catch (error) {
-                console.error('Error fetching game data:', error);
+                console.error('No receiving data in GameView:', error);
+            } finally {
+                setLoading(false);
             }
         }
+
         fetchGameData();
     }, []);
+
+
 
     const handleCheckboxChange = (actionType, hiveId) => {
         setSelectedActions((prevSelectedActions) => ({
@@ -83,13 +107,13 @@ const GameView = () => {
                 return action;
             });
 
-            console.log("Actions data being sent:", aggregatedActions);
-            const response = await submitActionsOfTheWeek(aggregatedActions);
+            console.log("ActionOfTheWeek data being sent:", aggregatedActions);
+            const response = await submitActionsOfTheWeek(gameId, aggregatedActions);
             console.log("Response from backend:", response);
 
             if (response) {
                 console.log("Actions submitted successfully!");
-                const updatedData = await getGame();
+                const updatedData = await getGame(gameId);
                 setGameData(updatedData);
                 setUpdatedGameData(updatedData);
                 setSelectedActions({});
@@ -107,26 +131,34 @@ const GameView = () => {
     };
 
     const handleIterateWeek = async () => {
+        if (!gameId) {
+            console.error("Game ID is missing!");
+            return;
+        }
+    
         try {
-            const updatedGameData = await iterateWeek();
-            console.log('Updated game data:', updatedGameData);
-            setGameData(updatedGameData);
-            setUpdatedGameData(updatedGameData);
-            setSelectedActions({});
+            const updatedGameData = await iterateWeek(gameId); // Apelează funcția pentru iterare săptămânală
+            console.log('Datele din iterateOneWeek:', updatedGameData);
+    
+            setGameData(updatedGameData); // Actualizează datele jocului
+            setUpdatedGameData(updatedGameData); // Stare suplimentară pentru date actualizate
+            setSelectedActions({}); // Resetează acțiunile selectate
+    
+            // Extrage data curentă din răspunsul actualizat și setează luna și ziua
+            const currentDate = new Date(updatedGameData.currentDate);
+            setMonth(currentDate.getMonth() + 1); // Actualizează luna
+            setDay(currentDate.getDate()); // Actualizează ziua
         } catch (error) {
             console.error('Error iterating week:', error);
         }
     };
+    
 
 
-    const getFlowerImage = () => {
-        if (!gameData || !gameData.currentDate) {
-            return wildFlower;
+    const flowerImage = useMemo(() => {
+        if (!month || !day) {
+            return wildFlower; // Imagine implicită până se calculează corect luna și ziua
         }
-
-        const currentDate = new Date(gameData.currentDate);
-        const month = currentDate.getMonth() + 1;
-        const day = currentDate.getDate();
         if (month === 3 || month === 8 || month === 9) {
             return wildFlower;
         } else if (month === 4 && day <= 20) {
@@ -146,7 +178,8 @@ const GameView = () => {
         } else {
             return wildFlower;
         }
-    };
+    }, [month, day]); // Dependințe corecte
+
 
     const formatActionType = (actionType) => {
         return actionType
@@ -159,20 +192,9 @@ const GameView = () => {
     const [hivesToBuy, setHivesToBuy] = useState(1);
     const [error, setError] = useState(null);
     const maxHives = gameData ? 10 - gameData.hives.length : 0;
-    const [month, setMonth] = useState(null);
 
-    useEffect(() => {
-        async function fetchGameData() {
-            try {
-                const data = await getGame();
-                setGameData(data);
-                setMonth(new Date(data.currentDate).getMonth() + 1);
-            } catch (error) {
-                console.error('Error fetching game data:', error);
-            }
-        }
-        fetchGameData();
-    }, []);
+
+
 
     const handleBuyHivesClick = () => {
         if (month === 3 || month === 4) {
@@ -195,6 +217,7 @@ const GameView = () => {
     };
 
 
+
     const handleSubmitHivesPurchase = async () => {
         if (hivesToBuy > maxHives) {
             setError(`You can only buy up to ${maxHives} hives.`);
@@ -206,11 +229,12 @@ const GameView = () => {
         }
 
         try {
-            const response = await buyHives(hivesToBuy);
+            const gameId = gameData.id; // Accesăm gameId din datele jocului
+            const response = await buyHives(gameId, hivesToBuy); // Transmitem gameId
             if (response) {
                 setShowBuyHivesForm(false);
                 setError(null);
-                setGameData(await getGame());
+                setGameData(await getGame(gameId)); // Preluăm datele actualizate folosind gameId
             } else {
                 setError('Failed to buy hives.');
             }
@@ -411,9 +435,15 @@ const GameView = () => {
                         </p>
 
                         <p className="btn-custom p-custom mb-2">Money in the bank: {gameData && gameData.moneyInTheBank ? gameData.moneyInTheBank.toFixed(2) : 'Loading...'}</p>
-                        <img src={getFlowerImage()} alt="Flower based on date" className="img-custom mb-2" />
+                        <img src={flowerImage} alt="Flower based on date" className="img-custom mb-2" />
                         <button className="btn btn-custom p-custom mb-2" onClick={handleIterateWeek}>Iterate one week</button>
-                        <button className="btn btn-custom p-custom mb-2" onClick={() => navigate('/sell-honey')}>Sell Honey</button>
+                        <button
+                            className="btn btn-custom p-custom mb-2"
+                            onClick={() => navigate(`/sell-honey?gameId=${gameId}`)}
+                        >
+                            Sell Honey
+                        </button>
+
 
                         <div style={{ position: "relative", display: "inline-block", textAlign: "center" }}>
                             <button

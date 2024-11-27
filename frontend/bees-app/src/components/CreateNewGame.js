@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createGame, fetchLocations, fetchWeatherForStartDate } from './BeesApiService';
+import { createGame, fetchLocations, fetchWeatherForStartDate, getGame } from './BeesApiService';
 
 const NewGameModal = ({ handleClose }) => {
     const [gameName, setgameName] = useState('');
@@ -15,30 +15,44 @@ const NewGameModal = ({ handleClose }) => {
     const startDate = `${startYear}-03-01`;
 
     
-    
     const handleSubmit = async (event) => {
         event.preventDefault();
         
         try {
-           // const weatherData = await fetchWeatherForStartDate(location, startDate);
-         
-
             const gameData = {
                 gameName,
                 location,
                 startDate,
                 numberOfStartingHives,
             };
-
+        
             console.log('Game data being sent:', gameData);
-
+        
+            // Crearea jocului și obținerea răspunsului cu id-ul jocului
             const response = await createGame(gameData);
-            console.log('Game started:', response);
-            navigate('/gameView', { state: { location, startDate } });
+            console.log('Datele initiale trimise de React:', response);
+        
+            const gameId = response; // Extragerea id-ului jocului din răspuns
+            console.log('id-ul jocului este: ',gameId)
+        
+            // Apelarea funcției getGame cu id-ul jocului
+            const gameDetails = await getGame(gameId); // Trimite gameId la getGame
+            console.log('detaliile jocului sunt:', gameDetails);
+            console.log('Jocul a inceput in Game View:', gameData);
+            navigate('/GameView', {
+                state: {
+                    gameId: gameId // Transmite doar gameId
+                }
+            });
+            
+        
+        
         } catch (error) {
-            console.error('Error starting game:', error);
+            console.error('Error starting game in CreateNewgame:', error);
         }
     };
+    
+    
 
     const handleLocationChange = async (e) => {
         const query = e.target.value;

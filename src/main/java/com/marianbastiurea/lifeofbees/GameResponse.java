@@ -6,6 +6,7 @@ import java.util.List;
 
 public class GameResponse {
 
+    private String id;
     private List<HivesView> hives = new ArrayList<>();
     private List<ActionOfTheWeek> actionOfTheWeek;
     private double temperature;
@@ -14,6 +15,17 @@ public class GameResponse {
     private double moneyInTheBank;
     private LocalDate currentDate;
     private double totalKgOfHoneyHarvested;
+
+
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public LocalDate getCurrentDate() {
         return currentDate;
@@ -90,13 +102,14 @@ public class GameResponse {
     @Override
     public String toString() {
         return "GameResponse{" +
-                "hives=" + hives +
+                "id='" + id + '\'' +
+                ", hives=" + hives +
                 ", actionOfTheWeek=" + actionOfTheWeek +
                 ", temperature=" + temperature +
                 ", windSpeed=" + windSpeed +
                 ", precipitation=" + precipitation +
                 ", moneyInTheBank=" + moneyInTheBank +
-                ", currentDate='" + currentDate + '\'' +
+                ", currentDate=" + currentDate +
                 ", totalKgOfHoneyHarvested=" + totalKgOfHoneyHarvested +
                 '}';
     }

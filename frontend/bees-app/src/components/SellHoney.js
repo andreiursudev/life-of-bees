@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../App.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { sendSellHoneyQuantities, getHoneyQuantities } from './BeesApiService';
 
 const RowHeader = () => (
@@ -46,16 +46,24 @@ const RowText = ({ honeyType, quantity, price, onQuantityChange }) => {
     );
 };
 const SellHoney = () => {
+    const [searchParams] = useSearchParams();
+    const gameId = searchParams.get('gameId');
     const [honeyData, setHoneyData] = useState([]);
     const [soldValues, setSoldValues] = useState({});
     const [soldValueTotals, setSoldValueTotals] = useState({});
     const [totalHoneyQuantity, setTotalHoneyQuantity] = useState(0);
     const navigate = useNavigate();
+    console.log(gameId);
 
     useEffect(() => {
         const fetchHoneyData = async () => {
+            if (!gameId) {
+                console.error('Missing gameId');
+                return;
+            }
+
             try {
-                const data = await getHoneyQuantities();
+                const data = await getHoneyQuantities(gameId);
 
                 const parsedData = Object.entries(data).map(([honeyType, quantity]) => ({
                     honeyType,
@@ -69,8 +77,9 @@ const SellHoney = () => {
                 console.error('Error fetching honey data:', error);
             }
         };
+
         fetchHoneyData();
-    }, []);
+    }, [gameId]);
 
 
     const updateTotalSoldValue = (sellQuantity, honeyType, price) => {
@@ -99,18 +108,24 @@ const SellHoney = () => {
             }, {});
 
         try {
+
             const payload = {
-                ...formattedSoldData,
+                gameId,
+                soldData: formattedSoldData,
                 totalValue: parseFloat(totalSoldValue)
             };
+
             console.log('Payload trimis din SellHoney:', JSON.stringify(payload, null, 2));
 
-            await sendSellHoneyQuantities.updateHoneyStock(formattedSoldData, parseFloat(totalSoldValue));
-            navigate('/gameView');
+            await sendSellHoneyQuantities.updateHoneyStock(gameId, formattedSoldData, parseFloat(totalSoldValue)); // Transmitem gameId
+            navigate('/gameView', {
+                state: { gameId },
+            });
         } catch (error) {
             console.error('Error submitting total sold value:', error);
         }
     };
+
 
     return (
         <div className="body-sell">

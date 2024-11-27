@@ -219,7 +219,6 @@ public class Apiary {
                     new Queen(ageOfQueen)
             );
             newHives.add(hive);
-            System.out.println("acesta este stupul tau: " + hive);
         }
         return newHives;
 
