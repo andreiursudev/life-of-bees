@@ -1,5 +1,8 @@
 package com.marianbastiurea.lifeofbees;
 
+import com.marianbastiurea.lifeofbees.Users.User;
+import com.marianbastiurea.lifeofbees.Users.UserRepository;
+import com.marianbastiurea.lifeofbees.Users.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,37 +19,34 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/api/bees")
 public class LifeOfBeesController {
 
-
     private Map<Integer, LifeOfBees> games;
-
-
     @Autowired
     private RestTemplate restTemplate;
+    private final LifeOfBeesRepository lifeOfBeesRepository;
+    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public LifeOfBeesController(LifeOfBeesRepository lifeOfBeesRepository) {
+    public LifeOfBeesController(LifeOfBeesRepository lifeOfBeesRepository,UserRepository userRepository, UserService userService) {
         this.lifeOfBeesRepository = lifeOfBeesRepository;
         this.games = new HashMap<>();
+        this.userRepository = userRepository;
+        this.userService=userService;
     }
 
-    private final LifeOfBeesRepository lifeOfBeesRepository;
-    private int requestCount = 0;
 
 
     @PostMapping("/game")
     public String createGame(@RequestBody GameRequest gameRequest) {
-        requestCount++;
-        System.out.println("Request count: " + requestCount);
-        // Parsează data din request
         LocalDate startDate = LocalDate.parse(gameRequest.getStartDate());
-
-        // Obține datele meteo
         String weatherApiUrl = "http://localhost:8081/api/weather/" + startDate;
         WeatherData weatherData = restTemplate.getForObject(weatherApiUrl, WeatherData.class);
-
         Map<String, WeatherData> allWeatherData = new HashMap<>();
         allWeatherData.put(weatherData.getDate().toString(), weatherData);
+        User user = null;
+        if (gameRequest.getUserId() != null) {
+            user = userRepository.findById(gameRequest.getUserId()).orElse(null);
+        }
 
-        // Creează jocul folosind Factory
         LifeOfBees lifeOfBeesGame = LifeOfBeesFactory.createLifeOfBeesGame(
                 gameRequest.getGameName(),
                 gameRequest.getLocation(),
@@ -56,9 +56,11 @@ public class LifeOfBeesController {
                 gameRequest.isPublic(),
                 allWeatherData
         );
-
-        // Salvează în MongoDB
         LifeOfBees savedGame = lifeOfBeesRepository.save(lifeOfBeesGame);
+        userService.addGameToUser(user, savedGame.getId());
+
+        // Verifică limita după crearea jocului
+       // checkAndEnforceGameLimit(userId);
         return savedGame.getId();
     }
 
@@ -66,34 +68,22 @@ public class LifeOfBeesController {
 
     @GetMapping("/game/{gameId}")
     public GameResponse getGame(@PathVariable String gameId) {
-        // Caută jocul în baza de date după ID
-
         LifeOfBees lifeOfBeesGame = lifeOfBeesRepository.findById(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
-
-        // Creează și returnează răspunsul către frontend
         System.out.println("Acestea sunt datele trimise către React: " + getGameResponse(lifeOfBeesGame));
         return getGameResponse(lifeOfBeesGame);
     }
 
     @PostMapping("/iterate/{gameId}")
     public GameResponse iterateGame(@PathVariable String gameId) {
-        // Obține jocul din MongoDB
         Optional<LifeOfBees> optionalGame = lifeOfBeesRepository.findById(gameId);
         if (!optionalGame.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found");
         }
-
-
         LifeOfBees lifeOfBeesGame = optionalGame.get();
         LifeOfBeesService lifeOfBeesService = new LifeOfBeesService();
-        // Iterează o săptămână
         lifeOfBeesGame = lifeOfBeesGame.iterateOneWeek(lifeOfBeesGame, lifeOfBeesService);
-
-        // Salvează jocul actualizat în MongoDB
         lifeOfBeesRepository.save(lifeOfBeesGame);
-
-        // Creează răspunsul pentru React
         GameResponse response = getGameResponse(lifeOfBeesGame);
         System.out.println("GameResponse după iterație: " + response);
 
@@ -181,9 +171,7 @@ public class LifeOfBeesController {
 
     public GameResponse getGameResponse(LifeOfBees game) {
         GameResponse gameResponse = new GameResponse();
-
         gameResponse.setId(game.getId());
-
         for (Hive hive : game.getApiary().getHives()) {
             gameResponse.getHives().add(new HivesView(hive.getId(), hive.getAgeOfQueen(), hive.getEggFrames().getNumberOfEggFrames(), hive.getHoneyFrames().size(), hive.isItWasSplit()));
         }
@@ -196,7 +184,6 @@ public class LifeOfBeesController {
         gameResponse.setTotalKgOfHoneyHarvested(game.getTotalKgOfHoneyHarvested());
         System.out.println("acestea sunt datele trimise catre React: "+gameResponse);
         return gameResponse;
-
     }
 
     @GetMapping("/getHoneyQuantities/{gameId}")
@@ -217,7 +204,6 @@ public class LifeOfBeesController {
     public ResponseEntity<String> sendSellHoneyQuantities(
             @PathVariable String gameId,
             @RequestBody Map<String, Double> requestData) {
-
         double revenue = requestData.getOrDefault("totalValue", 0.0);
         HarvestHoney soldHoneyData = new HarvestHoney();
         for (Map.Entry<String, Double> entry : requestData.entrySet()) {
@@ -274,6 +260,24 @@ public class LifeOfBeesController {
         lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() - numberOfHives * 500);
         lifeOfBeesRepository.save(lifeOfBeesGame);
         return ResponseEntity.ok("Hives bought successfully");
+    }
+
+    // Metoda pentru ștergerea jocurilor dacă se atinge limita
+    @DeleteMapping("/checkGameLimit/{userId}")
+    public ResponseEntity<?> checkAndEnforceGameLimit(@PathVariable String userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user == null) {
+            return ResponseEntity.badRequest().body("Utilizatorul nu a fost găsit.");
+        }
+
+        if (user.getGameIds().size() > 5) { // Setează limita dorită (5 sau 10)
+            String oldestGameId = user.getGameIds().remove(0);
+            lifeOfBeesRepository.deleteById(oldestGameId);
+            userRepository.save(user);
+            return ResponseEntity.ok("Jocul cel mai vechi a fost șters pentru a respecta limita.");
+        }
+
+        return ResponseEntity.ok("Nu este nevoie de ștergere, limita nu a fost atinsă.");
     }
 
 }

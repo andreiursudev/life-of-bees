@@ -1,5 +1,35 @@
 import axios from 'axios';
 
+// Funcție pentru înregistrarea utilizatorilor
+export const registerUser = async (userData) => {
+    try {
+        const response = await axios.post('http://localhost:8080/api/auth/register', userData);
+        const userId = response.data.userId; // Extrage userId din răspuns
+        return userId; // Returnează userId pentru utilizare ulterioară
+    } catch (error) {
+        console.error('Error in registerUser:', error.response?.data || error.message);
+        throw error;
+    }
+};
+
+
+
+
+
+
+// Funcție pentru autentificarea utilizatorilor
+export const authenticateUser = async (authData) => {
+    try {
+        const response = await axios.post('http://localhost:8080/api/auth/signin', authData);
+        return response.data;
+    } catch (error) {
+        console.error('Error in authenticateUser:', error.response?.data || error.message);
+        throw error;
+    }
+};
+
+
+
 export const createGame = async (gameData) => {
     try {
         const response = await axios.post('http://localhost:8080/api/bees/game', gameData);
@@ -157,6 +187,12 @@ export const fetchWeatherForStartDate = async (location) => {
     }
 };
 */
+
+
+
+
+
+
 
 
 export const getGameInfos = [

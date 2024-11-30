@@ -6,13 +6,15 @@ import org.springframework.data.annotation.Id;
 import java.util.Map;
 
 public class GameRequest {
-    private String userId;
     private boolean isPublic;
     private String gameName;
     private String location;
     private String startDate;
     private int numberOfStartingHives;
     private Map<String, WeatherData> allWeatherData;
+    private String userId;
+    private String username;
+    private String password;
 
 
     public String getGameName() {
@@ -71,16 +73,34 @@ public class GameRequest {
         isPublic = aPublic;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public String toString() {
         return "GameRequest{" +
-                ", userId='" + userId + '\'' +
-                ", isPublic=" + isPublic +
+                "isPublic=" + isPublic +
                 ", gameName='" + gameName + '\'' +
                 ", location='" + location + '\'' +
                 ", startDate='" + startDate + '\'' +
                 ", numberOfStartingHives=" + numberOfStartingHives +
                 ", allWeatherData=" + allWeatherData +
+                ", userId='" + userId + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 }

@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createGame, fetchLocations, fetchWeatherForStartDate, getGame } from './BeesApiService';
+import { createGame, fetchLocations, fetchWeatherForStartDate, getGame} from './BeesApiService';
 
-const NewGameModal = ({ handleClose }) => {
+
+const NewGameModal = ({ handleClose,isPublic,userId }) => {
+    useEffect(() => {
+        console.log('Received userId in NewGameModal:', userId);
+    }, [userId]);
     const [gameName, setgameName] = useState('');
     const [location, setLocation] = useState('');
     const [suggestions, setSuggestions] = useState([]);
     const [numberOfStartingHives, setNumberOfStartingHives] = useState(0);
     const navigate = useNavigate();
-
     const [numYears, setNumYears] = useState(1);
     const currentYear = new Date().getFullYear();
     const startYear = currentYear - numYears;
     const startDate = `${startYear}-03-01`;
-
+    
     
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -24,34 +27,27 @@ const NewGameModal = ({ handleClose }) => {
                 location,
                 startDate,
                 numberOfStartingHives,
+                userId,
+                isPublic
             };
         
             console.log('Game data being sent:', gameData);
-        
-            // Crearea jocului și obținerea răspunsului cu id-ul jocului
             const response = await createGame(gameData);
             console.log('Datele initiale trimise de React:', response);
-        
-            const gameId = response; // Extragerea id-ului jocului din răspuns
+            const gameId = response; 
             console.log('id-ul jocului este: ',gameId)
-        
-            // Apelarea funcției getGame cu id-ul jocului
-            const gameDetails = await getGame(gameId); // Trimite gameId la getGame
+            const gameDetails = await getGame(gameId); 
             console.log('detaliile jocului sunt:', gameDetails);
             console.log('Jocul a inceput in Game View:', gameData);
             navigate('/GameView', {
                 state: {
-                    gameId: gameId // Transmite doar gameId
+                    gameId: gameId 
                 }
             });
-            
-        
-        
         } catch (error) {
             console.error('Error starting game in CreateNewgame:', error);
         }
     };
-    
     
 
     const handleLocationChange = async (e) => {

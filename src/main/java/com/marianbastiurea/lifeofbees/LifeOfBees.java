@@ -20,6 +20,7 @@ public class LifeOfBees {
     private WeatherData weatherData;
     private double moneyInTheBank;
     private double totalKgOfHoneyHarvested;
+    private boolean isPublic;
 
 
     public LifeOfBees(String id,Apiary apiary,

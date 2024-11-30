@@ -23,9 +23,7 @@ public class LifeOfBeesFactory {
             Map<String, WeatherData> allWeatherData
             )
 
-
             {
-
         LocalDate date = LocalDate.parse(startingDate);
         List<ActionOfTheWeek> actionOfTheWeek = new ArrayList<>();
         double moneyInTheBank = 3000.0;

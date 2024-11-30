@@ -71,7 +71,6 @@ const GameView = () => {
             const actionsByType = Object.keys(selectedActions)
                 .filter(key => selectedActions[key])
                 .reduce((acc, key) => {
-                    // const [actionType, hiveId] = key.split('-');
                     const [actionType, sourceHiveId, destinationHiveId] = key.split('-');
                     if (!acc[actionType]) {
                         acc[actionType] = {
@@ -137,17 +136,16 @@ const GameView = () => {
         }
     
         try {
-            const updatedGameData = await iterateWeek(gameId); // Apelează funcția pentru iterare săptămânală
+            const updatedGameData = await iterateWeek(gameId); 
             console.log('Datele din iterateOneWeek:', updatedGameData);
     
-            setGameData(updatedGameData); // Actualizează datele jocului
-            setUpdatedGameData(updatedGameData); // Stare suplimentară pentru date actualizate
-            setSelectedActions({}); // Resetează acțiunile selectate
-    
-            // Extrage data curentă din răspunsul actualizat și setează luna și ziua
+            setGameData(updatedGameData); 
+            setUpdatedGameData(updatedGameData); 
+            setSelectedActions({}); 
+
             const currentDate = new Date(updatedGameData.currentDate);
-            setMonth(currentDate.getMonth() + 1); // Actualizează luna
-            setDay(currentDate.getDate()); // Actualizează ziua
+            setMonth(currentDate.getMonth() + 1); 
+            setDay(currentDate.getDate()); 
         } catch (error) {
             console.error('Error iterating week:', error);
         }
@@ -157,7 +155,7 @@ const GameView = () => {
 
     const flowerImage = useMemo(() => {
         if (!month || !day) {
-            return wildFlower; // Imagine implicită până se calculează corect luna și ziua
+            return wildFlower; 
         }
         if (month === 3 || month === 8 || month === 9) {
             return wildFlower;
@@ -178,7 +176,7 @@ const GameView = () => {
         } else {
             return wildFlower;
         }
-    }, [month, day]); // Dependințe corecte
+    }, [month, day]); 
 
 
     const formatActionType = (actionType) => {
@@ -229,12 +227,12 @@ const GameView = () => {
         }
 
         try {
-            const gameId = gameData.id; // Accesăm gameId din datele jocului
-            const response = await buyHives(gameId, hivesToBuy); // Transmitem gameId
+            const gameId = gameData.id; 
+            const response = await buyHives(gameId, hivesToBuy); 
             if (response) {
                 setShowBuyHivesForm(false);
                 setError(null);
-                setGameData(await getGame(gameId)); // Preluăm datele actualizate folosind gameId
+                setGameData(await getGame(gameId)); 
             } else {
                 setError('Failed to buy hives.');
             }
