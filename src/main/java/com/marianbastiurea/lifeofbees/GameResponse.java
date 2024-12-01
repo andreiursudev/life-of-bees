@@ -6,6 +6,7 @@ import java.util.List;
 
 public class GameResponse {
 
+    private String id;
     private List<HivesView> hives = new ArrayList<>();
     private List<ActionOfTheWeek> actionOfTheWeek;
     private double temperature;
@@ -14,6 +15,17 @@ public class GameResponse {
     private double moneyInTheBank;
     private LocalDate currentDate;
     private double totalKgOfHoneyHarvested;
+
+
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public LocalDate getCurrentDate() {
         return currentDate;
@@ -79,17 +91,25 @@ public class GameResponse {
         this.totalKgOfHoneyHarvested = totalKgOfHoneyHarvested;
     }
 
+    public void setWeatherData(WeatherData weatherData) {
+        if (weatherData != null) {
+            this.temperature = weatherData.getTemperature();
+            this.precipitation = weatherData.getPrecipitation();
+            this.windSpeed = weatherData.getWindSpeed();
+        }
+    }
 
     @Override
     public String toString() {
         return "GameResponse{" +
-                "hives=" + hives +
+                "id='" + id + '\'' +
+                ", hives=" + hives +
                 ", actionOfTheWeek=" + actionOfTheWeek +
                 ", temperature=" + temperature +
                 ", windSpeed=" + windSpeed +
                 ", precipitation=" + precipitation +
                 ", moneyInTheBank=" + moneyInTheBank +
-                ", currentDate='" + currentDate + '\'' +
+                ", currentDate=" + currentDate +
                 ", totalKgOfHoneyHarvested=" + totalKgOfHoneyHarvested +
                 '}';
     }
@@ -99,21 +119,16 @@ class HivesView {
 
     int id;
     int ageOfQueen;
-    int bees;
     String honeyType;
     int eggsFrame;
     int honeyFrame;
-    double kgOfHoney;
     private boolean itWasSplit;
 
-    public HivesView(int id, int ageOfQueen, int bees, String honeyType, int eggsFrame, int honeyFrame, double kgOfHoney, boolean itWasSplit) {
+    public HivesView(int id, int ageOfQueen, int eggsFrame, int honeyFrame, boolean itWasSplit) {
         this.id = id;
         this.ageOfQueen = ageOfQueen;
-        this.bees = bees;
-        this.honeyType = honeyType;
         this.eggsFrame = eggsFrame;
         this.honeyFrame = honeyFrame;
-        this.kgOfHoney = kgOfHoney;
         this.itWasSplit = itWasSplit;
     }
 
@@ -123,10 +138,6 @@ class HivesView {
 
     public int getAgeOfQueen() {
         return ageOfQueen;
-    }
-
-    public int getBees() {
-        return bees;
     }
 
     public String getHoneyType() {
@@ -139,10 +150,6 @@ class HivesView {
 
     public int getHoneyFrame() {
         return honeyFrame;
-    }
-
-    public double getKgOfHoney() {
-        return kgOfHoney;
     }
 
     public boolean isItWasSplit() {
@@ -158,11 +165,9 @@ class HivesView {
         return "HivesView{" +
                 "id=" + id +
                 ", ageOfQueen=" + ageOfQueen +
-                ", bees=" + bees +
                 ", honeyType='" + honeyType + '\'' +
                 ", eggsFrame=" + eggsFrame +
                 ", honeyFrame=" + honeyFrame +
-                ", kgOfHoney=" + kgOfHoney +
                 '}';
     }
 }

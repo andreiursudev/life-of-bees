@@ -1,102 +1,106 @@
 package com.marianbastiurea.lifeofbees;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
 
 
+@Document(collection = "games")
 public class LifeOfBees {
+    @Id
+    private String id;
     private Apiary apiary;
-    private int hiveIdCounter = 1;
     private List<ActionOfTheWeek> actionOfTheWeek;
-    private Integer gameId;
     private String gameName;
     private String location;
     private LocalDate currentDate;
-    private int numberOfStartingHives;
-    private double speedWind;// in km/h
-    private double temperature;// in Celsius Degree
-    private double precipitation;
+    private WeatherData weatherData;
     private double moneyInTheBank;
     private double totalKgOfHoneyHarvested;
+    private boolean isPublic;
 
 
-    public LifeOfBees(Apiary apiary, Integer gameId,
+    public LifeOfBees(String id,Apiary apiary,
                       String gameName, String location, LocalDate currentDate,
-                      double speedWind, double temperature, double precipitation, double moneyInTheBank, double totalKgOfHoneyHarvested, List<ActionOfTheWeek> actionOfTheWeek) {
+                      WeatherData weatherData, double moneyInTheBank, double totalKgOfHoneyHarvested,
+                      List<ActionOfTheWeek> actionOfTheWeek) {
+        this.id=id;
         this.apiary = apiary;
-        this.gameId = gameId;
         this.gameName = gameName;
         this.location = location;
         this.currentDate = currentDate;
-        this.speedWind = speedWind;
-        this.temperature = temperature;
-        this.precipitation = precipitation;
         this.moneyInTheBank = moneyInTheBank;
         this.totalKgOfHoneyHarvested = totalKgOfHoneyHarvested;
         this.actionOfTheWeek = actionOfTheWeek;
+        this.weatherData = weatherData;
+
+    }
+
+    public LifeOfBees(String gameName,Apiary apiary, List<ActionOfTheWeek> actionOfTheWeek,
+                     String location, LocalDate currentDate, WeatherData weatherData,
+                      double moneyInTheBank, double totalKgOfHoneyHarvested) {
+        this.apiary = apiary;
+        this.actionOfTheWeek = actionOfTheWeek;
+        this.gameName = gameName;
+        this.location = location;
+        this.currentDate = currentDate;
+        this.weatherData = weatherData;
+        this.moneyInTheBank = moneyInTheBank;
+        this.totalKgOfHoneyHarvested = totalKgOfHoneyHarvested;
+    }
+
+    public LifeOfBees() {
     }
 
     @Override
     public String toString() {
         return "LifeOfBees{" +
+                "id="+id+
                 "apiary=" + apiary +
-                ", hiveIdCounter=" + hiveIdCounter +
-                ", action=" + actionOfTheWeek +
-                ", gameId=" + gameId +
+                ", actionOfTheWeek=" + actionOfTheWeek +
                 ", gameName='" + gameName + '\'' +
                 ", location='" + location + '\'' +
-                ", currentDate='" + currentDate + '\'' +
-                ", numberOfStartingHives=" + numberOfStartingHives +
-                ", speedWind=" + speedWind +
-                ", temperature=" + temperature +
-                ", precipitation=" + precipitation +
-                ", actionOfTheWeek='" + actionOfTheWeek + '\'' +
+                ", currentDate=" + currentDate +
+                ", weatherData=" + weatherData +
                 ", moneyInTheBank=" + moneyInTheBank +
                 ", totalKgOfHoneyHarvested=" + totalKgOfHoneyHarvested +
                 '}';
     }
 
-
-    public LifeOfBees iterateOneWeek(LifeOfBees lifeOfBeesGame) {
+    public LifeOfBees iterateOneWeek(LifeOfBees lifeOfBeesGame, LifeOfBeesService lifeOfBeesService) {
         LocalDate date = lifeOfBeesGame.getCurrentDate();
-        Weather weather = new Weather();
+        WeatherData dailyWeather = lifeOfBeesService.fetchWeatherForDate(date);
         List<ActionOfTheWeek> actionsOfTheWeek = new ArrayList<>();
-        Weather todayWeather = null;
-
         for (int dailyIterator = 0; dailyIterator < 7; dailyIterator++) {
             List<Hive> hives = apiary.getHives();
-            apiary.setNumberOfHives(hives.size());
             ArrayList<Hive> oldHives = new ArrayList<>(hives);
             for (Hive hive : oldHives) {
-                Honey honey = hive.getHoney();
+                Honey honey = new Honey();
                 HarvestingMonths month = honey.getHarvestingMonth(date);
-                todayWeather = weather.whetherToday(month, date.getDayOfMonth());
                 Queen queen = hive.getQueen();
-                hive.getHoney().honeyType(month, date.getDayOfMonth());
                 double numberRandom = Math.random();
-
                 if ((numberRandom < 0.5 && month.equals(HarvestingMonths.MAY) && date.getDayOfMonth() > 1 && date.getDayOfMonth() < 20) || queen.getAgeOfQueen() == 5) {
                     hive.changeQueen();
                 }
-                double whetherIndex = weather.weatherIndex(month, date.getDayOfMonth());
+                double whetherIndex = dailyWeather.weatherIndex(dailyWeather);
                 int numberOfEggs = queen.makeEggs(honey, whetherIndex);
-                hive.fillUpEggsFrame(date, numberOfEggs);
-                hive.checkAndAddEggsToBees(date);
-                hive.fillUpExistingHoneyFrameFromHive(date);
-                hive.beesDie(date);
-                hive.setKgOfHoney(hive.findTotalKgOfHoney());
+                int bees = hive.getEggFrames().ageOneDay(numberOfEggs);
+                hive.checkIfCanAddNewEggsFrameInHive(actionsOfTheWeek);
+                hive.checkIfHiveCouldBeSplit(month, date.getDayOfMonth(), actionsOfTheWeek, lifeOfBeesGame);
+                hive.checkAndAddEggsToBees(bees);
+                hive.fillUpExistingHoneyFrameFromHive(lifeOfBeesGame);
+                hive.getBeesBatches().removeLast();
                 List<HoneyBatch> harvestedHoneyBatches = honey.harvestHoney(hive, month, date.getDayOfMonth());
                 hive.addHoneyBatches(harvestedHoneyBatches, actionsOfTheWeek);
-                hive.checkIfHiveCouldBeSplit(month, date.getDayOfMonth(), actionsOfTheWeek, lifeOfBeesGame);
-                hive.checkIfCanAddNewEggsFrameInHive(actionsOfTheWeek);
                 hive.checkIfCanAddANewHoneyFrameInHive(actionsOfTheWeek);
                 hive.checkIfCanMoveAnEggsFrame(actionsOfTheWeek, lifeOfBeesGame);
                 apiary.checkInsectControl(month, date.getDayOfMonth(), actionsOfTheWeek);
                 apiary.checkFeedBees(month, date.getDayOfMonth(), actionsOfTheWeek);
             }
             apiary.honeyHarvestedByHoneyType();
-            System.out.println("your honey harvested  until now:");
             System.out.println(apiary.getTotalHarvestedHoney());
             lifeOfBeesGame.setTotalKgOfHoneyHarvested(apiary.getTotalKgHoneyHarvested());
 
@@ -111,11 +115,7 @@ public class LifeOfBees {
             date = date.plusDays(1);
         }
         lifeOfBeesGame.setCurrentDate(date);
-        return new LifeOfBees(apiary, gameId, gameName, location, date, todayWeather.getSpeedWind(), todayWeather.getTemperature(), todayWeather.getPrecipitation(), moneyInTheBank, totalKgOfHoneyHarvested, actionOfTheWeek);
-    }
-
-    public Integer getGameId() {
-        return gameId;
+        return new LifeOfBees(id,apiary, gameName, location, date, dailyWeather, moneyInTheBank, totalKgOfHoneyHarvested, actionOfTheWeek);
     }
 
 
@@ -123,18 +123,13 @@ public class LifeOfBees {
         return apiary;
     }
 
-    public double getTemperature() {
-        return temperature;
+    public WeatherData getWeatherData() {
+        return weatherData;
     }
 
-    public double getSpeedWind() {
-        return speedWind;
+    public void setWeatherData(WeatherData weatherData) {
+        this.weatherData = weatherData;
     }
-
-    public double getPrecipitation() {
-        return precipitation;
-    }
-
 
     public double getMoneyInTheBank() {
         return moneyInTheBank;
@@ -150,10 +145,6 @@ public class LifeOfBees {
 
     public String getLocation() {
         return location;
-    }
-
-    public int getNumberOfStartingHives() {
-        return numberOfStartingHives;
     }
 
     public LocalDate getCurrentDate() {
@@ -178,5 +169,16 @@ public class LifeOfBees {
 
     public void setActionOfTheWeek(List<ActionOfTheWeek> actionOfTheWeek) {
         this.actionOfTheWeek = actionOfTheWeek;
+    }
+
+    public WeatherData getAllWeatherData() {
+    return weatherData;}
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

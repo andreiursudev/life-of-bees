@@ -1,39 +1,38 @@
 package com.marianbastiurea.lifeofbees;
 
 class HoneyFrame {
+    private double maxKgOfHoneyPerFrame = 4.5;
     private double kgOfHoney;
-    private String honeyType;
 
-    public HoneyFrame(double kgOfHoney, String honeyType) {
-        this.kgOfHoney = kgOfHoney;
-        this.honeyType = honeyType;
-    }
-
-    public HoneyFrame() {
-
-    }
-
-    public double getKgOfHoney() {
-        return kgOfHoney;
-    }
-
-    public void setKgOfHoney(double kgOfHoney) {
+    public HoneyFrame(double kgOfHoney) {
         this.kgOfHoney = kgOfHoney;
     }
 
-    public String getHoneyType() {
-        return honeyType;
+
+    public void fill(double kgOfHoneyToAdd) {
+        if (kgOfHoney < maxKgOfHoneyPerFrame) {
+            kgOfHoney = Math.min(maxKgOfHoneyPerFrame, kgOfHoney + kgOfHoneyToAdd);
+        }
     }
 
-    public void setHoneyType(String honeyType) {
-        this.honeyType = honeyType;
+    public boolean isHarvestable() {
+        return kgOfHoney > 4;
+    }
+
+    public boolean isFull() {
+        return kgOfHoney == maxKgOfHoneyPerFrame;
+    }
+
+    public double harvest() {
+        double harvest = kgOfHoney;
+        kgOfHoney = 0;
+        return harvest;
     }
 
     @Override
     public String toString() {
         return "{" +
                 "kgOfHoney=" + kgOfHoney +
-                ", honeyType='" + honeyType + '\'' +
                 '}';
     }
 }
