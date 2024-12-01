@@ -155,7 +155,7 @@ html, body {
   left: 10px;
   width: 50px; 
   height: auto; 
-  background: rgba(0, 0, 0, 0.5); 
+  background:  rgb(224, 133, 13);
   z-index: 999; 
   display: flex; 
   justify-content: flex-end; 
@@ -186,7 +186,6 @@ html, body {
   margin-left: 20px;
   
 }
-
 
 .modal-content button.btn-info {
   background-color: #17a2b8; 

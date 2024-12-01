@@ -2,15 +2,32 @@ import React from 'react';
 
 
 const AuthModal = ({ handleClose, handleSubmit, handleInputChange, formData, isSignUp, errorMessage }) => {
+    const [passwordError, setPasswordError] = React.useState(null);
+
+    const validatePasswords = () => {
+        if (isSignUp && formData.password !== formData.confirmPassword) {
+            return "Passwords do not match!";
+        }
+        return null;
+    };
+
     return (
         <div className="modal-backdrop">
             <div className="modal-content-auth">
                 <h2>{isSignUp ? 'Sign Up' : 'Sign In'}</h2>
-                <form onSubmit={(e) => {
-                    e.preventDefault();
-                    handleSubmit(formData.username, formData.password);
+                <form
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        const error = validatePasswords();
+                        if (error) {
+                            setPasswordError(error);
+                            return;
+                        }
+                        setPasswordError(null);
+                        handleSubmit(formData.username, formData.password);
+                    }}
+                >
 
-                }}>
                     <input
                         type="text"
                         name="username"
@@ -26,13 +43,18 @@ const AuthModal = ({ handleClose, handleSubmit, handleInputChange, formData, isS
                         onChange={handleInputChange}
                     />
                     {isSignUp && (
-                        <input
-                            type="password"
-                            name="confirmPassword"
-                            placeholder="Confirm Password"
-                            value={formData.confirmPassword}
-                            onChange={handleInputChange}
-                        />
+                        <>
+                            <input
+                                type="password"
+                                name="confirmPassword"
+                                placeholder="Confirm Password"
+                                value={formData.confirmPassword}
+                                onChange={handleInputChange}
+                            />
+                            {passwordError && (
+                                <p style={{ color: 'red', marginTop: '5px' }}>{passwordError}</p>
+                            )}
+                        </>
                     )}
                     <button className="primary" type="submit">
                         {isSignUp ? 'Sign Up' : 'Sign In'}
