@@ -56,12 +56,16 @@ const AuthModal = ({ handleClose, handleSubmit, handleInputChange, formData, isS
                             )}
                         </>
                     )}
-                    <button className="primary" type="submit">
+
+
+                    <button className="btn btn-secondary" type="submit">
                         {isSignUp ? 'Sign Up' : 'Sign In'}
                     </button>
-                    <button className="secondary" type="button" onClick={handleClose}>
+
+                    <button  className="btn btn-danger" type="button" onClick={handleClose}>
                         Cancel
                     </button>
+
                 </form>
                 {errorMessage && (
                     <p className="error-message" style={{ color: 'red', marginTop: '10px' }}>
