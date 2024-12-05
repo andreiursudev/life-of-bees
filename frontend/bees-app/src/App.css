@@ -103,7 +103,7 @@ html, body {
   align-items: center;
   justify-content: center;
 }
-
+/*
 .modal-dialog {
   background: white;
   padding: 20px;
@@ -111,6 +111,8 @@ html, body {
   max-width: 500px;
   width: 100%;
 }
+  */
+  
 .suggestions-list {
   list-style-type: none;
   padding: 0;
@@ -147,20 +149,6 @@ html, body {
   padding: 10px 15px; 
   border-radius: 5px;
   cursor: pointer;
-}
-
-.modal-backdrop {
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  width: 50px; 
-  height: auto; 
-  background:  rgb(224, 133, 13);
-  z-index: 999; 
-  display: flex; 
-  justify-content: flex-end; 
-  align-items: flex-start; 
-  padding: 10px; 
 }
 
 .modal-content-auth {

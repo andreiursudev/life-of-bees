@@ -12,8 +12,9 @@ const AuthModal = ({ handleClose, handleSubmit, handleInputChange, formData, isS
     };
 
     return (
-        <div className="modal-backdrop">
-            <div className="modal-content-auth">
+       // <div className="modal-backdrop">
+       <div className="modal show" style={{ display: 'block' }}>
+            <div className="modal-content">
                 <h2>{isSignUp ? 'Sign Up' : 'Sign In'}</h2>
                 <form
                     onSubmit={(e) => {
@@ -41,6 +42,7 @@ const AuthModal = ({ handleClose, handleSubmit, handleInputChange, formData, isS
                         placeholder="Password"
                         value={formData.password}
                         onChange={handleInputChange}
+                    
                     />
                     {isSignUp && (
                         <>
@@ -62,7 +64,7 @@ const AuthModal = ({ handleClose, handleSubmit, handleInputChange, formData, isS
                         {isSignUp ? 'Sign Up' : 'Sign In'}
                     </button>
 
-                    <button  className="btn btn-danger" type="button" onClick={handleClose}>
+                    <button className="btn btn-danger" type="button" onClick={handleClose}>
                         Cancel
                     </button>
 

@@ -15,7 +15,7 @@ const HomePage = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [userId, setUserId] = useState(null);
 
-    // Datele utilizatorului
+    
     const [formData, setFormData] = useState({
         username: '',
         password: '',
@@ -49,11 +49,11 @@ const HomePage = () => {
     const handleSignIn = async (username, password) => {
         try {
             const response = await authenticateUser({ username, password });
-            console.log('SignIn response:', response); // Verifică structura răspunsului
+            console.log('SignIn response:', response); 
             setAuthMessage('User authenticated successfully!');
             setIsAuthenticated(true);
             setShowAuthModal(false);
-            setUserId(response.userId); // Asigură-te că `userId` există în răspuns
+            setUserId(response.userId);
         } catch (error) {
             console.error('Error in SignIn:', error);
             setAuthMessage(error.response?.data || 'Failed to sign in. Please try again.');
@@ -63,13 +63,16 @@ const HomePage = () => {
 
     const handleSignUp = async (username, password) => {
         try {
-            const response = await registerUser({ username, password });
-            console.log('SignUp response:', response); // Verifică structura răspunsului
+            const {token, userId} = await registerUser({ username, password });
+            console.log('SignUp response:', { token, userId }); 
+            console.log('token:',token)
+            localStorage.setItem('authToken', token);
+            console.log('Token din localStorage:', localStorage.getItem('authToken'));
             setAuthMessage('User registered successfully!');
             setIsAuthenticated(true);
             setShowAuthModal(false);
-            setUserId(response); // Asigură-te că `userId` există în răspuns
-            console.log('userId setat este:', response);
+            setUserId(userId); 
+            console.log('userId setat este:', userId);
         } catch (error) {
             console.error('Error in SignUp:', error);
             setAuthMessage(error.response?.data?.error || 'Failed to register. Please try again.');
@@ -123,14 +126,14 @@ const HomePage = () => {
                 <NewGameModal
                     isPublic={true}
                     handleClose={handleCloseModal}
-                    userId={userId} // Transmite userId către NewGameModal
+                    userId={userId} 
                 />
             )}
             {showPrivateModal && (
                 <NewGameModal
                     isPublic={false}
                     handleClose={handleCloseModal}
-                    userId={userId} // Transmite userId către NewGameModal
+                    userId={userId} 
                 />
             )}
 
