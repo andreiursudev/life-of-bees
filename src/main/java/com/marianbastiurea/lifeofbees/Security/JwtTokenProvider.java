@@ -47,26 +47,61 @@ public class JwtTokenProvider {
     }
 
     public boolean isTokenValid(String token) {
+        // Verifică dacă token-ul este null sau gol
         if (token == null || token.trim().isEmpty()) {
-            System.out.println("Token este null sau gol!");
+            System.out.println("Tokenul este null sau gol. Validarea a eșuat.");
             return false;
         }
 
         try {
+            // Încearcă să parsezi token-ul și să extragi claims
             Claims claims = Jwts.parser()
-                    .setSigningKey(secretKey)
-                    .parseClaimsJws(token)
+                    .setSigningKey(secretKey)  // Folosește cheia secretă pentru validare
+                    .parseClaimsJws(token)  // Parsează JWS-ul și extrage claims
                     .getBody();
-            return !isTokenExpired(token); // Verifică și dacă este expirat
-        } catch (JwtException | IllegalArgumentException e) {
-            System.out.println("Eroare la validarea tokenului: " + e.getMessage());
+
+            // Verifică dacă token-ul este expirat
+            boolean isExpired = isTokenExpired(token);
+            if (isExpired) {
+                System.out.println("Tokenul este expirat.");
+                return false;
+            }
+
+            // Dacă nu este expirat, returnează true
+            return true;
+
+        } catch (JwtException e) {
+            // Capturează erorile specifice legate de JWT și loghează informațiile detaliate
+            System.out.println("Eroare la validarea token-ului JWT: " + e.getMessage());
+            System.out.println("Stack Trace: ");
+            e.printStackTrace();
+            return false;
+
+        } catch (IllegalArgumentException e) {
+            // Capturează erorile legate de argumente invalide (de exemplu, format incorect)
+            System.out.println("Argument invalid la validarea token-ului: " + e.getMessage());
+            System.out.println("Stack Trace: ");
+            e.printStackTrace();
+            return false;
+
+        } catch (Exception e) {
+            // Capturează orice altă excepție generală
+            System.out.println("Eroare neașteptată la validarea token-ului: " + e.getMessage());
+            System.out.println("Stack Trace: ");
+            e.printStackTrace();
             return false;
         }
     }
 
+
     public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
+        return Jwts.parser()
+                .setSigningKey(secretKey)
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();  // Subiectul poate fi userId-ul
     }
+
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);

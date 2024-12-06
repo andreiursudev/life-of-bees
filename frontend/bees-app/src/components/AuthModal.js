@@ -12,9 +12,8 @@ const AuthModal = ({ handleClose, handleSubmit, handleInputChange, formData, isS
     };
 
     return (
-       // <div className="modal-backdrop">
-       <div className="modal show" style={{ display: 'block' }}>
-            <div className="modal-content">
+        <div className="modal-backdrop">
+            <div className="modal-content-auth">
                 <h2>{isSignUp ? 'Sign Up' : 'Sign In'}</h2>
                 <form
                     onSubmit={(e) => {

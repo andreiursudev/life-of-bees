@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -21,7 +22,9 @@ public class UserService {
     }
 
     public String registerUser(RegisterRequest registerRequest) {
-        if (userRepository.findByUsername(registerRequest.getUsername()) != null) {
+        Optional<User> existingUser = userRepository.findByUsername(registerRequest.getUsername());
+        System.out.println("Existing user: " + existingUser);
+        if (existingUser.isPresent()) {
             throw new IllegalArgumentException("Username already exists");
         }
         String encodedPassword = passwordEncoder.encode(registerRequest.getPassword());
@@ -44,5 +47,9 @@ public class UserService {
         } else {
             throw new IllegalArgumentException("User is null. Cannot add game.");
         }
+    }
+
+    public User findUserByUsername(String username) {
+        return userRepository.findByUsername(username).orElse(null);
     }
 }

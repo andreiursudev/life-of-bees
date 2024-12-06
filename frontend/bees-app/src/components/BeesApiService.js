@@ -36,7 +36,7 @@ export const registerUser = async (registerData) => {
 export const authenticateUser = async (authData) => {
     try {
         const response = await apiClient.post('/auth/signin', authData);
-        const { token, userId } = response.data; // Extrage tokenul și userId-ul
+        const { token, userId } = response.data; 
         return { token, userId };
     } catch (error) {
         console.error('Error in authenticateUser:', error.response?.data || error.message);
