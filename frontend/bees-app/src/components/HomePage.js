@@ -49,7 +49,16 @@ const HomePage = () => {
     const handleSignIn = async (username, password) => {
         try {
             const response = await authenticateUser({ username, password });
+            
+            // Log pentru verificare
             console.log('SignIn response:', response); 
+            console.log('Token primit:', response.token);
+    
+            // Salvează token-ul și userId în localStorage
+            localStorage.setItem('authToken', response.token);
+            localStorage.setItem('userId', response.userId);
+    
+            // Actualizează starea
             setAuthMessage('User authenticated successfully!');
             setIsAuthenticated(true);
             setShowAuthModal(false);
@@ -60,6 +69,7 @@ const HomePage = () => {
             setIsAuthenticated(false);
         }
     };
+    
 
     const handleSignUp = async (username, password) => {
         try {
