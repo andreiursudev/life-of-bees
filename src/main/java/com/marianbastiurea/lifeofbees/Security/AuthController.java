@@ -6,6 +6,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -20,13 +23,16 @@ public class AuthController {
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
+    private final OAuth2UserServiceHelper oAuth2UserServiceHelper;
 
 
     @Autowired
-    public AuthController(UserService userService, JwtTokenProvider jwtTokenProvider, PasswordEncoder passwordEncode) {
+    public AuthController(UserService userService, JwtTokenProvider jwtTokenProvider,
+                          PasswordEncoder passwordEncode, OAuth2UserServiceHelper oAuth2UserServiceHelper) {
         this.userService = userService;
         this.jwtTokenProvider = jwtTokenProvider;
         this.passwordEncoder = passwordEncode;
+        this.oAuth2UserServiceHelper=oAuth2UserServiceHelper;
     }
 
 
@@ -84,6 +90,27 @@ public class AuthController {
                     .body("An error occurred during the login process");
         }
     }
+
+    @PostMapping("/oauth/google")
+    public ResponseEntity<?> authenticateWithGoogle(@AuthenticationPrincipal OAuth2User principal) {
+        try {
+            Map<String, Object> attributes = principal.getAttributes();
+            String email = (String) attributes.get("email");
+            String providerId = (String) attributes.get("sub");
+            User user = oAuth2UserServiceHelper.processOAuthPostLogin(email, providerId);
+            String token = jwtTokenProvider.generateToken(user.getId());
+            return ResponseEntity.ok(Map.of(
+                    "userId", user.getId(),
+                    "email", user.getEmail(),
+                    "token", token
+            ));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred during Google OAuth authentication");
+        }
+    }
+
 
 
 }

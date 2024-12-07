@@ -13,9 +13,8 @@ const HomePage = () => {
     const [isSignUp, setIsSignUp] = useState(false);
     const [authMessage, setAuthMessage] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [userId, setUserId] = useState(null);
+    const [userName, setUserName] = useState(null);
 
-    
     const [formData, setFormData] = useState({
         username: '',
         password: '',
@@ -23,7 +22,10 @@ const HomePage = () => {
     });
 
     const handlePublicGameClick = () => {
-        if (isAuthenticated) setShowPublicModal(true);
+        const username = 'JohnDoe';
+        const password = 'JohnDoe123';
+        handleSignUp(username, password);
+        setShowPublicModal(true);
     };
 
     const handlePrivateGameClick = () => {
@@ -33,6 +35,13 @@ const HomePage = () => {
     const handleAuthClick = (signUp) => {
         setIsSignUp(signUp);
         setShowAuthModal(true);
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userId');
+        setIsAuthenticated(false);
+        setUserName(null);
     };
 
     const handleCloseModal = () => {
@@ -49,40 +58,32 @@ const HomePage = () => {
     const handleSignIn = async (username, password) => {
         try {
             const response = await authenticateUser({ username, password });
-            
-            // Log pentru verificare
-            console.log('SignIn response:', response); 
-            console.log('Token primit:', response.token);
-    
-            // Salvează token-ul și userId în localStorage
+
             localStorage.setItem('authToken', response.token);
             localStorage.setItem('userId', response.userId);
-    
-            // Actualizează starea
+
             setAuthMessage('User authenticated successfully!');
             setIsAuthenticated(true);
             setShowAuthModal(false);
-            setUserId(response.userId);
+            setUserName(username);
         } catch (error) {
             console.error('Error in SignIn:', error);
             setAuthMessage(error.response?.data || 'Failed to sign in. Please try again.');
             setIsAuthenticated(false);
         }
     };
-    
 
     const handleSignUp = async (username, password) => {
         try {
-            const {token, userId} = await registerUser({ username, password });
-            console.log('SignUp response:', { token, userId }); 
-            console.log('token:',token)
+            const { token, userId } = await registerUser({ username, password });
+
             localStorage.setItem('authToken', token);
-            console.log('Token din localStorage:', localStorage.getItem('authToken'));
+            localStorage.setItem('userId', userId);
+
             setAuthMessage('User registered successfully!');
             setIsAuthenticated(true);
             setShowAuthModal(false);
-            setUserId(userId); 
-            console.log('userId setat este:', userId);
+            setUserName(username);
         } catch (error) {
             console.error('Error in SignUp:', error);
             setAuthMessage(error.response?.data?.error || 'Failed to register. Please try again.');
@@ -90,6 +91,7 @@ const HomePage = () => {
         }
     };
 
+    const userId = localStorage.getItem('userId'); // Preia userId din local storage
 
     return (
         <div className="container">
@@ -97,10 +99,10 @@ const HomePage = () => {
             <button
                 className="btn btn-primary btn-lg"
                 onClick={handlePublicGameClick}
-                disabled={!isAuthenticated}
             >
                 Create public game
             </button>
+
             <button
                 className="btn btn-secondary btn-lg"
                 onClick={handlePrivateGameClick}
@@ -120,14 +122,23 @@ const HomePage = () => {
             </div>
 
             <div className="auth-buttons-container">
-                <div className="auth-buttons">
-                    <button className="btn btn-success" onClick={() => handleAuthClick(false)}>
-                        Sign In
-                    </button>
-                    <button className="btn btn-info" onClick={() => handleAuthClick(true)}>
-                        Sign Up
-                    </button>
-                </div>
+                {isAuthenticated ? (
+                    <div className="auth-logged-in">
+                        <span className="hello-user">Hello {userName}!</span>
+                        <button className="btn btn-danger" onClick={handleLogout}>
+                            Logout
+                        </button>
+                    </div>
+                ) : (
+                    <div className="auth-buttons">
+                        <button className="btn btn-success" onClick={() => handleAuthClick(false)}>
+                            Sign In
+                        </button>
+                        <button className="btn btn-info" onClick={() => handleAuthClick(true)}>
+                            Sign Up
+                        </button>
+                    </div>
+                )}
             </div>
 
             <ApiaryCardsRow />
@@ -135,18 +146,17 @@ const HomePage = () => {
             {showPublicModal && (
                 <NewGameModal
                     isPublic={true}
+                    userId={userId} // Transmit userId către modal
                     handleClose={handleCloseModal}
-                    userId={userId} 
                 />
             )}
             {showPrivateModal && (
                 <NewGameModal
                     isPublic={false}
+                    userId={userId} // Transmit userId către modal
                     handleClose={handleCloseModal}
-                    userId={userId} 
                 />
             )}
-
 
             {showAuthModal && (
                 <AuthModal
