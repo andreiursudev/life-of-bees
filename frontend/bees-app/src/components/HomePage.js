@@ -3,6 +3,8 @@ import '../App.css';
 import NewGameModal from './CreateNewGame';
 import ApiaryCardsRow from './ApiaryCardsRow';
 import AuthModal from './AuthModal';
+import { GoogleLogin } from '@react-oauth/google'; 
+import GitHubLogin from 'react-github-login'; 
 
 import { authenticateUser, registerUser } from './BeesApiService';
 
@@ -91,6 +93,31 @@ const HomePage = () => {
         }
     };
 
+
+
+    const handleGoogleSuccess = (response) => {
+        console.log('Google Login Success:', response);
+        setIsAuthenticated(true);
+        setUserName('GoogleUser'); // Update with actual data from the response
+    };
+
+    const handleGoogleFailure = (error) => {
+        console.error('Google Login Failure:', error);
+        setAuthMessage('Google Login failed. Please try again.');
+    };
+
+    const handleGitHubSuccess = (response) => {
+        console.log('GitHub Login Success:', response);
+        setIsAuthenticated(true);
+        setUserName('GitHubUser'); // Update with actual data from the response
+    };
+
+    const handleGitHubFailure = (error) => {
+        console.error('GitHub Login Failure:', error);
+        setAuthMessage('GitHub Login failed. Please try again.');
+    };
+
+
     const userId = localStorage.getItem('userId'); // Preia userId din local storage
 
     return (
@@ -137,6 +164,17 @@ const HomePage = () => {
                         <button className="btn btn-info" onClick={() => handleAuthClick(true)}>
                             Sign Up
                         </button>
+                        <GoogleLogin
+                            onSuccess={handleGoogleSuccess}
+                            onError={handleGoogleFailure}
+                        />
+                        <GitHubLogin
+                            clientId="YOUR_GITHUB_CLIENT_ID"
+                            onSuccess={handleGitHubSuccess}
+                            onFailure={handleGitHubFailure}
+                            buttonText="Login with GitHub"
+                            className="btn btn-dark"
+                        />
                     </div>
                 )}
             </div>

@@ -54,7 +54,7 @@ public class AuthController {
             System.err.println("Validation error: " + e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
-            e.printStackTrace();  // Sau logare detaliată a erorii
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("An error occurred during the registration process");
         }
@@ -90,27 +90,53 @@ public class AuthController {
                     .body("An error occurred during the login process");
         }
     }
-
     @PostMapping("/oauth/google")
     public ResponseEntity<?> authenticateWithGoogle(@AuthenticationPrincipal OAuth2User principal) {
+        System.out.println("Starting Google OAuth authentication process.");
+
         try {
+            // Verificarea obiectului principal
+            if (principal == null) {
+                System.out.println("OAuth2User principal is null. Returning unauthorized response.");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Principal is null");
+            }
+
+            // Obținerea atributelor utilizatorului
             Map<String, Object> attributes = principal.getAttributes();
+            System.out.println("OAuth2User attributes: " + attributes);
+
+            // Extragem email și providerId
             String email = (String) attributes.get("email");
             String providerId = (String) attributes.get("sub");
+            System.out.println("Extracted email: " + email + ", providerId: " + providerId);
+
+            if (email == null || providerId == null) {
+                System.out.println("Email or providerId is missing. Returning bad request response.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Email or providerId is missing");
+            }
+
+            // Procesarea utilizatorului
             User user = oAuth2UserServiceHelper.processOAuthPostLogin(email, providerId);
+            System.out.println("User processed successfully: " + user);
+
+            // Generarea tokenului JWT
             String token = jwtTokenProvider.generateToken(user.getId());
+            System.out.println("Generated JWT token: " + token);
+
+            // Returnarea răspunsului
+            System.out.println("Returning success response with user details.");
             return ResponseEntity.ok(Map.of(
                     "userId", user.getId(),
                     "email", user.getEmail(),
                     "token", token
             ));
         } catch (Exception e) {
+            System.out.println("An error occurred during Google OAuth authentication: " + e.getMessage());
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("An error occurred during Google OAuth authentication");
         }
     }
-
-
 
 }
