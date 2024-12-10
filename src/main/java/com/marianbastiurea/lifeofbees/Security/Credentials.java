@@ -31,18 +31,4 @@ public class Credentials {
                 "google=" + google +
                 '}';
     }
-
-    public static class OpenWeatherMap {
-        private String api_key;
-
-        // Getters și Setters
-    }
-
-    public static class NOAA {
-        private String api_key;
-
-        // Getters și Setters
-    }
-
-    // Getters și Setters pentru `google`, `openweathermap`, `noaa`
 }
