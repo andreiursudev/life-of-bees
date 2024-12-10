@@ -24,17 +24,15 @@ public class AuthController {
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
     private final OAuth2UserServiceHelper oAuth2UserServiceHelper;
-    private final Credentials credentials;
 
 
     @Autowired
     public AuthController(UserService userService, JwtTokenProvider jwtTokenProvider,
-                          PasswordEncoder passwordEncode, OAuth2UserServiceHelper oAuth2UserServiceHelper,Credentials credentials) {
+                          PasswordEncoder passwordEncode, OAuth2UserServiceHelper oAuth2UserServiceHelper) {
         this.userService = userService;
         this.jwtTokenProvider = jwtTokenProvider;
         this.passwordEncoder = passwordEncode;
         this.oAuth2UserServiceHelper=oAuth2UserServiceHelper;
-        this.credentials=credentials;
     }
 
 
@@ -42,12 +40,6 @@ public class AuthController {
     public ResponseEntity<?> logUnexpectedEndpoints(HttpServletRequest request) {
         System.out.println("Received request for: " + request.getRequestURI());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Endpoint not found");
-    }
-
-    @GetMapping("/google-client-id")
-    public ResponseEntity<String> getGoogleClientId() {
-        String googleClientId = credentials.getGoogle().getClient_id(); // Replace with actual logic to fetch the client ID
-        return ResponseEntity.ok(googleClientId);
     }
 
 

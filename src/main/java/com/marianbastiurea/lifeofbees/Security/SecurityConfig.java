@@ -105,18 +105,4 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
-//    @Bean
-//    public Credentials loadCredentialsFromJson() {
-//        System.out.println("Loading credentials from JSON in ClientRegistrationRepository...");
-//        try {
-//            Credentials credentials = CredentialsLoader.loadCredentials();
-//            System.out.println("Credentials loaded successfully in OAuth2Config ClientRegistrationRepository.");
-//            return credentials;
-//        } catch (Exception e) {
-//            System.out.println("Error loading credentials in OAuth2Config ClientRegistrationRepository: " + e.getMessage());
-//            e.printStackTrace();
-//            throw new RuntimeException("Nu s-au putut încărca credențialele in OAuth2Config ClientRegistrationRepository" , e);
-//        }
-//    }
 }
