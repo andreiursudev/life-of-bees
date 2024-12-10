@@ -42,6 +42,7 @@ const HomePage = () => {
     const handleLogout = () => {
         localStorage.removeItem('authToken');
         localStorage.removeItem('userId');
+        window.location.reload();
         setIsAuthenticated(false);
         setUserName(null);
     };

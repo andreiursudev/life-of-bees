@@ -50,7 +50,7 @@ public class SecurityConfig {
                 })
                 .authorizeHttpRequests(auth -> {
                     System.out.println("Setting up authorization rules in SecurityConfig...");
-                    auth.requestMatchers("/api/auth/register", "/api/auth/signin", "/oauth2/**").permitAll()
+                    auth.requestMatchers("/api/auth/register", "/api/auth/signin", "/oauth2/**","api/auth/google-client-id").permitAll()
                             .anyRequest().authenticated();
                 })
                 .oauth2Login(oauth2 -> {
