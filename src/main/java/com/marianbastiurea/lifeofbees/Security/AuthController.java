@@ -60,12 +60,6 @@ public class AuthController {
         }
     }
 
-    @GetMapping("/google-client-id")
-    public ResponseEntity<String> getGoogleClientId() {
-        String googleClientId = System.getProperty("SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_ID");
-        return ResponseEntity.ok(googleClientId);
-    }
-
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
         try {

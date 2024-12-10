@@ -8,8 +8,6 @@ import GameView from './components/GameView';
 import SellHoney from './components/SellHoney';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 
-import { getGoogleClientId } from './components/BeesApiService';
-
 function App() {
   const [googleClientId, setGoogleClientId] = useState(null);
 
@@ -36,7 +34,8 @@ function App() {
   useEffect(() => {
     const fetchGoogleClientId = async () => {
       try {
-        const clientId = await getGoogleClientId();
+        const response = await fetch('/api/config/google-client-id'); // Endpoint din backend
+        const clientId = await response.text();
         setGoogleClientId(clientId);
       } catch (error) {
         console.error('Failed to fetch Google Client ID:', error);
