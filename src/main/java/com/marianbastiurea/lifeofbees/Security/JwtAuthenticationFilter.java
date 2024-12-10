@@ -23,18 +23,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-
-        // Logare detalii cerere pentru depanare
         logRequestDetails(request);
-
-        // Excludem rutele publice de la validarea tokenului
         String path = request.getRequestURI();
         if (isPublicRoute(path)) {
             filterChain.doFilter(request, response);
             return;
         }
-
-        // Extragem și validăm tokenul JWT
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
@@ -42,13 +36,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 authenticateUserFromToken(token);
             } else {
                 handleInvalidToken(response);
-                return; // Oprirea procesării cererii
+                return;
             }
         } else {
             System.out.println("Headerul Authorization nu este valid.");
         }
-
-        // Continuăm cu filtrul
         filterChain.doFilter(request, response);
     }
 
@@ -66,15 +58,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private boolean isPublicRoute(String path) {
-        // Verificăm dacă ruta este una publică (de ex., /login sau /register)
         return path.equals("/api/auth/register") || path.equals("/api/auth/signin");
     }
 
     private void authenticateUserFromToken(String token) {
         String userId = jwtTokenProvider.extractUsername(token); // Extrage userId din token
         System.out.println("User ID extras din token: " + userId);
-
-        // Setăm autentificarea fără roluri, deoarece nu sunt folosite în acest caz
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(userId, null, List.of());
         SecurityContextHolder.getContext().setAuthentication(authentication);
