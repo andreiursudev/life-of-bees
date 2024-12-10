@@ -69,16 +69,22 @@ public class AuthController {
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
         try {
+            // Verifică existența utilizatorului în baza de date
             User user = userService.findUserByUsername(loginRequest.getUsername());
             if (user == null) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
             }
+
+            // Verifică parola utilizând un encoder (de exemplu, BCrypt)
             boolean isPasswordValid = passwordEncoder.matches(loginRequest.getPassword(), user.getPassword());
             if (!isPasswordValid) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
             }
+
+            // Generează un token JWT
             String token = jwtTokenProvider.generateToken(user.getId());
 
+            // Răspunde cu datele utilizatorului și token-ul
             return ResponseEntity.ok(Map.of(
                     "userId", user.getId(),
                     "username", user.getUsername(),
@@ -95,12 +101,17 @@ public class AuthController {
         System.out.println("Starting Google OAuth authentication process.");
 
         try {
+            // Verificarea obiectului principal
             if (principal == null) {
                 System.out.println("OAuth2User principal is null. Returning unauthorized response.");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Principal is null");
             }
+
+            // Obținerea atributelor utilizatorului
             Map<String, Object> attributes = principal.getAttributes();
             System.out.println("OAuth2User attributes: " + attributes);
+
+            // Extragem email și providerId
             String email = (String) attributes.get("email");
             String providerId = (String) attributes.get("sub");
             System.out.println("Extracted email: " + email + ", providerId: " + providerId);
@@ -110,10 +121,16 @@ public class AuthController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body("Email or providerId is missing");
             }
+
+            // Procesarea utilizatorului
             User user = oAuth2UserServiceHelper.processOAuthPostLogin(email, providerId);
             System.out.println("User processed successfully: " + user);
+
+            // Generarea tokenului JWT
             String token = jwtTokenProvider.generateToken(user.getId());
             System.out.println("Generated JWT token: " + token);
+
+            // Returnarea răspunsului
             System.out.println("Returning success response with user details.");
             return ResponseEntity.ok(Map.of(
                     "userId", user.getId(),

@@ -34,6 +34,8 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     }
 
     private String determineTargetUrl(Authentication authentication) {
+        // Add logic to determine the target URL based on authentication details
+        // For simplicity, redirect to home page in this example
         System.out.println("Determining target URL based on authentication details in OAuth2SuccessHandler.");
         return "/home";
     }
