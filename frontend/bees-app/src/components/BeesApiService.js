@@ -32,6 +32,18 @@ export const registerUser = async (registerData) => {
     }
 };
 
+export const getGoogleClientId = async () => {
+    try {
+        const response = await apiClient.get('/auth/google-client-id');
+
+        console.log('datele din Java:',response.data);
+        return response.data ;
+    } catch (error) {
+        console.error('Error in registerUser:', error.response?.data || error.message);
+        throw error;
+    }
+};
+
 
 export const authenticateUser = async (authData) => {
     try {
