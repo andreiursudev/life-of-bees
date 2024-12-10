@@ -29,6 +29,8 @@ public class OAuth2Config {
                 System.out.println("Error: Client ID or Client Secret is null in ClientRegistrationRepository.");
                 throw new RuntimeException("Client ID or Client Secret is missing in ClientRegistrationRepository ");
             }
+
+            // Creează o înregistrare OAuth2 pentru Google
             System.out.println("Building Google ClientRegistration in ClientRegistrationRepository");
             ClientRegistration googleClientRegistration = ClientRegistration.withRegistrationId("google")
                     .clientId(clientId)
@@ -54,6 +56,7 @@ public class OAuth2Config {
 
 
     public void printOAuth2Config() {
+        // Verificăm dacă client_id și client_secret sunt corect configurate
         System.out.println("Client ID in OAuth2ClientProperties: " + oAuth2ClientProperties.getRegistration().get("google").getClientId());
         System.out.println("Client Secret in OAuth2ClientProperties: " + oAuth2ClientProperties.getRegistration().get("google").getClientSecret());
     }
