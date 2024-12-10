@@ -12,8 +12,6 @@ import { getGoogleClientId } from './components/BeesApiService';
 
 function App() {
   const [googleClientId, setGoogleClientId] = useState(null);
-
-  // Funcția care gestionează login-ul cu Google
   const handleGoogleLogin = (response) => {
     fetch('/api/auth/oauth/google', {
       method: 'POST',
@@ -21,18 +19,15 @@ function App() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        token: response.credential, // Token-ul obținut de la Google
+        token: response.credential, 
       }),
     })
     .then(res => res.json())
     .then(data => {
       console.log('User authenticated:', data);
-      // Procesați răspunsul, de exemplu, stocați token-ul JWT în state sau localStorage
     })
     .catch(error => console.error('Error during Google OAuth login:', error));
   };
-
-  // Fetch pentru obținerea Google Client ID din backend
   useEffect(() => {
     const fetchGoogleClientId = async () => {
       try {
@@ -46,7 +41,6 @@ function App() {
     fetchGoogleClientId();
   }, []);
 
-  // Afișează un loading dacă încă nu ai Google Client ID
   if (!googleClientId) {
     return <div>Loading...</div>;
   }
@@ -60,8 +54,6 @@ function App() {
             <Route path="/gameView" element={<GameView />} />
             <Route path="/sell-honey" element={<SellHoney />} />
           </Routes>
-
-          {/* Adăugăm butonul GoogleLogin */}
           <GoogleLogin 
             onSuccess={handleGoogleLogin}
             onError={() => console.log('Login Failed')} 
