@@ -36,7 +36,7 @@ export const getGoogleClientId = async () => {
     try {
         const response = await apiClient.get('/auth/google-client-id');
 
-        console.log('datele din Java:',response.data);
+        console.log('datele din Java pentru Google:',response.data);
         return response.data ;
     } catch (error) {
         console.error('Error in registerUser:', error.response?.data || error.message);
@@ -47,7 +47,7 @@ export const getGoogleClientId = async () => {
 export const getGitHubClientId = async () => {
     try {
         const response = await apiClient.get('/auth/github-client-id');
-        console.log('Datele din Java:', response.data);
+        console.log('Datele din Java pentru GitHub:', response.data);
         return response.data.clientId;
     } catch (error) {
         console.error('Error getting GitHub clientId:', error.response?.data || error.message);

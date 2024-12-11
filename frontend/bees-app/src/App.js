@@ -76,9 +76,6 @@ function App() {
 }, []);
 
 
-  if (!googleClientId || !gitHubClientId) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <GoogleOAuthProvider clientId={googleClientId}>
