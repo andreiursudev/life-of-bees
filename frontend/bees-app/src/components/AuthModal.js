@@ -1,6 +1,5 @@
 import React from 'react';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
-import { GoogleLogin } from '@react-oauth/google';
 import { handleGitHubLogin } from './BeesApiService';
 
 const AuthModal = ({ handleClose, handleSubmit, handleInputChange, formData, isSignUp,setIsSignUp, errorMessage, setIsAuthenticated, setUserName, setAuthMessage, setFormData }) => {
