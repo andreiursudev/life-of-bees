@@ -3,8 +3,8 @@ import '../App.css';
 import NewGameModal from './CreateNewGame';
 import ApiaryCardsRow from './ApiaryCardsRow';
 import AuthModal from './AuthModal';
-import { GoogleLogin } from '@react-oauth/google'; 
-import GitHubLogin from 'react-github-login'; 
+import { GoogleLogin } from '@react-oauth/google';
+import { handleGitHubLogin } from './BeesApiService';
 
 import { authenticateUser, registerUser } from './BeesApiService';
 
@@ -98,18 +98,20 @@ const HomePage = () => {
     const handleGoogleSuccess = (response) => {
         console.log('Google Login Success:', response);
         setIsAuthenticated(true);
-        setUserName('GoogleUser'); // Update with actual data from the response
+        setUserName('GoogleUser');
     };
+
 
     const handleGoogleFailure = (error) => {
         console.error('Google Login Failure:', error);
         setAuthMessage('Google Login failed. Please try again.');
     };
 
+
     const handleGitHubSuccess = (response) => {
         console.log('GitHub Login Success:', response);
         setIsAuthenticated(true);
-        setUserName('GitHubUser'); // Update with actual data from the response
+        setUserName('GitHubUser');
     };
 
     const handleGitHubFailure = (error) => {
@@ -118,7 +120,7 @@ const HomePage = () => {
     };
 
 
-    const userId = localStorage.getItem('userId'); // Preia userId din local storage
+    const userId = localStorage.getItem('userId');
 
     return (
         <div className="container">
@@ -168,13 +170,12 @@ const HomePage = () => {
                             onSuccess={handleGoogleSuccess}
                             onError={handleGoogleFailure}
                         />
-                        <GitHubLogin
-                            clientId="YOUR_GITHUB_CLIENT_ID"
-                            onSuccess={handleGitHubSuccess}
-                            onFailure={handleGitHubFailure}
-                            buttonText="Login with GitHub"
+                        <button
+                            onClick={handleGitHubLogin} 
                             className="btn btn-dark"
-                        />
+                        >
+                            Login with GitHub
+                        </button>
                     </div>
                 )}
             </div>
@@ -184,14 +185,14 @@ const HomePage = () => {
             {showPublicModal && (
                 <NewGameModal
                     isPublic={true}
-                    userId={userId} // Transmit userId către modal
+                    userId={userId}
                     handleClose={handleCloseModal}
                 />
             )}
             {showPrivateModal && (
                 <NewGameModal
                     isPublic={false}
-                    userId={userId} // Transmit userId către modal
+                    userId={userId}
                     handleClose={handleCloseModal}
                 />
             )}

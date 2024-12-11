@@ -44,6 +44,29 @@ export const getGoogleClientId = async () => {
     }
 };
 
+export const getGitHubClientId = async () => {
+    try {
+        const response = await apiClient.get('/auth/github-client-id');
+        console.log('Datele din Java:', response.data);
+        return response.data.clientId;
+    } catch (error) {
+        console.error('Error getting GitHub clientId:', error.response?.data || error.message);
+        throw error;
+    }
+};
+
+
+export const handleGitHubLogin = async () => {
+    try {
+        const clientId = await getGitHubClientId();
+        const oauthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&scope=user`;
+        window.location.href = oauthUrl;
+    } catch (error) {
+        console.error('Error during GitHub login:', error);
+        throw error;
+    }
+};
+
 
 export const authenticateUser = async (authData) => {
     try {

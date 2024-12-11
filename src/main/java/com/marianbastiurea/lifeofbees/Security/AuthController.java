@@ -32,7 +32,7 @@ public class AuthController {
         this.userService = userService;
         this.jwtTokenProvider = jwtTokenProvider;
         this.passwordEncoder = passwordEncode;
-        this.oAuth2UserServiceHelper=oAuth2UserServiceHelper;
+        this.oAuth2UserServiceHelper = oAuth2UserServiceHelper;
     }
 
 
@@ -66,6 +66,13 @@ public class AuthController {
         return ResponseEntity.ok(googleClientId);
     }
 
+
+    @GetMapping("/github-client-id")
+    public ResponseEntity<String> getGitHubClientId() {
+        String githubClientId = System.getProperty("SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_CLIENT_ID");
+        return ResponseEntity.ok(githubClientId);
+    }
+
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
         try {
@@ -89,6 +96,7 @@ public class AuthController {
                     .body("An error occurred during the login process");
         }
     }
+
     @PostMapping("/oauth/google")
     public ResponseEntity<?> authenticateWithGoogle(@AuthenticationPrincipal OAuth2User principal) {
         System.out.println("Starting Google OAuth authentication process.");
@@ -126,5 +134,42 @@ public class AuthController {
                     .body("An error occurred during Google OAuth authentication");
         }
     }
+
+    @PostMapping("/oauth/github")
+    public ResponseEntity<?> authenticateWithGitHub(@AuthenticationPrincipal OAuth2User principal) {
+        System.out.println("Starting GitHub OAuth authentication process.");
+
+        try {
+            if (principal == null) {
+                System.out.println("OAuth2User principal is null. Returning unauthorized response.");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Principal is null");
+            }
+            Map<String, Object> attributes = principal.getAttributes();
+            System.out.println("OAuth2User attributes: " + attributes);
+            String email = (String) attributes.get("email");
+            String providerId = (String) attributes.get("id"); // GitHub folosește "id" pentru identificatorul unic
+            System.out.println("Extracted email: " + email + ", providerId: " + providerId);
+            if (email == null || providerId == null) {
+                System.out.println("Email or providerId is missing. Returning bad request response.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Email or providerId is missing");
+            }
+            User user = oAuth2UserServiceHelper.processOAuthPostLogin(email, providerId);
+            System.out.println("User processed successfully: " + user);
+            String token = jwtTokenProvider.generateToken(user.getId());
+            System.out.println("Generated JWT token: " + token);
+            return ResponseEntity.ok(Map.of(
+                    "userId", user.getId(),
+                    "email", user.getEmail(),
+                    "token", token
+            ));
+        } catch (Exception e) {
+            System.out.println("An error occurred during GitHub OAuth authentication: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred during GitHub OAuth authentication");
+        }
+    }
+
 
 }

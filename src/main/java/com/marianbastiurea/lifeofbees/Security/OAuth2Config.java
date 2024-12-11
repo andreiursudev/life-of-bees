@@ -15,24 +15,19 @@ public class OAuth2Config {
     @Autowired
     private OAuth2ClientProperties oAuth2ClientProperties;
 
-
     @Bean
     public ClientRegistrationRepository clientRegistrationRepository() {
         System.out.println("Creating ClientRegistrationRepository bean...");
         try {
-            String clientId = System.getProperty("SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_ID");
-            String clientSecret = System.getProperty("SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_SECRET");
-            System.out.println("Google Client ID in ClientRegistrationRepository: " + clientId);
-            System.out.println("Google Client Secret in ClientRegistrationRepository: " + clientSecret);
-
-            if (clientId == null || clientSecret == null) {
-                System.out.println("Error: Client ID or Client Secret is null in ClientRegistrationRepository.");
-                throw new RuntimeException("Client ID or Client Secret is missing in ClientRegistrationRepository ");
+            String googleClientId = System.getProperty("SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_ID");
+            String googleClientSecret = System.getProperty("SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_SECRET");
+            if (googleClientId == null || googleClientSecret == null) {
+                System.out.println("Error: Google Client ID or Client Secret is missing.");
+                throw new RuntimeException("Google Client ID or Client Secret is missing.");
             }
-            System.out.println("Building Google ClientRegistration in ClientRegistrationRepository");
             ClientRegistration googleClientRegistration = ClientRegistration.withRegistrationId("google")
-                    .clientId(clientId)
-                    .clientSecret(clientSecret)
+                    .clientId(googleClientId)
+                    .clientSecret(googleClientSecret)
                     .redirectUri("{baseUrl}/login/oauth2/code/{registrationId}")
                     .scope("profile", "email")
                     .authorizationUri("https://accounts.google.com/o/oauth2/auth")
@@ -42,8 +37,26 @@ public class OAuth2Config {
                     .clientName("Google")
                     .build();
 
-            System.out.println("Google ClientRegistration created successfully.");
-            return new InMemoryClientRegistrationRepository(googleClientRegistration);
+            String githubClientId = System.getProperty("SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_CLIENT_ID");
+            String githubClientSecret = System.getProperty("SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_CLIENT_SECRET");
+            if (githubClientId == null || githubClientSecret == null) {
+                System.out.println("Error: GitHub Client ID or Client Secret is missing.");
+                throw new RuntimeException("GitHub Client ID or Client Secret is missing.");
+            }
+            ClientRegistration githubClientRegistration = ClientRegistration.withRegistrationId("github")
+                    .clientId(githubClientId)
+                    .clientSecret(githubClientSecret)
+                    .redirectUri("{baseUrl}/login/oauth2/code/{registrationId}")
+                    .scope("read:user", "user:email")
+                    .authorizationUri("https://github.com/login/oauth/authorize")
+                    .tokenUri("https://github.com/login/oauth/access_token")
+                    .userInfoUri("https://api.github.com/user")
+                    .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                    .clientName("GitHub")
+                    .build();
+
+            System.out.println("Google and GitHub ClientRegistration created successfully.");
+            return new InMemoryClientRegistrationRepository(googleClientRegistration, githubClientRegistration);
 
         } catch (Exception e) {
             System.out.println("Error creating ClientRegistrationRepository: " + e.getMessage());
@@ -51,7 +64,6 @@ public class OAuth2Config {
             throw e;
         }
     }
-
 
     public void printOAuth2Config() {
         System.out.println("Client ID in OAuth2ClientProperties: " + oAuth2ClientProperties.getRegistration().get("google").getClientId());

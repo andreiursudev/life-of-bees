@@ -8,12 +8,12 @@ import GameView from './components/GameView';
 import SellHoney from './components/SellHoney';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 
-import { getGoogleClientId } from './components/BeesApiService';
+import { getGoogleClientId, getGitHubClientId} from './components/BeesApiService';
 
 function App() {
   const [googleClientId, setGoogleClientId] = useState(null);
+  const [gitHubClientId, setGitHubClientId] = useState(null);
 
-  // Funcția care gestionează login-ul cu Google
   const handleGoogleLogin = (response) => {
     fetch('/api/auth/oauth/google', {
       method: 'POST',
@@ -21,18 +21,34 @@ function App() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        token: response.credential, // Token-ul obținut de la Google
+        token: response.credential,
       }),
     })
-    .then(res => res.json())
-    .then(data => {
-      console.log('User authenticated:', data);
-      // Procesați răspunsul, de exemplu, stocați token-ul JWT în state sau localStorage
-    })
-    .catch(error => console.error('Error during Google OAuth login:', error));
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('User authenticated with Google:', data);
+      })
+      .catch((error) => console.error('Error during Google OAuth login:', error));
   };
 
-  // Fetch pentru obținerea Google Client ID din backend
+  const handleGitHubLogin = (code) => {
+    fetch('/api/auth/oauth/github', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        code, // Codul primit de la GitHub după redirecționare
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('User authenticated with GitHub:', data);
+      })
+      .catch((error) => console.error('Error during GitHub OAuth login:', error));
+  };
+  
+
   useEffect(() => {
     const fetchGoogleClientId = async () => {
       try {
@@ -46,8 +62,21 @@ function App() {
     fetchGoogleClientId();
   }, []);
 
-  // Afișează un loading dacă încă nu ai Google Client ID
-  if (!googleClientId) {
+  useEffect(() => {
+  const fetchGitHubClientId = async () => {
+    try {
+      const clientId = await getGitHubClientId(); // Funcție definită în BeesApiService.js
+      setGitHubClientId(clientId);
+    } catch (error) {
+      console.error('Failed to fetch GitHub Client ID:', error);
+    }
+  };
+
+  fetchGitHubClientId();
+}, []);
+
+
+  if (!googleClientId || !gitHubClientId) {
     return <div>Loading...</div>;
   }
 
@@ -60,12 +89,11 @@ function App() {
             <Route path="/gameView" element={<GameView />} />
             <Route path="/sell-honey" element={<SellHoney />} />
           </Routes>
-
-          {/* Adăugăm butonul GoogleLogin */}
           <GoogleLogin 
             onSuccess={handleGoogleLogin}
-            onError={() => console.log('Login Failed')} 
+            onError={() => console.log('Google Login Failed')} 
           />
+          <button onClick={handleGitHubLogin}>Login with GitHub</button>
         </div>
       </Router>
     </GoogleOAuthProvider>
