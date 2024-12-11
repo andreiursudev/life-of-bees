@@ -65,7 +65,7 @@ function App() {
   useEffect(() => {
   const fetchGitHubClientId = async () => {
     try {
-      const clientId = await getGitHubClientId(); // Funcție definită în BeesApiService.js
+      const clientId = await getGitHubClientId();
       setGitHubClientId(clientId);
     } catch (error) {
       console.error('Failed to fetch GitHub Client ID:', error);
@@ -86,11 +86,6 @@ function App() {
             <Route path="/gameView" element={<GameView />} />
             <Route path="/sell-honey" element={<SellHoney />} />
           </Routes>
-          <GoogleLogin 
-            onSuccess={handleGoogleLogin}
-            onError={() => console.log('Google Login Failed')} 
-          />
-          <button onClick={handleGitHubLogin}>Login with GitHub</button>
         </div>
       </Router>
     </GoogleOAuthProvider>

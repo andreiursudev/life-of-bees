@@ -90,28 +90,6 @@ html, body {
   color: black;
   flex-basis: 150px;
 }
-
-
-.modal.show {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(198, 24, 24, 0.014);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-/*
-.modal-dialog {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  max-width: 500px;
-  width: 100%;
-}
-  */
   
 .suggestions-list {
   list-style-type: none;
@@ -149,51 +127,4 @@ html, body {
   padding: 10px 15px; 
   border-radius: 5px;
   cursor: pointer;
-}
-
-.modal-content-auth {
-  background: white; 
-  padding: 30px; 
-  border-radius: 5px; 
-  width: 300px; 
-  max-width: 40%;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
-  display: flex; 
-  flex-direction: column; 
-  gap: 30px; 
-}
-
-.modal-content input {
-  width: 70%; 
-  padding: 20px;
-  margin-bottom: 10px; 
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-left: 20px;
-  
-}
-
-.modal-content button.btn-info {
-  background-color: #17a2b8; 
-  color: white;
-}
-
-.modal button {
-  width: auto; 
-  padding: 8px 12px; 
-  margin-top: 10px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-.modal-content-auth {
-  background: white; 
-  padding: 30px; 
-  border-radius: 5px; 
-  width: 300px; 
-  max-width: 40%;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
-  display: flex; 
-  flex-direction: column; 
-  gap: 30px; 
 }

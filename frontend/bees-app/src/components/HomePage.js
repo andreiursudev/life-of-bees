@@ -3,10 +3,8 @@ import '../App.css';
 import NewGameModal from './CreateNewGame';
 import ApiaryCardsRow from './ApiaryCardsRow';
 import AuthModal from './AuthModal';
-import { GoogleLogin } from '@react-oauth/google';
-import { handleGitHubLogin } from './BeesApiService';
-
 import { authenticateUser, registerUser } from './BeesApiService';
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 
 const HomePage = () => {
     const [showPublicModal, setShowPublicModal] = useState(false);
@@ -36,8 +34,14 @@ const HomePage = () => {
 
     const handleAuthClick = (signUp) => {
         setIsSignUp(signUp);
+        setFormData({
+            username: '',
+            password: '',
+            confirmPassword: '',
+        }); // Resetarea formularului
         setShowAuthModal(true);
     };
+
 
     const handleLogout = () => {
         localStorage.removeItem('authToken');
@@ -95,89 +99,61 @@ const HomePage = () => {
 
 
 
-    const handleGoogleSuccess = (response) => {
-        console.log('Google Login Success:', response);
-        setIsAuthenticated(true);
-        setUserName('GoogleUser');
-    };
-
-
-    const handleGoogleFailure = (error) => {
-        console.error('Google Login Failure:', error);
-        setAuthMessage('Google Login failed. Please try again.');
-    };
-
-
-    const handleGitHubSuccess = (response) => {
-        console.log('GitHub Login Success:', response);
-        setIsAuthenticated(true);
-        setUserName('GitHubUser');
-    };
-
-    const handleGitHubFailure = (error) => {
-        console.error('GitHub Login Failure:', error);
-        setAuthMessage('GitHub Login failed. Please try again.');
-    };
-
-
     const userId = localStorage.getItem('userId');
 
     return (
         <div className="container">
-            <h1>Life of Bees</h1>
-            <button
-                className="btn btn-primary btn-lg"
-                onClick={handlePublicGameClick}
-            >
-                Create public game
-            </button>
+            <div className="container">
+                <h1>Life of Bees</h1>
+                <div className="d-flex gap-3 mb-3">
+                    <button
+                        className="btn btn-primary btn-lg"
+                        onClick={handlePublicGameClick}
+                    >
+                        Create public game
+                    </button>
 
-            <button
-                className="btn btn-secondary btn-lg"
-                onClick={handlePrivateGameClick}
-                disabled={!isAuthenticated}
-            >
-                Create private game
-            </button>
-            <div className="pt-3">
-                <ul className="nav nav-tabs pt-3">
-                    <li className="nav-item">
-                        <a className="nav-link active" href="#">List</a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link" href="#">Map</a>
-                    </li>
-                </ul>
-            </div>
+                    <button
+                        className="btn btn-secondary btn-lg"
+                        onClick={handlePrivateGameClick}
+                        disabled={!isAuthenticated}
+                    >
+                        Create private game
+                    </button>
+                    <div className="d-flex justify-content-start align-items-center gap-3 mt-4 mx-auto" style={{ width: "30%" }}>
+                        {isAuthenticated ? (
+                            <>
+                                <span className="hello-user">Hello, {userName}!</span>
+                                <button className="btn btn-danger" onClick={handleLogout}>
+                                    Logout
+                                </button>
+                            </>
+                        ) : (
+                            <div className="auth-buttons d-flex gap-2">
+                                <button className="btn btn-success" onClick={() => handleAuthClick(false)}>
+                                    Sign In
+                                </button>
+                                <button className="btn btn-info" onClick={() => handleAuthClick(true)}>
+                                    Sign Up
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </div>
 
-            <div className="auth-buttons-container">
-                {isAuthenticated ? (
-                    <div className="auth-logged-in">
-                        <span className="hello-user">Hello {userName}!</span>
-                        <button className="btn btn-danger" onClick={handleLogout}>
-                            Logout
-                        </button>
-                    </div>
-                ) : (
-                    <div className="auth-buttons">
-                        <button className="btn btn-success" onClick={() => handleAuthClick(false)}>
-                            Sign In
-                        </button>
-                        <button className="btn btn-info" onClick={() => handleAuthClick(true)}>
-                            Sign Up
-                        </button>
-                        <GoogleLogin
-                            onSuccess={handleGoogleSuccess}
-                            onError={handleGoogleFailure}
-                        />
-                        <button
-                            onClick={handleGitHubLogin} 
-                            className="btn btn-dark"
-                        >
-                            Login with GitHub
-                        </button>
-                    </div>
-                )}
+                <div className="pt-3">
+                    <ul className="nav nav-tabs pt-3">
+                        <li className="nav-item">
+                            <a className="nav-link active" href="#">Public Game</a>
+                        </li>
+                        <li className="nav-item">
+                            <a className="nav-link active" href="#">Private Game</a>
+                        </li>
+                        <li className="nav-item">
+                            <a className="nav-link" href="#">Map</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
 
             <ApiaryCardsRow />
@@ -207,6 +183,10 @@ const HomePage = () => {
                     formData={formData}
                     isSignUp={isSignUp}
                     errorMessage={authMessage}
+                    setIsAuthenticated={setIsAuthenticated}
+                    setUserName={setUserName}
+                    authMessage={authMessage}
+                    setIsSignUp={setIsSignUp}
                 />
             )}
             {authMessage && <p className="auth-message">{authMessage}</p>}

@@ -22,10 +22,12 @@ public class UserService {
     }
 
     public String registerUser(RegisterRequest registerRequest) {
-        Optional<User> existingUser = userRepository.findByUsername(registerRequest.getUsername());
+        Optional<User> existingUser = userRepository.findByUsername(registerRequest.getUsername().toLowerCase().trim());
         System.out.println("Existing user: " + existingUser);
-        if (existingUser.isPresent()) {
-            throw new IllegalArgumentException("Username already exists");
+        if (!existingUser.equals("JohnDoe")) {
+            if (existingUser.isPresent()) {
+                throw new IllegalArgumentException("Username already exists");
+            }
         }
         String encodedPassword = passwordEncoder.encode(registerRequest.getPassword());
         User user = new User();
