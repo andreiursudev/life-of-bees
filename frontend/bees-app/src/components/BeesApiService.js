@@ -33,17 +33,40 @@ export const registerUser = async (registerData) => {
     }
 };
 
+
 export const getGoogleClientId = async () => {
     try {
         const response = await apiClient.get('/auth/google-client-id');
-
-        console.log('datele din Java pentru Google:',response.data);
-        return response.data ;
+        console.log('datele din Java pentru Google:', response.data);
+        return response.data;
     } catch (error) {
-        console.error('Error in registerUser:', error.response?.data || error.message);
+        console.error('Error in getGoogleClientId:', error.response?.data || error.message);
         throw error;
     }
 };
+
+export const handleGoogleLogin = async (response) => {
+    try {
+       
+        const googleClientId = await getGoogleClientId();
+        const res = await fetch('/api/auth/oauth/google', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                token: response.credential,
+                clientId: googleClientId, // Folosește client ID-ul obținut
+            }),
+        });
+
+        const data = await res.json();
+        console.log('User authenticated with Google:', data);
+    } catch (error) {
+        console.error('Error during Google OAuth login:', error);
+    }
+};
+
 
 export const getGitHubClientId = async () => {
     try {
@@ -79,9 +102,6 @@ export const authenticateUser = async (authData) => {
         throw error;
     }
 };
-
-
-
 
 export const createGame = async (gameData) => {
     try {
@@ -161,7 +181,6 @@ export const sendSellHoneyQuantities = {
     },
 };
 
-
 export const buyHives = async (gameId, numberOfHives) => {
     try {
         console.log("Number of hives to buy:", numberOfHives);
@@ -174,11 +193,6 @@ export const buyHives = async (gameId, numberOfHives) => {
         throw error;
     }
 };
-
-
-
-
-
 
 export const fetchLocations = async (query) => {
     const apiKey = 'tiMHwUADw1sxyLnOfrbf2a6oyXhRHFBe';

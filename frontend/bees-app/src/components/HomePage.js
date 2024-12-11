@@ -105,7 +105,7 @@ const HomePage = () => {
         <div className="container">
             <div className="container">
                 <h1>Life of Bees</h1>
-                <div className="d-flex gap-3 mb-3">
+                <div className="d-flex gap-2 mb-3 justify-content-start align-items-center">
                     <button
                         className="btn btn-primary btn-lg"
                         onClick={handlePublicGameClick}
@@ -120,26 +120,24 @@ const HomePage = () => {
                     >
                         Create private game
                     </button>
-                    <div className="d-flex justify-content-start align-items-center gap-3 mt-4 mx-auto" style={{ width: "30%" }}>
-                        {isAuthenticated ? (
-                            <>
-                                <span className="hello-user">Hello, {userName}!</span>
-                                <button className="btn btn-danger" onClick={handleLogout}>
-                                    Logout
-                                </button>
-                            </>
-                        ) : (
-                            <div className="auth-buttons d-flex gap-2">
-                                <button className="btn btn-success" onClick={() => handleAuthClick(false)}>
-                                    Sign In
-                                </button>
-                                <button className="btn btn-info" onClick={() => handleAuthClick(true)}>
-                                    Sign Up
-                                </button>
-                            </div>
-                        )}
-                    </div>
+
+                    {isAuthenticated ? (
+                        <div className="d-flex gap-3 ms-auto align-items-center">
+                            <span className="hello-user">Hello, {userName}!</span>
+                            <button className="btn btn-danger" onClick={handleLogout}>
+                                Logout
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="d-flex gap-3 ms-auto">
+                            <button className="btn btn-success" onClick={() => handleAuthClick(false)}>
+                                Sign In
+                            </button>
+                        </div>
+                    )}
                 </div>
+
+
 
                 <div className="pt-3">
                     <ul className="nav nav-tabs pt-3">
