@@ -56,7 +56,7 @@ export const handleGoogleLogin = async (response) => {
             },
             body: JSON.stringify({
                 token: response.credential,
-                clientId: googleClientId, // Folosește client ID-ul obținut
+                clientId: googleClientId, 
             }),
         });
 
@@ -83,10 +83,24 @@ export const getGitHubClientId = async () => {
 export const handleGitHubLogin = async () => {
     try {
         const clientId = await getGitHubClientId();
-        const oauthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&scope=user`;
+        const redirectUri = "http://localhost:8080/login/oauth2/code/github"; 
+        const oauthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=user`;
         window.location.href = oauthUrl;
     } catch (error) {
         console.error('Error during GitHub login:', error);
+        throw error;
+    }
+};
+
+export const authenticateWithGitHub = async (code) => {
+    try {
+        const response = await apiClient.post('/auth/oauth/github', { code });
+        const { token, email, userId } = response.data;
+        localStorage.setItem('authToken', token);
+        console.log('User authenticated with GitHub:', { email, userId });
+        window.location.href = '/homePage';
+    } catch (error) {
+        console.error('GitHub authentication failed:', error.response?.data || error.message);
         throw error;
     }
 };
