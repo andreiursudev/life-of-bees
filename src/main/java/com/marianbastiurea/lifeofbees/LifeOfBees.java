@@ -2,6 +2,8 @@ package com.marianbastiurea.lifeofbees;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
 
 import java.time.LocalDate;
 import java.util.*;
@@ -13,7 +15,6 @@ public class LifeOfBees {
     @Id
     private String id;
     private String userId;
-
     private Apiary apiary;
     private List<ActionOfTheWeek> actionOfTheWeek;
     private String gameName;
@@ -24,12 +25,14 @@ public class LifeOfBees {
     private double totalKgOfHoneyHarvested;
     private boolean isPublic;
 
+    @Field("history")
+    private List<LifeOfBees> history = new ArrayList<>();
 
 
     public LifeOfBees(String id, String userId, Apiary apiary,
                       String gameName, String location, LocalDate currentDate,
                       WeatherData weatherData, double moneyInTheBank, double totalKgOfHoneyHarvested,
-                      List<ActionOfTheWeek> actionOfTheWeek) {
+                      List<ActionOfTheWeek> actionOfTheWeek,List<LifeOfBees> history) {
         this.id=id;
         this.userId=userId;
         this.apiary = apiary;
@@ -40,12 +43,13 @@ public class LifeOfBees {
         this.totalKgOfHoneyHarvested = totalKgOfHoneyHarvested;
         this.actionOfTheWeek = actionOfTheWeek;
         this.weatherData = weatherData;
+        this.history=history;
 
     }
 
     public LifeOfBees(String gameName, String userId,Apiary apiary, List<ActionOfTheWeek> actionOfTheWeek,
                      String location, LocalDate currentDate, WeatherData weatherData,
-                      double moneyInTheBank, double totalKgOfHoneyHarvested) {
+                      double moneyInTheBank, double totalKgOfHoneyHarvested){
         this.apiary = apiary;
         this.actionOfTheWeek = actionOfTheWeek;
         this.gameName = gameName;
@@ -57,8 +61,7 @@ public class LifeOfBees {
         this.userId=userId;
     }
 
-    public LifeOfBees() {
-    }
+
 
     @Override
     public String toString() {
@@ -77,10 +80,22 @@ public class LifeOfBees {
                 '}';
     }
 
+    public List<LifeOfBees> getHistory() {
+        return history;
+    }
+
+    public void setHistory(List<LifeOfBees> history) {
+        this.history = history;
+    }
+
+    public LifeOfBees() {
+    }
+
     public LifeOfBees iterateOneWeek(LifeOfBees lifeOfBeesGame, LifeOfBeesService lifeOfBeesService) {
         LocalDate date = lifeOfBeesGame.getCurrentDate();
         WeatherData dailyWeather = lifeOfBeesService.fetchWeatherForDate(date);
         List<ActionOfTheWeek> actionsOfTheWeek = new ArrayList<>();
+        List<LifeOfBees> currentHistory = lifeOfBeesGame.getHistory();
         for (int dailyIterator = 0; dailyIterator < 7; dailyIterator++) {
             List<Hive> hives = apiary.getHives();
             ArrayList<Hive> oldHives = new ArrayList<>(hives);
@@ -122,7 +137,10 @@ public class LifeOfBees {
             date = date.plusDays(1);
         }
         lifeOfBeesGame.setCurrentDate(date);
-        return new LifeOfBees(id,userId, apiary, gameName, location, date, dailyWeather, moneyInTheBank, totalKgOfHoneyHarvested, actionOfTheWeek);
+        LifeOfBees newLifeOfBeesGame=new LifeOfBees(id,userId, apiary, gameName, location, date, dailyWeather, moneyInTheBank, totalKgOfHoneyHarvested, actionOfTheWeek,history);
+        currentHistory.add(newLifeOfBeesGame);
+
+        return newLifeOfBeesGame;
     }
 
 

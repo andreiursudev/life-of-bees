@@ -18,14 +18,14 @@ const BuyHivesModal = ({ hivesToBuy, maxHives, availableFunds, onClose, onSubmit
                             className="form-control"
                         />
                         {error && <p className="text-danger">{error}</p>}
-                    </div>
-                    <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" onClick={onClose}>
-                            Cancel
-                        </button>
-                        <button type="button" className="btn btn-primary" onClick={onSubmit}>
-                            Buy Hives
-                        </button>
+                        <div className="d-flex justify-content-between">
+                            <button type="button" className="btn btn-secondary" onClick={onClose}>
+                                Cancel
+                            </button>
+                            <button type="button" className="btn btn-primary" onClick={onSubmit}>
+                                Buy Hives
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -32,12 +32,12 @@ public class LifeOfBeesController {
     private LifeOfBeesService lifeOfBeesService;
 
 
-    public LifeOfBeesController(LifeOfBeesRepository lifeOfBeesRepository,UserRepository userRepository, UserService userService,JwtTokenProvider jwtTokenProvider ) {
+    public LifeOfBeesController(LifeOfBeesRepository lifeOfBeesRepository, UserRepository userRepository, UserService userService, JwtTokenProvider jwtTokenProvider) {
         this.lifeOfBeesRepository = lifeOfBeesRepository;
         this.games = new HashMap<>();
         this.userRepository = userRepository;
-        this.userService=userService;
-        this.jwtTokenProvider=jwtTokenProvider;
+        this.userService = userService;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @PostMapping("/game")
@@ -82,8 +82,9 @@ public class LifeOfBeesController {
                 allWeatherData
         );
         LifeOfBees savedGame = lifeOfBeesRepository.save(lifeOfBeesGame);
+        System.out.println("jocul nou creat este:" + lifeOfBeesGame);
+        lifeOfBeesService.addToHistory(savedGame);
         userService.addGameToUser(user, savedGame.getId());
-
         Map<String, String> response = new HashMap<>();
         response.put("token", jwtToken);
         response.put("gameId", savedGame.getId());
@@ -111,18 +112,18 @@ public class LifeOfBeesController {
         System.out.println("Cerere pentru iterație gameId: " + gameId);
         LifeOfBees lifeOfBeesGame = lifeOfBeesRepository.findById(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
-
+        System.out.println("Acesta e jocul primit in Iterate:" + lifeOfBeesGame);
         String userId = principal.getName();
         if (!lifeOfBeesGame.getUserId().equals(userId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
         }
         lifeOfBeesGame = lifeOfBeesGame.iterateOneWeek(lifeOfBeesGame, lifeOfBeesService);
+        lifeOfBeesService.addToHistory(lifeOfBeesGame);
         lifeOfBeesRepository.save(lifeOfBeesGame);
         GameResponse response = getGameResponse(lifeOfBeesGame);
         System.out.println("GameResponse după iterație: " + response);
         return response;
     }
-
 
 
     @PostMapping("/submitActionsOfTheWeek/{gameId}")
@@ -134,6 +135,7 @@ public class LifeOfBeesController {
         System.out.println("Cerere pentru submitActionsOfTheWeek, gameId: " + gameId);
         LifeOfBees lifeOfBeesGame = lifeOfBeesRepository.findById(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
+        System.out.println("Acesta e jocul primit in action Of the week:" + lifeOfBeesGame);
         String userId = principal.getName();
         if (!lifeOfBeesGame.getUserId().equals(userId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
@@ -143,6 +145,7 @@ public class LifeOfBeesController {
             processAction(action, apiary, lifeOfBeesGame);
         }
         lifeOfBeesGame.getActionOfTheWeek().clear();
+        lifeOfBeesService.addToHistory(lifeOfBeesGame);
         lifeOfBeesRepository.save(lifeOfBeesGame);
 
         GameResponse response = getGameResponse(lifeOfBeesGame);
@@ -214,7 +217,6 @@ public class LifeOfBeesController {
     }
 
 
-
     public GameResponse getGameResponse(LifeOfBees game) {
         GameResponse gameResponse = new GameResponse();
         gameResponse.setId(game.getId());
@@ -228,7 +230,9 @@ public class LifeOfBeesController {
         gameResponse.setPrecipitation(game.getWeatherData().getPrecipitation());
         gameResponse.setCurrentDate(game.getCurrentDate());
         gameResponse.setTotalKgOfHoneyHarvested(game.getTotalKgOfHoneyHarvested());
-        System.out.println("acestea sunt datele trimise catre React: "+gameResponse);
+        gameResponse.setHistory(game.getHistory());
+
+        System.out.println("acestea sunt datele trimise catre React: " + gameResponse);
         return gameResponse;
     }
 
@@ -237,7 +241,8 @@ public class LifeOfBeesController {
         System.out.println("Cerere pentru getHoneyQuantities, gameId: " + gameId);
         LifeOfBees lifeOfBeesGame = lifeOfBeesRepository.findById(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
-        String userId = principal.getName(); // Extras din JWT sau alt mecanism de autentificare
+        System.out.println("Acesta e jocul primit in getHoney:" + lifeOfBeesGame);
+        String userId = principal.getName();
         if (!lifeOfBeesGame.getUserId().equals(userId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
         }
@@ -257,7 +262,7 @@ public class LifeOfBeesController {
         System.out.println("Cerere pentru vânzare miere, gameId: " + gameId);
         LifeOfBees lifeOfBeesGame = lifeOfBeesRepository.findById(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
-
+        System.out.println("Acesta e jocul primit in sellHoney:" + lifeOfBeesGame);
         String userId = principal.getName();
         if (!lifeOfBeesGame.getUserId().equals(userId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
@@ -296,6 +301,7 @@ public class LifeOfBeesController {
         apiary.updateHoneyStock(soldHoneyData);
         lifeOfBeesGame.setTotalKgOfHoneyHarvested(apiary.getTotalKgHoneyHarvested());
         lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() + revenue);
+        lifeOfBeesService.addToHistory(lifeOfBeesGame);
         lifeOfBeesRepository.save(lifeOfBeesGame);
         System.out.println("Stock și venituri actualizate pentru gameId: " + gameId);
         return ResponseEntity.ok("Stock and revenue updated successfully.");
@@ -311,7 +317,7 @@ public class LifeOfBeesController {
         System.out.println("Cerere pentru cumpărare stupi, gameId: " + gameId);
         LifeOfBees lifeOfBeesGame = lifeOfBeesRepository.findById(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
-
+        System.out.println("Acesta e jocul primit in buyHives:" + lifeOfBeesGame);
         String userId = principal.getName();
         if (!lifeOfBeesGame.getUserId().equals(userId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
@@ -327,12 +333,11 @@ public class LifeOfBeesController {
             return ResponseEntity.badRequest().body("Insufficient funds to buy hives.");
         }
         lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() - totalCost);
+        lifeOfBeesService.addToHistory(lifeOfBeesGame);
         lifeOfBeesRepository.save(lifeOfBeesGame);
         System.out.println("Stupi cumpărați cu succes pentru gameId: " + gameId);
         return ResponseEntity.ok("Hives bought successfully.");
     }
-
-
 
 
     // Metoda pentru ștergerea jocurilor dacă se atinge limita

@@ -3,6 +3,8 @@ package com.marianbastiurea.lifeofbees;
 
 import org.springframework.data.annotation.Id;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class GameRequest {
@@ -17,7 +19,15 @@ public class GameRequest {
     private String password;
     private String token;
     private String gameId;
+    private List<LifeOfBees> history = new ArrayList<>();
 
+    public List<LifeOfBees> getHistory() {
+        return history;
+    }
+
+    public void setHistory(List<LifeOfBees> history) {
+        this.history = history;
+    }
 
     public String getGameId() {
         return gameId;
@@ -121,6 +131,7 @@ public class GameRequest {
                 ", password='" + password + '\'' +
                 ", token='" + token + '\'' +
                 ", gameId='" + gameId + '\'' +
+                ", history=" + history +
                 '}';
     }
 }

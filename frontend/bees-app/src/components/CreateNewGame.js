@@ -155,13 +155,11 @@ const NewGameModal = ({ handleClose, isPublic, userId, token }) => {
                                     />
                                 </div>
                             </div>
-                            <div className="d-flex justify-content-end">
+                            <div className="d-flex justify-content-between">
                                 <button type="submit" className="btn btn-secondary">Start</button>
+                                <button type="button" className="btn btn-danger" onClick={handleClose}>Close</button>
                             </div>
                         </form>
-                    </div>
-                    <div className="modal-footer d-flex justify-content-start">
-                        <button type="button" className="btn btn-danger" onClick={handleClose}>Close</button>
                     </div>
                 </div>
             </div>

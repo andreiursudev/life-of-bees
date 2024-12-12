@@ -22,10 +22,15 @@ const HomePage = () => {
     });
 
     const handlePublicGameClick = () => {
-        const username = 'JohnDoe';
-        const password = 'JohnDoe123';
-        handleSignUp(username, password);
-        setShowPublicModal(true);
+        if (isAuthenticated) {
+            setShowPublicModal(true);
+        } else {
+            
+            const username = 'JohnDoe';
+            const password = 'JohnDoe123';
+            handleSignUp(username, password);
+            setShowPublicModal(true);
+        }
     };
 
     const handlePrivateGameClick = () => {
@@ -38,7 +43,7 @@ const HomePage = () => {
             username: '',
             password: '',
             confirmPassword: '',
-        }); // Resetarea formularului
+        }); 
         setShowAuthModal(true);
     };
 

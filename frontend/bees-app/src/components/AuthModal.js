@@ -51,14 +51,14 @@ const AuthModal = ({ handleClose, handleSubmit, handleInputChange, formData, isS
                             <GoogleLogin
                                 onSuccess={handleGoogleSuccess}
                                 onError={handleGoogleFailure}
-                                className="btn btn-outline-primary w-100" 
+                                className="btn btn-outline-primary w-100"
                             />
                         </div>
 
                         <div className="mb-3">
                             <button
                                 onClick={handleGitHubLogin}
-                                className="btn btn-dark w-100" 
+                                className="btn btn-dark w-100"
                             >
                                 Login with GitHub
                             </button>
@@ -83,7 +83,7 @@ const AuthModal = ({ handleClose, handleSubmit, handleInputChange, formData, isS
                                     placeholder="Username"
                                     value={formData.username}
                                     onChange={handleInputChange}
-                                    className="form-control" 
+                                    className="form-control"
                                 />
                             </div>
 
@@ -94,7 +94,7 @@ const AuthModal = ({ handleClose, handleSubmit, handleInputChange, formData, isS
                                     placeholder="Password"
                                     value={formData.password}
                                     onChange={handleInputChange}
-                                    className="form-control" 
+                                    className="form-control"
                                 />
                             </div>
 
@@ -107,7 +107,7 @@ const AuthModal = ({ handleClose, handleSubmit, handleInputChange, formData, isS
                                             placeholder="Confirm Password"
                                             value={formData.confirmPassword}
                                             onChange={handleInputChange}
-                                            className="form-control" 
+                                            className="form-control"
                                         />
                                         {passwordError && (
                                             <p style={{ color: 'red', marginTop: '5px' }}>{passwordError}</p>
@@ -115,17 +115,15 @@ const AuthModal = ({ handleClose, handleSubmit, handleInputChange, formData, isS
                                     </div>
                                 </>
                             )}
+                            <div className="d-flex justify-content-between">
+                                <button type="button" className="btn btn-danger" onClick={handleClose}>Close</button>
+                                <button className="btn btn-secondary" type="submit">
+                                    {isSignUp ? 'Sign Up' : 'Sign In'}
+                                </button>
+                            </div>
+
                         </form>
                     </div>
-                    <div className="modal-footer d-flex justify-content-between">
-                        <button type="button" className="btn btn-danger w-45" onClick={handleClose}>Close</button>
-                        <div className="d-flex justify-content-end">
-                            <button className="btn btn-secondary w-45" type="submit">
-                                {isSignUp ? 'Sign Up' : 'Sign In'}
-                            </button>
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </div>

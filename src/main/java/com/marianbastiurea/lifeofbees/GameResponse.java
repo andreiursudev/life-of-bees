@@ -15,9 +15,15 @@ public class GameResponse {
     private double moneyInTheBank;
     private LocalDate currentDate;
     private double totalKgOfHoneyHarvested;
+    private List<LifeOfBees> history;
 
+    public List<LifeOfBees> getHistory() {
+        return history;
+    }
 
-
+    public void setHistory(List<LifeOfBees> history) {
+        this.history = history;
+    }
 
     public String getId() {
         return id;
@@ -111,6 +117,7 @@ public class GameResponse {
                 ", moneyInTheBank=" + moneyInTheBank +
                 ", currentDate=" + currentDate +
                 ", totalKgOfHoneyHarvested=" + totalKgOfHoneyHarvested +
+                ", history=" + history +
                 '}';
     }
 }
