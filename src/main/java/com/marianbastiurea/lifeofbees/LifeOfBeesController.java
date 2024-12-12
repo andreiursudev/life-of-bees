@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -340,20 +341,17 @@ public class LifeOfBeesController {
     }
 
 
-    // Metoda pentru ștergerea jocurilor dacă se atinge limita
-    @DeleteMapping("/checkGameLimit/{userId}")
-    public ResponseEntity<?> checkAndEnforceGameLimit(@PathVariable String userId) {
-        User user = userRepository.findById(userId).orElse(null);
-        if (user == null) {
-            return ResponseEntity.badRequest().body("Utilizatorul nu a fost găsit.");
-        }
-        if (user.getGameIds().size() > 5) { // Setează limita dorită (5 sau 10)
-            String oldestGameId = user.getGameIds().remove(0);
-            lifeOfBeesRepository.deleteById(oldestGameId);
-            userRepository.save(user);
-            return ResponseEntity.ok("Jocul cel mai vechi a fost șters pentru a respecta limita.");
-        }
-        return ResponseEntity.ok("Nu este nevoie de ștergere, limita nu a fost atinsă.");
+    @GetMapping("/games")
+    public List<GameResponse> getRecentGames(Principal principal) {
+        String userId = principal != null ? principal.getName() : null;
+        List<LifeOfBees> recentGames = lifeOfBeesRepository.findTop6ByIsPublicTrueOrderByCurrentDateDesc();
+
+        return recentGames.stream()
+                .filter(game -> game.isPublic() || (game.getUserId().equals(userId)))
+                .map(this::getGameResponse)
+                .collect(Collectors.toList());
     }
+
+
 
 }

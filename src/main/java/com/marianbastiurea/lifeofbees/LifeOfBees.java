@@ -80,6 +80,10 @@ public class LifeOfBees {
                 '}';
     }
 
+    public boolean isPublic() {
+        return isPublic;
+    }
+
     public List<LifeOfBees> getHistory() {
         return history;
     }

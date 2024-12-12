@@ -264,61 +264,15 @@ export const fetchWeatherForStartDate = async (location) => {
 };
 */
 
-
-
-
-
-
-
-
-export const getGameInfos = [
-    {
-        gameName: "Stefan Cel Mare Apiary",
-        location: "Suceava, Romania",
-        hives: "50000000000000",
-        bees: "23456789",
-        honey: "76677"
-    },
-    {
-        gameName: "Vlad Tepes Apiary",
-        location: "Targoviste, Romania",
-        hives: "30000000000000",
-        bees: "12345678",
-        honey: "56677"
-    },
-    {
-        gameName: "Mihai Viteazul Apiary",
-        location: "Alba Iulia, Romania",
-        hives: "20000000000000",
-        bees: "34567890",
-        honey: "46677"
-    },
-    {
-        gameName: "Stefan Cel Mititel Apiary",
-        location: "Suceava, Romania",
-        hives: "50000000000000",
-        bees: "23456789",
-        honey: "76677"
-    },
-    {
-        gameName: "Vlad Impaler Apiary",
-        location: "Targoviste, Romania",
-        hives: "30000000000000",
-        bees: "12345678",
-        honey: "56677"
-    },
-    {
-        gameName: "Mihai Cel Fricos Apiary",
-        location: "Alba Iulia, Romania",
-        hives: "20000000000000",
-        bees: "34567890",
-        honey: "46677"
-    },
-    {
-        gameName: "Mihai Cel Fricos Apiary",
-        location: "Alba Iulia, Romania",
-        hives: "20000000000000",
-        bees: "34567890",
-        honey: "46677"
+export const getRecentGames = async () => {
+    try {
+        const response = await apiClient.get('/bees/games');
+        return response.data;
+    } catch (error) {
+        console.error('Eroare la obținerea jocurilor recente:', error);
+        throw error;
     }
-];
+};
+
+
+
