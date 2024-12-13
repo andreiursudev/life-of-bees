@@ -12,6 +12,7 @@ export const getAuthToken = () => {
 apiClient.interceptors.request.use(
     (config) => {
         const token = getAuthToken(); 
+        console.log('acesta e tokenul',token)
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
@@ -139,22 +140,15 @@ export const getGame = async (gameId) => {
 
 export const iterateWeek = async (gameId, requestData) => {
     try {
-        const response = await apiClient.post(`/bees/iterate/${gameId}`, requestData, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (response.status !== 200) {
-            throw new Error('Error response in iterateWeek ' + response.status);
-        }
-
+        const response = await apiClient.post(`/bees/iterate/${gameId}`, requestData);
+        console.log('acesta e tokenul din iterateWeek', localStorage.getItem('authToken'))
         return response.data;
     } catch (error) {
         console.error('Error iterating week:', error);
         throw error;
     }
 };
+
 
 export const submitActionsOfTheWeek = async (gameId, actionsData) => {
     console.log('Actions data being sent:', actionsData);

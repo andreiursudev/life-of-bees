@@ -25,6 +25,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         logRequestDetails(request);
         String path = request.getRequestURI();
+        System.out.println("Request path: " + request.getRequestURI());
         if (isPublicRoute(path)) {
             filterChain.doFilter(request, response);
             return;
@@ -32,6 +33,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
+            System.out.println("Authorization Header: " + authHeader);
             if (jwtTokenProvider.isTokenValid(token)) {
                 authenticateUserFromToken(token);
             } else {
@@ -62,7 +64,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private void authenticateUserFromToken(String token) {
-        String userId = jwtTokenProvider.extractUsername(token); // Extrage userId din token
+        String userId = jwtTokenProvider.extractUsername(token);
         System.out.println("User ID extras din token: " + userId);
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(userId, null, List.of());

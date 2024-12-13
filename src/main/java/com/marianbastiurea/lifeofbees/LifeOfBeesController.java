@@ -84,7 +84,7 @@ public class LifeOfBeesController {
         );
         LifeOfBees savedGame = lifeOfBeesRepository.save(lifeOfBeesGame);
         System.out.println("jocul nou creat este:" + lifeOfBeesGame);
-        lifeOfBeesService.addToHistory(savedGame);
+        lifeOfBeesService.addToGameHistory(savedGame);
         userService.addGameToUser(user, savedGame.getId());
         Map<String, String> response = new HashMap<>();
         response.put("token", jwtToken);
@@ -109,7 +109,7 @@ public class LifeOfBeesController {
 
 
     @PostMapping("/iterate/{gameId}")
-    public GameResponse iterateGame(@PathVariable String gameId, Principal principal) {
+    public GameResponse iterateWeek(@PathVariable String gameId, Principal principal) {
         System.out.println("Cerere pentru iterație gameId: " + gameId);
         LifeOfBees lifeOfBeesGame = lifeOfBeesRepository.findById(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
@@ -119,7 +119,7 @@ public class LifeOfBeesController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
         }
         lifeOfBeesGame = lifeOfBeesGame.iterateOneWeek(lifeOfBeesGame, lifeOfBeesService);
-        lifeOfBeesService.addToHistory(lifeOfBeesGame);
+        lifeOfBeesService.addToGameHistory(lifeOfBeesGame);
         lifeOfBeesRepository.save(lifeOfBeesGame);
         GameResponse response = getGameResponse(lifeOfBeesGame);
         System.out.println("GameResponse după iterație: " + response);
@@ -146,7 +146,7 @@ public class LifeOfBeesController {
             processAction(action, apiary, lifeOfBeesGame);
         }
         lifeOfBeesGame.getActionOfTheWeek().clear();
-        lifeOfBeesService.addToHistory(lifeOfBeesGame);
+        lifeOfBeesService.addToGameHistory(lifeOfBeesGame);
         lifeOfBeesRepository.save(lifeOfBeesGame);
 
         GameResponse response = getGameResponse(lifeOfBeesGame);
@@ -231,7 +231,7 @@ public class LifeOfBeesController {
         gameResponse.setPrecipitation(game.getWeatherData().getPrecipitation());
         gameResponse.setCurrentDate(game.getCurrentDate());
         gameResponse.setTotalKgOfHoneyHarvested(game.getTotalKgOfHoneyHarvested());
-        gameResponse.setHistory(game.getHistory());
+        gameResponse.setHistory(game.getGameHistory());
 
         System.out.println("acestea sunt datele trimise catre React: " + gameResponse);
         return gameResponse;
@@ -302,7 +302,7 @@ public class LifeOfBeesController {
         apiary.updateHoneyStock(soldHoneyData);
         lifeOfBeesGame.setTotalKgOfHoneyHarvested(apiary.getTotalKgHoneyHarvested());
         lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() + revenue);
-        lifeOfBeesService.addToHistory(lifeOfBeesGame);
+        lifeOfBeesService.addToGameHistory(lifeOfBeesGame);
         lifeOfBeesRepository.save(lifeOfBeesGame);
         System.out.println("Stock și venituri actualizate pentru gameId: " + gameId);
         return ResponseEntity.ok("Stock and revenue updated successfully.");
@@ -334,7 +334,7 @@ public class LifeOfBeesController {
             return ResponseEntity.badRequest().body("Insufficient funds to buy hives.");
         }
         lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() - totalCost);
-        lifeOfBeesService.addToHistory(lifeOfBeesGame);
+        lifeOfBeesService.addToGameHistory(lifeOfBeesGame);
         lifeOfBeesRepository.save(lifeOfBeesGame);
         System.out.println("Stupi cumpărați cu succes pentru gameId: " + gameId);
         return ResponseEntity.ok("Hives bought successfully.");

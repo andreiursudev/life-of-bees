@@ -1,6 +1,7 @@
 package com.marianbastiurea.lifeofbees.Security;
 
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -50,7 +51,9 @@ public class SecurityConfig {
                 })
                 .authorizeHttpRequests(auth -> {
                     System.out.println("Setting up authorization rules in SecurityConfig...");
-                    auth.requestMatchers("/api/auth/register", "/api/auth/signin", "/oauth2/**","api/auth/google-client-id","api/auth/github-client-id", "/oauth2/github/**", "/auth/github/callback", "/login/oauth2/code/github", "/login").permitAll()
+                    auth.requestMatchers("/api/auth/register", "/api/auth/signin", "/oauth2/**",
+                                    "api/auth/google-client-id","api/auth/github-client-id", "/oauth2/github/**",
+                                    "/auth/github/callback", "/login/oauth2/code/github","/").permitAll()
                             .anyRequest().authenticated();
                 })
                 .oauth2Login(oauth2 -> {
@@ -70,6 +73,12 @@ public class SecurityConfig {
                 .headers(headers -> {
                     System.out.println("Disabling frame options headers in SecurityConfig...");
                     headers.addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN));
+                })
+                .exceptionHandling(exception -> {
+                    System.out.println("Configuring exception handling in SecurityConfig...");
+                    exception.authenticationEntryPoint((request, response, authException) -> {
+                        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+                    });
                 })
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

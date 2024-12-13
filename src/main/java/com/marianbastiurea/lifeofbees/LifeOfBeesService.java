@@ -25,7 +25,7 @@ public class LifeOfBeesService {
         this.mongoTemplate = mongoTemplate;
     }
 
-    public void addToHistory(LifeOfBees lifeOfBeesGame) {
+    public void addToGameHistory(LifeOfBees lifeOfBeesGame) {
         System.out.println("Obiectul lifeOfBees în metoda addToHistory: " + lifeOfBeesGame);
 
         Query query = Query.query(Criteria.where("userId").is(lifeOfBeesGame.getUserId())
@@ -35,19 +35,19 @@ public class LifeOfBeesService {
         LifeOfBees existingGame = mongoTemplate.findOne(query, LifeOfBees.class);
 
         if (existingGame != null) {
-            List<LifeOfBees> existingHistory = existingGame.getHistory();
-            if (existingHistory == null) {
-                existingHistory = new ArrayList<>();
+            List<LifeOfBees> existingGameHistory = existingGame.getGameHistory();
+            if (existingGameHistory == null) {
+                existingGameHistory = new ArrayList<>();
             }
-            existingHistory.add(lifeOfBeesGame);
-            Update update = new Update().set("history", existingHistory);
+            existingGameHistory.add(lifeOfBeesGame);
+            Update update = new Update().set("Game history", existingGameHistory);
 
-            System.out.println("Update creat în metoda addToHistory: " + update);
+            System.out.println("Update creat în metoda addToGameHistory: " + update);
 
             var result = mongoTemplate.updateFirst(query, update, LifeOfBees.class);
-            System.out.println("Rezultat actualizare în metoda addToHistory: " + result);
+            System.out.println("Rezultat actualizare în metoda addToGameHistory: " + result);
         } else {
-            System.out.println("Jocul nu a fost găsit pentru actualizare în metoda addToHistory.");
+            System.out.println("Jocul nu a fost găsit pentru actualizare în metoda addToGameHistory.");
         }
     }
 
