@@ -1,8 +1,8 @@
 
 const BuyHivesModal = ({ hivesToBuy, maxHives, availableFunds, onClose, onSubmit, error, onChangeHivesToBuy }) => {
     return (
-        <div className="modal show" tabIndex="-1">
-            <div className="modal-dialog">
+        <div className="modal show" style={{ display: 'block' }}>
+            <div className="modal-dialog modal-sm">
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title">Buy Hives</h5>

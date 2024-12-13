@@ -10,7 +10,7 @@ import lindenFlower from '../linden-flower.jpg';
 import sunFlower from '../sun-flower.jpg';
 import falseIndigoFlower from '../false-indigo-flower.jpg';
 import BuyHivesModal from './BuyHivesModal';
-
+import NewGameModal from './CreateNewGame';
 
 const GameView = () => {
     const navigate = useNavigate();
@@ -18,7 +18,7 @@ const GameView = () => {
     const [selectedActions, setSelectedActions] = useState({});
     const [updatedGameData, setUpdatedGameData] = useState(null);
     const locationData = useLocation();
-    const { location, startDate } = locationData.state;
+   
     const { gameId } = locationData.state || {};
     const [loading, setLoading] = useState(false);
 
@@ -37,11 +37,15 @@ const GameView = () => {
                 console.log('am primit datele in gameView pentru ID:', gameId);
                 const data = await getGame(gameId);
                 console.log('datele primite din Java:', data);
-                const currentDate = new Date(data.currentDate); 
-                setMonth(currentDate.getMonth() + 1); 
+                const currentDate = new Date(data.currentDate); // Extragere dată
+                setMonth(currentDate.getMonth() + 1); // Actualizează luna
+                console.log('luna curenta este: ', currentDate.getMonth() + 1);
                 setDay(currentDate.getDate()); 
+                console.log('ziua este: '+currentDate.getDate());
                 setGameData(data);
                 setUpdatedGameData(data);
+
+
             } catch (error) {
                 console.error('No receiving data in GameView:', error);
             } finally {
@@ -452,6 +456,7 @@ const GameView = () => {
                                 </p>
                             )}
                         </div>
+                       
                         {showBuyHivesForm && (
                             <BuyHivesModal
                                 hivesToBuy={hivesToBuy}
@@ -463,6 +468,8 @@ const GameView = () => {
                                 onChangeHivesToBuy={handleHivesToBuyChange}
                             />
                         )}
+                        
+
                         <button className="btn btn-danger btn-custom mb-2" onClick={() => navigate('/')}>Exit</button>
                     </div>
                 </div>
