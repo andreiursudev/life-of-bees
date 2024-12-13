@@ -46,23 +46,13 @@ export const getGoogleClientId = async () => {
     }
 };
 
-export const handleGoogleLogin = async (response) => {
+export const handleGoogleLogin = async (googleToken) => {
     try {
        
-        const googleClientId = await getGoogleClientId();
-        const res = await fetch('/api/auth/oauth/google', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                token: response.credential,
-                clientId: googleClientId, 
-            }),
-        });
-
-        const data = await res.json();
-        console.log('User authenticated with Google:', data);
+        const res = await apiClient.post('/auth/oauth/google', { token: googleToken.credential });
+        localStorage.setItem('authToken', res.data.token);
+        localStorage.setItem('userId', res.data.userId);
+        console.log('User authenticated with Google:', res.data);
     } catch (error) {
         console.error('Error during Google OAuth login:', error);
     }

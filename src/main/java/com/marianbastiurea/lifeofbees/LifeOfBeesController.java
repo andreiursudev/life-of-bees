@@ -6,6 +6,7 @@ import com.marianbastiurea.lifeofbees.Users.UserRepository;
 import com.marianbastiurea.lifeofbees.Users.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -42,7 +43,7 @@ public class LifeOfBeesController {
     }
 
     @PostMapping("/game")
-    public ResponseEntity<Map<String, String>> createGame(@RequestBody GameRequest gameRequest, @RequestHeader("Authorization") String authorizationHeader) {
+    public ResponseEntity<Map<String, String>> createGame(@RequestBody GameRequest gameRequest, @RequestHeader("Authorization") String authorizationHeader, Authentication authentication) {
         System.out.println("Received request to create game: " + gameRequest);
         String jwtToken = authorizationHeader.replace("Bearer ", "");
         LocalDate startDate = LocalDate.parse(gameRequest.getStartDate());

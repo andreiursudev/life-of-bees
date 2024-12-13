@@ -433,7 +433,9 @@ const GameView = () => {
 
                         <p className="btn-custom p-custom mb-2">Money in the bank: {gameData && gameData.moneyInTheBank ? gameData.moneyInTheBank.toFixed(2) : 'Loading...'}</p>
                         <img src={flowerImage} alt="Flower based on date" className="img-custom mb-2" />
+
                         <button className="btn btn-custom p-custom mb-2" onClick={handleIterateWeek}>Iterate one week</button>
+                        
                         <button
                             className="btn btn-custom p-custom mb-2"
                             onClick={() => navigate(`/sell-honey?gameId=${gameId}`)}
@@ -459,6 +461,7 @@ const GameView = () => {
                        
                         {showBuyHivesForm && (
                             <BuyHivesModal
+                        
                                 hivesToBuy={hivesToBuy}
                                 maxHives={maxHives}
                                 availableFunds={gameData.moneyInTheBank}

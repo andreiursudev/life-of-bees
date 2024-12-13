@@ -1,6 +1,6 @@
 import React from 'react';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
-import { handleGitHubLogin } from './BeesApiService';
+import { handleGitHubLogin, handleGoogleLogin } from './BeesApiService';
 
 const AuthModal = ({ handleClose, handleSubmit, handleInputChange, formData, isSignUp, setIsSignUp, errorMessage, setIsAuthenticated, setUserName, setAuthMessage, setFormData }) => {
     const [passwordError, setPasswordError] = React.useState(null);
@@ -12,10 +12,22 @@ const AuthModal = ({ handleClose, handleSubmit, handleInputChange, formData, isS
         return null;
     };
 
-    const handleGoogleSuccess = (response) => {
-        console.log('Google Login Success:', response);
+    const handleGoogleSuccess = async (credentialResponse) => {
+        console.log('Google Login Success:', credentialResponse);
         setIsAuthenticated(true);
         setUserName('GoogleUser');
+
+        try {
+            const response = await handleGoogleLogin(credentialResponse);
+
+            if (response.ok) {
+
+            } else {
+                console.error('Error authenticating with Google:', response.message);
+            }
+        } catch (error) {
+            console.error('Error sending Google token to backend:', error);
+        }
     };
 
     const handleGoogleFailure = (error) => {

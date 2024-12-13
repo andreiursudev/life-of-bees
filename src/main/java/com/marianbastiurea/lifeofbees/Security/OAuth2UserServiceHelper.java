@@ -29,7 +29,6 @@ public class OAuth2UserServiceHelper {
         try {
             User newUser = new User();
             newUser.setEmail(email);
-            newUser.setProvider("GOOGLE");
             newUser.setProvider(providerId);
             User savedUser = userRepository.save(newUser);
             System.out.println("New user successfully created in OAuth2UserServiceHelper: " + savedUser);
