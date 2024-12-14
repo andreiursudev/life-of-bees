@@ -328,7 +328,7 @@ public class LifeOfBeesController {
         return ResponseEntity.ok("Hives bought successfully.");
     }
 
-    @GetMapping("/gamesHistory")
+    @GetMapping("/public/games")
     public List<GameResponse> getRecentGames(Principal principal) {
         String userId = principal != null ? principal.getName() : null;
         List<LifeOfBees> recentGames = lifeOfBeesRepository.findTop10ByIsPublicTrueOrderByCurrentDateDesc();

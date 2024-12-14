@@ -4,13 +4,12 @@ import NewGameModal from './CreateNewGame';
 import ApiaryCardsRow from './ApiaryCardsRow';
 import AuthModal from './AuthModal';
 import { authenticateUser, registerUser } from './BeesApiService';
-import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 
 const HomePage = () => {
     const [showPublicModal, setShowPublicModal] = useState(false);
     const [showPrivateModal, setShowPrivateModal] = useState(false);
     const [showAuthModal, setShowAuthModal] = useState(false);
-    const [isSignUp, setIsSignUp] = useState(false);
+    const [isSignUp, setIsSignUp] = useState(true);
     const [authMessage, setAuthMessage] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [userName, setUserName] = useState(null);
@@ -134,12 +133,17 @@ const HomePage = () => {
                     ) : (
                         <div className="d-flex gap-3 ms-auto">
                             <button className="btn btn-success" onClick={() => handleAuthClick(false)}>
-                                Sign In
+                                Sign Up
                             </button>
+                            <a href="/login">
+                                <button className="btn btn-success">
+                                    Sign In
+                                </button>
+                            </a>
                         </div>
-                    )}
-                </div>
 
+                        )}
+                </div>
 
 
                 <div className="pt-3">

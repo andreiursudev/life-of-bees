@@ -34,23 +34,25 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         System.out.println("Configuring SecurityFilterChain in SecurityConfig...");
         http
-                .cors(cors -> {
+                /*.cors(cors -> {
                     System.out.println("Enabling CORS configuration in SecurityConfig...");
                     cors.configurationSource(corsConfigurationSource());
                 })
                 .csrf(csrf -> {
                     System.out.println("Disabling CSRF protection in SecurityConfig...");
                     csrf.disable();
-                })
+                })*/
                 .authorizeHttpRequests(auth -> {
                     System.out.println("Setting up authorization rules in SecurityConfig...");
-                    auth.requestMatchers("/api/auth/register", "/api/auth/signin", "/oauth2/**",
+                    auth.requestMatchers("/", "/index.html","/static/**","api/bees/public/**", "/public/**","/favicon.png","/manifest.json",
+                                    "/api/auth/register", "/api/auth/signin", "/oauth2/**",
                                     "api/auth/google-client-id","/api/auth/oauth/google","api/auth/github-client-id", "/api/auth/oauth/github/login","/oauth2/github/**",
                                     "/auth/github/callback", "/login/oauth2/code/github","/login", "api//bees/gamesHistory").permitAll()
                             .anyRequest().authenticated();
                 })
                 .oauth2Login(Customizer.withDefaults())
-                .sessionManagement(session -> {
+                .formLogin(Customizer.withDefaults())
+               /* .sessionManagement(session -> {
                     System.out.println("Setting session creation policy to STATELESS in SecurityConfig...");
                     session.sessionCreationPolicy(org.springframework.security.config.http.SessionCreationPolicy.STATELESS);
                 })
@@ -65,7 +67,7 @@ public class SecurityConfig {
                         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
                     });
                 })
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)*/;
 
         System.out.println("SecurityFilterChain configuration completed in SecurityConfig.");
         return http.build();
