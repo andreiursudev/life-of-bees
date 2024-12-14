@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { gameHistory } from './BeesApiService';
+import { getRecentGames } from './BeesApiService';
 
 const ApiaryCardsRow = () => {
     const [games, setGames] = useState([]);
@@ -7,7 +7,7 @@ const ApiaryCardsRow = () => {
     useEffect(() => {
         const fetchGames = async () => {
             try {
-                const recentGames = await gameHistory();
+                const recentGames = await getRecentGames();
                 setGames(recentGames);
             } catch (error) {
                 console.error('Eroare la încărcarea jocurilor recente:', error);

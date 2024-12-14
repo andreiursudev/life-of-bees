@@ -6,9 +6,43 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import GameView from './components/GameView';
 import SellHoney from './components/SellHoney';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+
+import { getGoogleClientId, getGitHubClientId} from './components/BeesApiService';
 
 function App() {
+  const [googleClientId, setGoogleClientId] = useState(null);
+  const [gitHubClientId, setGitHubClientId] = useState(null);
+
+  useEffect(() => {
+    const fetchGoogleClientId = async () => {
+      try {
+        const clientId = await getGoogleClientId();
+        setGoogleClientId(clientId);
+      } catch (error) {
+        console.error('Failed to fetch Google Client ID:', error);
+      }
+    };
+
+    fetchGoogleClientId();
+  }, []);
+
+  useEffect(() => {
+  const fetchGitHubClientId = async () => {
+    try {
+      const clientId = await getGitHubClientId();
+      setGitHubClientId(clientId);
+    } catch (error) {
+      console.error('Failed to fetch GitHub Client ID:', error);
+    }
+  };
+
+  fetchGitHubClientId();
+}, []);
+
+
   return (
+    <GoogleOAuthProvider clientId={googleClientId}>
       <Router>
         <div className="App">
           <Routes>
@@ -18,6 +52,7 @@ function App() {
           </Routes>
         </div>
       </Router>
+    </GoogleOAuthProvider>
   );
 }
 

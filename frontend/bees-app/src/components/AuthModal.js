@@ -1,4 +1,5 @@
 import React from 'react';
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { handleGitHubLogin, handleGoogleLogin } from './BeesApiService';
 
 const AuthModal = ({ handleClose, handleSubmit, handleInputChange, formData, isSignUp, setIsSignUp, errorMessage, setIsAuthenticated, setUserName, setAuthMessage, setFormData }) => {
@@ -30,7 +31,9 @@ const AuthModal = ({ handleClose, handleSubmit, handleInputChange, formData, isS
         setAuthMessage('Google Login failed. Please try again.');
     };
 
-
+    const toggleSignUp = () => {
+        setIsSignUp((prev) => !prev);
+    };
 
     return (
         <div className="modal show" style={{ display: 'block' }}>
@@ -40,19 +43,34 @@ const AuthModal = ({ handleClose, handleSubmit, handleInputChange, formData, isS
                         <p className="fs-4 text-center">Log in to your account</p>
                         <div className="row mb-3 align-items-center">
                             <div className="col">
-                                <p className="fs-6 text-center">Don't have an account?</p>
+                                <p className="fs-6 text-center">{isSignUp ? 'Already have an account?' : "Don't have an account?"}</p>
                             </div>
                             <div className="col">
                                 <p
                                     className="link-primary"
                                     style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                                    onClick={toggleSignUp}
                                 >
-                                   Sign Up
+                                    {isSignUp ? 'Sign In' : 'Sign Up'}
                                 </p>
                             </div>
                         </div>
+                        <div className="mb-3">
+                            <GoogleLogin
+                                onSuccess={handleGoogleSuccess}
+                                onError={handleGoogleFailure}
+                                className="btn btn-outline-primary w-100"
+                            />
+                        </div>
 
-
+                        <div className="mb-3">
+                            <button
+                                onClick={handleGitHubLogin}
+                                className="btn btn-dark w-100"
+                            >
+                                Login with GitHub
+                            </button>
+                        </div>
                         <p className="fs-6 text-center"> Or with username and password</p>
                         <form
                             onSubmit={(e) => {
@@ -108,7 +126,7 @@ const AuthModal = ({ handleClose, handleSubmit, handleInputChange, formData, isS
                             <div className="d-flex justify-content-between">
                                 <button type="button" className="btn btn-danger" onClick={handleClose}>Close</button>
                                 <button className="btn btn-secondary" type="submit">
-                                    Sign Up
+                                    {isSignUp ? 'Sign Up' : 'Sign In'}
                                 </button>
                             </div>
 
