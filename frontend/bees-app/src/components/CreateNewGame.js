@@ -68,7 +68,6 @@ const NewGameModal = ({ handleClose, isPublic, userId, token }) => {
     };
 
 
-
     return (
         <div className="modal show" style={{ display: 'block' }}>
             <div className="modal-dialog">

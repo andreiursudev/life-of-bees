@@ -14,8 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 import com.google.api.client.json.gson.GsonFactory;
-
-
 import java.util.Collections;
 import java.util.Map;
 
@@ -183,7 +181,4 @@ public class AuthController {
                     .body("An error occurred during GitHub OAuth authentication");
         }
     }
-
-
-
 }

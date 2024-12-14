@@ -331,7 +331,7 @@ public class LifeOfBeesController {
     @GetMapping("/gamesHistory")
     public List<GameResponse> getRecentGames(Principal principal) {
         String userId = principal != null ? principal.getName() : null;
-        List<LifeOfBees> recentGames = lifeOfBeesRepository.findTop6ByIsPublicTrueOrderByCurrentDateDesc();
+        List<LifeOfBees> recentGames = lifeOfBeesRepository.findTop10ByIsPublicTrueOrderByCurrentDateDesc();
 
         return recentGames.stream()
                 .filter(game -> game.isPublic() || (game.getUserId().equals(userId)))

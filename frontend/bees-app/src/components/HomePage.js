@@ -25,7 +25,6 @@ const HomePage = () => {
         if (isAuthenticated) {
             setShowPublicModal(true);
         } else {
-            
             const username = 'JohnDoe';
             const password = 'JohnDoe123';
             handleSignUp(username, password);
@@ -43,7 +42,7 @@ const HomePage = () => {
             username: '',
             password: '',
             confirmPassword: '',
-        }); 
+        });
         setShowAuthModal(true);
     };
 
@@ -72,7 +71,6 @@ const HomePage = () => {
 
             localStorage.setItem('authToken', response.token);
             localStorage.setItem('userId', response.userId);
-
             setAuthMessage('User authenticated successfully!');
             setIsAuthenticated(true);
             setShowAuthModal(false);
@@ -163,11 +161,12 @@ const HomePage = () => {
 
             {showPublicModal && (
                 <NewGameModal
-                    isPublic={true}
+                    isPublic={true} 
                     userId={userId}
                     handleClose={handleCloseModal}
                 />
             )}
+
             {showPrivateModal && (
                 <NewGameModal
                     isPublic={false}

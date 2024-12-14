@@ -1,6 +1,5 @@
 package com.marianbastiurea.lifeofbees.Security;
 
-
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -47,7 +46,7 @@ public class SecurityConfig {
                     System.out.println("Setting up authorization rules in SecurityConfig...");
                     auth.requestMatchers("/api/auth/register", "/api/auth/signin", "/oauth2/**",
                                     "api/auth/google-client-id","/api/auth/oauth/google","api/auth/github-client-id", "/api/auth/oauth/github/login","/oauth2/github/**",
-                                    "/auth/github/callback", "/login/oauth2/code/github","/login").permitAll()
+                                    "/auth/github/callback", "/login/oauth2/code/github","/login", "api//bees/gamesHistory").permitAll()
                             .anyRequest().authenticated();
                 })
                 .oauth2Login(Customizer.withDefaults())
