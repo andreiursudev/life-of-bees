@@ -16,7 +16,6 @@ public class GameResponse {
     private LocalDate currentDate;
     private double totalKgOfHoneyHarvested;
     private List<LifeOfBees> history;
-
     public List<LifeOfBees> getHistory() {
         return history;
     }

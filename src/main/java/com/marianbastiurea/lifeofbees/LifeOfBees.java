@@ -3,8 +3,6 @@ package com.marianbastiurea.lifeofbees;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
-
-
 import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
@@ -151,7 +149,6 @@ public class LifeOfBees {
 
         return new LifeOfBees(id,userId, apiary, gameName, location, date, dailyWeather, moneyInTheBank, totalKgOfHoneyHarvested, actionOfTheWeek, gameHistory);
     }
-
 
     public Apiary getApiary() {
         return apiary;

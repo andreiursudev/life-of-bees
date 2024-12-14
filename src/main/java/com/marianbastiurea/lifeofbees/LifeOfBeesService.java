@@ -51,8 +51,6 @@ public class LifeOfBeesService {
         }
     }
 
-
-
     public WeatherData fetchWeatherForDate(LocalDate date) {
         String weatherApiUrl = "http://localhost:8081/api/weather/" + date;
 

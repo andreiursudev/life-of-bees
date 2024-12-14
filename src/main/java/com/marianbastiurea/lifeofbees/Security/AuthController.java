@@ -7,15 +7,12 @@ import com.marianbastiurea.lifeofbees.Users.User;
 import com.marianbastiurea.lifeofbees.Users.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import com.google.api.client.json.gson.GsonFactory;
 
 
@@ -50,7 +47,6 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Endpoint not found");
     }
 
-
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest) {
         try {
@@ -74,13 +70,6 @@ public class AuthController {
         return ResponseEntity.ok(googleClientId);
     }
 
-//
-//    @GetMapping("/github-client-id")
-//    public ResponseEntity<String> getGitHubClientId() {
-//        String githubClientId = System.getProperty("SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_CLIENT_ID");
-//        return ResponseEntity.ok(githubClientId);
-//    }
-
     @GetMapping("/github-client-id")
     public ResponseEntity<Map<String, String>> getGitHubClientId() {
         String githubClientId = System.getProperty("SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_CLIENT_ID");
@@ -90,8 +79,6 @@ public class AuthController {
         }
         return ResponseEntity.ok(Map.of("clientId", githubClientId));
     }
-
-
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
@@ -173,7 +160,7 @@ public class AuthController {
             Map<String, Object> attributes = principal.getAttributes();
             System.out.println("OAuth2User attributes: " + attributes);
             String email = (String) attributes.get("email");
-            String providerId = (String) attributes.get("id"); // GitHub folosește "id" pentru identificatorul unic
+            String providerId = (String) attributes.get("id");
             System.out.println("Extracted email: " + email + ", providerId: " + providerId);
             if (email == null || providerId == null) {
                 System.out.println("Email or providerId is missing. Returning bad request response.");
@@ -197,46 +184,6 @@ public class AuthController {
         }
     }
 
-//
-//    @GetMapping("/github/callback")
-//    public ResponseEntity<String> handleGitHubCallback(@RequestParam("code") String code) {
-//        try {
-//            System.out.println("Received GitHub authorization code: " + code);
-//            String accessTokenUrl = "https://github.com/login/oauth/access_token";
-//            RestTemplate restTemplate = new RestTemplate();
-//            HttpHeaders headers = new HttpHeaders();
-//            headers.set("Accept", "application/json");
-//
-//            Map<String, String> body = Map.of(
-//                    "client_id", System.getProperty("SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_CLIENT_ID"),
-//                    "client_secret", System.getProperty("SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_CLIENT_SECRET"),
-//                    "code", code
-//            );
-//
-//            HttpEntity<Map<String, String>> request = new HttpEntity<>(body, headers);
-//            ResponseEntity<Map> response = restTemplate.postForEntity(accessTokenUrl, request, Map.class);
-//
-//            if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-//                String accessToken = (String) response.getBody().get("access_token");
-//                System.out.println("GitHub access token: " + accessToken);
-//                return ResponseEntity.ok("Access token: " + accessToken);
-//            } else {
-//                System.err.println("Failed to retrieve access token. Status code: " + response.getStatusCode());
-//                if (response.getBody() != null) {
-//                    System.err.println("Response body: " + response.getBody());
-//                } else {
-//                    System.err.println("Response body is null.");
-//                }
-//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to retrieve access token");
-//            }
-//
-//        } catch (Exception e) {
-//            System.out.println("Error handling GitHub callback: " + e.getMessage());
-//            e.printStackTrace();
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                    .body("An error occurred during GitHub callback handling");
-//        }
-//    }
 
 
 }

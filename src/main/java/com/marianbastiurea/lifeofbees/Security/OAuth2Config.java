@@ -25,5 +25,4 @@ public class OAuth2Config {
         return CommonOAuth2Provider.GITHUB.getBuilder("github").clientId(System.getProperty("SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_CLIENT_ID"))
                 .clientSecret(System.getProperty("SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_CLIENT_SECRET")).build();
     }
-
 }

@@ -16,7 +16,6 @@ public class LifeOfBeesFactory {
             boolean isPublic,
             Map<String, WeatherData> allWeatherData
             )
-
             {
         LocalDate date = LocalDate.parse(startingDate);
         List<ActionOfTheWeek> actionOfTheWeek = new ArrayList<>();

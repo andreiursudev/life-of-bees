@@ -34,7 +34,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         System.out.println("Configuring SecurityFilterChain in SecurityConfig...");
-
         http
                 .cors(cors -> {
                     System.out.println("Enabling CORS configuration in SecurityConfig...");
@@ -87,12 +86,11 @@ public class SecurityConfig {
         return authenticationManager;
     }
 
-
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         System.out.println("Creating CorsConfigurationSource in SecurityConfig...");
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://localhost:3000"); // Domeniul frontend-ului
+        configuration.addAllowedOrigin("http://localhost:3000");
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true);

@@ -17,5 +17,4 @@ public class LifeOfBeesApplication {
 
         SpringApplication.run(LifeOfBeesApplication.class, args);
     }
-
 }

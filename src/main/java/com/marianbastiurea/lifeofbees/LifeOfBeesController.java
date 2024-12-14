@@ -8,12 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
-
 import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.server.ResponseStatusException;
@@ -51,9 +49,7 @@ public class LifeOfBeesController {
         WeatherData weatherData = restTemplate.getForObject(weatherApiUrl, WeatherData.class);
         Map<String, WeatherData> allWeatherData = new HashMap<>();
         allWeatherData.put(weatherData.getDate().toString(), weatherData);
-
         String userIdFromToken;
-
         try {
             userIdFromToken = jwtTokenProvider.extractUsername(jwtToken);
             System.out.println("acesta e userId din LifeOfBeesController");
@@ -68,12 +64,10 @@ public class LifeOfBeesController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(Map.of("error", "Token does not match userId"));
         }
-
         User user = null;
         if (gameRequest.getUserId() != null) {
             user = userRepository.findById(gameRequest.getUserId()).orElse(null);
         }
-
         LifeOfBees lifeOfBeesGame = LifeOfBeesFactory.createLifeOfBeesGame(
                 gameRequest.getGameName(),
                 gameRequest.getLocation(),
@@ -90,7 +84,6 @@ public class LifeOfBeesController {
         Map<String, String> response = new HashMap<>();
         response.put("token", jwtToken);
         response.put("gameId", savedGame.getId());
-
         return ResponseEntity.ok(response);
     }
 
@@ -107,7 +100,6 @@ public class LifeOfBeesController {
         System.out.println("Date trimise către React: " + response);
         return response;
     }
-
 
     @PostMapping("/iterate/{gameId}")
     public GameResponse iterateWeek(@PathVariable String gameId, Principal principal) {
@@ -126,7 +118,6 @@ public class LifeOfBeesController {
         System.out.println("GameResponse după iterație: " + response);
         return response;
     }
-
 
     @PostMapping("/submitActionsOfTheWeek/{gameId}")
     public GameResponse submitActionsOfTheWeek(
@@ -149,7 +140,6 @@ public class LifeOfBeesController {
         lifeOfBeesGame.getActionOfTheWeek().clear();
         lifeOfBeesService.addToGameHistory(lifeOfBeesGame);
         lifeOfBeesRepository.save(lifeOfBeesGame);
-
         GameResponse response = getGameResponse(lifeOfBeesGame);
         System.out.println("GameResponse după submitActionsOfTheWeek: " + response);
         return response;
@@ -233,7 +223,6 @@ public class LifeOfBeesController {
         gameResponse.setCurrentDate(game.getCurrentDate());
         gameResponse.setTotalKgOfHoneyHarvested(game.getTotalKgOfHoneyHarvested());
         gameResponse.setHistory(game.getGameHistory());
-
         System.out.println("acestea sunt datele trimise catre React: " + gameResponse);
         return gameResponse;
     }
@@ -249,7 +238,7 @@ public class LifeOfBeesController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
         }
         Apiary apiary = lifeOfBeesGame.getApiary();
-        apiary.honeyHarvestedByHoneyType(); // Actualizează cantitățile recoltate (dacă este necesar)
+        apiary.honeyHarvestedByHoneyType();
         HarvestHoney honeyData = apiary.getTotalHarvestedHoney();
         System.out.println("Cantitățile de miere trimise către client: " + honeyData);
         return ResponseEntity.ok(honeyData);
@@ -260,7 +249,6 @@ public class LifeOfBeesController {
             @PathVariable String gameId,
             @RequestBody Map<String, Double> requestData,
             Principal principal) {
-
         System.out.println("Cerere pentru vânzare miere, gameId: " + gameId);
         LifeOfBees lifeOfBeesGame = lifeOfBeesRepository.findById(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
@@ -315,7 +303,6 @@ public class LifeOfBeesController {
             @PathVariable String gameId,
             @RequestBody Map<String, Integer> request,
             Principal principal) {
-
         System.out.println("Cerere pentru cumpărare stupi, gameId: " + gameId);
         LifeOfBees lifeOfBeesGame = lifeOfBeesRepository.findById(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
@@ -341,8 +328,7 @@ public class LifeOfBeesController {
         return ResponseEntity.ok("Hives bought successfully.");
     }
 
-
-    @GetMapping("/games")
+    @GetMapping("/gamesHistory")
     public List<GameResponse> getRecentGames(Principal principal) {
         String userId = principal != null ? principal.getName() : null;
         List<LifeOfBees> recentGames = lifeOfBeesRepository.findTop6ByIsPublicTrueOrderByCurrentDateDesc();
@@ -352,7 +338,4 @@ public class LifeOfBeesController {
                 .map(this::getGameResponse)
                 .collect(Collectors.toList());
     }
-
-
-
 }

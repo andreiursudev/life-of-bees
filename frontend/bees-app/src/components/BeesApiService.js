@@ -12,7 +12,7 @@ export const getAuthToken = () => {
 apiClient.interceptors.request.use(
     (config) => {
         const token = getAuthToken(); 
-        console.log('acesta e tokenul',token)
+        console.log('acesta e tokenul din apiClient',token)
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
@@ -249,7 +249,7 @@ export const fetchWeatherForStartDate = async (location) => {
 };
 */
 
-export const getRecentGames = async () => {
+export const gameHistory = async () => {
     try {
         const response = await apiClient.get('/bees/games');
         return response.data;

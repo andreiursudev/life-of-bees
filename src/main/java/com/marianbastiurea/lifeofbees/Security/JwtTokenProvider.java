@@ -1,20 +1,16 @@
 package com.marianbastiurea.lifeofbees.Security;
 
-import com.marianbastiurea.lifeofbees.Users.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import static javax.crypto.Cipher.SECRET_KEY;
 @Component
 public class JwtTokenProvider {
 
@@ -22,7 +18,7 @@ public class JwtTokenProvider {
     private String secretKey;
 
     @Value("${jwt.expiration}")
-    private long expiration; // În secunde
+    private long expiration;
 
     public String generateToken(String userId) {
         System.out.println("Generare token pentru userId: " + userId);
@@ -84,7 +80,6 @@ public class JwtTokenProvider {
         }
     }
 
-
     public String extractUsername(String token) {
         return Jwts.parser()
                 .setSigningKey(secretKey)
@@ -92,7 +87,6 @@ public class JwtTokenProvider {
                 .getBody()
                 .getSubject();  // Subiectul poate fi userId-ul
     }
-
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);

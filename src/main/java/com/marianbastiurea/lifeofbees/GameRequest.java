@@ -1,6 +1,5 @@
 package com.marianbastiurea.lifeofbees;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,10 +20,6 @@ public class GameRequest {
 
     public List<LifeOfBees> getGameHistory() {
         return gameHistory;
-    }
-
-    public void setGameHistory(List<LifeOfBees> gameHistory) {
-        this.gameHistory = gameHistory;
     }
 
     public String getGameId() {
@@ -73,14 +68,6 @@ public class GameRequest {
 
     public void setNumberOfStartingHives(int numberOfStartingHives) {
         this.numberOfStartingHives = numberOfStartingHives;
-    }
-
-    public Map<String, WeatherData> getAllWeatherData() {
-        return allWeatherData;
-    }
-
-    public void setAllWeatherData(Map<String, WeatherData> allWeatherData) {
-        this.allWeatherData = allWeatherData;
     }
 
     public String getUserId() {
