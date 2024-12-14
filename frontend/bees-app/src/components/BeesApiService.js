@@ -53,6 +53,7 @@ export const handleGoogleLogin = async (googleToken) => {
         localStorage.setItem('authToken', res.data.token);
         localStorage.setItem('userId', res.data.userId);
         console.log('User authenticated with Google:', res.data);
+        return res.data;
     } catch (error) {
         console.error('Error during Google OAuth login:', error);
     }

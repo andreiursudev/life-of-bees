@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -13,22 +14,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 
 @Configuration
 public class SecurityConfig {
 
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
-
-    @Autowired
-    private CustomOAuth2UserService customOAuth2UserService;
-
-    @Autowired
-    private OAuth2SuccessHandler oAuth2SuccessHandler;
 
     private final ClientRegistrationRepository clientRegistrationRepository;
 
@@ -52,24 +47,16 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> {
                     System.out.println("Setting up authorization rules in SecurityConfig...");
                     auth.requestMatchers("/api/auth/register", "/api/auth/signin", "/oauth2/**",
-                                    "api/auth/google-client-id","/api/auth/oauth/google","api/auth/github-client-id", "/oauth2/github/**",
-                                    "/auth/github/callback", "/login/oauth2/code/github").permitAll()
+                                    "api/auth/google-client-id","/api/auth/oauth/google","api/auth/github-client-id", "/api/auth/oauth/github/login","/oauth2/github/**",
+                                    "/auth/github/callback", "/login/oauth2/code/github","/login").permitAll()
                             .anyRequest().authenticated();
                 })
-                .oauth2Login(oauth2 -> {
-                    System.out.println("Configuring OAuth2 login in SecurityConfig...");
-                    oauth2.loginPage("/login")
-                            .userInfoEndpoint(userInfo -> {
-                                System.out.println("Configuring UserInfoEndpoint in SecurityConfig...");
-                                userInfo.userService(customOAuth2UserService);
-                            })
-                            .successHandler(oAuth2SuccessHandler)
-                            .clientRegistrationRepository(clientRegistrationRepository);
-                })
+                .oauth2Login(Customizer.withDefaults())
                 .sessionManagement(session -> {
                     System.out.println("Setting session creation policy to STATELESS in SecurityConfig...");
                     session.sessionCreationPolicy(org.springframework.security.config.http.SessionCreationPolicy.STATELESS);
                 })
+
                 .headers(headers -> {
                     System.out.println("Disabling frame options headers in SecurityConfig...");
                     headers.addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN));

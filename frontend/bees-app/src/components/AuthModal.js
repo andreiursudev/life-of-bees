@@ -14,17 +14,13 @@ const AuthModal = ({ handleClose, handleSubmit, handleInputChange, formData, isS
 
     const handleGoogleSuccess = async (credentialResponse) => {
         console.log('Google Login Success:', credentialResponse);
-        setIsAuthenticated(true);
-        setUserName('GoogleUser');
+
+
 
         try {
             const response = await handleGoogleLogin(credentialResponse);
-
-            if (response.ok) {
-
-            } else {
-                console.error('Error authenticating with Google:', response.message);
-            }
+            setUserName(response.email);
+            setIsAuthenticated(true);
         } catch (error) {
             console.error('Error sending Google token to backend:', error);
         }
