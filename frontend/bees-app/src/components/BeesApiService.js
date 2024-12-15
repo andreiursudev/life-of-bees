@@ -251,7 +251,7 @@ export const fetchWeatherForStartDate = async (location) => {
 
 export const getRecentGames = async () => {
     try {
-        const response = await apiClient.get('/bees/public/games');
+        const response = await axios.get('http://localhost:8080/api/bees/gamesHistory');
         return response.data;
     } catch (error) {
         console.error('Eroare la obținerea jocurilor recente:', error);
