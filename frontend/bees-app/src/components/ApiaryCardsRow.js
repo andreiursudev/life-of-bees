@@ -1,13 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { getRecentGames } from './BeesApiService';
+import { getJohnDoeGames, getGamesForUserByType } from './BeesApiService';
 
-const ApiaryCardsRow = () => {
+const ApiaryCardsRow = ({ isAuthenticated, username, gameType }) => {
     const [games, setGames] = useState([]);
 
     useEffect(() => {
+        console.log("isAuthenticated:", isAuthenticated);
+        console.log("username:", username);
+        console.log("gameType:", gameType);
+
         const fetchGames = async () => {
             try {
-                const recentGames = await getRecentGames();
+                let recentGames;
+                console.log("Fetching games with params:", { isAuthenticated, username, gameType });
+
+                if (isAuthenticated&&gameType) {
+                    console.log("Calling getGamesForUserByType for authenticated user:", username);
+                    recentGames = await getGamesForUserByType(username, gameType);
+                } else {
+                    console.log("Calling getJohnDoeGames for anonymous user.");
+                    recentGames = await getJohnDoeGames();
+                }
+                console.log("Recent games fetched:", recentGames);
                 setGames(recentGames);
             } catch (error) {
                 console.error('Eroare la încărcarea jocurilor recente:', error);
@@ -15,7 +29,7 @@ const ApiaryCardsRow = () => {
         };
 
         fetchGames();
-    }, []);
+    }, [isAuthenticated, username, gameType]); 
 
     const chunkArray = (array, chunkSize) => {
         const chunks = [];
@@ -37,9 +51,9 @@ const ApiaryCardsRow = () => {
                                 <div className="card-body">
                                     <h5 className="card-title">{game.gameName}</h5>
                                     <p className="card-text">Location: {game.location}</p>
-                                    <p className="card-text">Hives: {game.hives}</p>
-                                    <p className="card-text">Bees: {game.bees}</p>
-                                    <p className="card-text">Honey: {game.honey}</p>
+                                    <p className="card-text">Hives: {game.hivesNumber}</p>
+                                    <p className="card-text">Money in the bank: {game.moneyInTheBank}</p>
+                                    <p className="card-text">Total honey harvested: {game.totalKgOfHoneyHarvested}</p>
                                 </div>
                             </div>
                         </div>

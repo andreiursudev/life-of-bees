@@ -63,7 +63,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private void authenticateUserFromToken(String token) {
-        String userId = jwtTokenProvider.extractUsername(token);
+        String userId = jwtTokenProvider.extractUserId(token);
         System.out.println("User ID extras din token: " + userId);
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(userId, null, List.of());

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { createGame, fetchLocations, fetchWeatherForStartDate, getGame } from './BeesApiService';
 
 
-const NewGameModal = ({ handleClose, isPublic, userId, token }) => {
+const NewGameModal = ({ handleClose, gameType, userId,username }) => {
     useEffect(() => {
         console.log('Received userId in NewGameModal:', userId);
     }, [userId]);
@@ -28,9 +28,10 @@ const NewGameModal = ({ handleClose, isPublic, userId, token }) => {
                 startDate,
                 numberOfStartingHives,
                 userId,
-                isPublic,
+                gameType,
+                username
             };
-
+            console.log('jocul este setat ca', gameType)
             console.log('Game data for createNewGame sent:', gameData);
             const response = await createGame(gameData);
             console.log('Răspunsul primit de la createGame:', response);

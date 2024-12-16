@@ -49,7 +49,7 @@ public class AuthController {
     public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest) {
         try {
             String userId = userService.registerUser(registerRequest);
-            System.out.println("Acesta e userId: " + userId);
+            System.out.println("Acesta e userId din /register: " + userId);
             String token = jwtTokenProvider.generateToken(userId);
             return ResponseEntity.ok(Map.of("userId", userId, "token", token));
         } catch (IllegalArgumentException e) {
@@ -89,9 +89,9 @@ public class AuthController {
             if (!isPasswordValid) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
             }
-            String token = jwtTokenProvider.generateToken(user.getId());
+            String token = jwtTokenProvider.generateToken(user.getUserId());
             return ResponseEntity.ok(Map.of(
-                    "userId", user.getId(),
+                    "userId", user.getUserId(),
                     "username", user.getUsername(),
                     "token", token
             ));
@@ -130,11 +130,11 @@ public class AuthController {
             }
             User user = oAuth2UserServiceHelper.processOAuthPostLogin(email, "GOOGLE");
             System.out.println("User processed successfully: " + user);
-            String token = jwtTokenProvider.generateToken(user.getId());
+            String token = jwtTokenProvider.generateToken(user.getUserId());
             System.out.println("Generated JWT token: " + token);
             System.out.println("Returning success response with user details.");
             return ResponseEntity.ok(Map.of(
-                    "userId", user.getId(),
+                    "userId", user.getUserId(),
                     "email", user.getEmail(),
                     "token", token
             ));
@@ -167,10 +167,10 @@ public class AuthController {
             }
             User user = oAuth2UserServiceHelper.processOAuthPostLogin(email, providerId);
             System.out.println("User processed successfully: " + user);
-            String token = jwtTokenProvider.generateToken(user.getId());
+            String token = jwtTokenProvider.generateToken(user.getUserId());
             System.out.println("Generated JWT token: " + token);
             return ResponseEntity.ok(Map.of(
-                    "userId", user.getId(),
+                    "userId", user.getUserId(),
                     "email", user.getEmail(),
                     "token", token
             ));

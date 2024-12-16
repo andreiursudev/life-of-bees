@@ -13,7 +13,9 @@ const HomePage = () => {
     const [isSignUp, setIsSignUp] = useState(false);
     const [authMessage, setAuthMessage] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [userName, setUserName] = useState(null);
+    const [username, setUserName] = useState(null);
+    const [gameType, setGameType] = useState(null);
+    const [activeTab, setActiveTab] = useState("Public Game");
 
     const [formData, setFormData] = useState({
         username: '',
@@ -22,6 +24,7 @@ const HomePage = () => {
     });
 
     const handlePublicGameClick = () => {
+        setGameType("public");
         if (isAuthenticated) {
             setShowPublicModal(true);
         } else {
@@ -33,6 +36,7 @@ const HomePage = () => {
     };
 
     const handlePrivateGameClick = () => {
+        setGameType("private");
         if (isAuthenticated) setShowPrivateModal(true);
     };
 
@@ -45,7 +49,6 @@ const HomePage = () => {
         });
         setShowAuthModal(true);
     };
-
 
     const handleLogout = () => {
         localStorage.removeItem('authToken');
@@ -71,7 +74,6 @@ const HomePage = () => {
 
             localStorage.setItem('authToken', response.token);
             localStorage.setItem('userId', response.userId);
-            setAuthMessage('User authenticated successfully!');
             setIsAuthenticated(true);
             setShowAuthModal(false);
             setUserName(username);
@@ -88,8 +90,6 @@ const HomePage = () => {
 
             localStorage.setItem('authToken', token);
             localStorage.setItem('userId', userId);
-
-            setAuthMessage('User registered successfully!');
             setIsAuthenticated(true);
             setShowAuthModal(false);
             setUserName(username);
@@ -99,8 +99,9 @@ const HomePage = () => {
             setIsAuthenticated(false);
         }
     };
-
-
+    const handleTabClick = (tab) => {
+        setActiveTab(tab);
+    };
 
     const userId = localStorage.getItem('userId');
 
@@ -123,10 +124,9 @@ const HomePage = () => {
                     >
                         Create private game
                     </button>
-
                     {isAuthenticated ? (
                         <div className="d-flex gap-3 ms-auto align-items-center">
-                            <span className="hello-user">Hello, {userName}!</span>
+                            <span className="hello-user">Hello, {username}!</span>
                             <button className="btn btn-danger" onClick={handleLogout}>
                                 Logout
                             </button>
@@ -139,38 +139,61 @@ const HomePage = () => {
                         </div>
                     )}
                 </div>
-
-
-
                 <div className="pt-3">
                     <ul className="nav nav-tabs pt-3">
                         <li className="nav-item">
-                            <a className="nav-link active" href="#">Public Game</a>
+                            <button
+                                className={`nav-link ${activeTab === "Public Game" ? "active" : ""}`}
+                                onClick={() => handleTabClick("Public Game")}
+                            >
+                                Public Game
+                            </button>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link active" href="#">Private Game</a>
+                            <button
+                                className={`nav-link ${activeTab === "Private Game" ? "active" : ""}`}
+                                onClick={() => handleTabClick("Private Game")}
+                            >
+                                Private Game
+                            </button>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#">Map</a>
+                            <button
+                                className={`nav-link ${activeTab === "Map" ? "active" : ""}`}
+                                onClick={() => handleTabClick("Map")}
+                            >
+                                Map
+                            </button>
                         </li>
                     </ul>
+                    <div className="tab-content pt-3">
+                        {activeTab === "Public Game" && <ApiaryCardsRow
+                            gameType="public"
+                            isAuthenticated={isAuthenticated}
+                            username={username} />}
+
+                        {activeTab === "Private Game" && <ApiaryCardsRow gameType="private"
+                            isAuthenticated={isAuthenticated}
+                            username={username} />}
+                        {activeTab === "Map" && <div>Map content goes here.</div>}
+                    </div>
                 </div>
             </div>
 
-            <ApiaryCardsRow />
-
             {showPublicModal && (
                 <NewGameModal
-                    isPublic={true} 
+                    gameType="public"
                     userId={userId}
+                    username={username}
                     handleClose={handleCloseModal}
                 />
             )}
 
             {showPrivateModal && (
                 <NewGameModal
-                    isPublic={false}
+                    gameType="private"
                     userId={userId}
+                    username={username}
                     handleClose={handleCloseModal}
                 />
             )}

@@ -26,7 +26,7 @@ export const registerUser = async (registerData) => {
     try {
         const response = await apiClient.post('/auth/register', registerData);
         const { token, userId } = response.data; 
-        console.log('datele din Java:',response.data);
+        console.log('datele din Java in resgisterUser:',response.data);
         return { token, userId };
     } catch (error) {
         console.error('Error in registerUser:', error.response?.data || error.message);
@@ -249,9 +249,9 @@ export const fetchWeatherForStartDate = async (location) => {
 };
 */
 
-export const getRecentGames = async () => {
+export const getJohnDoeGames = async () => {
     try {
-        const response = await axios.get('http://localhost:8080/api/bees/gamesHistory');
+        const response = await axios.get('http://localhost:8080/api/bees/JohnDoeGames');
         return response.data;
     } catch (error) {
         console.error('Eroare la obținerea jocurilor recente:', error);
@@ -259,5 +259,13 @@ export const getRecentGames = async () => {
     }
 };
 
-
+export const getGamesForUserByType = async (username, gameType) => {
+    const response = await axios.get('/api/games', {
+        params: {
+            userId: username,
+            gameType: gameType
+        }
+    });
+    return response.data;
+};
 

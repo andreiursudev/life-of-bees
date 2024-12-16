@@ -13,7 +13,7 @@ public class LifeOfBeesFactory {
             String startingDate,
             int numberOfStartingHives,
             String userId,
-            boolean isPublic,
+            String gameType,
             Map<String, WeatherData> allWeatherData
             )
             {
@@ -25,6 +25,6 @@ public class LifeOfBeesFactory {
         List<Hive> newHives = apiary.createHive(numberOfStartingHives, date);
         apiary.getHives().addAll(newHives);
         WeatherData weatherData = allWeatherData.get(date.toString());
-        return new LifeOfBees(gameName,userId, apiary,actionOfTheWeek, location, date, weatherData, moneyInTheBank, totalKgOfHoney);
+        return new LifeOfBees(gameName,userId,gameType, apiary,actionOfTheWeek, location, date, weatherData, moneyInTheBank, totalKgOfHoney);
     }
 }

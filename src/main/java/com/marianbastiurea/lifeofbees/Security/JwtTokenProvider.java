@@ -35,12 +35,13 @@ public class JwtTokenProvider {
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(subject)
+                .setSubject(subject)  // Aici va fi 'username'
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
+
 
     public boolean isTokenValid(String token) {
         if (token == null || token.trim().isEmpty()) {
@@ -80,12 +81,12 @@ public class JwtTokenProvider {
         }
     }
 
-    public String extractUsername(String token) {
+    public String extractUserId(String token) {
         return Jwts.parser()
                 .setSigningKey(secretKey)
                 .parseClaimsJws(token)
                 .getBody()
-                .getSubject();  // Subiectul poate fi userId-ul
+                .getSubject();
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {

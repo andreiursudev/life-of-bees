@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 public class GameRequest {
-    private boolean isPublic;
+    private String gameType;
     private String gameName;
     private String location;
     private String startDate;
@@ -78,13 +78,6 @@ public class GameRequest {
         this.userId = userId;
     }
 
-    public boolean isPublic() {
-        return isPublic;
-    }
-
-    public void setPublic(boolean aPublic) {
-        isPublic = aPublic;
-    }
 
     public String getUsername() {
         return username;
@@ -102,10 +95,18 @@ public class GameRequest {
         this.password = password;
     }
 
+    public String getGameType() {
+        return gameType;
+    }
+
+    public void setGameType(String gameType) {
+        this.gameType = gameType;
+    }
+
     @Override
     public String toString() {
         return "GameRequest{" +
-                "isPublic=" + isPublic +
+                "gameType=" + gameType +
                 ", gameName='" + gameName + '\'' +
                 ", location='" + location + '\'' +
                 ", startDate='" + startDate + '\'' +

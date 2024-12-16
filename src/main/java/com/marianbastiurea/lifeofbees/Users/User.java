@@ -3,6 +3,7 @@ package com.marianbastiurea.lifeofbees.Users;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,10 +17,13 @@ import java.util.List;
 public class User implements UserDetails {
 
     @Id
-    private String id;
+    private String userId;
+
+    @Indexed(unique = true)
     private String username;
+
     private String password;
-    private List<String> gameIds = new ArrayList<>();
+    private List<String> gamesList = new ArrayList<>();
 
     @Email(message = "Email should be valid")
     @NotBlank(message = "Email cannot be blank")
@@ -28,29 +32,29 @@ public class User implements UserDetails {
     @NotBlank(message = "Provider cannot be blank")
     private String provider;
 
-    private String providerId; // ID unic de la furnizorul OAuth
+    private String providerId;
     public User() {
     }
 
-    public User(String username, String password, List<String> gameIds) {
+    public User(String username, String password, List<String> gamesList) {
         this.username = username;
         this.password = password;
-        this.gameIds = gameIds != null ? new ArrayList<>(gameIds) : new ArrayList<>();
+        this.gamesList = gamesList != null ? new ArrayList<>(gamesList) : new ArrayList<>();
     }
 
-    public User(List<String> gameIds, String email, String provider, String providerId) {
-        this.gameIds = gameIds;
+    public User(List<String> gamesList, String email, String provider, String providerId) {
+        this.gamesList = gamesList;
         this.email = email;
         this.provider = provider;
         this.providerId = providerId;
     }
 
-    public String getId() {
-        return id;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {
@@ -69,12 +73,12 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public List<String> getGameIds() {
-        return gameIds;
+    public List<String> getGamesList() {
+        return gamesList;
     }
 
-    public void setGameIds(List<String> gameIds) {
-        this.gameIds = gameIds;
+    public void setGamesList(List<String> gamesList) {
+        this.gamesList = gamesList;
     }
 
     public String getEmail() {
@@ -91,14 +95,6 @@ public class User implements UserDetails {
 
     public void setProvider(String provider) {
         this.provider = provider;
-    }
-
-    public String getProviderId() {
-        return providerId;
-    }
-
-    public void setProviderId(String providerId) {
-        this.providerId = providerId;
     }
 
     @Override

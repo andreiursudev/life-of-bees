@@ -11,7 +11,7 @@ import java.util.List;
 @Document(collection = "games")
 public class LifeOfBees {
     @Id
-    private String id;
+    private String gameId;
     private String userId;
     private Apiary apiary;
     private List<ActionOfTheWeek> actionOfTheWeek;
@@ -21,18 +21,19 @@ public class LifeOfBees {
     private WeatherData weatherData;
     private double moneyInTheBank;
     private double totalKgOfHoneyHarvested;
-    private boolean isPublic;
+    private String gameType;
 
     @Field("history")
     private List<LifeOfBees> gameHistory = new ArrayList<>();
 
 
-    public LifeOfBees(String id, String userId, Apiary apiary,
+    public LifeOfBees(String gameId, String gameType, String userId, Apiary apiary,
                       String gameName, String location, LocalDate currentDate,
                       WeatherData weatherData, double moneyInTheBank, double totalKgOfHoneyHarvested,
-                      List<ActionOfTheWeek> actionOfTheWeek,List<LifeOfBees> gameHistory) {
-        this.id=id;
+                      List<ActionOfTheWeek> actionOfTheWeek, List<LifeOfBees> gameHistory) {
+        this.gameId = gameId;
         this.userId=userId;
+        this.gameType = gameType;
         this.apiary = apiary;
         this.gameName = gameName;
         this.location = location;
@@ -44,8 +45,8 @@ public class LifeOfBees {
         this.gameHistory = gameHistory;
     }
 
-    public LifeOfBees(String gameName, String userId,Apiary apiary, List<ActionOfTheWeek> actionOfTheWeek,
-                     String location, LocalDate currentDate, WeatherData weatherData,
+    public LifeOfBees(String gameName, String userId, String gameType, Apiary apiary, List<ActionOfTheWeek> actionOfTheWeek,
+                      String location, LocalDate currentDate, WeatherData weatherData,
                       double moneyInTheBank, double totalKgOfHoneyHarvested){
         this.apiary = apiary;
         this.actionOfTheWeek = actionOfTheWeek;
@@ -56,6 +57,7 @@ public class LifeOfBees {
         this.moneyInTheBank = moneyInTheBank;
         this.totalKgOfHoneyHarvested = totalKgOfHoneyHarvested;
         this.userId=userId;
+        this.gameType = gameType;
     }
 
     public LifeOfBees(LocalDate currentDate, WeatherData weatherData, Apiary apiary, double moneyInTheBank, double totalKgOfHoneyHarvested) {
@@ -69,7 +71,7 @@ public class LifeOfBees {
     @Override
     public String toString() {
         return "LifeOfBees{" +
-                "id='" + id + '\'' +
+                "id='" + gameId + '\'' +
                 ", userId='" + userId + '\'' +
                 ", apiary=" + apiary +
                 ", actionOfTheWeek=" + actionOfTheWeek +
@@ -79,21 +81,15 @@ public class LifeOfBees {
                 ", weatherData=" + weatherData +
                 ", moneyInTheBank=" + moneyInTheBank +
                 ", totalKgOfHoneyHarvested=" + totalKgOfHoneyHarvested +
-                ", isPublic=" + isPublic +
+                ", gameType=" + gameType +
                 '}';
     }
 
-    public boolean isPublic() {
-        return isPublic;
-    }
 
     public List<LifeOfBees> getGameHistory() {
         return gameHistory;
     }
 
-    public void setGameHistory(List<LifeOfBees> gameHistory) {
-        this.gameHistory = gameHistory;
-    }
 
     public LifeOfBees() {
     }
@@ -147,7 +143,7 @@ public class LifeOfBees {
         LifeOfBees newLifeOfBeesGame=new LifeOfBees( date, dailyWeather, apiary, moneyInTheBank, totalKgOfHoneyHarvested);
         currentHistory.add(newLifeOfBeesGame);
 
-        return new LifeOfBees(id,userId, apiary, gameName, location, date, dailyWeather, moneyInTheBank, totalKgOfHoneyHarvested, actionOfTheWeek, gameHistory);
+        return new LifeOfBees(gameId, gameType, userId, apiary, gameName, location, date, dailyWeather, moneyInTheBank, totalKgOfHoneyHarvested, actionOfTheWeek, gameHistory);
     }
 
     public Apiary getApiary() {
@@ -205,12 +201,12 @@ public class LifeOfBees {
     public WeatherData getAllWeatherData() {
     return weatherData;}
 
-    public String getId() {
-        return id;
+    public String getGameId() {
+        return gameId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setGameId(String gameId) {
+        this.gameId = gameId;
     }
 
     public String getUserId() {
@@ -219,5 +215,13 @@ public class LifeOfBees {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getGameType() {
+        return gameType;
+    }
+
+    public void setGameType(String gameType) {
+        this.gameType = gameType;
     }
 }

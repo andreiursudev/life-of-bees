@@ -1,5 +1,6 @@
 package com.marianbastiurea.lifeofbees;
 
+import com.marianbastiurea.lifeofbees.Security.HomePageGameResponse;
 import com.marianbastiurea.lifeofbees.Security.JwtTokenProvider;
 import com.marianbastiurea.lifeofbees.Users.User;
 import com.marianbastiurea.lifeofbees.Users.UserRepository;
@@ -8,10 +9,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
+
 import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.server.ResponseStatusException;
@@ -50,47 +53,62 @@ public class LifeOfBeesController {
         Map<String, WeatherData> allWeatherData = new HashMap<>();
         allWeatherData.put(weatherData.getDate().toString(), weatherData);
         String userIdFromToken;
-        try {
-            userIdFromToken = jwtTokenProvider.extractUsername(jwtToken);
-            System.out.println("acesta e userId din LifeOfBeesController");
-        } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
 
+        try {
+            userIdFromToken = jwtTokenProvider.extractUserId(jwtToken);
+            System.out.println("acesta e userId din Token" + userIdFromToken);
+        } catch (Exception e) {
+            System.out.println("An error occurred while extracting username: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("error", "Invalid token"));
         }
 
+
         if (!userIdFromToken.equals(gameRequest.getUserId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                    .body(Map.of("error", "Token does not match userId"));
+                    .body(Map.of("error", "Token does not match userId in createGame"));
         }
-        User user = null;
-        if (gameRequest.getUserId() != null) {
-            user = userRepository.findById(gameRequest.getUserId()).orElse(null);
+
+        User user = userRepository.findById(gameRequest.getUserId()).orElse(null);
+
+
+        if (user == null) {
+            user = new User();
+            user.setUsername(gameRequest.getUsername());
+            user.setGamesList(new ArrayList<>());
+            userRepository.save(user);
+            System.out.println("Utilizator creat cu numele in createGame: " + user);
+        } else {
+            System.out.println("Utilizator găsit in createGame: " + user);
         }
+
         LifeOfBees lifeOfBeesGame = LifeOfBeesFactory.createLifeOfBeesGame(
                 gameRequest.getGameName(),
                 gameRequest.getLocation(),
                 gameRequest.getStartDate(),
                 gameRequest.getNumberOfStartingHives(),
                 gameRequest.getUserId(),
-                gameRequest.isPublic(),
+                gameRequest.getGameType(),
                 allWeatherData
         );
+
         LifeOfBees savedGame = lifeOfBeesRepository.save(lifeOfBeesGame);
         System.out.println("jocul nou creat este:" + lifeOfBeesGame);
         lifeOfBeesService.addToGameHistory(savedGame);
-        userService.addGameToUser(user, savedGame.getId());
+        userService.addGameToUser(user, lifeOfBeesGame.getGameId());
+        user = userRepository.findById(user.getUserId()).orElseThrow();
+        System.out.println("Userid după salvare în createGame: " + user.getUserId());
+
         Map<String, String> response = new HashMap<>();
         response.put("token", jwtToken);
-        response.put("gameId", savedGame.getId());
+        response.put("gameId", savedGame.getGameId());
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/game/{gameId}")
     public GameResponse getGame(@PathVariable String gameId, Principal principal) {
         System.out.println("Cerere pentru gameId: " + gameId);
-        LifeOfBees lifeOfBeesGame = lifeOfBeesRepository.findById(gameId)
+        LifeOfBees lifeOfBeesGame = lifeOfBeesRepository.findByGameId(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
         String userId = principal.getName();
         if (!lifeOfBeesGame.getUserId().equals(userId)) {
@@ -104,7 +122,7 @@ public class LifeOfBeesController {
     @PostMapping("/iterate/{gameId}")
     public GameResponse iterateWeek(@PathVariable String gameId, Principal principal) {
         System.out.println("Cerere pentru iterație gameId: " + gameId);
-        LifeOfBees lifeOfBeesGame = lifeOfBeesRepository.findById(gameId)
+        LifeOfBees lifeOfBeesGame = lifeOfBeesRepository.findByGameId(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
         System.out.println("Acesta e jocul primit in Iterate:" + lifeOfBeesGame);
         String userId = principal.getName();
@@ -126,7 +144,7 @@ public class LifeOfBeesController {
             Principal principal) {
 
         System.out.println("Cerere pentru submitActionsOfTheWeek, gameId: " + gameId);
-        LifeOfBees lifeOfBeesGame = lifeOfBeesRepository.findById(gameId)
+        LifeOfBees lifeOfBeesGame = lifeOfBeesRepository.findByGameId(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
         System.out.println("Acesta e jocul primit in action Of the week:" + lifeOfBeesGame);
         String userId = principal.getName();
@@ -211,7 +229,7 @@ public class LifeOfBeesController {
 
     public GameResponse getGameResponse(LifeOfBees game) {
         GameResponse gameResponse = new GameResponse();
-        gameResponse.setId(game.getId());
+        gameResponse.setId(game.getGameId());
         for (Hive hive : game.getApiary().getHives()) {
             gameResponse.getHives().add(new HivesView(hive.getId(), hive.getAgeOfQueen(), hive.getEggFrames().getNumberOfEggFrames(), hive.getHoneyFrames().size(), hive.isItWasSplit()));
         }
@@ -227,10 +245,11 @@ public class LifeOfBeesController {
         return gameResponse;
     }
 
+
     @GetMapping("/getHoneyQuantities/{gameId}")
     public ResponseEntity<HarvestHoney> getHoneyQuantities(@PathVariable String gameId, Principal principal) {
         System.out.println("Cerere pentru getHoneyQuantities, gameId: " + gameId);
-        LifeOfBees lifeOfBeesGame = lifeOfBeesRepository.findById(gameId)
+        LifeOfBees lifeOfBeesGame = lifeOfBeesRepository.findByGameId(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
         System.out.println("Acesta e jocul primit in getHoney:" + lifeOfBeesGame);
         String userId = principal.getName();
@@ -250,7 +269,7 @@ public class LifeOfBeesController {
             @RequestBody Map<String, Double> requestData,
             Principal principal) {
         System.out.println("Cerere pentru vânzare miere, gameId: " + gameId);
-        LifeOfBees lifeOfBeesGame = lifeOfBeesRepository.findById(gameId)
+        LifeOfBees lifeOfBeesGame = lifeOfBeesRepository.findByGameId(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
         System.out.println("Acesta e jocul primit in sellHoney:" + lifeOfBeesGame);
         String userId = principal.getName();
@@ -304,7 +323,7 @@ public class LifeOfBeesController {
             @RequestBody Map<String, Integer> request,
             Principal principal) {
         System.out.println("Cerere pentru cumpărare stupi, gameId: " + gameId);
-        LifeOfBees lifeOfBeesGame = lifeOfBeesRepository.findById(gameId)
+        LifeOfBees lifeOfBeesGame = lifeOfBeesRepository.findByGameId(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
         System.out.println("Acesta e jocul primit in buyHives:" + lifeOfBeesGame);
         String userId = principal.getName();
@@ -328,14 +347,61 @@ public class LifeOfBeesController {
         return ResponseEntity.ok("Hives bought successfully.");
     }
 
-    @GetMapping("/gamesHistory")
-    public List<GameResponse> getRecentGames(Principal principal) {
-        String userId = principal != null ? principal.getName() : null;
-        List<LifeOfBees> recentGames = lifeOfBeesRepository.findTop10ByIsPublicTrueOrderByCurrentDateDesc();
-
-        return recentGames.stream()
-                .filter(game -> game.isPublic() || (game.getUserId().equals(userId)))
-                .map(this::getGameResponse)
+    @GetMapping("/JohnDoeGames")
+    public List<HomePageGameResponse> getJohnDoeGames() {
+        List<LifeOfBees> userGames = lifeOfBeesService.getGamesForJohnDoe();
+        if (userGames.isEmpty()) {
+            System.out.println("Nu s-au găsit jocuri pentru utilizatorul JohnDoe.");
+        } else {
+            System.out.println("Jocuri găsite pentru utilizatorul JohnDoe: " + userGames);
+        }
+        return userGames.stream()
+                .map(game -> new HomePageGameResponse(
+                        game.getGameName(),
+                        game.getLocation(),
+                        game.getApiary().getHives().size(),
+                        game.getTotalKgOfHoneyHarvested(),
+                        game.getMoneyInTheBank()
+                ))
                 .collect(Collectors.toList());
     }
+
+    @GetMapping("/games")
+    public List<HomePageGameResponse> getGamesForUserByType(
+            @RequestParam String username,
+            @RequestParam(required = false) String gameType) {
+
+        // Obține jocurile pentru utilizator
+        List<LifeOfBees> userGames = lifeOfBeesService.getGamesForUserByType(username, gameType);
+
+        // Filtrarea jocurilor pe baza gameType, dacă este specificat
+        if (gameType != null) {
+            userGames = userGames.stream()
+                    .filter(game -> game.getGameType().equalsIgnoreCase(gameType))  // Filtrare pe baza gameType
+                    .collect(Collectors.toList());
+        }
+
+        // Mesaj de log în funcție de rezultatul căutării
+        if (userGames.isEmpty()) {
+            System.out.println("Nu s-au găsit jocuri pentru utilizatorul cu username: " + username
+                    + (gameType != null ? " și tipul de joc: " + gameType : "."));
+        } else {
+            System.out.println("Jocuri găsite pentru utilizatorul cu username: " + username
+                    + (gameType != null ? " și tipul de joc: " + gameType : "")
+                    + ": " + userGames);
+        }
+
+        // Maparea jocurilor în HomePageGameResponse
+        return userGames.stream()
+                .map(game -> new HomePageGameResponse(
+                        game.getGameName(),
+                        game.getLocation(),
+                        game.getApiary().getHives().size(),
+                        game.getTotalKgOfHoneyHarvested(),
+                        game.getMoneyInTheBank()
+                ))
+                .collect(Collectors.toList());
+    }
+
+
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { handleGitHubLogin, handleGoogleLogin } from './BeesApiService';
 
-const AuthModal = ({ handleClose, handleSubmit, handleInputChange, formData, isSignUp, setIsSignUp, errorMessage, setIsAuthenticated, setUserName, setAuthMessage, setFormData }) => {
+const AuthModal = ({ handleClose, handleSubmit, handleInputChange, formData, isSignUp, setIsSignUp, errorMessage, setIsAuthenticated, setUsername, setAuthMessage, setFormData }) => {
     const [passwordError, setPasswordError] = React.useState(null);
 
     const validatePasswords = () => {
@@ -19,7 +19,7 @@ const AuthModal = ({ handleClose, handleSubmit, handleInputChange, formData, isS
 
         try {
             const response = await handleGoogleLogin(credentialResponse);
-            setUserName(response.email);
+            setUsername(response.email);
             setIsAuthenticated(true);
         } catch (error) {
             console.error('Error sending Google token to backend:', error);

@@ -37,8 +37,8 @@ const GameView = () => {
                 console.log('am primit datele in gameView pentru ID:', gameId);
                 const data = await getGame(gameId);
                 console.log('datele primite din Java:', data);
-                const currentDate = new Date(data.currentDate); // Extragere dată
-                setMonth(currentDate.getMonth() + 1); // Actualizează luna
+                const currentDate = new Date(data.currentDate); 
+                setMonth(currentDate.getMonth() + 1); 
                 console.log('luna curenta este: ', currentDate.getMonth() + 1);
                 setDay(currentDate.getDate()); 
                 console.log('ziua este: '+currentDate.getDate());
