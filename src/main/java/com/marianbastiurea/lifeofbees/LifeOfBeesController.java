@@ -370,18 +370,12 @@ public class LifeOfBeesController {
     public List<HomePageGameResponse> getGamesForUserByType(
             @RequestParam String username,
             @RequestParam(required = false) String gameType) {
-
-        // Obține jocurile pentru utilizator
         List<LifeOfBees> userGames = lifeOfBeesService.getGamesForUserByType(username, gameType);
-
-        // Filtrarea jocurilor pe baza gameType, dacă este specificat
         if (gameType != null) {
             userGames = userGames.stream()
-                    .filter(game -> game.getGameType().equalsIgnoreCase(gameType))  // Filtrare pe baza gameType
+                    .filter(game -> game.getGameType().equalsIgnoreCase(gameType))
                     .collect(Collectors.toList());
         }
-
-        // Mesaj de log în funcție de rezultatul căutării
         if (userGames.isEmpty()) {
             System.out.println("Nu s-au găsit jocuri pentru utilizatorul cu username: " + username
                     + (gameType != null ? " și tipul de joc: " + gameType : "."));
@@ -390,8 +384,6 @@ public class LifeOfBeesController {
                     + (gameType != null ? " și tipul de joc: " + gameType : "")
                     + ": " + userGames);
         }
-
-        // Maparea jocurilor în HomePageGameResponse
         return userGames.stream()
                 .map(game -> new HomePageGameResponse(
                         game.getGameName(),

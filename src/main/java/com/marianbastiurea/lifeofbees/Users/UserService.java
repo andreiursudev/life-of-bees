@@ -23,28 +23,18 @@ public class UserService {
     }
 
     public String registerUser(RegisterRequest registerRequest) {
-        // Normalizează username-ul pentru consistență
         String username = registerRequest.getUsername().toLowerCase().trim();
-
-        // Verifică dacă utilizatorul există deja
         Optional<User> existingUser = userRepository.findByUsername(username);
         System.out.println("Existing user: " + existingUser);
-
         if (existingUser.isPresent()) {
-            // Returnează ID-ul utilizatorului existent
             return existingUser.get().getUserId();
         }
-
-        // Criptare parolă
         String encodedPassword = passwordEncoder.encode(registerRequest.getPassword());
-
-        // Creează un nou utilizator
         User user = new User();
         user.setUsername(username); // Salvează username-ul normalizat
         user.setPassword(encodedPassword);
 
         try {
-            // Salvează utilizatorul în baza de date
             User savedUser = userRepository.save(user);
             return savedUser.getUserId();
         } catch (DuplicateKeyException e) {
@@ -71,7 +61,6 @@ public class UserService {
             throw new IllegalArgumentException("User is null. Cannot add game.");
         }
     }
-
 
     public User findUserByUsername(String username) {
         return userRepository.findByUsername(username).orElse(null);
