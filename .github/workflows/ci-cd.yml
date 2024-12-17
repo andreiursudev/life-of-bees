@@ -9,6 +9,8 @@ jobs:
   build-and-deploy:
     name: Build Docker Image and Deploy
     runs-on: ubuntu-latest
+    env:
+      CI: false
 
     steps:
       # Step 1: Checkout the repository
