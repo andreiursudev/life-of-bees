@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { getJohnDoeGames, getGamesForUserByType } from './BeesApiService';
 
-const ApiaryCardsRow = ({ isAuthenticated, username, gameType }) => {
+const ApiaryCardsRow = ({ isAuthenticated, userId, gameType }) => {
     const [games, setGames] = useState([]);
 
     useEffect(() => {
         console.log("isAuthenticated:", isAuthenticated);
-        console.log("username:", username);
+        console.log("userId:", userId);
         console.log("gameType:", gameType);
 
         const fetchGames = async () => {
             try {
                 let recentGames;
-                console.log("Fetching games with params:", { isAuthenticated, username, gameType });
+                console.log("Fetching games with params:", { isAuthenticated, userId, gameType });
 
-                if (isAuthenticated&&gameType) {
-                    console.log("Calling getGamesForUserByType for authenticated user:", username);
-                    recentGames = await getGamesForUserByType(username, gameType);
+                if (isAuthenticated&&gameType&& userId) {
+                    console.log("Calling getGamesForUserByType for authenticated userId:", userId);
+                    recentGames = await getGamesForUserByType(userId, gameType);
                 } else {
                     console.log("Calling getJohnDoeGames for anonymous user.");
                     recentGames = await getJohnDoeGames();
@@ -29,7 +29,7 @@ const ApiaryCardsRow = ({ isAuthenticated, username, gameType }) => {
         };
 
         fetchGames();
-    }, [isAuthenticated, username, gameType]); 
+    }, [isAuthenticated, userId, gameType]); 
 
     const chunkArray = (array, chunkSize) => {
         const chunks = [];

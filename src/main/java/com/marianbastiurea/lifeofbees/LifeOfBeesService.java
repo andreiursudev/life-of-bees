@@ -92,9 +92,9 @@ public class LifeOfBeesService {
         }
     }
 
-    public List<LifeOfBees> getGamesForUserByType(String username, String gameType) {
-        Optional<User> userOpt = userRepository.findByUsername(username);
-        System.out.println("acesta e username in getGamesForUserByType: " + username);
+    public List<LifeOfBees> getGamesForUserByType(String userId, String gameType) {
+        Optional<User> userOpt = userRepository.findByUserId(userId);
+        System.out.println("acesta e userId in getGamesForUserByType: " + userId);
         System.out.println("acesta e gameType in getGamesForUserByType: " + gameType);
 
         if (userOpt.isPresent()) {

@@ -259,10 +259,10 @@ export const getJohnDoeGames = async () => {
     }
 };
 
-export const getGamesForUserByType = async (username, gameType) => {
-    const response = await axios.get('/api/games', {
+export const getGamesForUserByType = async (userId, gameType) => {
+    const response = await apiClient.get('/bees/gamesForUser', {
         params: {
-            userId: username,
+            userId: userId,
             gameType: gameType
         }
     });

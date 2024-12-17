@@ -13,7 +13,7 @@ const HomePage = () => {
     const [isSignUp, setIsSignUp] = useState(false);
     const [authMessage, setAuthMessage] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [username, setUserName] = useState(null);
+    const [username, setUsername] = useState(null);
     const [gameType, setGameType] = useState(null);
     const [activeTab, setActiveTab] = useState("Public Game");
 
@@ -54,7 +54,7 @@ const HomePage = () => {
         localStorage.removeItem('authToken');
         localStorage.removeItem('userId');
         setIsAuthenticated(false);
-        setUserName(null);
+        setUsername(null);
     };
 
     const handleCloseModal = () => {
@@ -76,7 +76,7 @@ const HomePage = () => {
             localStorage.setItem('userId', response.userId);
             setIsAuthenticated(true);
             setShowAuthModal(false);
-            setUserName(username);
+            setUsername(username);
         } catch (error) {
             console.error('Error in SignIn:', error);
             setAuthMessage(error.response?.data || 'Failed to sign in. Please try again.');
@@ -92,7 +92,7 @@ const HomePage = () => {
             localStorage.setItem('userId', userId);
             setIsAuthenticated(true);
             setShowAuthModal(false);
-            setUserName(username);
+            setUsername(username);
         } catch (error) {
             console.error('Error in SignUp:', error);
             setAuthMessage(error.response?.data?.error || 'Failed to register. Please try again.');
@@ -170,11 +170,11 @@ const HomePage = () => {
                         {activeTab === "Public Game" && <ApiaryCardsRow
                             gameType="public"
                             isAuthenticated={isAuthenticated}
-                            username={username} />}
+                            userId={userId} />}
 
-                        {activeTab === "Private Game" && <ApiaryCardsRow gameType="private"
+                        {activeTab === "Private Game" && isAuthenticated && <ApiaryCardsRow gameType="private"
                             isAuthenticated={isAuthenticated}
-                            username={username} />}
+                            userId={userId} />}
                         {activeTab === "Map" && <div>Map content goes here.</div>}
                     </div>
                 </div>
@@ -209,7 +209,7 @@ const HomePage = () => {
                     isSignUp={isSignUp}
                     errorMessage={authMessage}
                     setIsAuthenticated={setIsAuthenticated}
-                    setUserName={setUserName}
+                    setUsername={setUsername}
                     authMessage={authMessage}
                     setIsSignUp={setIsSignUp}
                 />

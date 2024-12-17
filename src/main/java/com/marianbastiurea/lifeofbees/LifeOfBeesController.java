@@ -366,21 +366,23 @@ public class LifeOfBeesController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("/games")
+    @GetMapping("/gamesForUser")
     public List<HomePageGameResponse> getGamesForUserByType(
-            @RequestParam String username,
+            @RequestParam String userId,
             @RequestParam(required = false) String gameType) {
-        List<LifeOfBees> userGames = lifeOfBeesService.getGamesForUserByType(username, gameType);
+        System.out.println("solicitare jocuri pentru userId: "+ userId);
+        List<LifeOfBees> userGames = lifeOfBeesService.getGamesForUserByType(userId, gameType);
+        System.out.println("jocurile gasite pentru userId: "+userGames);
         if (gameType != null) {
             userGames = userGames.stream()
                     .filter(game -> game.getGameType().equalsIgnoreCase(gameType))
                     .collect(Collectors.toList());
         }
         if (userGames.isEmpty()) {
-            System.out.println("Nu s-au găsit jocuri pentru utilizatorul cu username: " + username
+            System.out.println("Nu s-au găsit jocuri pentru utilizatorul cu userId: " + userId
                     + (gameType != null ? " și tipul de joc: " + gameType : "."));
         } else {
-            System.out.println("Jocuri găsite pentru utilizatorul cu username: " + username
+            System.out.println("Jocuri găsite pentru utilizatorul cu userId: " + userId
                     + (gameType != null ? " și tipul de joc: " + gameType : "")
                     + ": " + userGames);
         }
