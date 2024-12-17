@@ -65,9 +65,4 @@ jobs:
             docker rm spring-boot-app || true
 
             # Run the new container
-            docker run -d \
-              --name spring-boot-app \
-              -p 80:80 \
-              -e SERVER_PORT=80
-              -v /home/${{ secrets.SSH_USER }}/.env:/app/.env \
-              spring-boot-app:latest
+            docker run -d --name spring-boot-app -p 80:80 -e SERVER_PORT=80 -v /home/${{ secrets.SSH_USER }}/.env:/app/.env spring-boot-app:latest
