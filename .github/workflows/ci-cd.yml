@@ -58,7 +58,7 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
             # Load the Docker image
-            docker load -i spring-boot-app.tar
+            docker load -i /home/${{ secrets.SSH_USER }}/spring-boot-app.tar
 
             # Stop and remove the existing container
             docker stop spring-boot-app || true
