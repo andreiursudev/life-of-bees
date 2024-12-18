@@ -94,7 +94,8 @@ const HiveHistory = () => {
                 </tbody>
 
             </table>
-            <button className="btn btn-danger btn-custom mb-2" onClick={() => navigate('/')}>Exit</button>
+            <button className="btn btn-danger button-right-bottom" onClick={() => navigate('/gameView', { state: { gameId } })}>Back</button>
+        
         </div>
     );
 };

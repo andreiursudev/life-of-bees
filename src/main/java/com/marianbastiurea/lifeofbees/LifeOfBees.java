@@ -102,9 +102,9 @@ public class LifeOfBees {
         LocalDate date = lifeOfBeesGame.getCurrentDate();
         WeatherData dailyWeather = lifeOfBeesService.fetchWeatherForDate(date);
         List<ActionOfTheWeek> actionsOfTheWeek = new ArrayList<>();
-        System.out.println("acesta e jocul primit in metoda iterateOneWeek din clasa LifeOfBees: " + lifeOfBeesGame);
+       // System.out.println("acesta e jocul primit in metoda iterateOneWeek din clasa LifeOfBees: " + lifeOfBeesGame);
         List<LifeOfBees> currentHistory = lifeOfBeesGame.getGameHistory();
-        System.out.println("acesta e getGameHistory in metoda iterateOneWeek: " + lifeOfBeesGame.getGameHistory());
+    //    System.out.println("acesta e getGameHistory in metoda iterateOneWeek: " + lifeOfBeesGame.getGameHistory());
         if (currentHistory == null || currentHistory.isEmpty()) {
             currentHistory = new ArrayList<>();
             currentHistory.add(new LifeOfBees(
@@ -124,7 +124,7 @@ public class LifeOfBees {
             lifeOfBeesGame.setGameHistory(currentHistory);
         }
 
-        System.out.println("situatia jocului dupa salvare in iterateOneWeek: " + currentHistory);
+       // System.out.println("situatia jocului dupa salvare in iterateOneWeek: " + currentHistory);
 
         for (int dailyIterator = 0; dailyIterator < 7; dailyIterator++) {
             List<Hive> hives = apiary.getHives();
@@ -139,12 +139,18 @@ public class LifeOfBees {
                 }
                 double whetherIndex = dailyWeather.weatherIndex(dailyWeather);
                 int numberOfEggs = queen.makeEggs(honey, whetherIndex);
+                System.out.println("numarul de oua: "+numberOfEggs);
                 int bees = hive.getEggFrames().ageOneDay(numberOfEggs);
+                System.out.println("numarul de albine: "+bees);
                 hive.checkIfCanAddNewEggsFrameInHive(actionsOfTheWeek);
                 hive.checkIfHiveCouldBeSplit(month, date.getDayOfMonth(), actionsOfTheWeek, lifeOfBeesGame);
-                hive.checkAndAddEggsToBees(bees);
+                System.out.println("acestea sunt bees batches inainte de a  aduce  "+bees+"  albine in bees batches "+hive.getBeesBatches());
+                hive.getBeesBatches().add(bees);
+                System.out.println("acestea sunt bees batches dupa adus  "+bees+"  albine in bees batches "+hive.getBeesBatches());
                 hive.fillUpExistingHoneyFrameFromHive(lifeOfBeesGame);
-                hive.getBeesBatches().removeLast();
+                System.out.println("bees batches inainte de a elimina primul batch:"+hive.getBeesBatches());
+                hive.getBeesBatches().removeFirst();
+                System.out.println("bees batches dupa de a elimina ultimul batch:"+hive.getBeesBatches());
                 List<HoneyBatch> harvestedHoneyBatches = honey.harvestHoney(hive, month, date.getDayOfMonth());
                 hive.addHoneyBatches(harvestedHoneyBatches, actionsOfTheWeek);
                 hive.checkIfCanAddANewHoneyFrameInHive(actionsOfTheWeek);
