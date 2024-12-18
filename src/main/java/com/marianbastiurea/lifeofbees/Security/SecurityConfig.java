@@ -44,7 +44,8 @@ public class SecurityConfig {
                 })
                 .authorizeHttpRequests(auth -> {
                     System.out.println("Setting up authorization rules in SecurityConfig...");
-                    auth.requestMatchers("/api/auth/register", "/api/auth/signin", "/oauth2/**",
+                    auth.requestMatchers("/", "/index.html","/static/**","api/bees/public/**", "/public/**","/favicon.png","/manifest.json",
+                                    "/api/auth/register", "/api/auth/signin", "/oauth2/**",
                                     "api/auth/google-client-id","/api/auth/oauth/google","api/auth/github-client-id", "/api/auth/oauth/github/login","/oauth2/github/**",
                                     "/auth/github/callback", "/login/oauth2/code/github","/login", "api/bees/JohnDoeGames").permitAll()
                             .anyRequest().authenticated();
