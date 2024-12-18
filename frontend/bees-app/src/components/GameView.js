@@ -10,7 +10,7 @@ import lindenFlower from '../linden-flower.jpg';
 import sunFlower from '../sun-flower.jpg';
 import falseIndigoFlower from '../false-indigo-flower.jpg';
 import BuyHivesModal from './BuyHivesModal';
-import NewGameModal from './CreateNewGame';
+
 
 const GameView = () => {
     const navigate = useNavigate();
@@ -248,6 +248,16 @@ const GameView = () => {
         return currentMonth === 3 || currentMonth === 4;
     };
 
+    const goToHiveHistory = (hiveId) => {
+        if (!gameId) {
+            console.error("gameId is missing");
+            return;
+        }
+        console.log("Navigating to HiveHistory with gameId:", gameId, "and hiveId:", hiveId);
+        navigate('/HiveHistory', { state: { gameId: gameId, hiveId: hiveId } });
+    };
+    
+    
 
 
 
@@ -255,20 +265,28 @@ const GameView = () => {
 
     return (
         <div className="body-gameView">
+
             <div className="row">
                 <div className="col-md-6">
                     <div className="row">
                         {gameData && gameData.hives && gameData.hives.length > 0 ? (
                             gameData.hives.map((hive, index) => (
-                                <div className="col-md-6 mb-3" key={hive.id}>
+                                <button 
+                                    key={hive.id} 
+                                    className="col-md-6 mb-3 btn btn-outline-primary"
+                                    onClick={() => goToHiveHistory(hive.id)}
+                                    style={{ cursor: 'pointer', textAlign: 'left', border: 'none', background: 'none' }}
+                                >
                                     <HiveCard hive={hive} />
-                                </div>
+                                </button>
                             ))
                         ) : (
                             <p>No hives available or data not loaded yet.</p>
                         )}
                     </div>
                 </div>
+
+
 
                 <div className="col-md-3">
                     <div className="card mb-3">

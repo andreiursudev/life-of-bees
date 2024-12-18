@@ -269,3 +269,16 @@ export const getGamesForUserByType = async (userId, gameType) => {
     return response.data;
 };
 
+
+export const getHiveHistory = async (gameId, hiveId) => {
+    try {
+        const response = await apiClient.get(
+            `/bees/HiveHistory/${gameId}`, // URL-ul corect
+            {params: { hiveId: hiveId }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error getting data in getHiveHistory:', error);
+        throw error;
+    }
+};

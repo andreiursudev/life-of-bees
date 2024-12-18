@@ -6,9 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
+
 
 import java.time.LocalDate;
 import java.util.*;
@@ -30,32 +28,6 @@ public class LifeOfBeesService {
     @Autowired
     public LifeOfBeesService(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
-    }
-
-    public void addToGameHistory(LifeOfBees lifeOfBeesGame) {
-        System.out.println("Obiectul lifeOfBees în metoda addToHistory: " + lifeOfBeesGame);
-
-        Query query = Query.query(Criteria.where("userId").is(lifeOfBeesGame.getUserId())
-                .and("gameName").is(lifeOfBeesGame.getGameName()));
-        System.out.println("Query creat în metoda addToHistory: " + query);
-
-        LifeOfBees existingGame = mongoTemplate.findOne(query, LifeOfBees.class);
-
-        if (existingGame != null) {
-            List<LifeOfBees> existingGameHistory = existingGame.getGameHistory();
-            if (existingGameHistory == null) {
-                existingGameHistory = new ArrayList<>();
-            }
-            existingGameHistory.add(lifeOfBeesGame);
-            Update update = new Update().set("Game history", existingGameHistory);
-
-            System.out.println("Update creat în metoda addToGameHistory: " + update);
-
-            var result = mongoTemplate.updateFirst(query, update, LifeOfBees.class);
-            System.out.println("Rezultat actualizare în metoda addToGameHistory: " + result);
-        } else {
-            System.out.println("Jocul nu a fost găsit pentru actualizare în metoda addToGameHistory.");
-        }
     }
 
     public WeatherData fetchWeatherForDate(LocalDate date) {
@@ -113,5 +85,8 @@ public class LifeOfBeesService {
             return List.of();
         }
     }
+
+
+
 
 }

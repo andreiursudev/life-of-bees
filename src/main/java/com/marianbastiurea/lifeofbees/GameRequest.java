@@ -16,7 +16,7 @@ public class GameRequest {
     private String password;
     private String token;
     private String gameId;
-    private List<LifeOfBees> gameHistory = new ArrayList<>();
+    private List<LifeOfBees> gameHistory;
 
     public List<LifeOfBees> getGameHistory() {
         return gameHistory;

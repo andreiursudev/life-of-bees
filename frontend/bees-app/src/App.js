@@ -7,7 +7,7 @@ import HomePage from './components/HomePage';
 import GameView from './components/GameView';
 import SellHoney from './components/SellHoney';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-
+import HiveHistory from './components/HiveHistory';
 import { getGoogleClientId, getGitHubClientId} from './components/BeesApiService';
 
 function App() {
@@ -49,6 +49,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/gameView" element={<GameView />} />
             <Route path="/sell-honey" element={<SellHoney />} />
+            <Route path="/HiveHistory" element={<HiveHistory />}/>
           </Routes>
         </div>
       </Router>
