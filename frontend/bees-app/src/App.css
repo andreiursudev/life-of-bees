@@ -23,7 +23,7 @@ html, body {
   margin-bottom: 10px;
 }
 
-.card {
+.card-hive {
   background-color: white;
   color: black;
 }
@@ -128,3 +128,9 @@ html, body {
   width: 150; 
   text-align: left;
 }
+
+.card-hover:hover {
+  background-color: #cce7ff; 
+}
+
+

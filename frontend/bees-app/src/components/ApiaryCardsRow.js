@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getJohnDoeGames, getGamesForUserByType } from './BeesApiService';
 import { useNavigate } from 'react-router-dom';
 
-const ApiaryCardsRow = ({ isAuthenticated, userId, gameType }) => {
+const ApiaryCardsRow = ({ isAuthenticated, userId, gameType, onGameClick }) => {
     const [games, setGames] = useState([]);
     const navigate = useNavigate();
 
@@ -55,20 +55,21 @@ const ApiaryCardsRow = ({ isAuthenticated, userId, gameType }) => {
             {chunkedGames.map((group, index) => (
                 <div className="row" key={index}>
                     {group.map((game, idx) => (
-                        <div className="col-md-2" key={idx}>
-                            <div className="card">
+                        <div
+                            className="col-md-4 col-lg-3 mb-3"
+                            key={idx}
+                            onClick={() => handleGameClick(game.gameId)} 
+                        >
+                            <div
+                                className="card h-100 text-center shadow-sm card-hover"
+                                style={{ cursor: "pointer" }}
+                            >
                                 <div className="card-body">
                                     <h5 className="card-title">{game.gameName}</h5>
                                     <p className="card-text">Location: {game.location}</p>
                                     <p className="card-text">Hives: {game.hivesNumber}</p>
                                     <p className="card-text">Funds: {game.moneyInTheBank}$</p>
                                     <p className="card-text">Honey: {game.totalKgOfHoneyHarvested} kg</p>
-                                    <button
-                                        className="btn btn-primary"
-                                        onClick={() => handleGameClick(game.gameId)} // Apelăm funcția cu ID-ul jocului
-                                    >
-                                        Continue Game
-                                    </button>
                                 </div>
                             </div>
                         </div>
