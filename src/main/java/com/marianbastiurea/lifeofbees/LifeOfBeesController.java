@@ -349,14 +349,20 @@ public class LifeOfBeesController {
             System.out.println("Jocuri găsite pentru utilizatorul JohnDoe: " + userGames);
         }
         return userGames.stream()
-                .map(game -> new HomePageGameResponse(
-                        game.getGameName(),
-                        game.getLocation(),
-                        game.getApiary().getHives().size(),
-                        game.getTotalKgOfHoneyHarvested(),
-                        game.getMoneyInTheBank()
-                ))
+                .map(game -> {
+                    System.out.println("Total Honey Harvested (before): " + game.getTotalKgOfHoneyHarvested());
+                    System.out.println("Money in the Bank (before): " + game.getMoneyInTheBank());
+                    return new HomePageGameResponse(
+                            game.getGameName(),
+                            game.getLocation(),
+                            game.getApiary().getHives().size(),
+                            game.getMoneyInTheBank(),
+                            game.getTotalKgOfHoneyHarvested(),
+                            game.getGameId()
+                    );
+                })
                 .collect(Collectors.toList());
+
     }
 
     @GetMapping("/gamesForUser")
@@ -384,8 +390,9 @@ public class LifeOfBeesController {
                         game.getGameName(),
                         game.getLocation(),
                         game.getApiary().getHives().size(),
+                        game.getMoneyInTheBank(),
                         game.getTotalKgOfHoneyHarvested(),
-                        game.getMoneyInTheBank()
+                        game.getGameId()
                 ))
                 .collect(Collectors.toList());
     }

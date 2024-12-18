@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import '../App.css';
 import HiveCard from './HiveCard';
 import { getGame, iterateWeek, submitActionsOfTheWeek, buyHives } from './BeesApiService';
@@ -18,10 +18,12 @@ const GameView = () => {
     const [selectedActions, setSelectedActions] = useState({});
     const [updatedGameData, setUpdatedGameData] = useState(null);
     const locationData = useLocation();
-   
-    const { gameId } = locationData.state || {};
-    const [loading, setLoading] = useState(false);
 
+    const { gameId: gameIdFromParams } = useParams(); 
+    const { gameId: gameIdFromState } = locationData.state || {};
+    const gameId = gameIdFromParams || gameIdFromState;
+
+    const [loading, setLoading] = useState(false);
     const [month, setMonth] = useState(null);
     const [day, setDay] = useState(null);
 
@@ -271,7 +273,7 @@ const GameView = () => {
                     <div className="row">
                         {gameData && gameData.hives && gameData.hives.length > 0 ? (
                             gameData.hives.map((hive, index) => (
-                                <button 
+                                <button     
                                     key={hive.id} 
                                     className="col-md-6 mb-3 btn btn-outline-primary"
                                     onClick={() => goToHiveHistory(hive.id)}
@@ -440,7 +442,6 @@ const GameView = () => {
                             Wind speed: {gameData && gameData.windSpeed !== undefined ? gameData.windSpeed.toFixed(2) : '0.00'}
                         </p>
 
-
                         <p className="btn-custom p-custom mb-2">
                             Precipitation: {gameData && gameData.precipitation !== undefined ? gameData.precipitation.toFixed(2) : '0'}
                         </p>
@@ -452,7 +453,7 @@ const GameView = () => {
                         <p className="btn-custom p-custom mb-2">Money in the bank: {gameData && gameData.moneyInTheBank ? gameData.moneyInTheBank.toFixed(2) : 'Loading...'}</p>
                         <img src={flowerImage} alt="Flower based on date" className="img-custom mb-2" />
 
-                        <button className="btn btn-custom p-custom mb-2" onClick={handleIterateWeek}>Iterate one week</button>
+                        <button className="btn btn-custom-iterate p-custom-iterate mb-2" onClick={handleIterateWeek}>Iterate one week</button>
                         
                         <button
                             className="btn btn-custom p-custom mb-2"

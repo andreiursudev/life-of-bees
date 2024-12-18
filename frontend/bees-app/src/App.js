@@ -50,6 +50,7 @@ function App() {
             <Route path="/gameView" element={<GameView />} />
             <Route path="/sell-honey" element={<SellHoney />} />
             <Route path="/HiveHistory" element={<HiveHistory />}/>
+            <Route path="/gameView/:gameId" element={<GameView />} />
           </Routes>
         </div>
       </Router>
