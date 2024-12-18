@@ -1,6 +1,7 @@
 package com.marianbastiurea.lifeofbees;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 public class HiveHistory {
     private int id;
@@ -15,6 +16,7 @@ public class HiveHistory {
     private boolean wasMovedAnEggsFrame;
     private int eggFramesNumber;
     private int honeyFrameNumber;
+    private Set<HoneyType> honeyTypes;
 
     public HiveHistory() {
     }
@@ -22,7 +24,7 @@ public class HiveHistory {
     public HiveHistory(int id, Apiary apiary, LocalDate currentDate, WeatherData weatherData,
                        int beesNumber, int queenAge, double moneyInTheBank, double kgOfHoney,
                        boolean itWasSplit, boolean wasMovedAnEggsFrame, int eggFramesNumber,
-                       int honeyFrameNumber) {
+                       int honeyFrameNumber, Set<HoneyType> honeyTypes) {
         this.id = id;
         this.apiary = apiary;
         this.currentDate = currentDate;
@@ -35,12 +37,8 @@ public class HiveHistory {
         this.wasMovedAnEggsFrame = wasMovedAnEggsFrame;
         this.eggFramesNumber = eggFramesNumber;
         this.honeyFrameNumber = honeyFrameNumber;
+        this.honeyTypes = honeyTypes;
     }
-
-
-
-
-
 
     public int getId() {
         return id;
@@ -138,6 +136,14 @@ public class HiveHistory {
         this.honeyFrameNumber = honeyFrameNumber;
     }
 
+    public Set<HoneyType> getHoneyTypes() {
+        return honeyTypes;
+    }
+
+    public void setHoneyTypes(Set<HoneyType> honeyTypes) {
+        this.honeyTypes = honeyTypes;
+    }
+
     @Override
     public String toString() {
         return "HiveHistory{" +
@@ -153,6 +159,7 @@ public class HiveHistory {
                 ", wasMovedAnEggsFrame=" + wasMovedAnEggsFrame +
                 ", eggFramesNumber=" + eggFramesNumber +
                 ", honeyFrameNumber=" + honeyFrameNumber +
+                ", honeyTypes=" + honeyTypes +
                 '}';
     }
 }

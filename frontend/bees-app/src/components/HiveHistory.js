@@ -78,7 +78,7 @@ const HiveHistory = () => {
                                 <td>{entry.weatherData.precipitation}</td>
                                 <td>{entry.beesNumber}</td>
                                 <td>{entry.queenAge}</td>
-                                <td>{entry.honeyType || 'N/A'}</td>
+                                <td>{entry.honeyTypes && entry.honeyTypes.length > 0 ? entry.honeyTypes.join(', ') : 'N/A'}</td>
                                 <td>{entry.kgOfHoney}</td>
                                 <td>{entry.moneyInTheBank}</td>
                                 <td>{entry.eggFramesNumber}</td>
@@ -95,7 +95,7 @@ const HiveHistory = () => {
 
             </table>
             <button className="btn btn-danger button-right-bottom" onClick={() => navigate('/gameView', { state: { gameId } })}>Back</button>
-        
+    
         </div>
     );
 };

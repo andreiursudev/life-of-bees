@@ -139,18 +139,12 @@ public class LifeOfBees {
                 }
                 double whetherIndex = dailyWeather.weatherIndex(dailyWeather);
                 int numberOfEggs = queen.makeEggs(honey, whetherIndex);
-                System.out.println("numarul de oua: "+numberOfEggs);
                 int bees = hive.getEggFrames().ageOneDay(numberOfEggs);
-                System.out.println("numarul de albine: "+bees);
                 hive.checkIfCanAddNewEggsFrameInHive(actionsOfTheWeek);
                 hive.checkIfHiveCouldBeSplit(month, date.getDayOfMonth(), actionsOfTheWeek, lifeOfBeesGame);
-                System.out.println("acestea sunt bees batches inainte de a  aduce  "+bees+"  albine in bees batches "+hive.getBeesBatches());
                 hive.getBeesBatches().add(bees);
-                System.out.println("acestea sunt bees batches dupa adus  "+bees+"  albine in bees batches "+hive.getBeesBatches());
                 hive.fillUpExistingHoneyFrameFromHive(lifeOfBeesGame);
-                System.out.println("bees batches inainte de a elimina primul batch:"+hive.getBeesBatches());
                 hive.getBeesBatches().removeFirst();
-                System.out.println("bees batches dupa de a elimina ultimul batch:"+hive.getBeesBatches());
                 List<HoneyBatch> harvestedHoneyBatches = honey.harvestHoney(hive, month, date.getDayOfMonth());
                 hive.addHoneyBatches(harvestedHoneyBatches, actionsOfTheWeek);
                 hive.checkIfCanAddANewHoneyFrameInHive(actionsOfTheWeek);

@@ -422,6 +422,15 @@ public class LifeOfBeesController {
                         hiveHistory.setWasMovedAnEggsFrame(hive.isWasMovedAnEggsFrame());
                         hiveHistory.setEggFramesNumber(hive.getEggFrames().getNumberOfEggFrames());
                         hiveHistory.setHoneyFrameNumber(hive.getHoneyFrames().size());
+                        double KgOfHoney = hive.getHoneyBatches().stream()
+                                .mapToDouble(HoneyBatch::getKgOfHoney)
+                                .sum();
+                        Set<HoneyType> honeyTypes = hive.getHoneyBatches().stream()
+                                .map(HoneyBatch::getHoneyType)
+                                .collect(Collectors.toSet());
+
+                        hiveHistory.setKgOfHoney(KgOfHoney);
+                        hiveHistory.setHoneyTypes(honeyTypes);
                         hiveHistories.add(hiveHistory);
                     }
                 }
