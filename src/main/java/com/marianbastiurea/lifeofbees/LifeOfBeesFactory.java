@@ -27,6 +27,15 @@ public class LifeOfBeesFactory {
         List<Hive> newHives = apiary.createHive(numberOfStartingHives, date);
         apiary.getHives().addAll(newHives);
         WeatherData weatherData = allWeatherData.get(date.toString());
-        return new LifeOfBees(gameName, userId, gameType, apiary, actionOfTheWeek, location, date, weatherData, moneyInTheBank, totalKgOfHoney);
+
+
+        List<GameHistory> gameHistory = new ArrayList<>();
+        GameHistory initialHistory = new GameHistory(date, apiary, weatherData, moneyInTheBank,
+                0);
+        gameHistory.add(initialHistory);
+
+
+        return new LifeOfBees(gameName, userId, gameType, apiary, actionOfTheWeek, location, date,
+                weatherData, moneyInTheBank, totalKgOfHoney, gameHistory);
     }
 }

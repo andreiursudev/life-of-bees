@@ -411,7 +411,7 @@ public class LifeOfBeesController {
         }
 
         List<HiveHistory> hiveHistories = new ArrayList<>();
-        for (LifeOfBees historyItem : lifeOfBeesGame.getGameHistory()) {
+        for (GameHistory historyItem : lifeOfBeesGame.getGameHistory()) {
             Apiary apiary = historyItem.getApiary();
             if (apiary != null) {
                 for (Hive hive : apiary.getHives()) {

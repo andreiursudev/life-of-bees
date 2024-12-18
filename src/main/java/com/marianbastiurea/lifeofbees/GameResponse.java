@@ -15,12 +15,13 @@ public class GameResponse {
     private double moneyInTheBank;
     private LocalDate currentDate;
     private double totalKgOfHoneyHarvested;
-    private List<LifeOfBees> history;
-    public List<LifeOfBees> getHistory() {
+    private List<GameHistory> history;
+
+    public List<GameHistory> getHistory() {
         return history;
     }
 
-    public void setHistory(List<LifeOfBees> history) {
+    public void setHistory(List<GameHistory> history) {
         this.history = history;
     }
 
