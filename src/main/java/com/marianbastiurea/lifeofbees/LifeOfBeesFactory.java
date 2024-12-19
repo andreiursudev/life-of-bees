@@ -1,12 +1,9 @@
 package com.marianbastiurea.lifeofbees;
 
-import org.springframework.data.mongodb.core.mapping.Field;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
 import java.util.Map;
-
 
 public class LifeOfBeesFactory {
 
@@ -28,14 +25,7 @@ public class LifeOfBeesFactory {
         apiary.getHives().addAll(newHives);
         WeatherData weatherData = allWeatherData.get(date.toString());
 
-
-        List<GameHistory> gameHistory = new ArrayList<>();
-        GameHistory initialHistory = new GameHistory(date, apiary, weatherData, moneyInTheBank,
-                0);
-        gameHistory.add(initialHistory);
-
-
         return new LifeOfBees(gameName, userId, gameType, apiary, actionOfTheWeek, location, date,
-                weatherData, moneyInTheBank, totalKgOfHoney, gameHistory);
+                weatherData, moneyInTheBank, totalKgOfHoney);
     }
 }

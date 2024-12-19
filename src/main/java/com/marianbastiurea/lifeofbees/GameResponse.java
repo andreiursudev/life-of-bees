@@ -1,5 +1,7 @@
 package com.marianbastiurea.lifeofbees;
 
+import com.marianbastiurea.lifeofbees.GameHistory.GameHistory;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,15 +17,6 @@ public class GameResponse {
     private double moneyInTheBank;
     private LocalDate currentDate;
     private double totalKgOfHoneyHarvested;
-    private List<GameHistory> history;
-
-    public List<GameHistory> getHistory() {
-        return history;
-    }
-
-    public void setHistory(List<GameHistory> history) {
-        this.history = history;
-    }
 
     public String getId() {
         return id;
@@ -117,7 +110,6 @@ public class GameResponse {
                 ", moneyInTheBank=" + moneyInTheBank +
                 ", currentDate=" + currentDate +
                 ", totalKgOfHoneyHarvested=" + totalKgOfHoneyHarvested +
-                ", history=" + history +
                 '}';
     }
 }

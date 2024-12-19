@@ -1,8 +1,9 @@
 package com.marianbastiurea.lifeofbees;
 
+import com.marianbastiurea.lifeofbees.GameHistory.GameHistory;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
+
 
 import java.time.LocalDate;
 import java.util.*;
@@ -24,14 +25,11 @@ public class LifeOfBees {
     private double totalKgOfHoneyHarvested;
     private String gameType;
 
-    @Field("history")
-    private List<GameHistory> gameHistory = new ArrayList<>();
-
 
     public LifeOfBees(String gameId, String gameType, String userId, Apiary apiary,
                       String gameName, String location, LocalDate currentDate,
                       WeatherData weatherData, double moneyInTheBank, double totalKgOfHoneyHarvested,
-                      List<ActionOfTheWeek> actionOfTheWeek, List<GameHistory> gameHistory) {
+                      List<ActionOfTheWeek> actionOfTheWeek) {
         this.gameId = gameId;
         this.userId = userId;
         this.gameType = gameType;
@@ -43,12 +41,11 @@ public class LifeOfBees {
         this.totalKgOfHoneyHarvested = totalKgOfHoneyHarvested;
         this.actionOfTheWeek = actionOfTheWeek;
         this.weatherData = weatherData;
-        this.gameHistory = gameHistory != null ? gameHistory : new ArrayList<>();
     }
 
     public LifeOfBees(String gameName, String userId, String gameType, Apiary apiary, List<ActionOfTheWeek> actionOfTheWeek,
                       String location, LocalDate currentDate, WeatherData weatherData,
-                      double moneyInTheBank, double totalKgOfHoneyHarvested,List<GameHistory> gameHistory) {
+                      double moneyInTheBank, double totalKgOfHoneyHarvested) {
         this.apiary = apiary;
         this.actionOfTheWeek = actionOfTheWeek;
         this.gameName = gameName;
@@ -59,7 +56,6 @@ public class LifeOfBees {
         this.totalKgOfHoneyHarvested = totalKgOfHoneyHarvested;
         this.userId = userId;
         this.gameType = gameType;
-        this.gameHistory = gameHistory != null ? gameHistory : new ArrayList<>();
     }
 
     public LifeOfBees(LocalDate currentDate, WeatherData weatherData, Apiary apiary, double moneyInTheBank, double totalKgOfHoneyHarvested) {
@@ -84,16 +80,7 @@ public class LifeOfBees {
                 ", moneyInTheBank=" + moneyInTheBank +
                 ", totalKgOfHoneyHarvested=" + totalKgOfHoneyHarvested +
                 ", gameType='" + gameType + '\'' +
-                ", gameHistory=" + gameHistory +
                 '}';
-    }
-
-    public List<GameHistory> getGameHistory() {
-        return gameHistory;
-    }
-
-    public void setGameHistory(List<GameHistory> gameHistory) {
-        this.gameHistory = gameHistory;
     }
 
     public LifeOfBees() {
@@ -143,11 +130,8 @@ public class LifeOfBees {
             System.out.println("Action of the day " + date.getDayOfMonth() + " is " + lifeOfBeesGame.getActionOfTheWeek());
             date = date.plusDays(1);
         }
-
         lifeOfBeesGame.setCurrentDate(date);
-        GameHistory weeklyHistory = new GameHistory(date,apiary,weatherData, moneyInTheBank,totalKgOfHoneyHarvested);
-        lifeOfBeesGame.getGameHistory().add(weeklyHistory);
-        return new LifeOfBees(gameId, gameType, userId, apiary, gameName, location, date, dailyWeather, moneyInTheBank, totalKgOfHoneyHarvested, actionOfTheWeek, gameHistory);
+        return new LifeOfBees(gameId, gameType, userId, apiary, gameName, location, date, dailyWeather, moneyInTheBank, totalKgOfHoneyHarvested, actionOfTheWeek);
     }
 
     public Apiary getApiary() {
