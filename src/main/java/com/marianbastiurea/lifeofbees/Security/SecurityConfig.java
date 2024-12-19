@@ -38,10 +38,10 @@ public class SecurityConfig {
                     System.out.println("Enabling CORS configuration in SecurityConfig...");
                     cors.configurationSource(corsConfigurationSource());
                 })
-                .csrf(csrf -> {
+               /* .csrf(csrf -> {
                     System.out.println("Disabling CSRF protection in SecurityConfig...");
                     csrf.disable();
-                })
+                })*/
                 .authorizeHttpRequests(auth -> {
                     System.out.println("Setting up authorization rules in SecurityConfig...");
                     auth.requestMatchers("/", "/index.html","/static/**","api/bees/public/**", "/public/**","/favicon.png","/manifest.json",
