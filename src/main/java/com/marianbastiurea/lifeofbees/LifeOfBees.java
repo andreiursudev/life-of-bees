@@ -1,7 +1,9 @@
 package com.marianbastiurea.lifeofbees;
 
+import com.marianbastiurea.lifeofbees.GameHistory.GameHistory;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
 
 import java.time.LocalDate;
 import java.util.*;
@@ -11,7 +13,8 @@ import java.util.List;
 @Document(collection = "games")
 public class LifeOfBees {
     @Id
-    private String id;
+    private String gameId;
+    private String userId;
     private Apiary apiary;
     private List<ActionOfTheWeek> actionOfTheWeek;
     private String gameName;
@@ -20,14 +23,16 @@ public class LifeOfBees {
     private WeatherData weatherData;
     private double moneyInTheBank;
     private double totalKgOfHoneyHarvested;
-    private boolean isPublic;
+    private String gameType;
 
 
-    public LifeOfBees(String id,Apiary apiary,
+    public LifeOfBees(String gameId, String gameType, String userId, Apiary apiary,
                       String gameName, String location, LocalDate currentDate,
                       WeatherData weatherData, double moneyInTheBank, double totalKgOfHoneyHarvested,
                       List<ActionOfTheWeek> actionOfTheWeek) {
-        this.id=id;
+        this.gameId = gameId;
+        this.userId = userId;
+        this.gameType = gameType;
         this.apiary = apiary;
         this.gameName = gameName;
         this.location = location;
@@ -36,11 +41,10 @@ public class LifeOfBees {
         this.totalKgOfHoneyHarvested = totalKgOfHoneyHarvested;
         this.actionOfTheWeek = actionOfTheWeek;
         this.weatherData = weatherData;
-
     }
 
-    public LifeOfBees(String gameName,Apiary apiary, List<ActionOfTheWeek> actionOfTheWeek,
-                     String location, LocalDate currentDate, WeatherData weatherData,
+    public LifeOfBees(String gameName, String userId, String gameType, Apiary apiary, List<ActionOfTheWeek> actionOfTheWeek,
+                      String location, LocalDate currentDate, WeatherData weatherData,
                       double moneyInTheBank, double totalKgOfHoneyHarvested) {
         this.apiary = apiary;
         this.actionOfTheWeek = actionOfTheWeek;
@@ -50,16 +54,24 @@ public class LifeOfBees {
         this.weatherData = weatherData;
         this.moneyInTheBank = moneyInTheBank;
         this.totalKgOfHoneyHarvested = totalKgOfHoneyHarvested;
+        this.userId = userId;
+        this.gameType = gameType;
     }
 
-    public LifeOfBees() {
+    public LifeOfBees(LocalDate currentDate, WeatherData weatherData, Apiary apiary, double moneyInTheBank, double totalKgOfHoneyHarvested) {
+        this.currentDate = currentDate;
+        this.weatherData = weatherData;
+        this.apiary = apiary;
+        this.moneyInTheBank = moneyInTheBank;
+        this.totalKgOfHoneyHarvested = totalKgOfHoneyHarvested;
     }
 
     @Override
     public String toString() {
         return "LifeOfBees{" +
-                "id="+id+
-                "apiary=" + apiary +
+                "gameId='" + gameId + '\'' +
+                ", userId='" + userId + '\'' +
+                ", apiary=" + apiary +
                 ", actionOfTheWeek=" + actionOfTheWeek +
                 ", gameName='" + gameName + '\'' +
                 ", location='" + location + '\'' +
@@ -67,7 +79,11 @@ public class LifeOfBees {
                 ", weatherData=" + weatherData +
                 ", moneyInTheBank=" + moneyInTheBank +
                 ", totalKgOfHoneyHarvested=" + totalKgOfHoneyHarvested +
+                ", gameType='" + gameType + '\'' +
                 '}';
+    }
+
+    public LifeOfBees() {
     }
 
     public LifeOfBees iterateOneWeek(LifeOfBees lifeOfBeesGame, LifeOfBeesService lifeOfBeesService) {
@@ -90,9 +106,9 @@ public class LifeOfBees {
                 int bees = hive.getEggFrames().ageOneDay(numberOfEggs);
                 hive.checkIfCanAddNewEggsFrameInHive(actionsOfTheWeek);
                 hive.checkIfHiveCouldBeSplit(month, date.getDayOfMonth(), actionsOfTheWeek, lifeOfBeesGame);
-                hive.checkAndAddEggsToBees(bees);
+                hive.getBeesBatches().add(bees);
                 hive.fillUpExistingHoneyFrameFromHive(lifeOfBeesGame);
-                hive.getBeesBatches().removeLast();
+                hive.getBeesBatches().removeFirst();
                 List<HoneyBatch> harvestedHoneyBatches = honey.harvestHoney(hive, month, date.getDayOfMonth());
                 hive.addHoneyBatches(harvestedHoneyBatches, actionsOfTheWeek);
                 hive.checkIfCanAddANewHoneyFrameInHive(actionsOfTheWeek);
@@ -115,9 +131,8 @@ public class LifeOfBees {
             date = date.plusDays(1);
         }
         lifeOfBeesGame.setCurrentDate(date);
-        return new LifeOfBees(id,apiary, gameName, location, date, dailyWeather, moneyInTheBank, totalKgOfHoneyHarvested, actionOfTheWeek);
+        return new LifeOfBees(gameId, gameType, userId, apiary, gameName, location, date, dailyWeather, moneyInTheBank, totalKgOfHoneyHarvested, actionOfTheWeek);
     }
-
 
     public Apiary getApiary() {
         return apiary;
@@ -172,13 +187,30 @@ public class LifeOfBees {
     }
 
     public WeatherData getAllWeatherData() {
-    return weatherData;}
-
-    public String getId() {
-        return id;
+        return weatherData;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public String getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(String gameId) {
+        this.gameId = gameId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getGameType() {
+        return gameType;
+    }
+
+    public void setGameType(String gameType) {
+        this.gameType = gameType;
     }
 }
