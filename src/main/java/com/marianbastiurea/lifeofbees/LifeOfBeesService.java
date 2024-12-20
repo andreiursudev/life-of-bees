@@ -31,7 +31,7 @@ public class LifeOfBeesService {
     }
 
     public WeatherData fetchWeatherForDate(LocalDate date) {
-        String weatherApiUrl = "http://host.docker.internal:8081/api/weather/" + date;
+        String weatherApiUrl = "http://localhost:8081/api/weather/" + date;
 
         try {
             RestTemplate restTemplate = new RestTemplate();

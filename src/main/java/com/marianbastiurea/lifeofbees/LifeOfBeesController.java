@@ -53,7 +53,7 @@ public class LifeOfBeesController {
         System.out.println("Received request to create game: " + gameRequest);
         String jwtToken = authorizationHeader.replace("Bearer ", "");
         LocalDate startDate = LocalDate.parse(gameRequest.getStartDate());
-        String weatherApiUrl = "http://host.docker.internal:8081/api/weather/" + startDate;
+        String weatherApiUrl = "http://localhost:8081/api/weather/" + startDate;
         WeatherData weatherData = restTemplate.getForObject(weatherApiUrl, WeatherData.class);
         Map<String, WeatherData> allWeatherData = new HashMap<>();
         allWeatherData.put(weatherData.getDate().toString(), weatherData);
