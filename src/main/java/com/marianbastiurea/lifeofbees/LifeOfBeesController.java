@@ -1,6 +1,7 @@
 package com.marianbastiurea.lifeofbees;
 
-import com.marianbastiurea.lifeofbees.Security.HomePageGameResponse;
+import com.marianbastiurea.lifeofbees.GameHistory.GameHistory;
+import com.marianbastiurea.lifeofbees.GameHistory.GameHistoryRepository;
 import com.marianbastiurea.lifeofbees.Security.JwtTokenProvider;
 import com.marianbastiurea.lifeofbees.Users.User;
 import com.marianbastiurea.lifeofbees.Users.UserRepository;
@@ -31,16 +32,20 @@ public class LifeOfBeesController {
     private final UserRepository userRepository;
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final GameHistoryRepository gameHistoryRepository;
     @Autowired
     private LifeOfBeesService lifeOfBeesService;
 
 
-    public LifeOfBeesController(LifeOfBeesRepository lifeOfBeesRepository, UserRepository userRepository, UserService userService, JwtTokenProvider jwtTokenProvider) {
+    public LifeOfBeesController(LifeOfBeesRepository lifeOfBeesRepository, UserRepository userRepository,
+                                UserService userService, JwtTokenProvider jwtTokenProvider,
+                                GameHistoryRepository gameHistoryRepository) {
         this.lifeOfBeesRepository = lifeOfBeesRepository;
         this.games = new HashMap<>();
         this.userRepository = userRepository;
         this.userService = userService;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.gameHistoryRepository = gameHistoryRepository;
     }
 
     @PostMapping("/game")
@@ -62,16 +67,11 @@ public class LifeOfBeesController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("error", "Invalid token"));
         }
-
-
         if (!userIdFromToken.equals(gameRequest.getUserId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(Map.of("error", "Token does not match userId in createGame"));
         }
-
         User user = userRepository.findById(gameRequest.getUserId()).orElse(null);
-
-
         if (user == null) {
             user = new User();
             user.setUsername(gameRequest.getUsername());
@@ -93,12 +93,12 @@ public class LifeOfBeesController {
         );
 
         LifeOfBees savedGame = lifeOfBeesRepository.save(lifeOfBeesGame);
-        System.out.println("jocul nou creat este:" + lifeOfBeesGame);
-        lifeOfBeesService.addToGameHistory(savedGame);
         userService.addGameToUser(user, lifeOfBeesGame.getGameId());
-        user = userRepository.findById(user.getUserId()).orElseThrow();
-        System.out.println("Userid după salvare în createGame: " + user.getUserId());
-
+        GameHistory gameHistory = new GameHistory();
+        gameHistory.setGameId(savedGame.getGameId());
+        gameHistory.setGamesHistory(new ArrayList<>());
+        gameHistory.getGamesHistory().add(savedGame);
+        gameHistoryRepository.save(gameHistory);
         Map<String, String> response = new HashMap<>();
         response.put("token", jwtToken);
         response.put("gameId", savedGame.getGameId());
@@ -130,10 +130,12 @@ public class LifeOfBeesController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
         }
         lifeOfBeesGame = lifeOfBeesGame.iterateOneWeek(lifeOfBeesGame, lifeOfBeesService);
-        lifeOfBeesService.addToGameHistory(lifeOfBeesGame);
         lifeOfBeesRepository.save(lifeOfBeesGame);
         GameResponse response = getGameResponse(lifeOfBeesGame);
-        System.out.println("GameResponse după iterație: " + response);
+        GameHistory gameHistory = gameHistoryRepository.findByGameId(lifeOfBeesGame.getGameId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game history not found"));
+        gameHistory.getGamesHistory().add(lifeOfBeesGame);
+        gameHistoryRepository.save(gameHistory);
         return response;
     }
 
@@ -156,7 +158,6 @@ public class LifeOfBeesController {
             processAction(action, apiary, lifeOfBeesGame);
         }
         lifeOfBeesGame.getActionOfTheWeek().clear();
-        lifeOfBeesService.addToGameHistory(lifeOfBeesGame);
         lifeOfBeesRepository.save(lifeOfBeesGame);
         GameResponse response = getGameResponse(lifeOfBeesGame);
         System.out.println("GameResponse după submitActionsOfTheWeek: " + response);
@@ -240,7 +241,6 @@ public class LifeOfBeesController {
         gameResponse.setPrecipitation(game.getWeatherData().getPrecipitation());
         gameResponse.setCurrentDate(game.getCurrentDate());
         gameResponse.setTotalKgOfHoneyHarvested(game.getTotalKgOfHoneyHarvested());
-        gameResponse.setHistory(game.getGameHistory());
         System.out.println("acestea sunt datele trimise catre React: " + gameResponse);
         return gameResponse;
     }
@@ -310,7 +310,6 @@ public class LifeOfBeesController {
         apiary.updateHoneyStock(soldHoneyData);
         lifeOfBeesGame.setTotalKgOfHoneyHarvested(apiary.getTotalKgHoneyHarvested());
         lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() + revenue);
-        lifeOfBeesService.addToGameHistory(lifeOfBeesGame);
         lifeOfBeesRepository.save(lifeOfBeesGame);
         System.out.println("Stock și venituri actualizate pentru gameId: " + gameId);
         return ResponseEntity.ok("Stock and revenue updated successfully.");
@@ -341,7 +340,6 @@ public class LifeOfBeesController {
             return ResponseEntity.badRequest().body("Insufficient funds to buy hives.");
         }
         lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() - totalCost);
-        lifeOfBeesService.addToGameHistory(lifeOfBeesGame);
         lifeOfBeesRepository.save(lifeOfBeesGame);
         System.out.println("Stupi cumpărați cu succes pentru gameId: " + gameId);
         return ResponseEntity.ok("Hives bought successfully.");
@@ -356,23 +354,29 @@ public class LifeOfBeesController {
             System.out.println("Jocuri găsite pentru utilizatorul JohnDoe: " + userGames);
         }
         return userGames.stream()
-                .map(game -> new HomePageGameResponse(
-                        game.getGameName(),
-                        game.getLocation(),
-                        game.getApiary().getHives().size(),
-                        game.getTotalKgOfHoneyHarvested(),
-                        game.getMoneyInTheBank()
-                ))
+                .map(game -> {
+                    System.out.println("Total Honey Harvested (before): " + game.getTotalKgOfHoneyHarvested());
+                    System.out.println("Money in the Bank (before): " + game.getMoneyInTheBank());
+                    return new HomePageGameResponse(
+                            game.getGameName(),
+                            game.getLocation(),
+                            game.getApiary().getHives().size(),
+                            game.getMoneyInTheBank(),
+                            game.getTotalKgOfHoneyHarvested(),
+                            game.getGameId()
+                    );
+                })
                 .collect(Collectors.toList());
+
     }
 
     @GetMapping("/gamesForUser")
     public List<HomePageGameResponse> getGamesForUserByType(
             @RequestParam String userId,
             @RequestParam(required = false) String gameType) {
-        System.out.println("solicitare jocuri pentru userId: "+ userId);
+        System.out.println("solicitare jocuri pentru userId: " + userId);
         List<LifeOfBees> userGames = lifeOfBeesService.getGamesForUserByType(userId, gameType);
-        System.out.println("jocurile gasite pentru userId: "+userGames);
+        System.out.println("jocurile gasite pentru userId: " + userGames);
         if (gameType != null) {
             userGames = userGames.stream()
                     .filter(game -> game.getGameType().equalsIgnoreCase(gameType))
@@ -391,11 +395,53 @@ public class LifeOfBeesController {
                         game.getGameName(),
                         game.getLocation(),
                         game.getApiary().getHives().size(),
+                        game.getMoneyInTheBank(),
                         game.getTotalKgOfHoneyHarvested(),
-                        game.getMoneyInTheBank()
+                        game.getGameId()
                 ))
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/HiveHistory/{gameId}")
+    public List<HiveHistory> getHiveHistory(@PathVariable String gameId,
+                                            @RequestParam("hiveId") Integer hiveId,
+                                            Principal principal) {
+        System.out.println("Cerere pentru istoricul stupilor in jocul cu gameId: " + gameId);
+        GameHistory gameHistory = gameHistoryRepository.findByGameId(gameId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
+        List<HiveHistory> hiveHistories = new ArrayList<>();
+        for (LifeOfBees game : gameHistory.getGamesHistory()) {
+            Apiary apiary = game.getApiary();
+            if (apiary != null) {
+                for (Hive hive : apiary.getHives()) {
+                    if (hive.getId() == hiveId) {
+                        HiveHistory hiveHistory = new HiveHistory();
+                        hiveHistory.setId(hive.getId());
+                        hiveHistory.setCurrentDate(game.getCurrentDate());
+                        hiveHistory.setWeatherData(game.getWeatherData());
+                        hiveHistory.setBeesNumber(
+                                hive.getBeesBatches().stream().mapToInt(Integer::intValue).sum()
+                        );
+                        hiveHistory.setQueenAge(hive.getQueen().getAgeOfQueen());
+                        hiveHistory.setMoneyInTheBank(game.getMoneyInTheBank());
+                        hiveHistory.setItWasSplit(hive.isItWasSplit());
+                        hiveHistory.setWasMovedAnEggsFrame(hive.isWasMovedAnEggsFrame());
+                        hiveHistory.setEggFramesNumber(hive.getEggFrames().getNumberOfEggFrames());
+                        hiveHistory.setHoneyFrameNumber(hive.getHoneyFrames().size());
+                        double kgOfHoney = hive.getHoneyBatches().stream()
+                                .mapToDouble(HoneyBatch::getKgOfHoney)
+                                .sum();
+                        Set<HoneyType> honeyTypes = hive.getHoneyBatches().stream()
+                                .map(HoneyBatch::getHoneyType)
+                                .collect(Collectors.toSet());
 
+                        hiveHistory.setKgOfHoney(kgOfHoney);
+                        hiveHistory.setHoneyTypes(honeyTypes);
+                        hiveHistories.add(hiveHistory);
+                    }
+                }
+            }
+        }
+        return hiveHistories;
+    }
 }

@@ -1,9 +1,9 @@
 package com.marianbastiurea.lifeofbees;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
 import java.util.Map;
-
 
 public class LifeOfBeesFactory {
 
@@ -15,8 +15,7 @@ public class LifeOfBeesFactory {
             String userId,
             String gameType,
             Map<String, WeatherData> allWeatherData
-            )
-            {
+    ) {
         LocalDate date = LocalDate.parse(startingDate);
         List<ActionOfTheWeek> actionOfTheWeek = new ArrayList<>();
         double moneyInTheBank = 3000.0;
@@ -25,6 +24,8 @@ public class LifeOfBeesFactory {
         List<Hive> newHives = apiary.createHive(numberOfStartingHives, date);
         apiary.getHives().addAll(newHives);
         WeatherData weatherData = allWeatherData.get(date.toString());
-        return new LifeOfBees(gameName,userId,gameType, apiary,actionOfTheWeek, location, date, weatherData, moneyInTheBank, totalKgOfHoney);
+
+        return new LifeOfBees(gameName, userId, gameType, apiary, actionOfTheWeek, location, date,
+                weatherData, moneyInTheBank, totalKgOfHoney);
     }
 }

@@ -1,8 +1,10 @@
 package com.marianbastiurea.lifeofbees;
 
+import com.marianbastiurea.lifeofbees.GameHistory.GameHistory;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
+
+
 import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
@@ -23,16 +25,13 @@ public class LifeOfBees {
     private double totalKgOfHoneyHarvested;
     private String gameType;
 
-    @Field("history")
-    private List<LifeOfBees> gameHistory = new ArrayList<>();
-
 
     public LifeOfBees(String gameId, String gameType, String userId, Apiary apiary,
                       String gameName, String location, LocalDate currentDate,
                       WeatherData weatherData, double moneyInTheBank, double totalKgOfHoneyHarvested,
-                      List<ActionOfTheWeek> actionOfTheWeek, List<LifeOfBees> gameHistory) {
+                      List<ActionOfTheWeek> actionOfTheWeek) {
         this.gameId = gameId;
-        this.userId=userId;
+        this.userId = userId;
         this.gameType = gameType;
         this.apiary = apiary;
         this.gameName = gameName;
@@ -42,12 +41,11 @@ public class LifeOfBees {
         this.totalKgOfHoneyHarvested = totalKgOfHoneyHarvested;
         this.actionOfTheWeek = actionOfTheWeek;
         this.weatherData = weatherData;
-        this.gameHistory = gameHistory;
     }
 
     public LifeOfBees(String gameName, String userId, String gameType, Apiary apiary, List<ActionOfTheWeek> actionOfTheWeek,
                       String location, LocalDate currentDate, WeatherData weatherData,
-                      double moneyInTheBank, double totalKgOfHoneyHarvested){
+                      double moneyInTheBank, double totalKgOfHoneyHarvested) {
         this.apiary = apiary;
         this.actionOfTheWeek = actionOfTheWeek;
         this.gameName = gameName;
@@ -56,7 +54,7 @@ public class LifeOfBees {
         this.weatherData = weatherData;
         this.moneyInTheBank = moneyInTheBank;
         this.totalKgOfHoneyHarvested = totalKgOfHoneyHarvested;
-        this.userId=userId;
+        this.userId = userId;
         this.gameType = gameType;
     }
 
@@ -71,7 +69,7 @@ public class LifeOfBees {
     @Override
     public String toString() {
         return "LifeOfBees{" +
-                "id='" + gameId + '\'' +
+                "gameId='" + gameId + '\'' +
                 ", userId='" + userId + '\'' +
                 ", apiary=" + apiary +
                 ", actionOfTheWeek=" + actionOfTheWeek +
@@ -81,15 +79,9 @@ public class LifeOfBees {
                 ", weatherData=" + weatherData +
                 ", moneyInTheBank=" + moneyInTheBank +
                 ", totalKgOfHoneyHarvested=" + totalKgOfHoneyHarvested +
-                ", gameType=" + gameType +
+                ", gameType='" + gameType + '\'' +
                 '}';
     }
-
-
-    public List<LifeOfBees> getGameHistory() {
-        return gameHistory;
-    }
-
 
     public LifeOfBees() {
     }
@@ -98,7 +90,6 @@ public class LifeOfBees {
         LocalDate date = lifeOfBeesGame.getCurrentDate();
         WeatherData dailyWeather = lifeOfBeesService.fetchWeatherForDate(date);
         List<ActionOfTheWeek> actionsOfTheWeek = new ArrayList<>();
-        List<LifeOfBees> currentHistory = lifeOfBeesGame.getGameHistory();
         for (int dailyIterator = 0; dailyIterator < 7; dailyIterator++) {
             List<Hive> hives = apiary.getHives();
             ArrayList<Hive> oldHives = new ArrayList<>(hives);
@@ -115,9 +106,9 @@ public class LifeOfBees {
                 int bees = hive.getEggFrames().ageOneDay(numberOfEggs);
                 hive.checkIfCanAddNewEggsFrameInHive(actionsOfTheWeek);
                 hive.checkIfHiveCouldBeSplit(month, date.getDayOfMonth(), actionsOfTheWeek, lifeOfBeesGame);
-                hive.checkAndAddEggsToBees(bees);
+                hive.getBeesBatches().add(bees);
                 hive.fillUpExistingHoneyFrameFromHive(lifeOfBeesGame);
-                hive.getBeesBatches().removeLast();
+                hive.getBeesBatches().removeFirst();
                 List<HoneyBatch> harvestedHoneyBatches = honey.harvestHoney(hive, month, date.getDayOfMonth());
                 hive.addHoneyBatches(harvestedHoneyBatches, actionsOfTheWeek);
                 hive.checkIfCanAddANewHoneyFrameInHive(actionsOfTheWeek);
@@ -140,10 +131,7 @@ public class LifeOfBees {
             date = date.plusDays(1);
         }
         lifeOfBeesGame.setCurrentDate(date);
-        LifeOfBees newLifeOfBeesGame=new LifeOfBees( date, dailyWeather, apiary, moneyInTheBank, totalKgOfHoneyHarvested);
-        currentHistory.add(newLifeOfBeesGame);
-
-        return new LifeOfBees(gameId, gameType, userId, apiary, gameName, location, date, dailyWeather, moneyInTheBank, totalKgOfHoneyHarvested, actionOfTheWeek, gameHistory);
+        return new LifeOfBees(gameId, gameType, userId, apiary, gameName, location, date, dailyWeather, moneyInTheBank, totalKgOfHoneyHarvested, actionOfTheWeek);
     }
 
     public Apiary getApiary() {
@@ -199,7 +187,8 @@ public class LifeOfBees {
     }
 
     public WeatherData getAllWeatherData() {
-    return weatherData;}
+        return weatherData;
+    }
 
     public String getGameId() {
         return gameId;

@@ -23,7 +23,7 @@ html, body {
   margin-bottom: 10px;
 }
 
-.card {
+.card-hive {
   background-color: white;
   color: black;
 }
@@ -39,6 +39,20 @@ html, body {
   align-items: center;
   padding-left: 15px;
 }
+
+.btn-custom-iterate,
+.p-custom-iterate {
+  background-color: rgb(16, 228, 80) !important;
+  color: black !important;
+  width: 250px;
+  height: 50px;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  padding-left: 15px;
+}
+
+
 
 .btn-danger.btn-custom {
   background-color: red !important;
@@ -114,3 +128,9 @@ html, body {
   width: 150; 
   text-align: left;
 }
+
+.card-hover:hover {
+  background-color: #cce7ff; 
+}
+
+
