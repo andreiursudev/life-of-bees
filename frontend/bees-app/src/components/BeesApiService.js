@@ -252,7 +252,7 @@ export const fetchWeatherForStartDate = async (location) => {
 
 export const getJohnDoeGames = async () => {
     try {
-        const response = await axios.get('http://localhost:8080/api/bees/JohnDoeGames');
+        const response = await apiClient.get('/bees/JohnDoeGames');
         return response.data;
     } catch (error) {
         console.error('Eroare la obținerea jocurilor recente:', error);
