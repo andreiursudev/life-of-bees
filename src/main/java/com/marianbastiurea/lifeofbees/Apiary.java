@@ -237,5 +237,17 @@ public class Apiary {
             System.out.println("acestea sunt ramele destinatie"+destinationEggFrames);
         }
     }
+
+    public List<String> getFormattedTotalHarvestedHoney() {
+        List<String> formattedHoney = new ArrayList<>();
+        formattedHoney.add("Acacia " + totalHarvestedHoney.getAcacia() + " kg");
+        formattedHoney.add("Rapeseed " + totalHarvestedHoney.getRapeseed() + " kg");
+        formattedHoney.add("WildFlower " + totalHarvestedHoney.getWildFlower() + " kg");
+        formattedHoney.add("Linden " + totalHarvestedHoney.getLinden() + " kg");
+        formattedHoney.add("SunFlower " + totalHarvestedHoney.getSunFlower() + " kg");
+        formattedHoney.add("FalseIndigo " + totalHarvestedHoney.getFalseIndigo() + " kg");
+        return formattedHoney;
+    }
+
 }
 
