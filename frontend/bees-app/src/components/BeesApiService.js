@@ -273,12 +273,29 @@ export const getGamesForUserByType = async (userId, gameType) => {
 export const getHiveHistory = async (gameId, hiveId) => {
     try {
         const response = await apiClient.get(
-            `/bees/HiveHistory/${gameId}`, // URL-ul corect
+            `/bees/HiveHistory/${gameId}`,
             {params: { hiveId: hiveId }
         });
         return response.data;
     } catch (error) {
         console.error('Error getting data in getHiveHistory:', error);
         throw error;
+    }
+};
+
+
+export const getApiaryHistory = async (gameId) => {
+    try {
+        const response = await apiClient.get(`/bees/apiaryHistory/${gameId}`);
+        console.log('acesta e obiectul ApiaryHistory" ', response)
+        if (!response || !response.data) {
+            throw new Error('No data returned from the server');
+        }
+        return response.data;
+    } catch (error) {
+        console.error('Error getting data in getApiaryHistory:', error);
+        throw new Error(
+            error.response?.data?.message || 'Failed to fetch Apiary History'
+        );
     }
 };

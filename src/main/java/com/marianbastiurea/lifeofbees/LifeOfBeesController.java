@@ -1,5 +1,8 @@
 package com.marianbastiurea.lifeofbees;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.marianbastiurea.lifeofbees.GameHistory.GameHistory;
 import com.marianbastiurea.lifeofbees.GameHistory.GameHistoryRepository;
 import com.marianbastiurea.lifeofbees.Security.JwtTokenProvider;
@@ -411,37 +414,54 @@ public class LifeOfBeesController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
         List<HiveHistory> hiveHistories = new ArrayList<>();
         for (LifeOfBees game : gameHistory.getGamesHistory()) {
-            Apiary apiary = game.getApiary();
-            if (apiary != null) {
-                for (Hive hive : apiary.getHives()) {
-                    if (hive.getId() == hiveId) {
-                        HiveHistory hiveHistory = new HiveHistory();
-                        hiveHistory.setId(hive.getId());
-                        hiveHistory.setCurrentDate(game.getCurrentDate());
-                        hiveHistory.setWeatherData(game.getWeatherData());
-                        hiveHistory.setBeesNumber(
-                                hive.getBeesBatches().stream().mapToInt(Integer::intValue).sum()
-                        );
-                        hiveHistory.setQueenAge(hive.getQueen().getAgeOfQueen());
-                        hiveHistory.setMoneyInTheBank(game.getMoneyInTheBank());
-                        hiveHistory.setItWasSplit(hive.isItWasSplit());
-                        hiveHistory.setWasMovedAnEggsFrame(hive.isWasMovedAnEggsFrame());
-                        hiveHistory.setEggFramesNumber(hive.getEggFrames().getNumberOfEggFrames());
-                        hiveHistory.setHoneyFrameNumber(hive.getHoneyFrames().size());
-                        double kgOfHoney = hive.getHoneyBatches().stream()
-                                .mapToDouble(HoneyBatch::getKgOfHoney)
-                                .sum();
-                        Set<HoneyType> honeyTypes = hive.getHoneyBatches().stream()
-                                .map(HoneyBatch::getHoneyType)
-                                .collect(Collectors.toSet());
-
-                        hiveHistory.setKgOfHoney(kgOfHoney);
-                        hiveHistory.setHoneyTypes(honeyTypes);
-                        hiveHistories.add(hiveHistory);
-                    }
-                }
-            }
+            HiveHistory hiveHistory = new HiveHistory();
+            hiveHistory.setCurrentDate(game.getCurrentDate());
+            hiveHistory.setWeatherData(game.getWeatherData());
+            hiveHistory.setMoneyInTheBank(game.getMoneyInTheBank());
+            hiveHistory.setHive(game.getApiary().getHiveById(hiveId));
+            hiveHistories.add(hiveHistory);
         }
+        System.out.println("acesta sunt datele trimise catre HistoryHive:"+hiveHistories);
         return hiveHistories;
     }
+
+    @GetMapping("/apiaryHistory/{gameId}")
+    public ResponseEntity<List<ApiaryHistory>> getApiaryHistory(@PathVariable String gameId) throws JsonProcessingException {
+        GameHistory gameHistory = gameHistoryRepository.findByGameId(gameId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
+        List<ApiaryHistory> apiaryHistories = new ArrayList<>();
+
+        for (LifeOfBees game : gameHistory.getGamesHistory()) {
+            Apiary apiary = game.getApiary();
+            ApiaryHistory apiaryHistory = new ApiaryHistory();
+            apiaryHistory.setCurrentDate(game.getCurrentDate());
+            apiaryHistory.setWeatherData(game.getWeatherData());
+            apiaryHistory.setMoneyInTheBank(game.getMoneyInTheBank());
+            apiaryHistory.setTotalKgOfHoneyHarvested(game.getTotalKgOfHoneyHarvested());
+            List<String> formattedActions = game.getActionOfTheWeek().stream()
+                    .filter(action -> {
+                        List<Integer> hiveIds = (List<Integer>) action.getData().get("hiveIds");
+                        return hiveIds != null && !hiveIds.isEmpty();
+                    })
+                    .map(action -> {
+                        String actionType = action.getActionType().replace("_", " ").toLowerCase();
+                        String hiveIds = ((List<Integer>) action.getData().get("hiveIds"))
+                                .stream()
+                                .map(Object::toString)
+                                .collect(Collectors.joining(", "));
+                        return actionType + " in hive(s) " + hiveIds;
+                    })
+                    .collect(Collectors.toList());
+
+            apiaryHistory.setActionOfTheWeek(formattedActions);
+            apiaryHistory.setHive(apiary.getHives());
+            apiaryHistories.add(apiaryHistory);
+            System.out.println("acesta e obiectul ApiaryHistory:" + apiaryHistory);
+
+        }
+        return ResponseEntity.ok(apiaryHistories);
+    }
+
 }
+
+

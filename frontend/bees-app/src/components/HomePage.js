@@ -164,14 +164,6 @@ const HomePage = () => {
                             Private Game
                         </button>
                     </li>
-                    <li className="nav-item">
-                        <button
-                            className={`nav-link ${activeTab === "Map" ? "active" : ""}`}
-                            onClick={() => handleTabClick("Map")}
-                        >
-                            Map
-                        </button>
-                    </li>
                 </ul>
 
                     <div className="tab-content pt-3">
