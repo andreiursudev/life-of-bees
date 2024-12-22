@@ -44,7 +44,8 @@ public class SecurityConfig {
                 })
                 .authorizeHttpRequests(auth -> {
                     System.out.println("Setting up authorization rules in SecurityConfig...");
-                    auth.requestMatchers("/api/auth/register", "/api/auth/signin", "/oauth2/**",
+                    auth.requestMatchers("/", "/index.html","/static/**","/api/bees/**", "/favicon.png","/manifest.json",
+                                    "/api/auth/register", "/api/auth/signin", "/oauth2/**",
                                     "api/auth/google-client-id","/api/auth/oauth/google","api/auth/github-client-id", "/api/auth/oauth/github/login","/oauth2/github/**",
                                     "/auth/github/callback", "/login/oauth2/code/github","/login", "api/bees/JohnDoeGames").permitAll()
                             .anyRequest().authenticated();
@@ -90,6 +91,7 @@ public class SecurityConfig {
         System.out.println("Creating CorsConfigurationSource in SecurityConfig...");
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOrigin("http://localhost:3000");
+        configuration.addAllowedOrigin("http://lifeofbees.co.uk");
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true);
