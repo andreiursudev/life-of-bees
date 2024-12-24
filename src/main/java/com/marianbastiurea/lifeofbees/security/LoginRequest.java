@@ -1,4 +1,4 @@
-package com.marianbastiurea.lifeofbees.Security;
+package com.marianbastiurea.lifeofbees.security;
 
 
 public class LoginRequest {

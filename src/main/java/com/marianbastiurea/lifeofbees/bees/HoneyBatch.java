@@ -1,7 +1,7 @@
 package com.marianbastiurea.lifeofbees.bees;
 
 
-class HoneyBatch {
+public class HoneyBatch {
     private final int hiveId;
     private final double kgOfHoney;
     private final HoneyType honeyType;

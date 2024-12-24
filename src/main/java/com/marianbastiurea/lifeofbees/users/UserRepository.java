@@ -1,4 +1,4 @@
-package com.marianbastiurea.lifeofbees.Users;
+package com.marianbastiurea.lifeofbees.users;
 
 
 import org.springframework.data.mongodb.repository.MongoRepository;

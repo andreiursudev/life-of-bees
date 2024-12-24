@@ -1,10 +1,10 @@
-package com.marianbastiurea.lifeofbees.Security;
+package com.marianbastiurea.lifeofbees.security;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
-import com.marianbastiurea.lifeofbees.Users.User;
-import com.marianbastiurea.lifeofbees.Users.UserService;
+import com.marianbastiurea.lifeofbees.users.User;
+import com.marianbastiurea.lifeofbees.users.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

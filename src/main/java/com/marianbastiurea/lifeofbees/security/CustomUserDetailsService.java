@@ -1,7 +1,7 @@
-package com.marianbastiurea.lifeofbees.Security;
+package com.marianbastiurea.lifeofbees.security;
 
-import com.marianbastiurea.lifeofbees.Users.User;
-import com.marianbastiurea.lifeofbees.Users.UserRepository;
+import com.marianbastiurea.lifeofbees.users.User;
+import com.marianbastiurea.lifeofbees.users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

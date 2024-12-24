@@ -1,4 +1,4 @@
-package com.marianbastiurea.lifeofbees.Users;
+package com.marianbastiurea.lifeofbees.users;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

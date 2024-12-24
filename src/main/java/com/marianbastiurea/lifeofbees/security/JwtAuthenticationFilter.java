@@ -1,4 +1,4 @@
-package com.marianbastiurea.lifeofbees.Security;
+package com.marianbastiurea.lifeofbees.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

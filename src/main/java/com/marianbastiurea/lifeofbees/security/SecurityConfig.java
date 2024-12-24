@@ -1,4 +1,4 @@
-package com.marianbastiurea.lifeofbees.Security;
+package com.marianbastiurea.lifeofbees.security;
 
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;

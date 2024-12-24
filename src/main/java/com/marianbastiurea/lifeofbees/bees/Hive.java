@@ -201,7 +201,7 @@ public class Hive {
             if (honeyFrameFull == this.honeyFrames.size()) {
                 Map<String, Object> data = ActionOfTheWeek.findOrCreateAction("ADD_HONEY_FRAME", actionsOfTheWeek).getData();
                 ActionOfTheWeek actionInstance = new ActionOfTheWeek();
-                actionInstance.addOrUpdateAction("ADD_HONEY_FRAME", getId(), data, actionsOfTheWeek);
+                //actionInstance.addOrUpdateAction("ADD_HONEY_FRAME", getId(), data, actionsOfTheWeek);
             }
         }
         return actionsOfTheWeek;

@@ -103,7 +103,7 @@ public class Apiary {
         data.put("hibernateStartDate", date.toString());
         data.put("hiveIds", List.of(hiveIdRemoved));
         ActionOfTheWeek actionInstance = new ActionOfTheWeek();
-        actionInstance.addOrUpdateAction("HIBERNATE", hiveIdRemoved, data, actionsOfTheWeek);
+       // actionInstance.addOrUpdateAction("HIBERNATE", hiveIdRemoved, data, actionsOfTheWeek);
         System.out.println("aceasta e apiary dupa hibernate: " + apiary);
 
         return actionsOfTheWeek;

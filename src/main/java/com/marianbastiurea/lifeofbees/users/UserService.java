@@ -1,6 +1,7 @@
-package com.marianbastiurea.lifeofbees.Users;
+package com.marianbastiurea.lifeofbees.users;
 
-import com.marianbastiurea.lifeofbees.Security.RegisterRequest;
+import com.marianbastiurea.lifeofbees.security.RegisterRequest;
+import com.marianbastiurea.lifeofbees.view.GameRequest;
 import com.mongodb.DuplicateKeyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,7 +32,7 @@ public class UserService {
         }
         String encodedPassword = passwordEncoder.encode(registerRequest.getPassword());
         User user = new User();
-        user.setUsername(username); // Salvează username-ul normalizat
+        user.setUsername(username);
         user.setPassword(encodedPassword);
 
         try {
@@ -65,5 +66,21 @@ public class UserService {
     public User findUserByUsername(String username) {
         return userRepository.findByUsername(username).orElse(null);
     }
+
+    public User getUser(GameRequest gameRequest) {
+        User user = userRepository.findById(gameRequest.getUserId()).orElse(null);
+        if (user == null) {
+            user = new User();
+            user.setUsername(gameRequest.getUsername());
+            user.setGamesList(new ArrayList<>());
+            userRepository.save(user);
+            System.out.println("Utilizator creat cu numele in createGame: " + user);
+        } else {
+            System.out.println("Utilizator găsit in createGame: " + user);
+        }
+        return user;
+    }
+
+
 }
 

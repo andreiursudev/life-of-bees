@@ -2,11 +2,11 @@ package com.marianbastiurea.lifeofbees.bees;
 
 public class HarvestHoney {
     public double Acacia = 0.0;
-    double Rapeseed = 0.0;
-    double WildFlower = 0.0;
-    double Linden = 0.0;
-    double SunFlower=0.0;
-    double FalseIndigo=0;
+    public double Rapeseed = 0.0;
+    public double WildFlower = 0.0;
+    public double Linden = 0.0;
+    public double SunFlower=0.0;
+    public double FalseIndigo=0;
 
     public double getAcacia() {
         return Acacia;
