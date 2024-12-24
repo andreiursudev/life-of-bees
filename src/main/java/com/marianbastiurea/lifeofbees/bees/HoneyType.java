@@ -1,4 +1,4 @@
-package com.marianbastiurea.lifeofbees;
+package com.marianbastiurea.lifeofbees.bees;
 
 public enum HoneyType {
     Acacia,

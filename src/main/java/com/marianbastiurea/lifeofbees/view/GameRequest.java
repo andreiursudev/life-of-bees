@@ -1,6 +1,8 @@
-package com.marianbastiurea.lifeofbees;
+package com.marianbastiurea.lifeofbees.view;
 
-import java.util.ArrayList;
+import com.marianbastiurea.lifeofbees.game.LifeOfBees;
+import com.marianbastiurea.lifeofbees.weather.WeatherData;
+
 import java.util.List;
 import java.util.Map;
 

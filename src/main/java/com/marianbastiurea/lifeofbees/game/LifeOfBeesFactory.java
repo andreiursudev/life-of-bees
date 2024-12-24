@@ -1,4 +1,9 @@
-package com.marianbastiurea.lifeofbees;
+package com.marianbastiurea.lifeofbees.game;
+
+import com.marianbastiurea.lifeofbees.action.ActionOfTheWeek;
+import com.marianbastiurea.lifeofbees.bees.Apiary;
+import com.marianbastiurea.lifeofbees.bees.Hive;
+import com.marianbastiurea.lifeofbees.weather.WeatherData;
 
 import java.util.ArrayList;
 import java.util.List;

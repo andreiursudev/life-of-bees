@@ -1,11 +1,9 @@
-package com.marianbastiurea.lifeofbees.GameHistory;
+package com.marianbastiurea.lifeofbees.history;
 
-import com.marianbastiurea.lifeofbees.Apiary;
-import com.marianbastiurea.lifeofbees.LifeOfBees;
-import com.marianbastiurea.lifeofbees.WeatherData;
+import com.marianbastiurea.lifeofbees.game.LifeOfBees;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import java.time.LocalDate;
+
 import java.util.List;
 
 @Document(collection = "gameHistory")

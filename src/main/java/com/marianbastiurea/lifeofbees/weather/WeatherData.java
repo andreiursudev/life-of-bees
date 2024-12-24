@@ -1,4 +1,4 @@
-package com.marianbastiurea.lifeofbees;
+package com.marianbastiurea.lifeofbees.weather;
 
 import java.time.LocalDate;
 

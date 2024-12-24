@@ -1,4 +1,4 @@
-package com.marianbastiurea.lifeofbees;
+package com.marianbastiurea.lifeofbees.view;
 
 public class HomePageGameResponse {
     private String gameName;

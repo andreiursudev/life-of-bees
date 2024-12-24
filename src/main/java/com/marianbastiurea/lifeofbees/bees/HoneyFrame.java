@@ -1,4 +1,4 @@
-package com.marianbastiurea.lifeofbees;
+package com.marianbastiurea.lifeofbees.bees;
 
 class HoneyFrame {
     private double maxKgOfHoneyPerFrame = 4.5;

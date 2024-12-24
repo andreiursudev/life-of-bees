@@ -1,7 +1,8 @@
-package com.marianbastiurea.lifeofbees;
+package com.marianbastiurea.lifeofbees.game;
 
-import com.marianbastiurea.lifeofbees.Users.User;
-import com.marianbastiurea.lifeofbees.Users.UserRepository;
+import com.marianbastiurea.lifeofbees.weather.WeatherData;
+import com.marianbastiurea.lifeofbees.users.User;
+import com.marianbastiurea.lifeofbees.users.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,7 @@
-package com.marianbastiurea.lifeofbees;
+package com.marianbastiurea.lifeofbees.bees;
+
+import com.marianbastiurea.lifeofbees.game.LifeOfBees;
+import com.marianbastiurea.lifeofbees.action.ActionOfTheWeek;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -110,9 +113,7 @@ public class Apiary {
         if ((month.equals(HarvestingMonths.APRIL) || month.equals(HarvestingMonths.MAY) ||
                 month.equals(HarvestingMonths.JUNE) || month.equals(HarvestingMonths.JULY) || month.equals(HarvestingMonths.AUGUST) &&
                 (dayOfMonth == 11 || dayOfMonth == 21))) {
-            Map<String, Object> data = ActionOfTheWeek.findOrCreateAction("INSECT_CONTROL", actionsOfTheWeek).getData();
-            ActionOfTheWeek actionInstance = new ActionOfTheWeek();
-            actionInstance.addOrUpdateAction("INSECT_CONTROL", this.getHives().size(), data, actionsOfTheWeek);
+            ActionOfTheWeek.addOrUpdateAction("INSECT_CONTROL", this.getHives().size(), actionsOfTheWeek);
         }
         return actionsOfTheWeek;
     }
@@ -131,9 +132,7 @@ public class Apiary {
     public List<ActionOfTheWeek> checkFeedBees(HarvestingMonths month, int dayOfMonth, List<ActionOfTheWeek> actionsOfTheWeek) {
         if (month.equals(HarvestingMonths.SEPTEMBER) &&
                 (dayOfMonth == 1)) {
-            Map<String, Object> data = ActionOfTheWeek.findOrCreateAction("FEED_BEES", actionsOfTheWeek).getData();
-            ActionOfTheWeek actionInstance = new ActionOfTheWeek();
-            actionInstance.addOrUpdateAction("FEED_BEES", this.getHives().size(), data, actionsOfTheWeek);
+            ActionOfTheWeek.addOrUpdateAction("FEED_BEES", this.getHives().size(),  actionsOfTheWeek);
 
         }
         return actionsOfTheWeek;

@@ -1,21 +1,21 @@
-package com.marianbastiurea.lifeofbees;
+package com.marianbastiurea.lifeofbees.bees;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-
+//TODO use static method
 public class Honey {
 
     public Honey() {
     }
 
-    public HarvestingMonths getHarvestingMonth(LocalDate date) {
+    public static HarvestingMonths getHarvestingMonth(LocalDate date) {
         int monthValue = date.getMonthValue();
         return HarvestingMonths.values()[monthValue - 3];
     }
 
-    public HoneyType honeyType(HarvestingMonths month, int dayOfMonth) {
+    public static HoneyType honeyType(HarvestingMonths month, int dayOfMonth) {
         switch (month) {
             case MARCH, AUGUST, SEPTEMBER:
                 return HoneyType.WildFlower;
@@ -43,7 +43,7 @@ public class Honey {
         return null;
     }
 
-    public double honeyProductivity(HoneyType honeyType) {
+    public static double honeyProductivity(HoneyType honeyType) {
         return switch (honeyType) {
             case Acacia -> 1;
             case Rapeseed -> 0.8;
@@ -54,7 +54,7 @@ public class Honey {
         };
     }
 
-    public List<HoneyBatch> harvestHoney(Hive hive, HarvestingMonths month, int dayOfMonth) {
+    public static List<HoneyBatch> harvestHoney(Hive hive, HarvestingMonths month, int dayOfMonth) {
         List<HoneyBatch> honeyBatches = new ArrayList<>();
         double kgOfHoney = 0;
         if ((month.equals(HarvestingMonths.APRIL) || month.equals(HarvestingMonths.MAY) ||

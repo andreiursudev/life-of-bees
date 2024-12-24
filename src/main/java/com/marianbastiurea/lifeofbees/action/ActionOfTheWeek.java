@@ -1,4 +1,4 @@
-package com.marianbastiurea.lifeofbees;
+package com.marianbastiurea.lifeofbees.action;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,7 +52,7 @@ public class ActionOfTheWeek {
                 });
     }
 
-    public void addOrUpdateAction(String actionType, int hiveId, Map<String, Object> data, List<ActionOfTheWeek> actionsOfTheWeek) {
+    public static void addOrUpdateAction(String actionType, int hiveId, List<ActionOfTheWeek> actionsOfTheWeek) {
         ActionOfTheWeek action = findOrCreateAction(actionType, actionsOfTheWeek);
 
         List<Integer> hiveIds = (List<Integer>) action.getData().getOrDefault("hiveIds", new ArrayList<>());

@@ -1,4 +1,4 @@
-package com.marianbastiurea.lifeofbees;
+package com.marianbastiurea.lifeofbees.bees;
 
 /*
 When the honeybee colony senses that it needs a new queen, perhaps because the queen is ailing or is preparing to
@@ -39,9 +39,9 @@ public class Queen {
     }
 
 
-    public int makeEggs(Honey honey, double whetherIndex) {
+    public int ageOneDay(Honey honey, double whetherIndex) {
         int numberOfEggs = 7000;
-        // int numberOfEggs = (int) (2000 * this.ageOfQueenIndex() * honey.honeyProductivity() * whetherIndex);
+       //  int numberOfEggs = (int) (2000 * this.ageOfQueenIndex() * Honey.honeyProductivity() * whetherIndex);
         return numberOfEggs;
     }
 

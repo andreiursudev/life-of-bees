@@ -1,7 +1,7 @@
-package com.marianbastiurea.lifeofbees;
+package com.marianbastiurea.lifeofbees.bees;
 
 public class HarvestHoney {
-    double Acacia = 0.0;
+    public double Acacia = 0.0;
     double Rapeseed = 0.0;
     double WildFlower = 0.0;
     double Linden = 0.0;

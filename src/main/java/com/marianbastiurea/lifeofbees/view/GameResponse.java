@@ -1,6 +1,7 @@
-package com.marianbastiurea.lifeofbees;
+package com.marianbastiurea.lifeofbees.view;
 
-import com.marianbastiurea.lifeofbees.GameHistory.GameHistory;
+import com.marianbastiurea.lifeofbees.action.ActionOfTheWeek;
+import com.marianbastiurea.lifeofbees.weather.WeatherData;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
