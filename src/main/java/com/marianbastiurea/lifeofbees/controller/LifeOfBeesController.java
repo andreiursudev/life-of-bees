@@ -120,7 +120,6 @@ public class LifeOfBeesController {
         return response;
     }
 
-    //
     private Optional<LifeOfBees> getByGameId(String gameId) {
         return lifeOfBeesRepository.findByGameId(gameId);
     }
