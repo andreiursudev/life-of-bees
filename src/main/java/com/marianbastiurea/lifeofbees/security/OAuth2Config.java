@@ -18,11 +18,11 @@ public class OAuth2Config {
 
     private ClientRegistration googleClientRegistration() {
         return CommonOAuth2Provider.GOOGLE.getBuilder("google").clientId(System.getenv("SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_ID"))
-                .clientSecret(System.getProperty("SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_SECRET")).build();
+                .clientSecret(System.getenv("SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_SECRET")).build();
     }
 
     private ClientRegistration githubClientRegistration() {
         return CommonOAuth2Provider.GITHUB.getBuilder("github").clientId(System.getenv("SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_CLIENT_ID"))
-                .clientSecret(System.getProperty("SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_CLIENT_SECRET")).build();
+                .clientSecret(System.getenv("SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_CLIENT_SECRET")).build();
     }
 }

@@ -64,13 +64,13 @@ public class AuthController {
 
     @GetMapping("/google-client-id")
     public ResponseEntity<String> getGoogleClientId() {
-        String googleClientId = System.getProperty("SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_ID");
+        String googleClientId = System.getenv("SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_ID");
         return ResponseEntity.ok(googleClientId);
     }
 
     @GetMapping("/github-client-id")
     public ResponseEntity<Map<String, String>> getGitHubClientId() {
-        String githubClientId = System.getProperty("SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_CLIENT_ID");
+        String githubClientId = System.getenv("SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_CLIENT_ID");
         if (githubClientId == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("error", "GitHub Client ID is not configured"));
@@ -109,7 +109,7 @@ public class AuthController {
 
         try {
             GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
-                    .setAudience(Collections.singletonList(System.getProperty("SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_ID")))
+                    .setAudience(Collections.singletonList(System.getenv("SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_ID")))
                     .build();
             String email;
             GoogleIdToken googleIdToken = verifier.verify(idToken);
