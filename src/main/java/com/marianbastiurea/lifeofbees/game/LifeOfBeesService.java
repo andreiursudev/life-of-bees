@@ -2,7 +2,8 @@ package com.marianbastiurea.lifeofbees.game;
 
 import com.marianbastiurea.lifeofbees.weather.WeatherData;
 import com.marianbastiurea.lifeofbees.users.User;
-import com.marianbastiurea.lifeofbees.users.UserRepository;
+import com.marianbastiurea.lifeofbees.users.UserService;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class LifeOfBeesService {
     private final MongoTemplate mongoTemplate;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
     private LifeOfBeesRepository lifeOfBeesRepository;
@@ -53,41 +54,36 @@ public class LifeOfBeesService {
     }
 
     public List<LifeOfBees> getGamesForJohnDoe() {
-        Optional<User> userOpt = userRepository.findByUsername("johndoe");
-
-        if (userOpt.isPresent()) {
-            User user = userOpt.get();
+        User user = userService.findUserByUsername("johndoe");
+        if (user != null) {
             List<String> gamesList = user.getGamesList();
-            List<LifeOfBees> userGames = lifeOfBeesRepository.findAllById(gamesList);
-            return userGames;
-        } else {
-            return List.of();
+            return lifeOfBeesRepository.findAllById(gamesList);
         }
+
+        return List.of();
     }
 
+
     public List<LifeOfBees> getGamesForUserByType(String userId, String gameType) {
-        Optional<User> userOpt = userRepository.findByUserId(userId);
         System.out.println("acesta e userId in getGamesForUserByType: " + userId);
         System.out.println("acesta e gameType in getGamesForUserByType: " + gameType);
+        User user = userService.findUserByUserId(userId);
 
-        if (userOpt.isPresent()) {
-            User user = userOpt.get();
+        if (user != null) {
             List<String> gamesList = user.getGamesList();
             if (gamesList.isEmpty()) {
                 return List.of();
             }
+
             List<LifeOfBees> userGames = lifeOfBeesRepository.findAllById(gamesList);
-            System.out.println("aceasta e lista de jocuri din getGamesForUserByType: "+userGames);
+            System.out.println("aceasta e lista de jocuri din getGamesForUserByType: " + userGames);
 
             return userGames.stream()
                     .filter(game -> gameType.equals(game.getGameType()))
                     .collect(Collectors.toList());
-        } else {
-            return List.of();
         }
+
+        return List.of();
     }
-
-
-
 
 }

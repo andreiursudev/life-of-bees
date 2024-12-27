@@ -13,7 +13,6 @@ import com.marianbastiurea.lifeofbees.weather.WeatherData;
 import com.marianbastiurea.lifeofbees.game.LifeOfBees;
 import com.marianbastiurea.lifeofbees.security.JwtTokenProvider;
 import com.marianbastiurea.lifeofbees.users.User;
-import com.marianbastiurea.lifeofbees.users.UserRepository;
 import com.marianbastiurea.lifeofbees.users.UserService;
 import com.marianbastiurea.lifeofbees.view.GameRequest;
 import com.marianbastiurea.lifeofbees.view.GameResponse;
@@ -23,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import com.marianbastiurea.lifeofbees.weather.WeatherService;
 
 import java.security.Principal;
 import java.time.LocalDate;
@@ -39,26 +39,20 @@ import org.springframework.web.server.ResponseStatusException;
 public class LifeOfBeesController {
     //TODO delete games field
     private Map<Integer, LifeOfBees> games;
-    @Autowired
-    private RestTemplate restTemplate;
     private final LifeOfBeesRepository lifeOfBeesRepository;
-    //TODO remove userRepository; use only UserService
-    private final UserRepository userRepository;
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
-    //TODO remove gameHistoryRepository; move GameHistoryService
     private final GameHistoryService gameHistoryService;
 
     @Autowired
     private LifeOfBeesService lifeOfBeesService;
 
 
-    public LifeOfBeesController(LifeOfBeesRepository lifeOfBeesRepository, UserRepository userRepository,
+    public LifeOfBeesController(LifeOfBeesRepository lifeOfBeesRepository,
                                 UserService userService, JwtTokenProvider jwtTokenProvider,
                                  GameHistoryService gameHistoryService) {
         this.lifeOfBeesRepository = lifeOfBeesRepository;
         this.games = new HashMap<>();
-        this.userRepository = userRepository;
         this.userService = userService;
         this.jwtTokenProvider = jwtTokenProvider;
         this.gameHistoryService=gameHistoryService;
@@ -69,10 +63,11 @@ public class LifeOfBeesController {
         System.out.println("Received request to create game: " + gameRequest);
         String jwtToken = authorizationHeader.replace("Bearer ", "");
         LocalDate startDate = LocalDate.parse(gameRequest.getStartDate());
-        WeatherData weatherData = getWeatherData(startDate);
+
+        WeatherData weatherData =WeatherService.getWeatherData(startDate);
         //TODO remove allWeatherData
-        Map<String, WeatherData> allWeatherData = new HashMap<>();
-        allWeatherData.put(weatherData.getDate().toString(), weatherData);
+
+
         String userIdFromToken;
 
         try {
@@ -96,7 +91,7 @@ public class LifeOfBeesController {
                 gameRequest.getNumberOfStartingHives(),
                 gameRequest.getUserId(),
                 gameRequest.getGameType(),
-                allWeatherData
+                weatherData
         );
 
         LifeOfBees savedGame = lifeOfBeesRepository.save(lifeOfBeesGame);
@@ -108,17 +103,6 @@ public class LifeOfBeesController {
         return ResponseEntity.ok(response);
     }
 
-
-
-
-
-
-    //TODO move to WeatherService class
-    private WeatherData getWeatherData(LocalDate startDate) {
-        String weatherApiUrl = "http://localhost:8081/api/weather/" + startDate;
-        WeatherData weatherData = restTemplate.getForObject(weatherApiUrl, WeatherData.class);
-        return weatherData;
-    }
 
     @GetMapping("/game/{gameId}")
     public GameResponse getGame(@PathVariable String gameId, Principal principal) {
@@ -152,7 +136,11 @@ public class LifeOfBeesController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
         }
         //TOOD
-        //List<WeatherData> weatherDataNextWeek = weatherService.getWeaherForNextWeek(lifeOfBeesGame.getCurrentDate());
+        //List<WeatherData> weatherDataNextWeek = weatherService.getWeatherForNextWeek(lifeOfBeesGame.getCurrentDate());
+//        Map<String, WeatherData> allWeatherData = new HashMap<>();
+//        allWeatherData.put(weatherData.getDate().toString(), weatherData);
+//
+
         lifeOfBeesGame = lifeOfBeesGame.iterateOneWeek(lifeOfBeesGame, lifeOfBeesService);
         lifeOfBeesRepository.save(lifeOfBeesGame);
         GameResponse response = getGameResponse(lifeOfBeesGame);

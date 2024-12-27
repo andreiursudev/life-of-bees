@@ -12,7 +12,7 @@ public class GameRequest {
     private String location;
     private String startDate;
     private int numberOfStartingHives;
-    private Map<String, WeatherData> allWeatherData;
+    private WeatherData weatherData;
     private String userId;
     private String username;
     private String password;
@@ -113,7 +113,7 @@ public class GameRequest {
                 ", location='" + location + '\'' +
                 ", startDate='" + startDate + '\'' +
                 ", numberOfStartingHives=" + numberOfStartingHives +
-                ", allWeatherData=" + allWeatherData +
+                ", weatherData=" + weatherData +
                 ", userId='" + userId + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +

@@ -67,6 +67,8 @@ public class UserService {
         return userRepository.findByUsername(username).orElse(null);
     }
 
+    public User findUserByUserId(String userId){ return userRepository.findByUserId(userId).orElse(null);}
+
     public User getUser(GameRequest gameRequest) {
         User user = userRepository.findById(gameRequest.getUserId()).orElse(null);
         if (user == null) {

@@ -1,4 +1,4 @@
-import com.marianbastiurea.lifeofbees.EggFrames;
+import com.marianbastiurea.lifeofbees.bees.EggFrames;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
