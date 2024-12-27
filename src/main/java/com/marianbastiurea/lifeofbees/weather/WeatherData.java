@@ -5,15 +5,18 @@ import java.time.LocalDate;
 public class WeatherData {
     private double windSpeed;// in km/h
     private double temperature;// in Celsius Degree
-    private double precipitation;//
-    private LocalDate date;// in mm
+    private double precipitation;//in mm
+    private LocalDate date;//
 
-    public WeatherData(LocalDate date, double windSpeed, double temperature, double precipitation) {
-        this.date=date;
+    public WeatherData( double windSpeed, double temperature, double precipitation) {
         this.windSpeed = windSpeed;
         this.temperature = temperature;
         this.precipitation = precipitation;
 
+    }
+
+    public WeatherData(LocalDate date) {
+        this.date = date;
     }
 
     public double getWindSpeed() {

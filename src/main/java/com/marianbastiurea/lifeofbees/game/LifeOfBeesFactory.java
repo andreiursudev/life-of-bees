@@ -19,7 +19,7 @@ public class LifeOfBeesFactory {
             int numberOfStartingHives,
             String userId,
             String gameType,
-            Map<String, WeatherData> allWeatherData
+           WeatherData weatherData
     ) {
         LocalDate date = LocalDate.parse(startingDate);
         List<ActionOfTheWeek> actionOfTheWeek = new ArrayList<>();
@@ -28,7 +28,7 @@ public class LifeOfBeesFactory {
         Apiary apiary = new Apiary(new ArrayList<>());
         List<Hive> newHives = apiary.createHive(numberOfStartingHives, date);
         apiary.getHives().addAll(newHives);
-        WeatherData weatherData = allWeatherData.get(date.toString());
+
 
         return new LifeOfBees(gameName, userId, gameType, apiary, actionOfTheWeek, location, date,
                 weatherData, moneyInTheBank, totalKgOfHoney);
