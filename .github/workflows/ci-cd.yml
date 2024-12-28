@@ -26,8 +26,10 @@ jobs:
 
       # Step 3: Build the Spring Boot app
       - name: Build Spring Boot Application
+        env:
+          REACT_APP_API_BASE_URL: ${{ vars.REACT_APP_API_BASE_URL }}
         run: |
-          mvn package spring-boot:repackage
+          mvn package spring-boot:repackage -DREACT_APP_API_BASE_URL=$REACT_APP_API_BASE_URL
 
       # Step 4: Build Docker Image
       - name: Build Docker Image
