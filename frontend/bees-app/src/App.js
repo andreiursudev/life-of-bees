@@ -9,6 +9,7 @@ import SellHoney from './components/SellHoney';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import HiveHistory from './components/HiveHistory';
 import { getGoogleClientId, getGitHubClientId} from './components/BeesApiService';
+import ApiaryHistory from './components/ApiaryHistory';
 
 function App() {
   const [googleClientId, setGoogleClientId] = useState(null);
@@ -51,6 +52,7 @@ function App() {
             <Route path="/sell-honey" element={<SellHoney />} />
             <Route path="/HiveHistory" element={<HiveHistory />}/>
             <Route path="/gameView/:gameId" element={<GameView />} />
+            <Route path="/apiaryHistory" element={<ApiaryHistory />}/>
           </Routes>
         </div>
       </Router>

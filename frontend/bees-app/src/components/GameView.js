@@ -19,7 +19,7 @@ const GameView = () => {
     const [updatedGameData, setUpdatedGameData] = useState(null);
     const locationData = useLocation();
 
-    const { gameId: gameIdFromParams } = useParams(); 
+    const { gameId: gameIdFromParams } = useParams();
     const { gameId: gameIdFromState } = locationData.state || {};
     const gameId = gameIdFromParams || gameIdFromState;
 
@@ -39,11 +39,11 @@ const GameView = () => {
                 console.log('am primit datele in gameView pentru ID:', gameId);
                 const data = await getGame(gameId);
                 console.log('datele primite din Java:', data);
-                const currentDate = new Date(data.currentDate); 
-                setMonth(currentDate.getMonth() + 1); 
+                const currentDate = new Date(data.currentDate);
+                setMonth(currentDate.getMonth() + 1);
                 console.log('luna curenta este: ', currentDate.getMonth() + 1);
-                setDay(currentDate.getDate()); 
-                console.log('ziua este: '+currentDate.getDate());
+                setDay(currentDate.getDate());
+                console.log('ziua este: ' + currentDate.getDate());
                 setGameData(data);
                 setUpdatedGameData(data);
 
@@ -135,28 +135,28 @@ const GameView = () => {
             console.error("Game ID is missing!");
             return;
         }
-    
+
         try {
-            const updatedGameData = await iterateWeek(gameId); 
+            const updatedGameData = await iterateWeek(gameId);
             console.log('Datele din iterateOneWeek:', updatedGameData);
-    
-            setGameData(updatedGameData); 
-            setUpdatedGameData(updatedGameData); 
-            setSelectedActions({}); 
+
+            setGameData(updatedGameData);
+            setUpdatedGameData(updatedGameData);
+            setSelectedActions({});
 
             const currentDate = new Date(updatedGameData.currentDate);
-            setMonth(currentDate.getMonth() + 1); 
-            setDay(currentDate.getDate()); 
+            setMonth(currentDate.getMonth() + 1);
+            setDay(currentDate.getDate());
         } catch (error) {
             console.error('Error iterating week:', error);
         }
     };
-    
+
 
 
     const flowerImage = useMemo(() => {
         if (!month || !day) {
-            return wildFlower; 
+            return wildFlower;
         }
         if (month === 3 || month === 8 || month === 9) {
             return wildFlower;
@@ -177,7 +177,7 @@ const GameView = () => {
         } else {
             return wildFlower;
         }
-    }, [month, day]); 
+    }, [month, day]);
 
 
     const formatActionType = (actionType) => {
@@ -228,12 +228,12 @@ const GameView = () => {
         }
 
         try {
-            const gameId = gameData.id; 
-            const response = await buyHives(gameId, hivesToBuy); 
+            const gameId = gameData.id;
+            const response = await buyHives(gameId, hivesToBuy);
             if (response) {
                 setShowBuyHivesForm(false);
                 setError(null);
-                setGameData(await getGame(gameId)); 
+                setGameData(await getGame(gameId));
             } else {
                 setError('Failed to buy hives.');
             }
@@ -258,8 +258,19 @@ const GameView = () => {
         console.log("Navigating to HiveHistory with gameId:", gameId, "and hiveId:", hiveId);
         navigate('/HiveHistory', { state: { gameId: gameId, hiveId: hiveId } });
     };
-    
-    
+
+    const goToApiaryHistory = (gameId) => {
+        if (!gameId) {
+            console.error("gameId is missing");
+            return;
+        }
+        console.log("Navigating to ApiaryHistory with gameId:", gameId);
+        navigate('/ApiaryHistory', { state: { gameId: gameId } });
+    };
+
+
+
+
 
 
 
@@ -273,8 +284,8 @@ const GameView = () => {
                     <div className="row">
                         {gameData && gameData.hives && gameData.hives.length > 0 ? (
                             gameData.hives.map((hive, index) => (
-                                <button     
-                                    key={hive.id} 
+                                <button
+                                    key={hive.id}
                                     className="col-md-6 mb-3 btn btn-outline-primary"
                                     onClick={() => goToHiveHistory(hive.id)}
                                     style={{ cursor: 'pointer', textAlign: 'left', border: 'none', background: 'none' }}
@@ -286,6 +297,16 @@ const GameView = () => {
                             <p>No hives available or data not loaded yet.</p>
                         )}
                     </div>
+
+                    <button
+                        className="btn btn-custom-iterate p-custom-iterate mb-2"
+                        onClick={() => goToApiaryHistory(gameId)}
+                        style={{ cursor: 'pointer', textAlign: 'left', border: 'none', background: 'none' }}
+                    >
+                        Game History
+                    </button>
+
+
                 </div>
 
 
@@ -454,7 +475,7 @@ const GameView = () => {
                         <img src={flowerImage} alt="Flower based on date" className="img-custom mb-2" />
 
                         <button className="btn btn-custom-iterate p-custom-iterate mb-2" onClick={handleIterateWeek}>Iterate one week</button>
-                        
+
                         <button
                             className="btn btn-custom p-custom mb-2"
                             onClick={() => navigate(`/sell-honey?gameId=${gameId}`)}
@@ -477,10 +498,10 @@ const GameView = () => {
                                 </p>
                             )}
                         </div>
-                       
+
                         {showBuyHivesForm && (
                             <BuyHivesModal
-                        
+
                                 hivesToBuy={hivesToBuy}
                                 maxHives={maxHives}
                                 availableFunds={gameData.moneyInTheBank}
@@ -490,7 +511,7 @@ const GameView = () => {
                                 onChangeHivesToBuy={handleHivesToBuyChange}
                             />
                         )}
-                        
+
 
                         <button className="btn btn-danger btn-custom mb-2" onClick={() => navigate('/')}>Exit</button>
                     </div>

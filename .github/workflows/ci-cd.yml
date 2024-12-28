@@ -65,4 +65,4 @@ jobs:
             docker rm spring-boot-app || true
 
             # Run the new container
-            docker run -d --name spring-boot-app --network host -v /home/${{ secrets.SSH_USER }}/.env:/app/.env spring-boot-app:latest
+            docker run -d --name spring-boot-app --network host -e SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} -e SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} spring-boot-app:latest

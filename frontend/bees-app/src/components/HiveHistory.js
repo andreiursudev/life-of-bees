@@ -1,15 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { getHiveHistory } from './BeesApiService';
 
-
 const HiveHistory = () => {
-
     const location = useLocation();
-    const { gameId, hiveId } = location.state || {}; // Extragem gameId din state-ul rutei
-
-    console.log("hiveId from useParams:", hiveId); // Log pentru verificare
-    console.log("gameId from location.state:", gameId);
+    const { gameId, hiveId } = location.state || {}; 
 
     const [hiveHistoryData, setHiveHistoryData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -26,9 +21,8 @@ const HiveHistory = () => {
 
         const fetchHiveHistory = async () => {
             try {
-
                 const data = await getHiveHistory(gameId, hiveId);
-                console.log("Fetched HiveHistory Data:", data);
+                console.log('acestea sunt datele pentru HiveHistory', data)
                 setHiveHistoryData(data);
             } catch (err) {
                 console.error('Error fetching hive history:', err);
@@ -44,58 +38,64 @@ const HiveHistory = () => {
     if (loading) return <div>Loading...</div>;
     if (error) return <div>{error}</div>;
 
-
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>{error}</div>;
-
     return (
         <div className="container mt-4">
-            <h2>Hive {hiveId} History</h2>
-            <table className="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Temperature</th>
-                        <th>Wind Speed</th>
-                        <th>Precipitation</th>
-                        <th>Bees</th>
-                        <th>Queen Age</th>
-                        <th>Honey Type</th>
-                        <th>Honey (kg)</th>
-                        <th>Money in the Bank</th>
-                        <th>Eggs Frame</th>
-                        <th>Honey Frame</th>
-                        <th>It Was Split</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {hiveHistoryData.length > 0 ? (
-                        hiveHistoryData.map((entry, index) => (
-                            <tr key={index}>
-                                <td>{entry.currentDate}</td>
-                                <td>{entry.weatherData.temperature}</td>
-                                <td>{entry.weatherData.windSpeed}</td>
-                                <td>{entry.weatherData.precipitation}</td>
-                                <td>{entry.beesNumber}</td>
-                                <td>{entry.queenAge}</td>
-                                <td>{entry.honeyTypes && entry.honeyTypes.length > 0 ? entry.honeyTypes.join(', ') : 'N/A'}</td>
-                                <td>{entry.kgOfHoney}</td>
-                                <td>{entry.moneyInTheBank}</td>
-                                <td>{entry.eggFramesNumber}</td>
-                                <td>{entry.honeyFrameNumber}</td>
-                                <td>{entry.itWasSplit ? 'Yes' : 'No'}</td>
-                            </tr>
-                        ))
-                    ) : (
+            <h2 className="text-center mb-4">Hive {hiveId} History</h2>
+            <div className="table-responsive">
+                <table className="table table-striped table-bordered">
+                    <thead className="table-dark">
                         <tr>
-                            <td colSpan="12">No history available for this hive.</td>
+                            <th>Date</th>
+                            <th>Temperature</th>
+                            <th>Wind Speed</th>
+                            <th>Precipitation</th>
+                            <th>Bees No</th>
+                            <th>Queen Age (years)</th>
+                            <th>Honey Type</th>
+                            <th>Honey (kg)</th>
+                            <th>Funds</th>
+                            <th>Eggs Frame No</th>
+                            <th>Honey Frame No</th>
+                            <th>It Was Split</th>
                         </tr>
-                    )}
-                </tbody>
+                    </thead>
+                    <tbody>
+                        {hiveHistoryData.length > 0 ? (
+                            hiveHistoryData.map((entry, index) => {
+                                const hive = entry.hive;
+                                const beesNumber = hive.beesBatches.reduce((total, batch) => total + batch, 0);
+                                const honeyKg = hive.honeyBatches.reduce((total, batch) => total + batch, 0); // Assume each full honey frame equals 1.5 kg
+                                const eggsFrameNo = hive.eggFrames.numberOfEggFrames;
+                                const honeyFrameNo = hive.honeyFrames.length;
 
-            </table>
-            <button className="btn btn-danger button-right-bottom" onClick={() => navigate('/gameView', { state: { gameId } })}>Back</button>
-    
+                                return (
+                                    <tr key={index}>
+                                        <td>{entry.currentDate}</td>
+                                        <td>{entry.weatherData.temperature}°C</td>
+                                        <td>{entry.weatherData.windSpeed} km/h</td>
+                                        <td>{entry.weatherData.precipitation} mm</td>
+                                        <td>{beesNumber}</td>
+                                        <td>{hive.queen.ageOfQueen}</td>
+                                        <td>{hive.honeyBatches.length > 0 ? hive.honeyBatches.join(', ') : 'N/A'}</td>
+                                        <td>{honeyKg}</td>
+                                        <td>${entry.moneyInTheBank}</td>
+                                        <td>{eggsFrameNo}</td>
+                                        <td>{honeyFrameNo}</td>
+                                        <td>{hive.itWasSplit ? 'Yes' : 'No'}</td>
+                                    </tr>
+                                );
+                            })
+                        ) : (
+                            <tr>
+                                <td colSpan="12" className="text-center">No history available for this hive.</td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            </div>
+            <button className="btn btn-danger mt-3 float-end" onClick={() => navigate('/gameView', { state: { gameId } })}>
+                Back
+            </button>
         </div>
     );
 };
