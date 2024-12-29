@@ -55,11 +55,15 @@ public class Honey {
                 HoneyFrames hiveHoneyFrames = hive.getHoneyFrames();
                 double totalKgOfHoney = 0;
 
+
                 for (HoneyFrame honeyFrame : hiveHoneyFrames.getHoneyFrame()) {
                     if (honeyFrame.isHarvestable()) {
                         totalKgOfHoney += honeyFrame.harvest();
                     }
                 }
+
+
+
 
                 if (totalKgOfHoney > 0) {
                     HoneyBatch honeyBatch = new HoneyBatch(

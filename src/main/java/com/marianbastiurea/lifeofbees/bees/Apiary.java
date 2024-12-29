@@ -44,6 +44,37 @@ public class Apiary {
         return null;
     }
 
+    public List<Hive> createHive(int numberOfHives, LocalDate date) {
+        Random random = new Random();
+        List<Hive> newHives = new ArrayList<>();
+        for (int i = 1; i <= numberOfHives; i++) {
+            int ageOfQueen = random.nextInt(1, 6);
+            EggFrames eggFrames = EggFrames.getRandomEggFrames();
+            LinkedList<Integer> beesBatches = new LinkedList<>();
+            for (int k = 0; k < 30; k++) {
+                beesBatches.add(random.nextInt(600, 700));
+            }
+            HoneyFrames honeyFrames = new HoneyFrames(0, new ArrayList<>());
+            honeyFrames.setNumberOfHoneyFrames(random.nextInt(3, 5));
+            for (int k = 0; k < honeyFrames.getNumberOfHoneyFrames(); k++) {
+                honeyFrames.getHoneyFrame().add(new HoneyFrame(random.nextDouble(2.5, 3)));
+            }
+            Hive hive = new Hive(
+                    newHives.size() + 1,
+                    false,
+                    false,
+                    eggFrames,
+                    honeyFrames,
+                    beesBatches,
+                    new ArrayList<>(),
+                    new Queen(ageOfQueen)
+            );
+            newHives.add(hive);
+        }
+        return newHives;
+
+    }
+
 
     public void splitHive(Hive hive) {
         List<Hive> newHives = new ArrayList<>();
@@ -55,7 +86,7 @@ public class Apiary {
             EggFrames newHiveEggFrames = hive.getEggFrames().splitEggFrames();
             newHive.setEggFrames(newHiveEggFrames);
 
-            List<HoneyFrame> newHiveHoneyFrames = new ArrayList<>();
+            HoneyFrames newHiveHoneyFrames = new HoneyFrames(3,  new ArrayList<>());
             for (int i = 0; i < 3; i++) {
                 HoneyFrame frameToMove = hive.getHoneyFrames().remove(hive.getHoneyFrames().size() - 1);
                 newHiveHoneyFrames.add(frameToMove);
@@ -197,35 +228,7 @@ public class Apiary {
         totalHarvestedHoney.setFalseIndigo(totalHarvestedHoney.getFalseIndigo() - soldHoneyData.FalseIndigo);
     }
 
-    public List<Hive> createHive(int numberOfHives, LocalDate date) {
-        Random random = new Random();
-        List<Hive> newHives = new ArrayList<>();
-        for (int i = 1; i <= numberOfHives; i++) {
-            int ageOfQueen = random.nextInt(1, 6);
-            EggFrames eggFrames = EggFrames.getRandomEggFrames();
-            LinkedList<Integer> beesBatches = new LinkedList<>();
-            for (int k = 0; k < 30; k++) {
-                beesBatches.add(random.nextInt(600, 700));
-            }
-            List<HoneyFrame> honeyFrames = new ArrayList<>();
-            for (int k = 0; k < random.nextInt(3, 5); k++) {
-                honeyFrames.add(new HoneyFrame(random.nextDouble(2.5, 3)));
-            }
-            Hive hive = new Hive(
-                    newHives.size() + 1,
-                    false,
-                    false,
-                    eggFrames,
-                    honeyFrames,
-                    beesBatches,
-                    new ArrayList<>(),
-                    new Queen(ageOfQueen)
-            );
-            newHives.add(hive);
-        }
-        return newHives;
 
-    }
 
     public void moveAnEggsFrame(List<List<Integer>> hiveIdPair) {
         for (List<Integer> hiveIds : hiveIdPair) {
