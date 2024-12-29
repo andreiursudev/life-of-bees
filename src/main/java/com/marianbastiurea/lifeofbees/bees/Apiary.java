@@ -1,9 +1,12 @@
 package com.marianbastiurea.lifeofbees.bees;
 
+import com.marianbastiurea.lifeofbees.action.ActionType;
+import com.marianbastiurea.lifeofbees.action.ActionsOfTheWeek;
 import com.marianbastiurea.lifeofbees.game.LifeOfBees;
 import com.marianbastiurea.lifeofbees.action.ActionOfTheWeek;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.*;
 
 public class Apiary {
@@ -77,7 +80,7 @@ public class Apiary {
     }
 
 
-    public List<ActionOfTheWeek> hibernate(LifeOfBees lifeOfBeesGame, List<ActionOfTheWeek> actionsOfTheWeek) {
+    public ActionsOfTheWeek hibernate(LifeOfBees lifeOfBeesGame, ActionsOfTheWeek actionsOfTheWeek) {
         LocalDate date = lifeOfBeesGame.getCurrentDate();
         Apiary apiary = lifeOfBeesGame.getApiary();
         System.out.println("aceasta e apiary inainte de hibernate: " + apiary);
@@ -98,25 +101,27 @@ public class Apiary {
         Hive hiveToRemove = hives.get(indexToRemove);
         int hiveIdRemoved = hiveToRemove.getId();
         hives.remove(hiveToRemove);
-        Map<String, Object> data = new HashMap<>();
-        data.put("totalHives", apiary.getHives().size());
-        data.put("hibernateStartDate", date.toString());
-        data.put("hiveIds", List.of(hiveIdRemoved));
-        ActionOfTheWeek actionInstance = new ActionOfTheWeek();
-       // actionInstance.addOrUpdateAction("HIBERNATE", hiveIdRemoved, data, actionsOfTheWeek);
+//        Map<String, Object> data = new HashMap<>();
+//        data.put("totalHives", apiary.getHives().size());
+//        data.put("hibernateStartDate", date.toString());
+//        data.put("hiveIds", List.of(hiveIdRemoved));
+       actionsOfTheWeek.addOrUpdateAction(ActionType.HIBERNATE, hiveIdRemoved);
         System.out.println("aceasta e apiary dupa hibernate: " + apiary);
 
         return actionsOfTheWeek;
     }
 
-    public List<ActionOfTheWeek> checkInsectControl(HarvestingMonths month, int dayOfMonth, List<ActionOfTheWeek> actionsOfTheWeek) {
-        if ((month.equals(HarvestingMonths.APRIL) || month.equals(HarvestingMonths.MAY) ||
-                month.equals(HarvestingMonths.JUNE) || month.equals(HarvestingMonths.JULY) || month.equals(HarvestingMonths.AUGUST) &&
-                (dayOfMonth == 11 || dayOfMonth == 21))) {
-            ActionOfTheWeek.addOrUpdateAction("INSECT_CONTROL", this.getHives().size(), actionsOfTheWeek);
+    public void checkInsectControl(LocalDate currentDate, ActionsOfTheWeek actionsOfTheWeek) {
+        Month month = currentDate.getMonth();
+        int dayOfMonth = currentDate.getDayOfMonth();
+
+        if ((month == Month.APRIL || month == Month.MAY || month == Month.JUNE ||
+                month == Month.JULY || month == Month.AUGUST) &&
+                (dayOfMonth == 11 || dayOfMonth == 21)) {
+            actionsOfTheWeek.addOrUpdateAction(ActionType.INSECT_CONTROL, this.getHives().size());
         }
-        return actionsOfTheWeek;
     }
+
 
     public void doInsectControl(String answer, LifeOfBees lifeOfBeesGame) {
         if ("yes".equals(answer)) {
@@ -129,14 +134,15 @@ public class Apiary {
         }
     }
 
-    public List<ActionOfTheWeek> checkFeedBees(HarvestingMonths month, int dayOfMonth, List<ActionOfTheWeek> actionsOfTheWeek) {
-        if (month.equals(HarvestingMonths.SEPTEMBER) &&
-                (dayOfMonth == 1)) {
-            ActionOfTheWeek.addOrUpdateAction("FEED_BEES", this.getHives().size(),  actionsOfTheWeek);
+    public void checkFeedBees(LocalDate currentDate, ActionsOfTheWeek actionsOfTheWeek) {
+        Month month = currentDate.getMonth();
+        int dayOfMonth = currentDate.getDayOfMonth();
 
+        if (month == Month.SEPTEMBER && dayOfMonth == 1) {
+            actionsOfTheWeek.addOrUpdateAction(ActionType.FEED_BEES, this.getHives().size());
         }
-        return actionsOfTheWeek;
     }
+
 
     public void doFeedBees(String answer, LifeOfBees lifeOfBeesGame) {
         if ("yes".equals(answer)) {
