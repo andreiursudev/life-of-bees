@@ -1,5 +1,6 @@
 package com.marianbastiurea.lifeofbees.game;
 
+import com.marianbastiurea.lifeofbees.action.ActionType;
 import com.marianbastiurea.lifeofbees.action.ActionsOfTheWeek;
 import com.marianbastiurea.lifeofbees.bees.*;
 import com.marianbastiurea.lifeofbees.weather.WeatherData;
@@ -7,7 +8,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 @Document(collection = "games")
@@ -89,6 +92,14 @@ public class LifeOfBees {
     }
 
     public LifeOfBees iterateOneWeek(LifeOfBees lifeOfBeesGame, LifeOfBeesService lifeOfBeesService) {
+
+        //TODO extract a method and move it to ActionsOfTheWeek
+        for (Map.Entry<ActionType, Object> action : actionsOfTheWeek.getActions().entrySet()) {
+            ActionType actionType = action.getKey();
+            actionType.getConsumer().accept(apiary,action.getValue());
+        }
+
+
         ActionsOfTheWeek actionsOfTheWeek = new ActionsOfTheWeek();
         WeatherData dailyWeather = null;
         Honey honey = new Honey();
@@ -118,6 +129,13 @@ public class LifeOfBees {
             }
             currentDate = currentDate.plusDays(1);
         }
+        //TODO extract a method and move it to ActionsOfTheWeek
+        for (ActionType value : ActionType.values()) {
+            Object data = value.getProducer().produce(apiary);
+            actionsOfTheWeek.put(value, data);
+        }
+
+
         for (Hive hive : apiary.getHives()) {
             hive.checkIfCanAddNewEggsFrameInHive(actionsOfTheWeek);
             hive.checkIfHiveCouldBeSplit(currentDate, actionsOfTheWeek);

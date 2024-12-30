@@ -239,7 +239,7 @@ public class LifeOfBeesController {
         GameResponse gameResponse = new GameResponse();
         gameResponse.setId(game.getGameId());
         for (Hive hive : game.getApiary().getHives()) {
-            gameResponse.getHives().add(new HivesView(hive.getId(), hive.getAgeOfQueen(), hive.getEggFrames().getNumberOfEggFrames(), hive.getHoneyFrames().size(), hive.isItWasSplit()));
+            gameResponse.getHives().add(new HivesView(hive.getId(), hive.getAgeOfQueen(), hive.getEggFrames().getNumberOfEggFrames(), hive.getHoneyFrames().getNumberOfHoneyFrames(), hive.isItWasSplit()));
         }
         gameResponse.setTemperature(game.getWeatherData().getTemperature());
         //gameResponse.setActionsOfTheWeek(game.getActionsOfTheWeek());

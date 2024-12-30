@@ -19,4 +19,11 @@ public class BeeTime {
                 (dayOfMonth == 1 || dayOfMonth == 10);
     }
 
+    public boolean timeToSplitHive() {
+        Month month = currentDate.getMonth();
+        int dayOfMonth = currentDate.getDayOfMonth();
+        return (month == Month.APRIL || month == Month.MAY) &&
+                (dayOfMonth == 1 || dayOfMonth == 10);
+    }
+
 }

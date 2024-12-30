@@ -6,39 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 public class ActionsOfTheWeek {
-    private Map<ActionType, ActionOfTheWeek> actions;
+    private Map<ActionType, Object> actions;
 
     public ActionsOfTheWeek() {
         this.actions = new HashMap<>();
-    }
-
-
-    public ActionOfTheWeek findOrCreateAction(ActionType actionType) {
-        return actions.computeIfAbsent(actionType, key -> new ActionOfTheWeek(key.name(), new HashMap<>()));
-    }
-
-    public void addOrUpdateAction(ActionType actionType, int hiveId) {
-        ActionOfTheWeek action = findOrCreateAction(actionType);
-
-        List<Integer> hiveIds = (List<Integer>) action.getData().getOrDefault("hiveIds", new ArrayList<>());
-        if (!hiveIds.contains(hiveId)) {
-            hiveIds.add(hiveId);
-            action.getData().put("hiveIds", hiveIds);
-        }
-    }
-
-    public void addOrUpdateActionWithPairs(ActionType actionType, List<Integer> hiveIdPair) {
-        ActionOfTheWeek action = findOrCreateAction(actionType);
-
-        List<List<Integer>> hiveIdPairs = (List<List<Integer>>) action.getData().getOrDefault("hiveIdPairs", new ArrayList<>());
-        if (!hiveIdPairs.contains(hiveIdPair)) {
-            hiveIdPairs.add(hiveIdPair);
-            action.getData().put("hiveIdPairs", hiveIdPairs);
-        }
-    }
-
-    public Map<ActionType, ActionOfTheWeek> getActions() {
-        return actions;
     }
 
     @Override
@@ -46,6 +17,14 @@ public class ActionsOfTheWeek {
         return "ActionsOfTheWeek{" +
                 "actions=" + actions +
                 '}';
+    }
+
+    public void put(ActionType value, Object data) {
+        actions.put(value,data);
+    }
+
+    public Map<ActionType, Object> getActions() {
+        return actions;
     }
 }
 
