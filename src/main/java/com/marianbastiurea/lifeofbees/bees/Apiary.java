@@ -88,8 +88,8 @@ public class Apiary {
 
             HoneyFrames newHiveHoneyFrames = new HoneyFrames(3,  new ArrayList<>());
             for (int i = 0; i < 3; i++) {
-                HoneyFrame frameToMove = hive.getHoneyFrames().remove(hive.getHoneyFrames().size() - 1);
-                newHiveHoneyFrames.add(frameToMove);
+                HoneyFrame frameToMove = hive.getHoneyFrames().getHoneyFrame().remove(hive.getHoneyFrames().getNumberOfHoneyFrames() - 1);
+                newHiveHoneyFrames.getHoneyFrame().add(frameToMove);
             }
             newHive.setHoneyFrames(newHiveHoneyFrames);
 
@@ -122,8 +122,8 @@ public class Apiary {
             hive.setWasMovedAnEggsFrame(false);
             hive.getHoneyBatches().clear();
             hive.getEggFrames().extractEggBatchesForFrame();
-            hive.getHoneyFrames().remove(hive.getHoneyFrames().size() - 1);
-            hive.getHoneyFrames().remove(hive.getHoneyFrames().size() - 1);
+            hive.getHoneyFrames().getHoneyFrame().remove(hive.getHoneyFrames().getHoneyFrame().size() - 1);
+            hive.getHoneyFrames().getHoneyFrame().remove(hive.getHoneyFrames().getHoneyFrame().size() - 1);
             hive.getBeesBatches().removeLast();
             hive.getBeesBatches().removeLast();
         }
@@ -132,10 +132,6 @@ public class Apiary {
         Hive hiveToRemove = hives.get(indexToRemove);
         int hiveIdRemoved = hiveToRemove.getId();
         hives.remove(hiveToRemove);
-//        Map<String, Object> data = new HashMap<>();
-//        data.put("totalHives", apiary.getHives().size());
-//        data.put("hibernateStartDate", date.toString());
-//        data.put("hiveIds", List.of(hiveIdRemoved));
        actionsOfTheWeek.addOrUpdateAction(ActionType.HIBERNATE, hiveIdRemoved);
         System.out.println("aceasta e apiary dupa hibernate: " + apiary);
 
