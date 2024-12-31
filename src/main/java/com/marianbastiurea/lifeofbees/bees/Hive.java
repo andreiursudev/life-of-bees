@@ -10,8 +10,8 @@ import java.util.*;
 
 public class Hive {
     private int id;
-    private boolean itWasSplit;
-    private boolean wasMovedAnEggsFrame;
+    public boolean itWasSplit;
+    public boolean wasMovedAnEggsFrame;
     private EggFrames eggFrames;
     private Queen queen;
     LinkedList<Integer> beesBatches = new LinkedList<>();
@@ -150,6 +150,7 @@ public class Hive {
     }
 
     public boolean checkIfHiveCouldBeSplit(LocalDate currentDate) {
+
         if (this.itWasSplit) {
             return false;
         }

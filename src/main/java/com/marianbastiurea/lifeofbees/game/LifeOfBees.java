@@ -136,9 +136,9 @@ public class LifeOfBees {
 
 
         for (Hive hive : apiary.getHives()) {
-            hive.checkIfCanAddNewEggsFrameInHive(actionsOfTheWeek);
-            hive.checkIfHiveCouldBeSplit(currentDate);
-            hive.checkIfCanAddANewHoneyFrameInHive(actionsOfTheWeek);
+
+
+
            // hive.checkIfCanMoveAnEggsFrame(actionsOfTheWeek, lifeOfBeesGame);
             List<HoneyBatch> harvestedHoneyBatches = honey.harvestHoney(hive, currentDate);
             hive.addHoneyBatches(harvestedHoneyBatches, actionsOfTheWeek);

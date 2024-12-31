@@ -146,12 +146,12 @@ public class Apiary {
         }
     }
 
-    public void checkFeedBees(LocalDate currentDate, ActionsOfTheWeek actionsOfTheWeek) {
+    public void checkFeedBees(LocalDate currentDate) {
         Month month = currentDate.getMonth();
         int dayOfMonth = currentDate.getDayOfMonth();
 
         if (month == Month.SEPTEMBER && dayOfMonth == 1) {
-            actionsOfTheWeek.addOrUpdateAction(ActionType.FEED_BEES, this.getHives().size());
+
         }
     }
 
@@ -207,6 +207,26 @@ public class Apiary {
         totalHarvestedHoney.setLinden(totalHarvestedHoney.getLinden() - soldHoneyData.Linden);
         totalHarvestedHoney.setSunFlower(totalHarvestedHoney.getSunFlower() - soldHoneyData.SunFlower);
         totalHarvestedHoney.setFalseIndigo(totalHarvestedHoney.getFalseIndigo() - soldHoneyData.FalseIndigo);
+    }
+
+
+    public List<List<Integer>> checkIfCanMoveAnEggsFrame() {
+        List<List<Integer>> hiveIdPairs = new ArrayList<>();
+        List<Hive> hives = this.getHives();
+        for (Hive sourceHive : hives) {
+            if (sourceHive.getEggFrames().checkIfAll6EggsFrameAre80PercentFull()
+                    && !sourceHive.itWasSplit
+                    && !sourceHive.wasMovedAnEggsFrame) {
+
+                for (Hive targetHive : hives) {
+                    if (targetHive.itWasSplit && targetHive.getQueen().getAgeOfQueen() == 0) {
+                        hiveIdPairs.add(Arrays.asList(sourceHive.getId(), targetHive.getId()));
+                    }
+                }
+            }
+        }
+
+        return hiveIdPairs;
     }
 
 

@@ -9,7 +9,7 @@ public class AddEggsFramesConsumer implements ActionOfTheWeekConsumer {
 
 
     @Override
-    public Object accept(Apiary apiary, Object data) {
+    public void accept(Apiary apiary, Object data) {
         List<Integer> eggHiveIds = (List<Integer>) data;
         if (eggHiveIds != null) {
             eggHiveIds.forEach(hiveId -> {
@@ -19,6 +19,5 @@ public class AddEggsFramesConsumer implements ActionOfTheWeekConsumer {
                 }
             });
         }
-        return null;
     }
 }

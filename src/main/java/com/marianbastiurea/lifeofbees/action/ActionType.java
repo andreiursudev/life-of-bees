@@ -5,7 +5,7 @@ import com.marianbastiurea.lifeofbees.bees.Apiary;
 import java.util.function.BiConsumer;
 
 public enum ActionType {
-    ADD_EGGS_FRAME(new AddEggsFramesProducer(), new AddEggsFrameConsumer()),
+    ADD_EGGS_FRAME(new AddEggsFramesProducer(), new AddEggsFramesConsumer()),
     ADD_HONEY_FRAME(o -> null, (o, o2) -> {}),
     MOVE_EGGS_FRAME(o -> null, (o, o2) -> {}),
     FEED_BEES(o -> null, (o, o2) -> {}),

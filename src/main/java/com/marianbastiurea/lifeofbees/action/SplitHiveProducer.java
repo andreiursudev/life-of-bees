@@ -11,7 +11,7 @@ public class SplitHiveProducer implements ActionOfTheWeekProducer{
     public Object produce(Apiary apiary) {
         List<Integer> hiveIds = new ArrayList<>();
         for (Hive hive : apiary.getHives()) {
-            if(hive.getHoneyFrames().canAddANewHoneyFrameInHive())
+            if(hive.checkIfHiveCouldBeSplit())
                 hiveIds.add(hive.getId());
         }
         return hiveIds;

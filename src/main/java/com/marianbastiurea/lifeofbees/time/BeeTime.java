@@ -12,6 +12,14 @@ public class BeeTime {
         this.currentDate = currentDate;
     }
 
+    public LocalDate getCurrentDate() {
+        return currentDate;
+    }
+
+    public void setCurrentDate(LocalDate currentDate) {
+        this.currentDate = currentDate;
+    }
+
     public static boolean timeToSplitHive(LocalDate currentDate) {
         Month month = currentDate.getMonth();
         int dayOfMonth = currentDate.getDayOfMonth();
