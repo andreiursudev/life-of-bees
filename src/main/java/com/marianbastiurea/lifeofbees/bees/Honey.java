@@ -41,7 +41,6 @@ public class Honey {
             case FalseIndigo -> 0.7;
         };
     }
-
     public static List<HoneyBatch> harvestHoney(Hive hive, LocalDate currentDate) {
         List<HoneyBatch> honeyBatches = new ArrayList<>();
         Month month = currentDate.getMonth();
@@ -49,36 +48,23 @@ public class Honey {
 
         if ((month == Month.APRIL || month == Month.MAY ||
                 month == Month.JUNE || month == Month.JULY ||
-                month == Month.AUGUST) && (dayOfMonth == 10 || dayOfMonth == 20)) {
+                month == Month.AUGUST) && (dayOfMonth == 10 || dayOfMonth == 20) && !hive.isItWasSplit()) {
 
-            if (!hive.isItWasSplit()) {
-                HoneyFrames hiveHoneyFrames = hive.getHoneyFrames();
-                double totalKgOfHoney = 0;
-
-
-                for (HoneyFrame honeyFrame : hiveHoneyFrames.getHoneyFrame()) {
-                    if (honeyFrame.isHarvestable()) {
-                        totalKgOfHoney += honeyFrame.harvest();
-                    }
-                }
-
-
-
-
-                if (totalKgOfHoney > 0) {
-                    HoneyBatch honeyBatch = new HoneyBatch(
-                            hive.getId(),
-                            totalKgOfHoney,
-                            honeyType(currentDate),
-                            false
-                    );
-                    honeyBatches.add(honeyBatch);
-                }
+            HoneyFrames honeyFrames = hive.getHoneyFrames();
+            double harvestedHoney = honeyFrames.harvestHoneyFromHoneyFrames();
+            if (harvestedHoney > 0) {
+                HoneyBatch honeyBatch = new HoneyBatch(
+                        hive.getId(),
+                        harvestedHoney,
+                        honeyType(currentDate),
+                        false
+                );
+                honeyBatches.add(honeyBatch);
             }
         }
-
         return honeyBatches;
     }
+
 
 }
 

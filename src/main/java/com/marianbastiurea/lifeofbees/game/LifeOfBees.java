@@ -112,7 +112,7 @@ public class LifeOfBees {
                 double whetherIndex = dailyWeather.weatherIndex(dailyWeather);
                 int numberOfEggs = queen.ageOneDay(honey, whetherIndex);
                 hive.ageOneDay(numberOfEggs);
-                hive.fillUpExistingHoneyFrameFromHive(currentDate);
+                hive.getHoneyFrames().fillUpExistingHoneyFrameFromHive(currentDate);
                 hive.getBeesBatches().removeFirst();
                 apiary.checkInsectControl(currentDate, actionsOfTheWeek);
                 apiary.checkFeedBees(currentDate, actionsOfTheWeek);
