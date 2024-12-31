@@ -2,10 +2,9 @@ package com.marianbastiurea.lifeofbees.bees;
 
 import com.marianbastiurea.lifeofbees.action.ActionType;
 import com.marianbastiurea.lifeofbees.action.ActionsOfTheWeek;
-import com.marianbastiurea.lifeofbees.game.LifeOfBees;
 import com.marianbastiurea.lifeofbees.time.BeeTime;
 
-import  java.time.Month;
+import java.time.Month;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -80,7 +79,7 @@ public class Hive {
                 "id=" + id +
                 ", itWasSplit=" + this.itWasSplit +
                 ",wasMovedAnEggsFrame=" + this.wasMovedAnEggsFrame +
-                ", numberOfHoneyFrame=" + this.honeyFrames.getNumberOfHoneyFrames() +
+                ", numberOfHoneyFrame=" + this.honeyFrames.getHoneyFrame().size() +
                 ", numberOfEggsFrame=" + this.eggFrames.getNumberOfEggFrames() + "\n" +
                 ", eggFrames=" + this.eggFrames + "\n" +
                 ", age of queen=" + this.queen.getAgeOfQueen() +
@@ -151,12 +150,12 @@ public class Hive {
     }
 
     public boolean checkIfHiveCouldBeSplit(LocalDate currentDate) {
-        if (!this.itWasSplit) {
-            return BeeTime.timeToSplitHive(currentDate) && this.eggFrames.isFullEggFrames() &&
-                this.eggFrames.is80PercentFull());
-
-                }
-            }
+        if (this.itWasSplit) {
+            return false;
+        }
+        return BeeTime.timeToSplitHive(currentDate) && this.eggFrames.isFullEggFrames() &&
+                this.eggFrames.is80PercentFull();
+    }
 
     public void addNewEggsFrameInHive() {
         if (this.eggFrames != null) {
@@ -165,21 +164,15 @@ public class Hive {
     }
 
 
-
     public ActionsOfTheWeek addHoneyBatches
             (List<HoneyBatch> honeyBatches, ActionsOfTheWeek actionsOfTheWeek) {
         if (honeyBatches != null && !honeyBatches.isEmpty()) {
             this.honeyBatches.addAll(honeyBatches);
             actionsOfTheWeek.addOrUpdateAction(ActionType.HARVEST_HONEY, getId());
         }
-        System.out.println("aceasta e actionsOfTheWeek cu addHoneyBatches:"+actionsOfTheWeek);
+        System.out.println("aceasta e actionsOfTheWeek cu addHoneyBatches:" + actionsOfTheWeek);
         return actionsOfTheWeek;
     }
-
-
-
-
-
 
     public void changeQueen(LocalDate currentDate) {
         double numberRandom = Math.random();
@@ -190,17 +183,19 @@ public class Hive {
         }
     }
 
-
-    public static void addHivesToApiary(List<Hive> newHives, LifeOfBees lifeOfBeesgame) {
-        List<Hive> existingHives = lifeOfBeesgame.getApiary().getHives();
-        for (Hive hive : newHives) {
-            hive.setId(existingHives.size() + 1);
-            existingHives.add(hive);
-        }
-    }
-
     public void ageOneDay(int numberOfEggs) {
         int bees = getEggFrames().ageOneDay(numberOfEggs);
         getBeesBatches().add(bees);
+    }
+
+    public LinkedList<Integer> splitBeesBatches() {
+        LinkedList<Integer> newHiveBeesBatches = new LinkedList<>(getBeesBatches());
+        for (int i = 0; i < getBeesBatches().size(); i++) {
+            int bees = getBeesBatches().get(i);
+            int beesToTransfer = bees / 2;
+            getBeesBatches().set(i, bees - beesToTransfer);
+            newHiveBeesBatches.add(beesToTransfer);
+        }
+        return  newHiveBeesBatches;
     }
 }

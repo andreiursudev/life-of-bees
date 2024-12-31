@@ -54,11 +54,8 @@ public class Apiary {
             for (int k = 0; k < 30; k++) {
                 beesBatches.add(random.nextInt(600, 700));
             }
-            HoneyFrames honeyFrames = new HoneyFrames(0, new ArrayList<>());
-            honeyFrames.setNumberOfHoneyFrames(random.nextInt(3, 5));
-            for (int k = 0; k < honeyFrames.getNumberOfHoneyFrames(); k++) {
-                honeyFrames.getHoneyFrame().add(new HoneyFrame(random.nextDouble(2.5, 3)));
-            }
+            HoneyFrames honeyFrames =HoneyFrames.getRandomHoneyFrames();
+            
             Hive hive = new Hive(
                     newHives.size() + 1,
                     false,
@@ -85,22 +82,9 @@ public class Apiary {
             newHive.setWasMovedAnEggsFrame(false);
             EggFrames newHiveEggFrames = hive.getEggFrames().splitEggFrames();
             newHive.setEggFrames(newHiveEggFrames);
-
-            HoneyFrames newHiveHoneyFrames = new HoneyFrames(3,  new ArrayList<>());
-            for (int i = 0; i < 3; i++) {
-                HoneyFrame frameToMove = hive.getHoneyFrames().getHoneyFrame().remove(hive.getHoneyFrames().getNumberOfHoneyFrames() - 1);
-                newHiveHoneyFrames.getHoneyFrame().add(frameToMove);
-            }
+            HoneyFrames newHiveHoneyFrames=hive.getHoneyFrames().splitHoneyFrames();
             newHive.setHoneyFrames(newHiveHoneyFrames);
-
-            LinkedList<Integer> hiveBeesBatches = hive.getBeesBatches();
-            LinkedList<Integer> newHiveBeesBatches = new LinkedList<>(hiveBeesBatches);
-            for (int i = 0; i < hiveBeesBatches.size(); i++) {
-                int bees = hiveBeesBatches.get(i);
-                int beesToTransfer = bees / 2;
-                hiveBeesBatches.set(i, bees - beesToTransfer);
-                newHiveBeesBatches.add(beesToTransfer);
-            }
+            LinkedList<Integer> newHiveBeesBatches =hive.splitBeesBatches();
             newHive.setBeesBatches(newHiveBeesBatches);
             newHive.setHoneyBatches(new ArrayList<>());
             newHives.add(newHive);
@@ -109,6 +93,7 @@ public class Apiary {
         }
         hives.addAll(newHives);
     }
+
 
 
     public ActionsOfTheWeek hibernate(LifeOfBees lifeOfBeesGame, ActionsOfTheWeek actionsOfTheWeek) {
@@ -251,6 +236,15 @@ public class Apiary {
         formattedHoney.add("SunFlower " + totalHarvestedHoney.getSunFlower() + " kg");
         formattedHoney.add("FalseIndigo " + totalHarvestedHoney.getFalseIndigo() + " kg");
         return formattedHoney;
+    }
+
+
+    public static void addHivesToApiary(List<Hive> newHives, LifeOfBees lifeOfBeesgame) {
+        List<Hive> existingHives = lifeOfBeesgame.getApiary().getHives();
+        for (Hive hive : newHives) {
+            hive.setId(existingHives.size() + 1);
+            existingHives.add(hive);
+        }
     }
 
 }

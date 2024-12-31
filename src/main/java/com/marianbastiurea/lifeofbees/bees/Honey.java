@@ -65,6 +65,5 @@ public class Honey {
         return honeyBatches;
     }
 
-
 }
 

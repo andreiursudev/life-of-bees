@@ -2,6 +2,7 @@ package com.marianbastiurea.lifeofbees.bees;
 
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -68,7 +69,6 @@ public class HoneyFrames {
     }
 
     public void fillUpExistingHoneyFrameFromHive(LocalDate currentDate) {
-
         Random random = new Random();
         Honey honey = new Honey();
         Hive hive=new Hive();
@@ -80,6 +80,23 @@ public class HoneyFrames {
         }
     }
 
+    public static HoneyFrames getRandomHoneyFrames() {
+        Random random = new Random();
+        HoneyFrames honeyFrames = new HoneyFrames(new ArrayList<>());
+        for (int k = 0; k < random.nextInt(3, 5); k++) {
+            honeyFrames.getHoneyFrame().add(new HoneyFrame(random.nextDouble(2.5, 3)));
+        }
+        return honeyFrames;
+    }
+
+    public HoneyFrames splitHoneyFrames() {
+        HoneyFrames newHiveHoneyFrames = new HoneyFrames(new ArrayList<>());
+        for (int i = 0; i < 3; i++) {
+            HoneyFrame frameToMove = getHoneyFrame().removeLast();
+            newHiveHoneyFrames.getHoneyFrame().add(frameToMove);
+        }
+        return newHiveHoneyFrames;
+    }
 }
 
 

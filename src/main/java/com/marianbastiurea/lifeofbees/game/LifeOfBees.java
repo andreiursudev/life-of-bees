@@ -8,7 +8,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -138,7 +137,7 @@ public class LifeOfBees {
 
         for (Hive hive : apiary.getHives()) {
             hive.checkIfCanAddNewEggsFrameInHive(actionsOfTheWeek);
-            hive.checkIfHiveCouldBeSplit(currentDate, actionsOfTheWeek);
+            hive.checkIfHiveCouldBeSplit(currentDate);
             hive.checkIfCanAddANewHoneyFrameInHive(actionsOfTheWeek);
            // hive.checkIfCanMoveAnEggsFrame(actionsOfTheWeek, lifeOfBeesGame);
             List<HoneyBatch> harvestedHoneyBatches = honey.harvestHoney(hive, currentDate);
