@@ -172,7 +172,6 @@ public class Hive {
         }
     }
 
-    public
 
     public void changeQueen(LocalDate currentDate) {
         double numberRandom = Math.random();

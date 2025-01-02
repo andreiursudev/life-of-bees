@@ -26,5 +26,12 @@ public class ActionsOfTheWeek {
     public Map<ActionType, Object> getActions() {
         return actions;
     }
+
+    public void doActionsOfTheWeek() {
+        for (Map.Entry<ActionType, Object> action : actionsOfTheWeek.getActions().entrySet()) {
+            ActionType actionType = action.getKey();
+            actionType.getConsumer().accept(apiary, action.getValue());
+        }
+    }
 }
 

@@ -7,7 +7,7 @@ import com.marianbastiurea.lifeofbees.game.LifeOfBees;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddHoneyFrameProducer implements ActionOfTheWeekProducer {
+public class AddHoneyFramesProducer implements ActionOfTheWeekProducer {
     @Override
     public Object produce(LifeOfBees lifeOfBees) {
         List<Integer> hiveIds = new ArrayList<>();

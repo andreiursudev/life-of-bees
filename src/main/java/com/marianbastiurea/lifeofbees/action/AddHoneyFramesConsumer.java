@@ -6,20 +6,21 @@ import com.marianbastiurea.lifeofbees.game.LifeOfBees;
 
 import java.util.List;
 
-public class AddEggsFramesConsumer implements ActionOfTheWeekConsumer {
+public class AddHoneyFramesConsumer implements ActionOfTheWeekConsumer {
 
 
     @Override
     public void accept(LifeOfBees lifeOfBees, Object data) {
-        List<Integer> eggHiveIds = (List<Integer>) data;
+        List<Integer> honeyHiveIds = (List<Integer>) data;
         Apiary apiary=lifeOfBees.getApiary();
-        if (eggHiveIds != null) {
-            eggHiveIds.forEach(hiveId -> {
+        if (honeyHiveIds != null) {
+            honeyHiveIds.forEach(hiveId -> {
                 Hive hive = apiary.getHiveById(hiveId);
                 if (hive != null) {
-                    hive.addNewEggsFrameInHive();
+                    hive.getHoneyFrames().addNewHoneyFrameInHive();
                 }
             });
         }
     }
 }
+
