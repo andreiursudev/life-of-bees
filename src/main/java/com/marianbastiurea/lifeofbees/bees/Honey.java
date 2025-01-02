@@ -41,15 +41,12 @@ public class Honey {
             case FalseIndigo -> 0.7;
         };
     }
+
     public static List<HoneyBatch> harvestHoney(Hive hive, LocalDate currentDate) {
         List<HoneyBatch> honeyBatches = new ArrayList<>();
-        Month month = currentDate.getMonth();
         int dayOfMonth = currentDate.getDayOfMonth();
-
-        if ((month == Month.APRIL || month == Month.MAY ||
-                month == Month.JUNE || month == Month.JULY ||
-                month == Month.AUGUST) && (dayOfMonth == 10 || dayOfMonth == 20) && !hive.isItWasSplit()) {
-
+        if ((currentDate.getMonthValue() >= 4 && currentDate.getMonthValue() <= 8)
+                && (dayOfMonth == 10 || dayOfMonth == 20) && !hive.isItWasSplit()) {
             HoneyFrames honeyFrames = hive.getHoneyFrames();
             double harvestedHoney = honeyFrames.harvestHoneyFromHoneyFrames();
             if (harvestedHoney > 0) {

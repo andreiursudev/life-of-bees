@@ -16,7 +16,7 @@ public class Hive {
     private Queen queen;
     LinkedList<Integer> beesBatches = new LinkedList<>();
     private HoneyFrames honeyFrames;
-    private List<HoneyBatch> honeyBatches;
+    public List<HoneyBatch> honeyBatches;
 
     public Hive() {
     }
@@ -165,15 +165,14 @@ public class Hive {
     }
 
 
-    public ActionsOfTheWeek addHoneyBatches
-            (List<HoneyBatch> honeyBatches, ActionsOfTheWeek actionsOfTheWeek) {
+    public void addHoneyBatches
+            (List<HoneyBatch> honeyBatches) {
         if (honeyBatches != null && !honeyBatches.isEmpty()) {
             this.honeyBatches.addAll(honeyBatches);
-            actionsOfTheWeek.addOrUpdateAction(ActionType.HARVEST_HONEY, getId());
         }
-        System.out.println("aceasta e actionsOfTheWeek cu addHoneyBatches:" + actionsOfTheWeek);
-        return actionsOfTheWeek;
     }
+
+    public
 
     public void changeQueen(LocalDate currentDate) {
         double numberRandom = Math.random();
@@ -198,5 +197,12 @@ public class Hive {
             newHiveBeesBatches.add(beesToTransfer);
         }
         return  newHiveBeesBatches;
+    }
+
+    public void removeBeesBatches() {
+        LinkedList<Integer> beesBatches = getBeesBatches();
+        for (int i = 0; i < 2 && !beesBatches.isEmpty(); i++) {
+            beesBatches.removeLast();
+        }
     }
 }

@@ -48,13 +48,11 @@ public class HoneyFrames {
 
     public double harvestHoneyFromHoneyFrames() {
         double totalKgOfHoney = 0;
-
         for (HoneyFrame honeyFrame : this.getHoneyFrame()) {
             if (honeyFrame.isHarvestable()) {
                 totalKgOfHoney += honeyFrame.harvest();
             }
         }
-
         return totalKgOfHoney;
     }
 
@@ -91,11 +89,18 @@ public class HoneyFrames {
 
     public HoneyFrames splitHoneyFrames() {
         HoneyFrames newHiveHoneyFrames = new HoneyFrames(new ArrayList<>());
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             HoneyFrame frameToMove = getHoneyFrame().removeLast();
             newHiveHoneyFrames.getHoneyFrame().add(frameToMove);
         }
         return newHiveHoneyFrames;
+    }
+
+    public void removeHoneyFrames() {
+        List<HoneyFrame> honeyFrames = getHoneyFrame();
+        for (int i = 0; i < 2 && !honeyFrames.isEmpty(); i++) {
+            honeyFrames.removeLast();
+        }
     }
 }
 

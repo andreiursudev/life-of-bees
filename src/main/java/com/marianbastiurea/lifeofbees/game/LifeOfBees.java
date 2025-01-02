@@ -113,15 +113,17 @@ public class LifeOfBees {
                 hive.ageOneDay(numberOfEggs);
                 hive.getHoneyFrames().fillUpExistingHoneyFrameFromHive(currentDate);
                 hive.getBeesBatches().removeFirst();
-                apiary.checkInsectControl(currentDate, actionsOfTheWeek);
-                apiary.checkFeedBees(currentDate, actionsOfTheWeek);
+
+                List<HoneyBatch> harvestedHoneyBatches = honey.harvestHoney(hive, currentDate);
+                hive.addHoneyBatches(harvestedHoneyBatches);
+
             }
             apiary.honeyHarvestedByHoneyType();
             System.out.println(apiary.getTotalHarvestedHoney());
             lifeOfBeesGame.setTotalKgOfHoneyHarvested(apiary.getTotalKgHoneyHarvested());
 
             if (currentDate.isEqual(LocalDate.of(currentDate.getYear(), 9, 30))) {
-                apiary.hibernate(lifeOfBeesGame, actionsOfTheWeek);
+                apiary.hibernate();
                 currentDate = LocalDate.of(currentDate.getYear() + 1, 3, 1);
                 lifeOfBeesGame.setCurrentDate(currentDate);
                 break;
@@ -133,16 +135,6 @@ public class LifeOfBees {
             Object data = value.getProducer().produce(apiary);
             actionsOfTheWeek.put(value, data);
         }
-
-
-        for (Hive hive : apiary.getHives()) {
-
-
-
-           // hive.checkIfCanMoveAnEggsFrame(actionsOfTheWeek, lifeOfBeesGame);
-            List<HoneyBatch> harvestedHoneyBatches = honey.harvestHoney(hive, currentDate);
-            hive.addHoneyBatches(harvestedHoneyBatches, actionsOfTheWeek);
-        }
         lifeOfBeesGame.setActionsOfTheWeek(actionsOfTheWeek);
         lifeOfBeesGame.setCurrentDate(currentDate);
         return new LifeOfBees(gameId, gameType, userId, apiary, gameName, location, currentDate, dailyWeather, moneyInTheBank, totalKgOfHoneyHarvested, actionsOfTheWeek);
@@ -150,6 +142,10 @@ public class LifeOfBees {
 
     public Apiary getApiary() {
         return apiary;
+    }
+
+    public void setApiary(Apiary apiary) {
+        this.apiary = apiary;
     }
 
     public WeatherData getWeatherData() {
