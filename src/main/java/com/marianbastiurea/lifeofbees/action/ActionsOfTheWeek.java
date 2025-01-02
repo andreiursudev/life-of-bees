@@ -1,5 +1,7 @@
 package com.marianbastiurea.lifeofbees.action;
 
+import com.marianbastiurea.lifeofbees.game.LifeOfBees;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,11 +29,24 @@ public class ActionsOfTheWeek {
         return actions;
     }
 
-    public void doActionsOfTheWeek() {
-        for (Map.Entry<ActionType, Object> action : actionsOfTheWeek.getActions().entrySet()) {
+    public void executeActions(LifeOfBees lifeOfBees, Object data) {
+        for (Map.Entry<ActionType, Object> action : actions.entrySet()) {
             ActionType actionType = action.getKey();
-            actionType.getConsumer().accept(apiary, action.getValue());
+            Object actionData = action.getValue();
+            actionType.getBiConsumer().accept(lifeOfBees, actionData);
         }
     }
+
+    public void addAllActions(LifeOfBees lifeOfBees) {
+        for (ActionType actionType : ActionType.values()) {
+            Object data = actionType.getProducer().produce(lifeOfBees);
+            if (data != null) {
+                actions.put(actionType, data);
+            }
+        }
+    }
+
+
+
 }
 

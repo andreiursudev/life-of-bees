@@ -90,19 +90,12 @@ public class LifeOfBees {
     public LifeOfBees() {
     }
 
-    public LifeOfBees iterateOneWeek(LifeOfBees lifeOfBeesGame, LifeOfBeesService lifeOfBeesService) {
-
-        //TODO extract a method and move it to ActionsOfTheWeek
-        for (Map.Entry<ActionType, Object> action : actionsOfTheWeek.getActions().entrySet()) {
-            ActionType actionType = action.getKey();
-            actionType.getConsumer().accept(apiary,action.getValue());
-        }
-
-
+    public LifeOfBees iterateOneWeek(LifeOfBees lifeOfBeesGame, LifeOfBeesService lifeOfBeesService, Object data) {
         ActionsOfTheWeek actionsOfTheWeek = new ActionsOfTheWeek();
+        actionsOfTheWeek.executeActions(lifeOfBeesGame, data);
+
         WeatherData dailyWeather = null;
         Honey honey = new Honey();
-       Month month = currentDate.getMonth();
         for (int dailyIterator = 0; dailyIterator < 7; dailyIterator++) {
             dailyWeather = lifeOfBeesService.fetchWeatherForDate(currentDate);
             for (Hive hive : apiary.getHives()) {
@@ -130,11 +123,7 @@ public class LifeOfBees {
             }
             currentDate = currentDate.plusDays(1);
         }
-        //TODO extract a method and move it to ActionsOfTheWeek
-        for (ActionType value : ActionType.values()) {
-            Object data = value.getProducer().produce(apiary);
-            actionsOfTheWeek.put(value, data);
-        }
+        actionsOfTheWeek.addAllActions(lifeOfBeesGame);
         lifeOfBeesGame.setActionsOfTheWeek(actionsOfTheWeek);
         lifeOfBeesGame.setCurrentDate(currentDate);
         return new LifeOfBees(gameId, gameType, userId, apiary, gameName, location, currentDate, dailyWeather, moneyInTheBank, totalKgOfHoneyHarvested, actionsOfTheWeek);
