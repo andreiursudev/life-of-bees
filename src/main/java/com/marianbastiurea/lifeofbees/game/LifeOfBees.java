@@ -1,15 +1,13 @@
 package com.marianbastiurea.lifeofbees.game;
 
-import com.marianbastiurea.lifeofbees.action.ActionType;
 import com.marianbastiurea.lifeofbees.action.ActionsOfTheWeek;
 import com.marianbastiurea.lifeofbees.bees.*;
 import com.marianbastiurea.lifeofbees.weather.WeatherData;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.List;
-import java.util.Map;
 
 
 @Document(collection = "games")
@@ -21,6 +19,7 @@ public class LifeOfBees {
     private ActionsOfTheWeek actionsOfTheWeek;
     private String gameName;
     private String location;
+    private boolean yearIsChanged;
 
     //TODO Replace currentDate with BeeTime
     private LocalDate currentDate;
@@ -33,7 +32,7 @@ public class LifeOfBees {
     public LifeOfBees(String gameId, String gameType, String userId, Apiary apiary,
                       String gameName, String location, LocalDate currentDate,
                       WeatherData weatherData, double moneyInTheBank, double totalKgOfHoneyHarvested,
-                      ActionsOfTheWeek actionsOfTheWeek) {
+                      ActionsOfTheWeek actionsOfTheWeek, boolean yearIsChanged) {
         this.gameId = gameId;
         this.userId = userId;
         this.gameType = gameType;
@@ -45,11 +44,12 @@ public class LifeOfBees {
         this.totalKgOfHoneyHarvested = totalKgOfHoneyHarvested;
         this.actionsOfTheWeek = actionsOfTheWeek;
         this.weatherData = weatherData;
+        this.yearIsChanged = yearIsChanged;
     }
 
     public LifeOfBees(String gameName, String userId, String gameType, Apiary apiary,
                       String location, LocalDate currentDate, WeatherData weatherData,
-                      double moneyInTheBank, double totalKgOfHoneyHarvested) {
+                      double moneyInTheBank, double totalKgOfHoneyHarvested, boolean yearIsChanged) {
         this.apiary = apiary;
         this.gameName = gameName;
         this.location = location;
@@ -59,6 +59,7 @@ public class LifeOfBees {
         this.totalKgOfHoneyHarvested = totalKgOfHoneyHarvested;
         this.userId = userId;
         this.gameType = gameType;
+        this.yearIsChanged = yearIsChanged;
     }
 
 
@@ -93,32 +94,30 @@ public class LifeOfBees {
     public LifeOfBees iterateOneWeek(LifeOfBees lifeOfBeesGame, LifeOfBeesService lifeOfBeesService, Object data) {
         ActionsOfTheWeek actionsOfTheWeek = new ActionsOfTheWeek();
         actionsOfTheWeek.executeActions(lifeOfBeesGame, data);
-
         WeatherData dailyWeather = null;
         Honey honey = new Honey();
         for (int dailyIterator = 0; dailyIterator < 7; dailyIterator++) {
             dailyWeather = lifeOfBeesService.fetchWeatherForDate(currentDate);
             for (Hive hive : apiary.getHives()) {
                 Queen queen = hive.getQueen();
-                 hive.changeQueen(currentDate);
+                hive.changeQueen(currentDate);
                 double whetherIndex = dailyWeather.weatherIndex(dailyWeather);
                 int numberOfEggs = queen.ageOneDay(honey, whetherIndex);
                 hive.ageOneDay(numberOfEggs);
-                hive.getHoneyFrames().fillUpExistingHoneyFrameFromHive(currentDate);
+                hive.fillUpExistingHoneyFramesFromHive(currentDate);
                 hive.getBeesBatches().removeFirst();
-
                 List<HoneyBatch> harvestedHoneyBatches = honey.harvestHoney(hive, currentDate);
                 hive.addHoneyBatches(harvestedHoneyBatches);
-
             }
             apiary.honeyHarvestedByHoneyType();
             System.out.println(apiary.getTotalHarvestedHoney());
             lifeOfBeesGame.setTotalKgOfHoneyHarvested(apiary.getTotalKgHoneyHarvested());
 
             if (currentDate.isEqual(LocalDate.of(currentDate.getYear(), 9, 30))) {
-                apiary.hibernate();
                 currentDate = LocalDate.of(currentDate.getYear() + 1, 3, 1);
                 lifeOfBeesGame.setCurrentDate(currentDate);
+                lifeOfBeesGame.setYearIsChanged(true);
+                yearIsChanged = true;
                 break;
             }
             currentDate = currentDate.plusDays(1);
@@ -126,7 +125,7 @@ public class LifeOfBees {
         actionsOfTheWeek.addAllActions(lifeOfBeesGame);
         lifeOfBeesGame.setActionsOfTheWeek(actionsOfTheWeek);
         lifeOfBeesGame.setCurrentDate(currentDate);
-        return new LifeOfBees(gameId, gameType, userId, apiary, gameName, location, currentDate, dailyWeather, moneyInTheBank, totalKgOfHoneyHarvested, actionsOfTheWeek);
+        return new LifeOfBees(gameId, gameType, userId, apiary, gameName, location, currentDate, dailyWeather, moneyInTheBank, totalKgOfHoneyHarvested, actionsOfTheWeek, yearIsChanged);
     }
 
     public Apiary getApiary() {
@@ -211,5 +210,13 @@ public class LifeOfBees {
 
     public void setGameType(String gameType) {
         this.gameType = gameType;
+    }
+
+    public boolean isYearIsChanged() {
+        return yearIsChanged;
+    }
+
+    public void setYearIsChanged(boolean yearIsChanged) {
+        this.yearIsChanged = yearIsChanged;
     }
 }

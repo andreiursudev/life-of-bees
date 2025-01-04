@@ -83,6 +83,7 @@ public class EggFrames {
 
     public boolean is80PercentFull() {
         int totalEggs = getEggs();
+        System.out.println("acesta e totalEggs: "+totalEggs);
         return totalEggs >= numberOfEggFrames * maxEggPerFrame * 0.8;
     }
 
@@ -100,6 +101,7 @@ public class EggFrames {
     }
 
     public boolean isFullEggFrames() {
+        System.out.println("numarul de rame este: "+numberOfEggFrames);
         return numberOfEggFrames == maxEggFrames;
     }
 
@@ -108,7 +110,7 @@ public class EggFrames {
     }
 
     public boolean canAddNewEggsFrame() {
-        return isFullEggFrames() && is80PercentFull();
+        return !isFullEggFrames() && is80PercentFull();
     }
 
     @Override

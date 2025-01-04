@@ -130,9 +130,11 @@ export const getGame = async (gameId) => {
     }
 };
 
+
 export const iterateWeek = async (gameId, requestData) => {
     try {
         const response = await apiClient.post(`/bees/iterate/${gameId}`, requestData);
+
         console.log('acesta e tokenul din iterateWeek', localStorage.getItem('authToken'))
         return response.data;
     } catch (error) {
@@ -142,20 +144,7 @@ export const iterateWeek = async (gameId, requestData) => {
 };
 
 
-export const submitActionsOfTheWeek = async (gameId, actionsData) => {
-    console.log('Actions data being sent:', actionsData);
-    try {
-       
-        const response = await apiClient.post(`/bees/submitActionsOfTheWeek/${gameId}`, actionsData);
-        if (response.status !== 200) {
-            throw new Error(`Failed to submit actions, status: ${response.status}`);
-        }
-        return response.data;
-    } catch (error) {
-        console.error('Error sending actionOfTheWeek:', error);
-        throw error;
-    }
-};
+
 
 export const getHoneyQuantities = async (gameId) => {
     try {

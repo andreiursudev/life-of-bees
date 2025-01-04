@@ -4,7 +4,7 @@ import { getHiveHistory } from './BeesApiService';
 
 const HiveHistory = () => {
     const location = useLocation();
-    const { gameId, hiveId } = location.state || {}; 
+    const { gameId, hiveId } = location.state || {};
 
     const [hiveHistoryData, setHiveHistoryData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -64,9 +64,10 @@ const HiveHistory = () => {
                             hiveHistoryData.map((entry, index) => {
                                 const hive = entry.hive;
                                 const beesNumber = hive.beesBatches.reduce((total, batch) => total + batch, 0);
-                                const honeyKg = hive.honeyBatches.reduce((total, batch) => total + batch, 0); // Assume each full honey frame equals 1.5 kg
+                                const honeyKg = hive.honeyBatches.reduce((total, batch) => total + batch.kgOfHoney, 0);
+
                                 const eggsFrameNo = hive.eggFrames.numberOfEggFrames;
-                                const honeyFrameNo = hive.honeyFrames.length;
+                                const honeyFrameNo = hive.honeyFrames.honeyFrame.length;
 
                                 return (
                                     <tr key={index}>
@@ -76,7 +77,9 @@ const HiveHistory = () => {
                                         <td>{entry.weatherData.precipitation} mm</td>
                                         <td>{beesNumber}</td>
                                         <td>{hive.queen.ageOfQueen}</td>
-                                        <td>{hive.honeyBatches.length > 0 ? hive.honeyBatches.join(', ') : 'N/A'}</td>
+                                        <td>{hive.honeyBatches.map((batch, index) => (
+                                            <p key={index}>{batch.honeyType}</p>
+                                        ))}</td>
                                         <td>{honeyKg}</td>
                                         <td>${entry.moneyInTheBank}</td>
                                         <td>{eggsFrameNo}</td>

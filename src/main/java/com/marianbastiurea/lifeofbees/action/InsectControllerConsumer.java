@@ -11,7 +11,7 @@ public class InsectControllerConsumer implements ActionOfTheWeekConsumer {
         String answer = (String) data;
         Apiary apiary = lifeOfBees.getApiary();
         if ("yes".equals(answer)) {
-            int cost = apiary.getHives().size() * 7;
+            int cost = apiary.getHives().size() * 10;
             lifeOfBees.setMoneyInTheBank(lifeOfBees.getMoneyInTheBank() - cost);
         } else {
             apiary.doInsectControl();

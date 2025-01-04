@@ -1,9 +1,6 @@
 package com.marianbastiurea.lifeofbees.bees;
 
-import com.marianbastiurea.lifeofbees.action.ActionType;
-import com.marianbastiurea.lifeofbees.action.ActionsOfTheWeek;
 import com.marianbastiurea.lifeofbees.game.LifeOfBees;
-import com.marianbastiurea.lifeofbees.action.ActionOfTheWeek;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -64,7 +61,8 @@ public class Apiary {
                     honeyFrames,
                     beesBatches,
                     new ArrayList<>(),
-                    new Queen(ageOfQueen)
+                    new Queen(ageOfQueen),
+                    false
             );
             newHives.add(hive);
         }
@@ -94,10 +92,9 @@ public class Apiary {
         hives.addAll(newHives);
     }
 
-    public Apiary hibernate() {
-        System.out.println("Aceasta e apiary inainte de hibernate: " + this);
-        this.getHives().forEach(hive -> {
+    public Integer hibernate() {
 
+        this.getHives().forEach(hive -> {
             hive.getQueen().setAgeOfQueen(hive.getQueen().getAgeOfQueen() + 1);
             hive.setItWasSplit(false);
             hive.setWasMovedAnEggsFrame(false);
@@ -107,24 +104,27 @@ public class Apiary {
             hive.removeBeesBatches();
         });
 
-        randomRemoveAHive(this.getHives());
-        System.out.println("Aceasta e apiary dupa hibernate: " + this);
-        return this;
+         return randomRemoveAHive(this.getHives());
+
     }
 
-
-    private static void randomRemoveAHive(List<Hive> hives) {
+    private static Integer randomRemoveAHive(List<Hive> hives) {
+        Integer hiveIdToRemove=0;
         if (!hives.isEmpty()) {
             Random random = new Random();
             Hive hiveToRemove = hives.remove(random.nextInt(hives.size()));
+            hiveIdToRemove= hiveToRemove.getId();
             System.out.println("Stup eliminat cu ID: " + hiveToRemove.getId());
         }
+        return hiveIdToRemove;
     }
 
 
     public Integer checkInsectControl(LocalDate currentDate) {
-        return ((currentDate.getMonthValue() >= 4 && currentDate.getMonthValue() <= 8) // Aprilie - August
-                && (currentDate.getDayOfMonth() == 11 || currentDate.getDayOfMonth() == 21))
+        int dayOfMonth = currentDate.getDayOfMonth();
+        return ((currentDate.getMonthValue() >= 4 && currentDate.getMonthValue() <= 8)
+                && (dayOfMonth >= 10 && dayOfMonth <= 15) ||
+                (dayOfMonth >= 20 && dayOfMonth <= 25))
                 ? this.getHives().size()
                 : 0;
     }
@@ -138,7 +138,7 @@ public class Apiary {
     }
 
     public Integer checkFeedBees(LocalDate currentDate) {
-        return (currentDate.getMonth() == Month.SEPTEMBER && currentDate.getDayOfMonth() == 1)
+        return (currentDate.getMonth() == Month.SEPTEMBER)
                 ? this.getHives().size()
                 : 0;
     }
@@ -234,8 +234,7 @@ public class Apiary {
         return formattedHoney;
     }
 
-
-    public static void addHivesToApiary(List<Hive> newHives, LifeOfBees lifeOfBeesgame) {
+    public void addHivesToApiary(List<Hive> newHives, LifeOfBees lifeOfBeesgame) {
         List<Hive> existingHives = lifeOfBeesgame.getApiary().getHives();
         for (Hive hive : newHives) {
             hive.setId(existingHives.size() + 1);

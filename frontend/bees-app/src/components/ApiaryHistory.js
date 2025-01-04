@@ -77,7 +77,7 @@ const ApiaryHistory = () => {
                                                     {entry.hive[0].honeyBatches.reduce((sum, batch) => sum + batch.kgOfHoney, 0).toFixed(2)} kg
                                                 </td>
                                                 <td>{entry.hive[0].eggFrames.numberOfEggFrames}</td>
-                                                <td>{entry.hive[0].honeyFrames.length}</td>
+                                                <td>{entry.hive[0].honeyFrames.honeyFrame.length}</td>
                                                 <td>{entry.hive[0].itWasSplit ? 'Yes' : 'No'}</td>
                                             </>
                                         ) : (
@@ -93,20 +93,9 @@ const ApiaryHistory = () => {
                                        
 
                                         <td>${entry.moneyInTheBank}</td>
-                                        <td>
-                                            {Array.isArray(entry.actionOfTheWeek) && entry.actionOfTheWeek.length > 0 ? (
-                                                <ul className="list-unstyled mb-0">
-                                                    {entry.actionOfTheWeek.map((action, i) => (
-                                                        <li key={i}>{action}</li>
-                                                    ))}
-                                                </ul>
-                                            ) : (
-                                                ''
-                                            )}
-                                        </td>
-                                    </tr>
+                                        <td>{entry.actionsOfTheWeek?.join(', ') || 'No actions'}</td>
 
-                                    {/* Restul stupilor */}
+                                    </tr>
                                     {Array.isArray(entry.hive) &&
                                         entry.hive.slice(1).map((hive) => (
                                             <tr key={hive.id}>
@@ -124,7 +113,7 @@ const ApiaryHistory = () => {
                                                     {hive.honeyBatches.reduce((sum, batch) => sum + batch.kgOfHoney, 0).toFixed(2)} kg
                                                 </td>
                                                 <td>{hive.eggFrames.numberOfEggFrames}</td>
-                                                <td>{hive.honeyFrames.length}</td>
+                                                <td>{hive.honeyFrames.honeyFrame.length}</td>
                                                 <td>{hive.itWasSplit ? 'Yes' : 'No'}</td>
                                                 <td></td>
                                                 <td></td>

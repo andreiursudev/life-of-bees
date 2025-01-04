@@ -13,16 +13,16 @@ public class ApiaryHistory {
     private WeatherData weatherData;
     private double moneyInTheBank;
     private double totalKgOfHoneyHarvested;
-    private List<String> actionOfTheWeek;
+    private List<String> actionsOfTheWeek;
     private List<Hive> hive;
 
     public ApiaryHistory(LocalDate currentDate, WeatherData weatherData, double moneyInTheBank,
-                         double totalKgOfHoneyHarvested, List<String> actionOfTheWeek, List<Hive> hive) {
+                         double totalKgOfHoneyHarvested, List<String> actionsOfTheWeek, List<Hive> hive) {
         this.currentDate = currentDate;
         this.weatherData = weatherData;
         this.moneyInTheBank = moneyInTheBank;
         this.totalKgOfHoneyHarvested = totalKgOfHoneyHarvested;
-        this.actionOfTheWeek = actionOfTheWeek;
+        this.actionsOfTheWeek = actionsOfTheWeek;
         this.hive = hive;
     }
 
@@ -36,7 +36,6 @@ public class ApiaryHistory {
 
     public ApiaryHistory() {
     }
-
 
     public LocalDate getCurrentDate() {
         return currentDate;
@@ -62,12 +61,12 @@ public class ApiaryHistory {
         this.moneyInTheBank = moneyInTheBank;
     }
 
-    public List<String> getActionOfTheWeek() {
-        return actionOfTheWeek;
+    public List<String> getActionsOfTheWeek() {
+        return actionsOfTheWeek;
     }
 
-    public void setActionOfTheWeek(List<String> actionOfTheWeek) {
-        this.actionOfTheWeek = actionOfTheWeek;
+    public void setActionsOfTheWeek(List<String> actionsOfTheWeek) {
+        this.actionsOfTheWeek = actionsOfTheWeek;
     }
 
     public double getTotalKgOfHoneyHarvested() {
@@ -85,7 +84,7 @@ public class ApiaryHistory {
                 ", weatherData=" + weatherData +
                 ", moneyInTheBank=" + moneyInTheBank +
                 ", totalKgOfHoneyHarvested=" + totalKgOfHoneyHarvested +
-                ", actionOfTheWeek=" + actionOfTheWeek +
+                ", actionOfTheWeek=" + actionsOfTheWeek +
                 ", hive=" + hive +
                 '}';
     }

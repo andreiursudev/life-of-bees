@@ -1,7 +1,5 @@
 package com.marianbastiurea.lifeofbees.bees;
 
-
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -66,18 +64,6 @@ public class HoneyFrames {
         return honeyFrameFull;
     }
 
-    public void fillUpExistingHoneyFrameFromHive(LocalDate currentDate) {
-        Random random = new Random();
-        Honey honey = new Honey();
-        Hive hive=new Hive();
-        int numberOfHoneyFrameNotFull =getHoneyFrame().size() - getNumberOfFullHoneyFrame();
-        int numberOfFlight = random.nextInt(3, 6);
-        double kgOfHoneyToAdd =hive.getBeesBatches().stream().mapToInt(Integer::intValue).sum() * numberOfFlight * 0.00002 * honey.honeyProductivity(honey.honeyType(currentDate));//0.02gr/flight/bee
-        for (HoneyFrame honeyFrame : getHoneyFrame()) {
-            honeyFrame.fill(kgOfHoneyToAdd / numberOfHoneyFrameNotFull);
-        }
-    }
-
     public static HoneyFrames getRandomHoneyFrames() {
         Random random = new Random();
         HoneyFrames honeyFrames = new HoneyFrames(new ArrayList<>());
@@ -100,6 +86,13 @@ public class HoneyFrames {
         List<HoneyFrame> honeyFrames = getHoneyFrame();
         for (int i = 0; i < 2 && !honeyFrames.isEmpty(); i++) {
             honeyFrames.removeLast();
+        }
+    }
+
+    public void fillUpAHoneyFrame(double kgOfHoneyToAdd) {
+        int numberOfHoneyFrameNotFull = getHoneyFrame().size() - getNumberOfFullHoneyFrame();
+        for (HoneyFrame honeyFrame : getHoneyFrame()) {
+            honeyFrame.fill(kgOfHoneyToAdd / numberOfHoneyFrameNotFull);
         }
     }
 }

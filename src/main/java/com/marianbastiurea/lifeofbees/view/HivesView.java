@@ -1,5 +1,9 @@
 package com.marianbastiurea.lifeofbees.view;
 
+import com.marianbastiurea.lifeofbees.bees.HoneyBatch;
+
+import java.util.List;
+
 public class HivesView {
 
     int id;
@@ -8,13 +12,15 @@ public class HivesView {
     int eggsFrame;
     int honeyFrame;
     private boolean itWasSplit;
+    private boolean itWasHarvested;
 
-    public HivesView(int id, int ageOfQueen, int eggsFrame, int honeyFrame, boolean itWasSplit) {
+    public HivesView(int id, int ageOfQueen, int eggsFrame, int honeyFrame, boolean itWasSplit, boolean itWasHarvested) {
         this.id = id;
         this.ageOfQueen = ageOfQueen;
         this.eggsFrame = eggsFrame;
         this.honeyFrame = honeyFrame;
         this.itWasSplit = itWasSplit;
+        this.itWasHarvested = itWasHarvested;
     }
 
     public int getId() {
@@ -43,6 +49,14 @@ public class HivesView {
 
     public void setItWasSplit(boolean itWasSplit) {
         this.itWasSplit = itWasSplit;
+    }
+
+    public boolean isItWasHarvested() {
+        return itWasHarvested;
+    }
+
+    public void setItWasHarvested(boolean itWasHarvested) {
+        this.itWasHarvested = itWasHarvested;
     }
 
     @Override

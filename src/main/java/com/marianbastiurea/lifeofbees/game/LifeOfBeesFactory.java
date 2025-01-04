@@ -1,6 +1,5 @@
 package com.marianbastiurea.lifeofbees.game;
 
-import com.marianbastiurea.lifeofbees.action.ActionOfTheWeek;
 import com.marianbastiurea.lifeofbees.bees.Apiary;
 import com.marianbastiurea.lifeofbees.bees.Hive;
 import com.marianbastiurea.lifeofbees.weather.WeatherData;
@@ -8,7 +7,6 @@ import com.marianbastiurea.lifeofbees.weather.WeatherData;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
-import java.util.Map;
 
 public class LifeOfBeesFactory {
 
@@ -29,7 +27,8 @@ public class LifeOfBeesFactory {
         apiary.getHives().addAll(newHives);
 
 
+
         return new LifeOfBees(gameName, userId, gameType, apiary, location, date,
-                weatherData, moneyInTheBank, totalKgOfHoney);
+                weatherData, moneyInTheBank, totalKgOfHoney, false);
     }
 }

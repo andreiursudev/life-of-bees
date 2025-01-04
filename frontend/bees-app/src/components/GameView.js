@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import '../App.css';
 import HiveCard from './HiveCard';
-import { getGame, iterateWeek, submitActionsOfTheWeek, buyHives } from './BeesApiService';
+import { getGame, iterateWeek, buyHives } from './BeesApiService';
 import rapeseedFlower from '../rapeseed-flower.jpg';
 import wildFlower from '../wild-flower.jpg';
 import acaciaFlower from '../acacia-flower.jpg';
@@ -58,75 +58,16 @@ const GameView = () => {
         fetchGameData();
     }, []);
 
-
-
-    const handleCheckboxChange = (actionType, hiveId) => {
-        setSelectedActions((prevSelectedActions) => ({
-            ...prevSelectedActions,
-            [`${actionType}-${hiveId}`]: !prevSelectedActions[`${actionType}-${hiveId}`],
-        }));
-    };
-
-    const handleSubmit = async () => {
-        try {
-            const actionsByType = Object.keys(selectedActions)
-                .filter(key => selectedActions[key])
-                .reduce((acc, key) => {
-                    const [actionType, sourceHiveId, destinationHiveId] = key.split('-');
-                    if (!acc[actionType]) {
-                        acc[actionType] = {
-                            actionType,
-                            data: {}
-                        };
-                    }
-
-                    if (['ADD_EGGS_FRAME', 'ADD_HONEY_FRAME', 'SPLIT_HIVE'].includes(actionType)) {
-                        if (!acc[actionType].data.hiveIds) acc[actionType].data.hiveIds = [];
-                        acc[actionType].data.hiveIds.push(parseInt(sourceHiveId));
-                    }
-
-                    else if (actionType === 'MOVE_EGGS_FRAME' && sourceHiveId && destinationHiveId) {
-                        if (!acc[actionType].data.hiveIdPairs) acc[actionType].data.hiveIdPairs = [];
-                        acc[actionType].data.hiveIdPairs.push([parseInt(sourceHiveId), parseInt(destinationHiveId)]);
-                    }
-
-                    else {
-                        acc[actionType].data.answer = selectedActions[key];
-                    }
-
-                    return acc;
-                }, {});
-
-            const aggregatedActions = Object.values(actionsByType).map(action => {
-                if (action.data.hiveIds) {
-                    action.data.hiveIds = [...new Set(action.data.hiveIds)];
-                }
-                if (action.data.hiveIdPairs) {
-                    action.data.hiveIdPairs = [...new Set(action.data.hiveIdPairs.map(JSON.stringify))].map(JSON.parse);
-                }
-                return action;
-            });
-
-            console.log("ActionOfTheWeek data being sent:", aggregatedActions);
-            const response = await submitActionsOfTheWeek(gameId, aggregatedActions);
-            console.log("Response from backend:", response);
-
-            if (response) {
-                console.log("Actions submitted successfully!");
-                const updatedData = await getGame(gameId);
-                setGameData(updatedData);
-                setUpdatedGameData(updatedData);
-                setSelectedActions({});
-            }
-        } catch (error) {
-            console.error("Error submitting actions:", error);
-        }
-    };
-
     const handleYesNoChange = (actionType, response) => {
         setSelectedActions((prevSelectedActions) => ({
             ...prevSelectedActions,
             [actionType]: response,
+        }));
+    };
+    const handleCheckboxChange = (actionType, hiveId) => {
+        setSelectedActions((prevSelectedActions) => ({
+            ...prevSelectedActions,
+            [`${actionType}-${hiveId}`]: !prevSelectedActions[`${actionType}-${hiveId}`],
         }));
     };
 
@@ -137,21 +78,52 @@ const GameView = () => {
         }
 
         try {
-            const updatedGameData = await iterateWeek(gameId);
-            console.log('Datele din iterateOneWeek:', updatedGameData);
+            const actionsByType = Object.keys(selectedActions)
+                .filter(key => selectedActions[key])
+                .reduce((acc, key) => {
+                    const [actionType, sourceHiveId, destinationHiveId] = key.split('-');
+                    if (!acc[actionType]) {
+                        acc[actionType] = [];
+                    }
 
-            setGameData(updatedGameData);
-            setUpdatedGameData(updatedGameData);
-            setSelectedActions({});
+                    if (['ADD_EGGS_FRAME', 'ADD_HONEY_FRAME', 'SPLIT_HIVE'].includes(actionType)) {
+                        acc[actionType].push(parseInt(sourceHiveId));
+                    } else if (actionType === 'MOVE_EGGS_FRAME' && sourceHiveId && destinationHiveId) {
+                        acc[actionType].push([
+                            parseInt(sourceHiveId),
+                            parseInt(destinationHiveId),
+                        ]);
+                    }
+                    else if (['INSECT_CONTROL', 'FEED_BEES'].includes(actionType)) {
+                        acc[actionType] = selectedActions[key];
+                    } else{
+                        acc[actionType].push(selectedActions[key]);
+                    }
 
-            const currentDate = new Date(updatedGameData.currentDate);
-            setMonth(currentDate.getMonth() + 1);
-            setDay(currentDate.getDate());
+                    return acc;
+                }, {});
+
+            const actionsOfTheWeek = {
+                actions: actionsByType,
+            };
+            console.log("Actions of the week being sent:", actionsOfTheWeek);
+            const response = await iterateWeek(gameId, actionsOfTheWeek);
+            console.log("Response from backend:", response);
+            if (response) {
+                console.log("Week iterated successfully!");
+                const updatedGameData = await getGame(gameId);
+                setGameData(updatedGameData);
+                setUpdatedGameData(updatedGameData);
+                setSelectedActions({});
+
+                const currentDate = new Date(updatedGameData.currentDate);
+                setMonth(currentDate.getMonth() + 1);
+                setDay(currentDate.getDate());
+            }
         } catch (error) {
-            console.error('Error iterating week:', error);
+            console.error("Error iterating week:", error);
         }
     };
-
 
 
     const flowerImage = useMemo(() => {
@@ -179,22 +151,16 @@ const GameView = () => {
         }
     }, [month, day]);
 
-
     const formatActionType = (actionType) => {
         return actionType
             .toLowerCase()
             .replace(/_/g, ' ')
             .replace(/\b\w/g, char => char.toUpperCase());
     };
-
     const [showBuyHivesForm, setShowBuyHivesForm] = useState(false);
     const [hivesToBuy, setHivesToBuy] = useState(1);
     const [error, setError] = useState(null);
     const maxHives = gameData ? 10 - gameData.hives.length : 0;
-
-
-
-
     const handleBuyHivesClick = () => {
         if (month === 3 || month === 4) {
             setShowBuyHivesForm(true);
@@ -214,8 +180,6 @@ const GameView = () => {
             setError("Insufficient funds to buy that many hives.");
         }
     };
-
-
 
     const handleSubmitHivesPurchase = async () => {
         if (hivesToBuy > maxHives) {
@@ -269,13 +233,6 @@ const GameView = () => {
     };
 
 
-
-
-
-
-
-
-
     return (
         <div className="body-gameView">
 
@@ -310,49 +267,47 @@ const GameView = () => {
                 </div>
 
 
-
                 <div className="col-md-3">
                     <div className="card mb-3">
                         <div className="card-body">
-                            {updatedGameData && Array.isArray(updatedGameData.actionOfTheWeek) && updatedGameData.actionOfTheWeek.length > 0 ? (
-                                <div>
-                                    <p>Action of the week:</p>
-                                    <form>
-                                        {updatedGameData.actionOfTheWeek.map((actionItem, actionIndex) => (
-                                            <div key={actionIndex}>
-                                                {actionItem.actionOfTheWeekMessage && (
-                                                    <p>{actionItem.actionOfTheWeekMessage}</p>
-                                                )}
-                                                <h5>{formatActionType(actionItem.actionType)}</h5>
-                                                {(() => {
-                                                    switch (actionItem.actionType) {
-                                                        case "ADD_EGGS_FRAME":
-                                                        case "ADD_HONEY_FRAME":
-                                                        case "SPLIT_HIVE":
-                                                            return actionItem.data.hiveIds.map((hiveId, hiveIndex) => (
-                                                                <div key={`${actionIndex}-${hiveIndex}`} className="form-check">
-                                                                    <input
-                                                                        type="checkbox"
-                                                                        className="form-check-input"
-                                                                        id={`hive-${actionItem.actionType}-${hiveId}`}
-                                                                        checked={selectedActions[`${actionItem.actionType}-${hiveId}`] || false}
-                                                                        onChange={() => handleCheckboxChange(actionItem.actionType, hiveId)}
-                                                                    />
-                                                                    <label className="form-check-label" htmlFor={`hive-${actionItem.actionType}-${hiveId}`}>
-                                                                        Hive {hiveId}
-                                                                    </label>
-                                                                </div>
-                                                            ));
+                            {updatedGameData && updatedGameData.actionsOfTheWeek ? (
+                                updatedGameData.actionsOfTheWeek.actions &&
+                                    Object.keys(updatedGameData.actionsOfTheWeek.actions).length > 0 ? (
+                                    <div>
+                                        <p>Actions of the week:</p>
+                                        <form>
+                                            {Object.keys(updatedGameData.actionsOfTheWeek.actions).map((actionType) => (
+                                                <div key={actionType}>
+                                                    <h5>{formatActionType(actionType)}</h5>
+                                                    {(() => {
+                                                        const actionData = updatedGameData.actionsOfTheWeek.actions[actionType];
+                                                        switch (actionType) {
+                                                            case "ADD_EGGS_FRAME":
+                                                            case "ADD_HONEY_FRAME":
+                                                            case "SPLIT_HIVE":
+                                                                return actionData.map((hiveId, index) => (
+                                                                    <div key={`${actionType}-${index}`} className="form-check">
+                                                                        <input
+                                                                            type="checkbox"
+                                                                            className="form-check-input"
+                                                                            id={`hive-${actionType}-${hiveId}`}
+                                                                            checked={selectedActions[`${actionType}-${hiveId}`] || false}
+                                                                            onChange={() => handleCheckboxChange(actionType, hiveId)}
+                                                                        />
+                                                                        <label className="form-check-label" htmlFor={`hive-${actionType}-${hiveId}`}>
+                                                                            Hive {hiveId}
+                                                                        </label>
+                                                                    </div>
+                                                                ));
 
-                                                        case "MOVE_EGGS_FRAME":
-                                                            return actionItem.data.hiveIdPairs && Array.isArray(actionItem.data.hiveIdPairs) ? (
-                                                                actionItem.data.hiveIdPairs.map((pair, pairIndex) => {
-                                                                    const checkboxKey = `${actionItem.actionType}-${pair[0]}-${pair[1]}`;
+                                                            case "MOVE_EGGS_FRAME":
+                                                                return actionData.map((pair, index) => {
+                                                                    const checkboxKey = `${actionType}-${pair[0]}-${pair[1]}`;
                                                                     const isInactive = Object.keys(selectedActions).some(key =>
-                                                                        key.startsWith(`${actionItem.actionType}-${pair[0]}-`) && selectedActions[key]
+                                                                        key.startsWith(`${actionType}-${pair[0]}-`) && selectedActions[key]
                                                                     );
                                                                     return (
-                                                                        <div key={pairIndex}>
+                                                                        <div key={`${actionType}-${index}`}>
                                                                             <label>
                                                                                 <input
                                                                                     type="checkbox"
@@ -361,8 +316,8 @@ const GameView = () => {
                                                                                         if (!isInactive) {
                                                                                             setSelectedActions((prevSelectedActions) => {
                                                                                                 const newSelectedActions = { ...prevSelectedActions };
-                                                                                                Object.keys(newSelectedActions).forEach(key => {
-                                                                                                    if (key.startsWith(`${actionItem.actionType}-${pair[0]}-`)) {
+                                                                                                Object.keys(newSelectedActions).forEach((key) => {
+                                                                                                    if (key.startsWith(`${actionType}-${pair[0]}-`)) {
                                                                                                         delete newSelectedActions[key];
                                                                                                     }
                                                                                                 });
@@ -377,81 +332,76 @@ const GameView = () => {
                                                                             </label>
                                                                         </div>
                                                                     );
-                                                                })
-                                                            ) : null;
+                                                                });
 
-                                                        case "FEED_BEES":
-                                                        case "INSECT_CONTROL":
-                                                            return (
-                                                                <div>
-                                                                    {actionItem.data.hiveIds && Array.isArray(actionItem.data.hiveIds) && actionItem.data.hiveIds.length > 0 && (
-                                                                        <p>In all your hives: {actionItem.data.hiveIds.join(', ')}</p>
-                                                                    )}
-                                                                    <div className="form-check">
-                                                                        <label>
-                                                                            <input
-                                                                                type="radio"
-                                                                                name={`yesNo-${actionItem.actionType}`}
-                                                                                value="yes"
-                                                                                checked={selectedActions[actionItem.actionType] === "yes"}
-                                                                                onChange={() => handleYesNoChange(actionItem.actionType, "yes")}
-                                                                            />
-                                                                            Yes
-                                                                        </label>
-                                                                        <label>
-                                                                            <input
-                                                                                type="radio"
-                                                                                name={`yesNo-${actionItem.actionType}`}
-                                                                                value="no"
-                                                                                checked={selectedActions[actionItem.actionType] === "no"}
-                                                                                onChange={() => handleYesNoChange(actionItem.actionType, "no")}
-                                                                            />
-                                                                            No
-                                                                        </label>
+                                                            case "FEED_BEES":
+                                                            case "INSECT_CONTROL":
+                                                                return (
+                                                                    <div>
+                                                                        <div className="form-check">
+                                                                            <label>
+                                                                                <input
+                                                                                    type="radio"
+                                                                                    name={`yesNo-${actionType}`}
+                                                                                    value="yes"
+                                                                                    checked={selectedActions[actionType] === "yes"}
+                                                                                    onChange={() => handleYesNoChange(actionType, "yes")}
+                                                                                />
+                                                                                Yes
+                                                                            </label>
+                                                                            <label>
+                                                                                <input
+                                                                                    type="radio"
+                                                                                    name={`yesNo-${actionType}`}
+                                                                                    value="no"
+                                                                                    checked={selectedActions[actionType] === "no"}
+                                                                                    onChange={() => handleYesNoChange(actionType, "no")}
+                                                                                />
+                                                                                No
+                                                                            </label>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            );
+                                                                );
 
-                                                        case "HARVEST_HONEY":
-                                                            return (
-                                                                <p>
-                                                                    {actionItem.data.hiveIds.map((hiveId, hiveIndex) => (
-                                                                        <span key={`${actionIndex}-${hiveIndex}`}>
-                                                                            Hive {hiveId}{hiveIndex < actionItem.data.hiveIds.length - 1 ? ', ' : ''}
-                                                                        </span>
-                                                                    ))}
-                                                                </p>
-                                                            );
+                                                            case "HARVEST_HONEY":
+                                                                return (
+                                                                    <p>
+                                                                        {actionData.map((hiveId, index) => (
+                                                                            <span key={`${actionType}-${index}`}>
+                                                                                Hive {hiveId}{index < actionData.length - 1 ? ', ' : ''}
+                                                                            </span>
+                                                                        ))}
+                                                                    </p>
+                                                                );
 
-                                                        case "HIBERNATE":
-                                                            return (
-                                                                <p>
-                                                                    {actionItem.data.hiveIds.map((hiveId, hiveIndex) => (
-                                                                        <span key={`${actionIndex}-${hiveIndex}`}>
-                                                                            Your hive with id {hiveId} died during last winter
-                                                                        </span>
-                                                                    ))}
-                                                                </p>
-                                                            );
+                                                                case "HIBERNATE":
+                                                                    return (
+                                                                        <p>
+                                                                            <span>Your hive with id {actionData} died during last winter.</span>
+                                                                        </p>
+                                                                    );
+                                                                
 
-                                                        default:
-                                                            return null;
-                                                    }
-                                                })()}
-                                                <hr />
-                                            </div>
-                                        ))}
-
-                                    </form>
-                                    <button className="btn btn-success mt-3" onClick={handleSubmit}>Submit</button>
-                                </div>
-
+                                                            default:
+                                                                return null;
+                                                        }
+                                                    })()}
+                                                    <hr />
+                                                </div>
+                                            ))}
+                                        </form>
+                                    </div>
+                                ) : (
+                                    <p>Weekly checking</p>
+                                )
                             ) : (
                                 <p>Weekly checking</p>
                             )}
                         </div>
                     </div>
                 </div>
+
+
 
                 <div className="col-md-3">
                     <div className="d-flex flex-column align-items-center">

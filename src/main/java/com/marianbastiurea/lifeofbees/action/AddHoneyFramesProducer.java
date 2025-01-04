@@ -11,10 +11,11 @@ public class AddHoneyFramesProducer implements ActionOfTheWeekProducer {
     @Override
     public Object produce(LifeOfBees lifeOfBees) {
         List<Integer> hiveIds = new ArrayList<>();
-        Apiary apiary=lifeOfBees.getApiary();
+        Apiary apiary = lifeOfBees.getApiary();
         for (Hive hive : apiary.getHives()) {
-            if(hive.getHoneyFrames().canAddANewHoneyFrameInHive())
+            if (hive.getHoneyFrames().canAddANewHoneyFrameInHive()) {
                 hiveIds.add(hive.getId());
+            }
         }
         return hiveIds;
     }

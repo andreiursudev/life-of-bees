@@ -13,15 +13,11 @@ public class HarvestHoneyProducer implements ActionOfTheWeekProducer {
     public Object produce(LifeOfBees lifeOfBees) {
         List<Integer> hiveIds = new ArrayList<>();
         Apiary apiary = lifeOfBees.getApiary();
-
         for (Hive hive : apiary.getHives()) {
-            boolean hasUnprocessedBatch = hive.getHoneyBatches().stream()
-                    .anyMatch(batch -> !batch.isProcessed());
-            if (hasUnprocessedBatch) {
+            if (hive.isItWasHarvested())
                 hiveIds.add(hive.getId());
-            }
+            hive.setItWasHarvested(false);
         }
-
         return hiveIds;
     }
 }

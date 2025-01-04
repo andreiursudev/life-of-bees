@@ -1,7 +1,5 @@
 package com.marianbastiurea.lifeofbees.bees;
 
-import com.marianbastiurea.lifeofbees.action.ActionType;
-import com.marianbastiurea.lifeofbees.action.ActionsOfTheWeek;
 import com.marianbastiurea.lifeofbees.time.BeeTime;
 
 import java.time.Month;
@@ -17,6 +15,7 @@ public class Hive {
     LinkedList<Integer> beesBatches = new LinkedList<>();
     private HoneyFrames honeyFrames;
     public List<HoneyBatch> honeyBatches;
+    public boolean itWasHarvested;
 
     public Hive() {
     }
@@ -46,7 +45,8 @@ public class Hive {
             HoneyFrames honeyFrames,
             LinkedList<Integer> beesBatches,
             List<HoneyBatch> honeyBatches,
-            Queen queen) {
+            Queen queen,
+            boolean itWasHarvested) {
         this.id = hiveIdCounter;
         this.itWasSplit = itWasSplit;
         this.wasMovedAnEggsFrame = wasMovedAnEggsFrame;
@@ -55,6 +55,7 @@ public class Hive {
         this.beesBatches = beesBatches;
         this.honeyBatches = honeyBatches;
         this.queen = queen;
+        this.itWasHarvested = itWasHarvested;
     }
 
     public boolean isItWasSplit() {
@@ -85,6 +86,7 @@ public class Hive {
                 ", age of queen=" + this.queen.getAgeOfQueen() +
                 ", beesBatches=" + this.beesBatches +
                 ", honeyFrames=" + this.honeyFrames +
+                ", itWasHarvested=" + this.itWasHarvested +
                 ", honeyBatches=" + this.honeyBatches +
                 '}';
     }
@@ -144,6 +146,13 @@ public class Hive {
         this.beesBatches = beesBatches;
     }
 
+    public boolean isItWasHarvested() {
+        return itWasHarvested;
+    }
+
+    public void setItWasHarvested(boolean itWasHarvested) {
+        this.itWasHarvested = itWasHarvested;
+    }
 
     public void checkAndAddEggsToBees(int bees) {
         this.getBeesBatches().add(bees);
@@ -172,7 +181,6 @@ public class Hive {
         }
     }
 
-
     public void changeQueen(LocalDate currentDate) {
         double numberRandom = Math.random();
         Month month = currentDate.getMonth();
@@ -195,7 +203,7 @@ public class Hive {
             getBeesBatches().set(i, bees - beesToTransfer);
             newHiveBeesBatches.add(beesToTransfer);
         }
-        return  newHiveBeesBatches;
+        return newHiveBeesBatches;
     }
 
     public void removeBeesBatches() {
@@ -204,4 +212,12 @@ public class Hive {
             beesBatches.removeLast();
         }
     }
+
+    public void fillUpExistingHoneyFramesFromHive(LocalDate currentDate) {
+        Random random = new Random();
+        int numberOfFlight = random.nextInt(3, 6);
+        double kgOfHoneyToAdd = this.getBeesBatches().stream().mapToInt(Integer::intValue).sum() * numberOfFlight * 0.00002 * Honey.honeyProductivity(Honey.honeyType(currentDate));//0.02gr/flight/bee
+        honeyFrames.fillUpAHoneyFrame(kgOfHoneyToAdd);
+    }
+
 }

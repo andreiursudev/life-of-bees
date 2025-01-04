@@ -50,6 +50,8 @@ public class Honey {
             HoneyFrames honeyFrames = hive.getHoneyFrames();
             double harvestedHoney = honeyFrames.harvestHoneyFromHoneyFrames();
             if (harvestedHoney > 0) {
+                hive.setItWasHarvested(true);
+                System.out.println("acum am cules miere din stupul: " + hive.getId() + " si am setat pe true");
                 HoneyBatch honeyBatch = new HoneyBatch(
                         hive.getId(),
                         harvestedHoney,
