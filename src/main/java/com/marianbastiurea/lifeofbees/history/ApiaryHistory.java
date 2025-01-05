@@ -1,5 +1,6 @@
 package com.marianbastiurea.lifeofbees.history;
 
+import com.marianbastiurea.lifeofbees.action.ActionsOfTheWeek;
 import com.marianbastiurea.lifeofbees.bees.Hive;
 import com.marianbastiurea.lifeofbees.weather.WeatherData;
 
@@ -13,11 +14,11 @@ public class ApiaryHistory {
     private WeatherData weatherData;
     private double moneyInTheBank;
     private double totalKgOfHoneyHarvested;
-    private List<String> actionsOfTheWeek;
+    private ActionsOfTheWeek actionsOfTheWeek;
     private List<Hive> hive;
 
     public ApiaryHistory(LocalDate currentDate, WeatherData weatherData, double moneyInTheBank,
-                         double totalKgOfHoneyHarvested, List<String> actionsOfTheWeek, List<Hive> hive) {
+                         double totalKgOfHoneyHarvested, ActionsOfTheWeek actionsOfTheWeek, List<Hive> hive) {
         this.currentDate = currentDate;
         this.weatherData = weatherData;
         this.moneyInTheBank = moneyInTheBank;
@@ -61,11 +62,11 @@ public class ApiaryHistory {
         this.moneyInTheBank = moneyInTheBank;
     }
 
-    public List<String> getActionsOfTheWeek() {
+    public ActionsOfTheWeek getActionsOfTheWeek() {
         return actionsOfTheWeek;
     }
 
-    public void setActionsOfTheWeek(List<String> actionsOfTheWeek) {
+    public void setActionsOfTheWeek(ActionsOfTheWeek actionsOfTheWeek) {
         this.actionsOfTheWeek = actionsOfTheWeek;
     }
 

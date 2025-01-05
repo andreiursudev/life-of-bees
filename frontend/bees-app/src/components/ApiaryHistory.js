@@ -90,10 +90,19 @@ const ApiaryHistory = () => {
                                                 <td></td>
                                             </>
                                         )}
-                                       
+
 
                                         <td>${entry.moneyInTheBank}</td>
-                                        <td>{entry.actionsOfTheWeek?.join(', ') || 'No actions'}</td>
+                                        <td>
+                                            {entry.actionsOfTheWeek?.actions
+                                                ? Object.entries(entry.actionsOfTheWeek.actions)
+                                                    .map(([action, hives]) =>
+                                                        Array.isArray(hives) ? `${action}: ${hives.join(', ')}` : `${action}: ${hives}`
+                                                    )
+                                                    .join('; ')
+                                                : 'No actions'}
+                                        </td>
+
 
                                     </tr>
                                     {Array.isArray(entry.hive) &&

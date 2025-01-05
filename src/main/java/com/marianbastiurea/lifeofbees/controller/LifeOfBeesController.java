@@ -61,6 +61,12 @@ public class LifeOfBeesController {
         return lifeOfBeesRepository.findByGameId(gameId);
     }
 
+    private static void accessDenied(LifeOfBees lifeOfBeesGame, String userId) {
+        if (!lifeOfBeesGame.getUserId().equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
+        }
+    }
+
     @PostMapping("/game")
     public ResponseEntity<Map<String, String>> createGame(@RequestBody GameRequest gameRequest, @RequestHeader("Authorization") String authorizationHeader, Authentication authentication) {
         System.out.println("Received request to create game: " + gameRequest);
@@ -108,16 +114,11 @@ public class LifeOfBeesController {
         LifeOfBees lifeOfBeesGame = getByGameId(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
         String userId = principal.getName();
-
-        //Consider extracting a method for Access denied validation
-        if (!lifeOfBeesGame.getUserId().equals(userId)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
-        }
+        accessDenied(lifeOfBeesGame, userId);
         GameResponse response = getGameResponse(lifeOfBeesGame);
         System.out.println("Date trimise către React: " + response);
         return response;
     }
-
 
 
 
@@ -140,9 +141,7 @@ public class LifeOfBeesController {
 //
 
         String userId = principal.getName();
-        if (!lifeOfBeesGame.getUserId().equals(userId)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
-        }
+        accessDenied(lifeOfBeesGame, userId);
 
         Object data = requestData.get("actions");
         System.out.println("acesta e obiectul primit in controller:"+data);
@@ -179,9 +178,7 @@ public class LifeOfBeesController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
         System.out.println("Acesta e jocul primit in getHoney:" + lifeOfBeesGame);
         String userId = principal.getName();
-        if (!lifeOfBeesGame.getUserId().equals(userId)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
-        }
+        accessDenied(lifeOfBeesGame, userId);
         Apiary apiary = lifeOfBeesGame.getApiary();
         apiary.honeyHarvestedByHoneyType();
         HarvestHoney honeyData = apiary.getTotalHarvestedHoney();
@@ -199,9 +196,7 @@ public class LifeOfBeesController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
         System.out.println("Acesta e jocul primit in sellHoney:" + lifeOfBeesGame);
         String userId = principal.getName();
-        if (!lifeOfBeesGame.getUserId().equals(userId)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
-        }
+        accessDenied(lifeOfBeesGame, userId);
         double revenue = requestData.getOrDefault("totalValue", 0.0);
         HarvestHoney soldHoneyData = new HarvestHoney();
 
@@ -252,9 +247,7 @@ public class LifeOfBeesController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
         System.out.println("Acesta e jocul primit in buyHives:" + lifeOfBeesGame);
         String userId = principal.getName();
-        if (!lifeOfBeesGame.getUserId().equals(userId)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Access denied");
-        }
+        accessDenied(lifeOfBeesGame, userId);
         Integer numberOfHives = request.get("numberOfHives");
         if (numberOfHives == null || numberOfHives <= 0) {
             return ResponseEntity.badRequest().body("Invalid number of hives.");
@@ -358,28 +351,7 @@ public class LifeOfBeesController {
             apiaryHistory.setWeatherData(game.getWeatherData());
             apiaryHistory.setMoneyInTheBank(game.getMoneyInTheBank());
             apiaryHistory.setTotalKgOfHoneyHarvested(game.getTotalKgOfHoneyHarvested());
-            ActionsOfTheWeek actionsOfTheWeek = game.getActionsOfTheWeek();
-            List<String> formattedActions = new ArrayList<>();
-            if (actionsOfTheWeek != null && actionsOfTheWeek.getActions() != null) {
-                formattedActions = actionsOfTheWeek.getActions().entrySet().stream()
-                        .filter(entry -> {
-                            Object data = entry.getValue();
-                            return data instanceof List<?> && !((List<?>) data).isEmpty();
-                        })
-                        .map(entry -> {
-                            ActionType actionType = entry.getKey();
-                            List<Integer> hiveIds = (List<Integer>) entry.getValue();
-                            String hiveIdsString = hiveIds.stream()
-                                    .map(Object::toString)
-                                    .collect(Collectors.joining(", "));
-                            return actionType.name().replace("_", " ").toLowerCase() + " in hive(s) " + hiveIdsString;
-                        })
-                        .collect(Collectors.toList());
-            } else {
-                formattedActions.add("No actions to display");
-            }
-
-            apiaryHistory.setActionsOfTheWeek(formattedActions);
+            apiaryHistory.setActionsOfTheWeek(game.getActionsOfTheWeek());
             apiaryHistory.setHive(apiary.getHives());
             apiaryHistories.add(apiaryHistory);
             System.out.println("Acesta e obiectul ApiaryHistory: " + apiaryHistory);
