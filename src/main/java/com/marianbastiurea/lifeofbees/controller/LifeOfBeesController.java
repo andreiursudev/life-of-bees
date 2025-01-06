@@ -135,17 +135,11 @@ public class LifeOfBeesController {
         if (weatherDataNextWeek.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Weather data for the next week not found");
         }
-        Map<String, WeatherData> allWeatherData = new HashMap<>();
-        for (WeatherData weatherData : weatherDataNextWeek) {
-            allWeatherData.put(weatherData.getDate().toString(), weatherData); // Folosește data pentru a mapă datele
-        }
-        lifeOfBeesGame.getAllWeatherData().putAll(allWeatherData);
-        System.out.println("Weather data for next week: " + allWeatherData);
         String userId = principal.getName();
         accessDenied(lifeOfBeesGame, userId);
         Object data = requestData.get("actions");
         System.out.println("Acesta e obiectul primit in controller: " + data);
-        lifeOfBeesGame = lifeOfBeesGame.iterateOneWeek(lifeOfBeesGame, lifeOfBeesService, data);
+        lifeOfBeesGame = lifeOfBeesGame.iterateOneWeek(lifeOfBeesGame, lifeOfBeesService, data,weatherDataNextWeek);
         lifeOfBeesRepository.save(lifeOfBeesGame);
         GameResponse response = getGameResponse(lifeOfBeesGame);
         gameHistoryService.addGameInGameHistory(lifeOfBeesGame);

@@ -95,7 +95,7 @@ public class LifeOfBees {
     public LifeOfBees() {
     }
 
-    public LifeOfBees iterateOneWeek(LifeOfBees lifeOfBeesGame, LifeOfBeesService lifeOfBeesService, Object data) {
+    public LifeOfBees iterateOneWeek(LifeOfBees lifeOfBeesGame, LifeOfBeesService lifeOfBeesService, Object data,List<WeatherData> weatherDataNextWeek) {
         ActionsOfTheWeek actionsOfTheWeek = new ActionsOfTheWeek();
         actionsOfTheWeek.executeActions(lifeOfBeesGame, data);
         System.out.println("Data curentă în joc: " + lifeOfBeesGame.getCurrentDate());
@@ -103,7 +103,11 @@ public class LifeOfBees {
         WeatherData dailyWeather = null;
         System.out.println("Weather data primit: " + allWeatherData );
         for (int dailyIterator = 0; dailyIterator < 7; dailyIterator++) {
-            dailyWeather = allWeatherData.get(currentDate.toString());
+            dailyWeather = weatherDataNextWeek.stream()
+                    .filter(weather -> weather.getDate().isEqual(currentDate))
+                    .findFirst()
+                    .orElse(null);
+
             if (dailyWeather == null) {
                 throw new RuntimeException("Weather data not found for " + currentDate);
             }

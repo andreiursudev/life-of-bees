@@ -1,9 +1,5 @@
 package com.marianbastiurea.lifeofbees.view;
 
-import com.marianbastiurea.lifeofbees.bees.HoneyBatch;
-
-import java.util.List;
-
 public class HivesView {
 
     int id;

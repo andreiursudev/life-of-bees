@@ -52,32 +52,6 @@ public class LifeOfBeesService {
         }
     }
 
-    public List<WeatherData> fetchWeatherForWeek(LocalDate startDate) {
-        System.out.println("Received startDate in LifeOfBeesService in metoda fetchWeatherForWeek: " + startDate);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String formattedStartDate = startDate.format(formatter);
-        String formattedEndDate = startDate.plusDays(6).format(formatter);
-        String weatherApiUrl = "http://localhost:8081/api/weather?startDate=" + formattedStartDate + "&endDate=" + formattedEndDate;
-        System.out.println("Generated URL: " + weatherApiUrl);
-        try {
-            RestTemplate restTemplate = new RestTemplate();
-            WeatherData[] weatherDataArray = restTemplate.getForObject(weatherApiUrl, WeatherData[].class);
-
-            if (weatherDataArray != null) {
-                List<WeatherData> weatherDataList = Arrays.asList(weatherDataArray);
-                weatherDataList.forEach(weatherData -> allWeatherData.put(weatherData.getDate().toString(), weatherData));
-                System.out.println("Fetched weather data for week starting " + startDate + ": " + weatherDataList);
-                return weatherDataList;
-            } else {
-                System.err.println("Weather data is null for week starting " + startDate);
-                return Collections.emptyList();
-            }
-        } catch (Exception e) {
-            System.err.println("Error fetching weather data for week starting " + startDate + ": " + e.getMessage());
-            return Collections.emptyList();
-        }
-    }
-
     public List<LifeOfBees> getGamesForJohnDoe() {
         User user = userService.findUserByUsername("johndoe");
         if (user != null) {
@@ -92,13 +66,11 @@ public class LifeOfBeesService {
         System.out.println("acesta e userId in getGamesForUserByType: " + userId);
         System.out.println("acesta e gameType in getGamesForUserByType: " + gameType);
         User user = userService.findUserByUserId(userId);
-
         if (user != null) {
             List<String> gamesList = user.getGamesList();
             if (gamesList.isEmpty()) {
                 return List.of();
             }
-
             List<LifeOfBees> userGames = lifeOfBeesRepository.findAllById(gamesList);
             System.out.println("aceasta e lista de jocuri din getGamesForUserByType: " + userGames);
 
@@ -106,7 +78,6 @@ public class LifeOfBeesService {
                     .filter(game -> gameType.equals(game.getGameType()))
                     .collect(Collectors.toList());
         }
-
         return List.of();
     }
 

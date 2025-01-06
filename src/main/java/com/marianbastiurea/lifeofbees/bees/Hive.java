@@ -154,10 +154,6 @@ public class Hive {
         this.itWasHarvested = itWasHarvested;
     }
 
-    public void checkAndAddEggsToBees(int bees) {
-        this.getBeesBatches().add(bees);
-    }
-
     public boolean checkIfHiveCouldBeSplit(LocalDate currentDate) {
 
         if (this.itWasSplit) {
@@ -172,7 +168,6 @@ public class Hive {
             this.eggFrames.incrementNumberOfEggFrames();
         }
     }
-
 
     public void addHoneyBatches
             (List<HoneyBatch> honeyBatches) {

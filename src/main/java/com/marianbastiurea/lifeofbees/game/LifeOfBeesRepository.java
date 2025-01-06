@@ -8,5 +8,4 @@ import java.util.Optional;
 @Repository
 public interface LifeOfBeesRepository extends MongoRepository<LifeOfBees, String> {
     Optional<LifeOfBees> findByGameId(String gameId);
-
 }
