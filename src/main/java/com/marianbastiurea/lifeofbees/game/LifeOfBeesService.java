@@ -8,9 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
-
-
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -53,6 +52,32 @@ public class LifeOfBeesService {
         }
     }
 
+    public List<WeatherData> fetchWeatherForWeek(LocalDate startDate) {
+        System.out.println("Received startDate in LifeOfBeesService in metoda fetchWeatherForWeek: " + startDate);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedStartDate = startDate.format(formatter);
+        String formattedEndDate = startDate.plusDays(6).format(formatter);
+        String weatherApiUrl = "http://localhost:8081/api/weather?startDate=" + formattedStartDate + "&endDate=" + formattedEndDate;
+        System.out.println("Generated URL: " + weatherApiUrl);
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+            WeatherData[] weatherDataArray = restTemplate.getForObject(weatherApiUrl, WeatherData[].class);
+
+            if (weatherDataArray != null) {
+                List<WeatherData> weatherDataList = Arrays.asList(weatherDataArray);
+                weatherDataList.forEach(weatherData -> allWeatherData.put(weatherData.getDate().toString(), weatherData));
+                System.out.println("Fetched weather data for week starting " + startDate + ": " + weatherDataList);
+                return weatherDataList;
+            } else {
+                System.err.println("Weather data is null for week starting " + startDate);
+                return Collections.emptyList();
+            }
+        } catch (Exception e) {
+            System.err.println("Error fetching weather data for week starting " + startDate + ": " + e.getMessage());
+            return Collections.emptyList();
+        }
+    }
+
     public List<LifeOfBees> getGamesForJohnDoe() {
         User user = userService.findUserByUsername("johndoe");
         if (user != null) {
@@ -62,7 +87,6 @@ public class LifeOfBeesService {
 
         return List.of();
     }
-
 
     public List<LifeOfBees> getGamesForUserByType(String userId, String gameType) {
         System.out.println("acesta e userId in getGamesForUserByType: " + userId);

@@ -1,5 +1,7 @@
 package com.marianbastiurea.lifeofbees.bees;
 
+import java.time.LocalDate;
+
 public class Queen {
     private int ageOfQueen;
 
@@ -20,9 +22,9 @@ public class Queen {
     }
 
 
-    public int ageOneDay(Honey honey, double whetherIndex) {
+    public int ageOneDay(LocalDate currentDate, double whetherIndex) {
         int numberOfEggs = 7000;
-       //  int numberOfEggs = (int) (2000 * this.ageOfQueenIndex() * Honey.honeyProductivity() * whetherIndex);
+       // int numberOfEggs = (int) (2000 * this.ageOfQueenIndex() * Honey.honeyProductivity(Honey.honeyType(currentDate)) * whetherIndex);
         return numberOfEggs;
     }
 

@@ -121,31 +121,30 @@ public class LifeOfBeesController {
     }
 
 
-
     @PostMapping("/iterate/{gameId}")
     public GameResponse iterateWeek(
             @PathVariable String gameId,
             @RequestBody Map<String, Object> requestData,
             Principal principal) {
-
         System.out.println("Cerere pentru iterație gameId: " + gameId);
         LifeOfBees lifeOfBeesGame = getByGameId(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
 
         System.out.println("Acesta e jocul primit în Iterate: " + lifeOfBeesGame);
-
-        //TOOD
-        //List<WeatherData> weatherDataNextWeek = weatherService.getWeatherForNextWeek(lifeOfBeesGame.getCurrentDate());
-//        Map<String, WeatherData> allWeatherData = new HashMap<>();
-//        allWeatherData.put(weatherData.getDate().toString(), weatherData);
-//
-
+        List<WeatherData> weatherDataNextWeek = weatherService.getWeatherForNextWeek(lifeOfBeesGame.getCurrentDate());
+        if (weatherDataNextWeek.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Weather data for the next week not found");
+        }
+        Map<String, WeatherData> allWeatherData = new HashMap<>();
+        for (WeatherData weatherData : weatherDataNextWeek) {
+            allWeatherData.put(weatherData.getDate().toString(), weatherData); // Folosește data pentru a mapă datele
+        }
+        lifeOfBeesGame.getAllWeatherData().putAll(allWeatherData);
+        System.out.println("Weather data for next week: " + allWeatherData);
         String userId = principal.getName();
         accessDenied(lifeOfBeesGame, userId);
-
         Object data = requestData.get("actions");
-        System.out.println("acesta e obiectul primit in controller:"+data);
-
+        System.out.println("Acesta e obiectul primit in controller: " + data);
         lifeOfBeesGame = lifeOfBeesGame.iterateOneWeek(lifeOfBeesGame, lifeOfBeesService, data);
         lifeOfBeesRepository.save(lifeOfBeesGame);
         GameResponse response = getGameResponse(lifeOfBeesGame);
