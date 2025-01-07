@@ -12,9 +12,9 @@ public class AddEggsFramesProducer implements ActionOfTheWeekProducer {
     @Override
     public Object produce(LifeOfBees lifeOfBees) {
         List<Integer> hiveIds = new ArrayList<>();
-        Apiary apiary=lifeOfBees.getApiary();
+        Apiary apiary = lifeOfBees.getApiary();
         for (Hive hive : apiary.getHives()) {
-            if(hive.getEggFrames().canAddNewEggsFrame())
+            if (hive.getEggFrames().canAddNewEggsFrame())
                 hiveIds.add(hive.getId());
         }
         return hiveIds;

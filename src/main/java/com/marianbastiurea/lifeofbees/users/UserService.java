@@ -54,9 +54,9 @@ public class UserService {
             if (!gamesList.contains(gameId)) {
                 gamesList.add(gameId);
                 userRepository.save(user);
-                System.out.println("Gameid: "+ gameId+" adăugat la id utilizator: " + user.getUserId());
+                System.out.println("Gameid: " + gameId + " adăugat la id utilizator: " + user.getUserId());
             } else {
-                System.out.println("Gameid: "+gameId+" deja există în lista utilizatorului: " + user.getUserId());
+                System.out.println("Gameid: " + gameId + " deja există în lista utilizatorului: " + user.getUserId());
             }
         } else {
             throw new IllegalArgumentException("User is null. Cannot add game.");
@@ -67,7 +67,9 @@ public class UserService {
         return userRepository.findByUsername(username).orElse(null);
     }
 
-    public User findUserByUserId(String userId){ return userRepository.findByUserId(userId).orElse(null);}
+    public User findUserByUserId(String userId) {
+        return userRepository.findByUserId(userId).orElse(null);
+    }
 
     public User getUser(GameRequest gameRequest) {
         User user = userRepository.findById(gameRequest.getUserId()).orElse(null);

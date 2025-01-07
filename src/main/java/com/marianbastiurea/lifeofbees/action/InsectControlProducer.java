@@ -8,8 +8,8 @@ import java.time.LocalDate;
 public class InsectControlProducer implements ActionOfTheWeekProducer {
     @Override
     public Object produce(LifeOfBees lifeOfBees) {
-        Apiary apiary=lifeOfBees.getApiary();
-        LocalDate currentDate=lifeOfBees.getCurrentDate();
-        return  apiary.checkInsectControl(currentDate);
+        Apiary apiary = lifeOfBees.getApiary();
+        LocalDate currentDate = lifeOfBees.getCurrentDate();
+        return apiary.checkInsectControl(currentDate);
     }
 }

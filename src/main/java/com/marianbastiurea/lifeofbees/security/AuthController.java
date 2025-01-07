@@ -3,6 +3,7 @@ package com.marianbastiurea.lifeofbees.security;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.gson.GsonFactory;
 import com.marianbastiurea.lifeofbees.users.User;
 import com.marianbastiurea.lifeofbees.users.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,7 +14,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
-import com.google.api.client.json.gson.GsonFactory;
+
 import java.util.Collections;
 import java.util.Map;
 
@@ -123,7 +124,7 @@ public class AuthController {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Principal is null");
             }
 
-            if (email == null ) {
+            if (email == null) {
                 System.out.println("Email is missing. Returning bad request response.");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body("Email or providerId is missing");

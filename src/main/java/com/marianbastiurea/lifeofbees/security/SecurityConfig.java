@@ -21,10 +21,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 public class SecurityConfig {
 
+    private final ClientRegistrationRepository clientRegistrationRepository;
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
-
-    private final ClientRegistrationRepository clientRegistrationRepository;
 
     public SecurityConfig(ClientRegistrationRepository clientRegistrationRepository) {
         this.clientRegistrationRepository = clientRegistrationRepository;
@@ -44,10 +43,10 @@ public class SecurityConfig {
                 })
                 .authorizeHttpRequests(auth -> {
                     System.out.println("Setting up authorization rules in SecurityConfig...");
-                    auth.requestMatchers("/", "/index.html","/static/**","/api/bees/**", "/favicon.png","/manifest.json",
+                    auth.requestMatchers("/", "/index.html", "/static/**", "/api/bees/**", "/favicon.png", "/manifest.json",
                                     "/api/auth/register", "/api/auth/signin", "/oauth2/**",
-                                    "api/auth/google-client-id","/api/auth/oauth/google","api/auth/github-client-id", "/api/auth/oauth/github/login","/oauth2/github/**",
-                                    "/auth/github/callback", "/login/oauth2/code/github","/login", "api/bees/JohnDoeGames").permitAll()
+                                    "api/auth/google-client-id", "/api/auth/oauth/google", "api/auth/github-client-id", "/api/auth/oauth/github/login", "/oauth2/github/**",
+                                    "/auth/github/callback", "/login/oauth2/code/github", "/login", "api/bees/JohnDoeGames").permitAll()
                             .anyRequest().authenticated();
                 })
                 .oauth2Login(Customizer.withDefaults())

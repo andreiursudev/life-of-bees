@@ -4,11 +4,9 @@ import java.util.*;
 
 public class EggFrames {
 
-    private int daysToHatch = 20;
     public final static int maxEggPerFrame = 6400;
     private int numberOfEggFrames;
     private LinkedList<Integer> eggsByDay;
-    private int maxEggFrames = 6;
 
     public EggFrames(int numberOfEggFrames, LinkedList<Integer> eggsByDay) {
         this.numberOfEggFrames = numberOfEggFrames;
@@ -20,7 +18,7 @@ public class EggFrames {
 
     public EggFrames(int numberOfEggFrames) {
         this.numberOfEggFrames = numberOfEggFrames;
-
+        int daysToHatch = 20;
         this.eggsByDay = new LinkedList<>(Collections.nCopies(daysToHatch, 0));
     }
 
@@ -67,9 +65,9 @@ public class EggFrames {
 
     public void addEggBatches(List<Integer> batchesToAdd) {
         for (int i = 0; i < batchesToAdd.size(); i++) {
-                eggsByDay.set(i, eggsByDay.get(i) + batchesToAdd.get(i));
+            eggsByDay.set(i, eggsByDay.get(i) + batchesToAdd.get(i));
         }
-            numberOfEggFrames++;
+        numberOfEggFrames++;
     }
 
     public boolean isFull() {
@@ -83,7 +81,7 @@ public class EggFrames {
 
     public boolean is80PercentFull() {
         int totalEggs = getEggs();
-        System.out.println("acesta e totalEggs: "+totalEggs);
+        System.out.println("totalEggs: " + totalEggs);
         return totalEggs >= numberOfEggFrames * maxEggPerFrame * 0.8;
     }
 
@@ -101,7 +99,8 @@ public class EggFrames {
     }
 
     public boolean isFullEggFrames() {
-        System.out.println("numarul de rame este: "+numberOfEggFrames);
+        System.out.println("EggFrames number: " + numberOfEggFrames);
+        int maxEggFrames = 6;
         return numberOfEggFrames == maxEggFrames;
     }
 

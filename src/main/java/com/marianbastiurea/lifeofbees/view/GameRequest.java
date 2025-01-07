@@ -1,10 +1,5 @@
 package com.marianbastiurea.lifeofbees.view;
 
-import com.marianbastiurea.lifeofbees.game.LifeOfBees;
-import com.marianbastiurea.lifeofbees.weather.WeatherData;
-
-import java.util.List;
-import java.util.Map;
 
 public class GameRequest {
     private String gameType;
@@ -12,17 +7,13 @@ public class GameRequest {
     private String location;
     private String startDate;
     private int numberOfStartingHives;
-    private WeatherData weatherData;
     private String userId;
     private String username;
     private String password;
     private String token;
     private String gameId;
-    private List<LifeOfBees> gameHistory;
 
-    public List<LifeOfBees> getGameHistory() {
-        return gameHistory;
-    }
+
 
     public String getGameId() {
         return gameId;
@@ -113,13 +104,11 @@ public class GameRequest {
                 ", location='" + location + '\'' +
                 ", startDate='" + startDate + '\'' +
                 ", numberOfStartingHives=" + numberOfStartingHives +
-                ", weatherData=" + weatherData +
                 ", userId='" + userId + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", token='" + token + '\'' +
                 ", gameId='" + gameId + '\'' +
-                ", gameHistory=" + gameHistory +
                 '}';
     }
 }

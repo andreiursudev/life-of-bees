@@ -8,7 +8,7 @@ public class WeatherData {
     private double precipitation;//in mm
     private LocalDate date;//
 
-    public WeatherData( double windSpeed, double temperature, double precipitation) {
+    public WeatherData(double windSpeed, double temperature, double precipitation) {
         this.windSpeed = windSpeed;
         this.temperature = temperature;
         this.precipitation = precipitation;
@@ -67,7 +67,7 @@ public class WeatherData {
         double rainIndex = 0;
         double temperatureIndex = 0;
         double speedWindIndex = 0;
-        double whetherIndex = 0;
+        double whetherIndex;
         if (weatherData.getPrecipitation() <= 4) {
             rainIndex = 1;
         } else if (weatherData.getPrecipitation() > 4 && weatherData.getPrecipitation() <= 16) {

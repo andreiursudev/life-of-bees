@@ -12,7 +12,7 @@ public class AddHoneyFramesConsumer implements ActionOfTheWeekConsumer {
     @Override
     public void accept(LifeOfBees lifeOfBees, Object data) {
         List<Integer> honeyHiveIds = (List<Integer>) data;
-        Apiary apiary=lifeOfBees.getApiary();
+        Apiary apiary = lifeOfBees.getApiary();
         if (honeyHiveIds != null) {
             honeyHiveIds.forEach(hiveId -> {
                 Hive hive = apiary.getHiveById(hiveId);

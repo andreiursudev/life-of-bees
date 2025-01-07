@@ -12,19 +12,19 @@ public class BeeTime {
         this.currentDate = currentDate;
     }
 
+    public static boolean timeToSplitHive(LocalDate currentDate) {
+        Month month = currentDate.getMonth();
+        int dayOfMonth = currentDate.getDayOfMonth();
+        return (month == Month.APRIL || month == Month.MAY) &&
+                (dayOfMonth == 1 || dayOfMonth == 10);
+    }
+
     public LocalDate getCurrentDate() {
         return currentDate;
     }
 
     public void setCurrentDate(LocalDate currentDate) {
         this.currentDate = currentDate;
-    }
-
-    public static boolean timeToSplitHive(LocalDate currentDate) {
-        Month month = currentDate.getMonth();
-        int dayOfMonth = currentDate.getDayOfMonth();
-        return (month == Month.APRIL || month == Month.MAY) &&
-                (dayOfMonth == 1 || dayOfMonth == 10);
     }
 
 

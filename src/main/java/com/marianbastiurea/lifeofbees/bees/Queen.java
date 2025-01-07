@@ -23,21 +23,15 @@ public class Queen {
 
 
     public int ageOneDay(LocalDate currentDate, double whetherIndex) {
-        int numberOfEggs = 7000;
-       // int numberOfEggs = (int) (2000 * this.ageOfQueenIndex() * Honey.honeyProductivity(Honey.honeyType(currentDate)) * whetherIndex);
-        return numberOfEggs;
+        return (int) (2000 * this.ageOfQueenIndex() * Honey.honeyProductivity(Honey.honeyType(currentDate)) * whetherIndex);
     }
 
     public double ageOfQueenIndex() {
         int ageOfQueen = this.getAgeOfQueen();
-        switch (ageOfQueen) {
-            case 0, 1, 2, 3:
-                return 1;
-            case 4:
-                return 0.75;
-            default:
-                break;
-        }
-        return 0;
+        return switch (ageOfQueen) {
+            case 0, 1, 2, 3 -> 1;
+            case 4 -> 0.75;
+            default -> 0;
+        };
     }
 }

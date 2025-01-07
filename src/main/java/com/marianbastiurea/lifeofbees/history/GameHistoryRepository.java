@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface GameHistoryRepository extends MongoRepository<GameHistory,String> {
+public interface GameHistoryRepository extends MongoRepository<GameHistory, String> {
     Optional<GameHistory> findByGameId(String gameId);
 
 }

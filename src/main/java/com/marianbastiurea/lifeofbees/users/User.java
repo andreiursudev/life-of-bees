@@ -32,7 +32,7 @@ public class User implements UserDetails {
     @NotBlank(message = "Provider cannot be blank")
     private String provider;
 
-    private String providerId;
+
     public User() {
     }
 
@@ -42,11 +42,10 @@ public class User implements UserDetails {
         this.gamesList = gamesList != null ? new ArrayList<>(gamesList) : new ArrayList<>();
     }
 
-    public User(List<String> gamesList, String email, String provider, String providerId) {
+    public User(List<String> gamesList, String email, String provider) {
         this.gamesList = gamesList;
         this.email = email;
         this.provider = provider;
-        this.providerId = providerId;
     }
 
     public String getUserId() {

@@ -30,7 +30,6 @@ public class HoneyBatch {
         return isProcessed;
     }
 
-
     public void setProcessed(boolean processed) {
         isProcessed = processed;
     }

@@ -5,10 +5,12 @@ public enum ActionType {
     ADD_HONEY_FRAME(new AddHoneyFramesProducer(), new AddHoneyFramesConsumer()),
     MOVE_EGGS_FRAME(new MoveAnEggsFrameProducer(), new MoveAnEggsFrameConsumer()),
     FEED_BEES(new FeedBeesProducer(), new FeedBeesConsumer()),
-    SPLIT_HIVE(new SplitHiveProducer(),new SplitHiveConsumer()),
+    SPLIT_HIVE(new SplitHiveProducer(), new SplitHiveConsumer()),
     INSECT_CONTROL(new InsectControlProducer(), new InsectControllerConsumer()),
-    HIBERNATE(new HibernateProducer(), (o, o2) -> {}),
-    HARVEST_HONEY(new HarvestHoneyProducer(), (o, o2) -> {});
+    HIBERNATE(new HibernateProducer(), (o, o2) -> {
+    }),
+    HARVEST_HONEY(new HarvestHoneyProducer(), (o, o2) -> {
+    });
 
     private final ActionOfTheWeekProducer producer;
     private final ActionOfTheWeekConsumer biConsumer;

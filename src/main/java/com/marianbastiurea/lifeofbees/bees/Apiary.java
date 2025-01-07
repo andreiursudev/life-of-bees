@@ -86,8 +86,8 @@ public class Apiary {
             newHive.setBeesBatches(newHiveBeesBatches);
             newHive.setHoneyBatches(new ArrayList<>());
             newHives.add(newHive);
-            System.out.println("acesta e stupul vechi: " + hive);
-            System.out.println("acesta e stupul nou: " + newHive);
+            System.out.println("this is parent hive: " + hive);
+            System.out.println("this is child hive: " + newHive);
         }
         hives.addAll(newHives);
     }
@@ -103,9 +103,7 @@ public class Apiary {
             hive.getHoneyFrames().removeHoneyFrames();
             hive.removeBeesBatches();
         });
-
          return randomRemoveAHive(this.getHives());
-
     }
 
     private static Integer randomRemoveAHive(List<Hive> hives) {
@@ -114,11 +112,10 @@ public class Apiary {
             Random random = new Random();
             Hive hiveToRemove = hives.remove(random.nextInt(hives.size()));
             hiveIdToRemove= hiveToRemove.getId();
-            System.out.println("Stup eliminat cu ID: " + hiveToRemove.getId());
+            System.out.println("hive removed: " + hiveToRemove.getId());
         }
         return hiveIdToRemove;
     }
-
 
     public Integer checkInsectControl(LocalDate currentDate) {
         int dayOfMonth = currentDate.getDayOfMonth();
@@ -128,7 +125,6 @@ public class Apiary {
                 ? this.getHives().size()
                 : 0;
     }
-
 
     public void doInsectControl() {
         for (Hive hive : hives) {
@@ -223,17 +219,6 @@ public class Apiary {
         }
     }
 
-    public List<String> getFormattedTotalHarvestedHoney() {
-        List<String> formattedHoney = new ArrayList<>();
-        formattedHoney.add("Acacia " + totalHarvestedHoney.getAcacia() + " kg");
-        formattedHoney.add("Rapeseed " + totalHarvestedHoney.getRapeseed() + " kg");
-        formattedHoney.add("WildFlower " + totalHarvestedHoney.getWildFlower() + " kg");
-        formattedHoney.add("Linden " + totalHarvestedHoney.getLinden() + " kg");
-        formattedHoney.add("SunFlower " + totalHarvestedHoney.getSunFlower() + " kg");
-        formattedHoney.add("FalseIndigo " + totalHarvestedHoney.getFalseIndigo() + " kg");
-        return formattedHoney;
-    }
-
     public void addHivesToApiary(List<Hive> newHives, LifeOfBees lifeOfBeesgame) {
         List<Hive> existingHives = lifeOfBeesgame.getApiary().getHives();
         for (Hive hive : newHives) {
@@ -241,6 +226,5 @@ public class Apiary {
             existingHives.add(hive);
         }
     }
-
 }
 

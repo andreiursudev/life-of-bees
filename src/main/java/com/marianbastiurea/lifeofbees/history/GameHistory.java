@@ -4,14 +4,13 @@ import com.marianbastiurea.lifeofbees.game.LifeOfBees;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Document(collection = "gameHistory")
 public class GameHistory {
 
     @Id
-    private String  gameHistoryId;
+    private String gameHistoryId;
     private String gameId;
     private List<LifeOfBees> gamesHistory;
 

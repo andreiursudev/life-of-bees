@@ -1,13 +1,17 @@
 package com.marianbastiurea.lifeofbees.bees;
 
+
+import org.springframework.data.annotation.Transient;
+
 class HoneyFrame {
-    private double maxKgOfHoneyPerFrame = 4.5;
+
+    @Transient
+    private final double maxKgOfHoneyPerFrame = 4.5;
     private double kgOfHoney;
 
     public HoneyFrame(double kgOfHoney) {
         this.kgOfHoney = kgOfHoney;
     }
-
 
     public void fill(double kgOfHoneyToAdd) {
         if (kgOfHoney < maxKgOfHoneyPerFrame) {

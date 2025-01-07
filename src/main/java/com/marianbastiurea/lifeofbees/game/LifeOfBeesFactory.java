@@ -4,9 +4,9 @@ import com.marianbastiurea.lifeofbees.bees.Apiary;
 import com.marianbastiurea.lifeofbees.bees.Hive;
 import com.marianbastiurea.lifeofbees.weather.WeatherData;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.time.LocalDate;
 
 public class LifeOfBeesFactory {
 
@@ -17,7 +17,7 @@ public class LifeOfBeesFactory {
             int numberOfStartingHives,
             String userId,
             String gameType,
-           WeatherData weatherData
+            WeatherData weatherData
     ) {
         LocalDate date = LocalDate.parse(startingDate);
         double moneyInTheBank = 3000.0;

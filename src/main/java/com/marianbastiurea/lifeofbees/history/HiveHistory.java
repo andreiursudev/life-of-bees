@@ -15,7 +15,7 @@ public class HiveHistory {
     public HiveHistory() {
     }
 
-    public HiveHistory( LocalDate currentDate, WeatherData weatherData, double moneyInTheBank, Hive hive) {
+    public HiveHistory(LocalDate currentDate, WeatherData weatherData, double moneyInTheBank, Hive hive) {
         this.currentDate = currentDate;
         this.weatherData = weatherData;
         this.moneyInTheBank = moneyInTheBank;

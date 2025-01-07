@@ -32,7 +32,6 @@ public class LifeOfBees {
     private Map<String, WeatherData> allWeatherData = new HashMap<>();
 
 
-
     public LifeOfBees(String gameId, String gameType, String userId, Apiary apiary,
                       String gameName, String location, LocalDate currentDate,
                       WeatherData weatherData, double moneyInTheBank, double totalKgOfHoneyHarvested,
@@ -75,6 +74,9 @@ public class LifeOfBees {
         this.totalKgOfHoneyHarvested = totalKgOfHoneyHarvested;
     }
 
+    public LifeOfBees() {
+    }
+
     @Override
     public String toString() {
         return "LifeOfBees{" +
@@ -92,16 +94,13 @@ public class LifeOfBees {
                 '}';
     }
 
-    public LifeOfBees() {
-    }
-
-    public LifeOfBees iterateOneWeek(LifeOfBees lifeOfBeesGame, LifeOfBeesService lifeOfBeesService, Object data,List<WeatherData> weatherDataNextWeek) {
+    public LifeOfBees iterateOneWeek(LifeOfBees lifeOfBeesGame, Object data, List<WeatherData> weatherDataNextWeek) {
         ActionsOfTheWeek actionsOfTheWeek = new ActionsOfTheWeek();
         actionsOfTheWeek.executeActions(lifeOfBeesGame, data);
         System.out.println("Data curentă în joc: " + lifeOfBeesGame.getCurrentDate());
         Map<String, WeatherData> allWeatherData = lifeOfBeesGame.getAllWeatherData();
         WeatherData dailyWeather = null;
-        System.out.println("Weather data primit: " + allWeatherData );
+        System.out.println("Weather data primit: " + allWeatherData);
         for (int dailyIterator = 0; dailyIterator < 7; dailyIterator++) {
             dailyWeather = weatherDataNextWeek.stream()
                     .filter(weather -> weather.getDate().isEqual(currentDate))
@@ -179,16 +178,16 @@ public class LifeOfBees {
         return currentDate;
     }
 
+    public void setCurrentDate(LocalDate currentDate) {
+        this.currentDate = currentDate;
+    }
+
     public double getTotalKgOfHoneyHarvested() {
         return totalKgOfHoneyHarvested;
     }
 
     public void setTotalKgOfHoneyHarvested(double totalKgOfHoneyHarvested) {
         this.totalKgOfHoneyHarvested = totalKgOfHoneyHarvested;
-    }
-
-    public void setCurrentDate(LocalDate currentDate) {
-        this.currentDate = currentDate;
     }
 
     public ActionsOfTheWeek getActionsOfTheWeek() {
@@ -235,7 +234,4 @@ public class LifeOfBees {
         return allWeatherData;
     }
 
-    public void setAllWeatherData(Map<String, WeatherData> allWeatherData) {
-        this.allWeatherData = allWeatherData;
-    }
 }

@@ -2,9 +2,11 @@ package com.marianbastiurea.lifeofbees.bees;
 
 import com.marianbastiurea.lifeofbees.time.BeeTime;
 
-import java.time.Month;
 import java.time.LocalDate;
-import java.util.*;
+import java.time.Month;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
 
 public class Hive {
     private int id;
@@ -66,10 +68,6 @@ public class Hive {
         this.wasMovedAnEggsFrame = wasMovedAnEggsFrame;
     }
 
-    public boolean isWasMovedAnEggsFrame() {
-        return wasMovedAnEggsFrame;
-    }
-
     public void setItWasSplit(boolean itWasSplit) {
         this.itWasSplit = itWasSplit;
     }
@@ -108,12 +106,10 @@ public class Hive {
     }
 
     public Queen getQueen() {
-
         return queen;
     }
 
     public void setQueen(Queen queen) {
-
         this.queen = queen;
     }
 
@@ -155,7 +151,6 @@ public class Hive {
     }
 
     public boolean checkIfHiveCouldBeSplit(LocalDate currentDate) {
-
         if (this.itWasSplit) {
             return false;
         }

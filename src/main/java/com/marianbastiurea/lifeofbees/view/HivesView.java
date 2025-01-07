@@ -8,15 +8,13 @@ public class HivesView {
     int eggsFrame;
     int honeyFrame;
     private boolean itWasSplit;
-    private boolean itWasHarvested;
 
-    public HivesView(int id, int ageOfQueen, int eggsFrame, int honeyFrame, boolean itWasSplit, boolean itWasHarvested) {
+    public HivesView(int id, int ageOfQueen, int eggsFrame, int honeyFrame, boolean itWasSplit) {
         this.id = id;
         this.ageOfQueen = ageOfQueen;
         this.eggsFrame = eggsFrame;
         this.honeyFrame = honeyFrame;
         this.itWasSplit = itWasSplit;
-        this.itWasHarvested = itWasHarvested;
     }
 
     public int getId() {
@@ -47,13 +45,6 @@ public class HivesView {
         this.itWasSplit = itWasSplit;
     }
 
-    public boolean isItWasHarvested() {
-        return itWasHarvested;
-    }
-
-    public void setItWasHarvested(boolean itWasHarvested) {
-        this.itWasHarvested = itWasHarvested;
-    }
 
     @Override
     public String toString() {

@@ -27,15 +27,15 @@ public class ApiaryHistory {
         this.hive = hive;
     }
 
+    public ApiaryHistory() {
+    }
+
     public List<Hive> getHive() {
         return hive;
     }
 
     public void setHive(List<Hive> hive) {
         this.hive = hive;
-    }
-
-    public ApiaryHistory() {
     }
 
     public LocalDate getCurrentDate() {
