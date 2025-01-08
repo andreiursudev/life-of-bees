@@ -102,11 +102,8 @@ public class LifeOfBees {
         WeatherData dailyWeather = null;
         System.out.println("Weather data primit: " + allWeatherData);
         for (int dailyIterator = 0; dailyIterator < 7; dailyIterator++) {
-            dailyWeather = weatherDataNextWeek.stream()
-                    .filter(weather -> weather.getDate().isEqual(currentDate))
-                    .findFirst()
-                    .orElse(null);
-
+            dailyWeather = weatherDataNextWeek.get(dailyIterator);
+            System.out.println("ziua: "+dailyIterator+" si vremea este: "+dailyWeather);
             if (dailyWeather == null) {
                 throw new RuntimeException("Weather data not found for " + currentDate);
             }

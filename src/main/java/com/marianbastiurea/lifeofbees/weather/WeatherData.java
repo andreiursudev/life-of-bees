@@ -60,6 +60,7 @@ public class WeatherData {
                 "windSpeed=" + windSpeed +
                 ", temperature=" + temperature +
                 ", precipitation=" + precipitation +
+                ", date=" + date +
                 '}';
     }
 
