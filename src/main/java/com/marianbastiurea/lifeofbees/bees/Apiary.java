@@ -11,17 +11,28 @@ public class Apiary {
     private List<Hive> hives;
     private HarvestHoney totalHarvestedHoney;
 
+    public Apiary(List<Hive> hives) {
+        this.hives = hives;
+        this.totalHarvestedHoney = new HarvestHoney(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+    }
+
+    private static Integer randomRemoveAHive(List<Hive> hives) {
+        Integer hiveIdToRemove = 0;
+        if (!hives.isEmpty()) {
+            Random random = new Random();
+            Hive hiveToRemove = hives.remove(random.nextInt(hives.size()));
+            hiveIdToRemove = hiveToRemove.getId();
+            System.out.println("hive removed: " + hiveToRemove.getId());
+        }
+        return hiveIdToRemove;
+    }
+
     public HarvestHoney getTotalHarvestedHoney() {
         return totalHarvestedHoney;
     }
 
     public List<Hive> getHives() {
         return hives;
-    }
-
-    public Apiary(List<Hive> hives) {
-        this.hives = hives;
-        this.totalHarvestedHoney = new HarvestHoney(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
     }
 
     @Override
@@ -70,7 +81,6 @@ public class Apiary {
 
     }
 
-
     public void splitHive(Hive hive) {
         List<Hive> newHives = new ArrayList<>();
         EggFrames eggFrames = hive.getEggFrames();
@@ -103,18 +113,7 @@ public class Apiary {
             hive.getHoneyFrames().removeHoneyFrames();
             hive.removeBeesBatches();
         });
-         return randomRemoveAHive(this.getHives());
-    }
-
-    private static Integer randomRemoveAHive(List<Hive> hives) {
-        Integer hiveIdToRemove=0;
-        if (!hives.isEmpty()) {
-            Random random = new Random();
-            Hive hiveToRemove = hives.remove(random.nextInt(hives.size()));
-            hiveIdToRemove= hiveToRemove.getId();
-            System.out.println("hive removed: " + hiveToRemove.getId());
-        }
-        return hiveIdToRemove;
+        return randomRemoveAHive(this.getHives());
     }
 
     public Integer checkInsectControl(LocalDate currentDate) {

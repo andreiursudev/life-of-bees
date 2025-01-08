@@ -14,7 +14,6 @@ public class GameRequest {
     private String gameId;
 
 
-
     public String getGameId() {
         return gameId;
     }

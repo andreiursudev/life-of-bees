@@ -9,15 +9,15 @@ import java.util.List;
 import java.util.Random;
 
 public class Hive {
-    private int id;
     public boolean itWasSplit;
     public boolean wasMovedAnEggsFrame;
-    private EggFrames eggFrames;
-    private Queen queen;
-    LinkedList<Integer> beesBatches = new LinkedList<>();
-    private HoneyFrames honeyFrames;
     public List<HoneyBatch> honeyBatches;
     public boolean itWasHarvested;
+    LinkedList<Integer> beesBatches = new LinkedList<>();
+    private int id;
+    private EggFrames eggFrames;
+    private Queen queen;
+    private HoneyFrames honeyFrames;
 
     public Hive() {
     }
@@ -64,12 +64,12 @@ public class Hive {
         return itWasSplit;
     }
 
-    public void setWasMovedAnEggsFrame(boolean wasMovedAnEggsFrame) {
-        this.wasMovedAnEggsFrame = wasMovedAnEggsFrame;
-    }
-
     public void setItWasSplit(boolean itWasSplit) {
         this.itWasSplit = itWasSplit;
+    }
+
+    public void setWasMovedAnEggsFrame(boolean wasMovedAnEggsFrame) {
+        this.wasMovedAnEggsFrame = wasMovedAnEggsFrame;
     }
 
     @Override
@@ -97,14 +97,6 @@ public class Hive {
         this.eggFrames = eggFrames;
     }
 
-    public void setHoneyFrames(HoneyFrames honeyFrames1) {
-        this.honeyFrames = honeyFrames1;
-    }
-
-    public void setHoneyBatches(List<HoneyBatch> honeyBatches) {
-        this.honeyBatches = honeyBatches;
-    }
-
     public Queen getQueen() {
         return queen;
     }
@@ -129,10 +121,17 @@ public class Hive {
         return honeyBatches;
     }
 
+    public void setHoneyBatches(List<HoneyBatch> honeyBatches) {
+        this.honeyBatches = honeyBatches;
+    }
+
     public HoneyFrames getHoneyFrames() {
         return honeyFrames;
     }
 
+    public void setHoneyFrames(HoneyFrames honeyFrames1) {
+        this.honeyFrames = honeyFrames1;
+    }
 
     public LinkedList<Integer> getBeesBatches() {
         return beesBatches;

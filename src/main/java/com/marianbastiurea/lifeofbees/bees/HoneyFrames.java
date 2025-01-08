@@ -15,6 +15,15 @@ public class HoneyFrames {
         this.honeyFrame = honeyFrame;
     }
 
+    public static HoneyFrames getRandomHoneyFrames() {
+        Random random = new Random();
+        HoneyFrames honeyFrames = new HoneyFrames(new ArrayList<>());
+        for (int k = 0; k < random.nextInt(3, 5); k++) {
+            honeyFrames.getHoneyFrame().add(new HoneyFrame(random.nextDouble(2.5, 3)));
+        }
+        return honeyFrames;
+    }
+
     public List<HoneyFrame> getHoneyFrame() {
         return honeyFrame;
     }
@@ -36,7 +45,6 @@ public class HoneyFrames {
                 .count();
         return getHoneyFrame().size() < 6 && honeyFrameFull == getHoneyFrame().size();
     }
-
 
     public void addNewHoneyFrameInHive() {
         if (honeyFrame.size() < 6) {
@@ -62,15 +70,6 @@ public class HoneyFrames {
             }
         }
         return honeyFrameFull;
-    }
-
-    public static HoneyFrames getRandomHoneyFrames() {
-        Random random = new Random();
-        HoneyFrames honeyFrames = new HoneyFrames(new ArrayList<>());
-        for (int k = 0; k < random.nextInt(3, 5); k++) {
-            honeyFrames.getHoneyFrame().add(new HoneyFrame(random.nextDouble(2.5, 3)));
-        }
-        return honeyFrames;
     }
 
     public HoneyFrames splitHoneyFrames() {

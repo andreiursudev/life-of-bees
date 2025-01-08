@@ -5,8 +5,20 @@ public class HarvestHoney {
     public double Rapeseed = 0.0;
     public double WildFlower = 0.0;
     public double Linden = 0.0;
-    public double SunFlower=0.0;
-    public double FalseIndigo=0;
+    public double SunFlower = 0.0;
+    public double FalseIndigo = 0;
+
+    public HarvestHoney(double acacia, double rapeseed, double wildFlower, double linden, double sunFlower, double falseIndigo) {
+        Acacia = acacia;
+        Rapeseed = rapeseed;
+        WildFlower = wildFlower;
+        Linden = linden;
+        SunFlower = sunFlower;
+        FalseIndigo = falseIndigo;
+    }
+
+    public HarvestHoney() {
+    }
 
     public double getAcacia() {
         return Acacia;
@@ -54,18 +66,6 @@ public class HarvestHoney {
 
     public void setFalseIndigo(double falseIndigo) {
         FalseIndigo = falseIndigo;
-    }
-
-    public HarvestHoney(double acacia, double rapeseed, double wildFlower, double linden, double sunFlower, double falseIndigo) {
-        Acacia = acacia;
-        Rapeseed = rapeseed;
-        WildFlower = wildFlower;
-        Linden = linden;
-        SunFlower = sunFlower;
-        FalseIndigo = falseIndigo;
-    }
-
-    public HarvestHoney() {
     }
 
     @Override
