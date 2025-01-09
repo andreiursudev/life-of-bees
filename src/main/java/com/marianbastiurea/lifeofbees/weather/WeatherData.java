@@ -65,36 +65,38 @@ public class WeatherData {
     }
 
     public double weatherIndex(WeatherData weatherData) {
-        double rainIndex = 0;
-        double temperatureIndex = 0;
-        double speedWindIndex = 0;
-        double whetherIndex;
+        double rainIndex;
+        double temperatureIndex;
+        double windSpeedIndex;
         if (weatherData.getPrecipitation() <= 4) {
-            rainIndex = 1;
-        } else if (weatherData.getPrecipitation() > 4 && weatherData.getPrecipitation() <= 16) {
+            rainIndex = 1.1;
+        } else if (weatherData.getPrecipitation() <= 16) {
             rainIndex = 0.95;
-        } else if (weatherData.getPrecipitation() > 16 && weatherData.getPrecipitation() <= 50) {
+        } else if (weatherData.getPrecipitation() <= 50) {
             rainIndex = 0.9;
-        } else if (weatherData.getPrecipitation() > 50) {
+        } else {
             rainIndex = 0.7;
         }
         if (weatherData.getTemperature() <= 10) {
             temperatureIndex = 0.8;
-        } else if (weatherData.getPrecipitation() > 10 && weatherData.getTemperature() < 30) {
-            temperatureIndex = 1;
-        } else if (weatherData.getTemperature() >= 30) {
+        } else if (weatherData.getTemperature() < 30) {
+            temperatureIndex = 1.2;
+        } else {
             temperatureIndex = 0.8;
         }
         if (weatherData.getWindSpeed() <= 10) {
-            speedWindIndex = 1;
-        } else if (weatherData.getWindSpeed() > 10 && weatherData.getWindSpeed() <= 20) {
-            speedWindIndex = .8;
-        } else if (weatherData.getWindSpeed() > 20 && weatherData.getWindSpeed() <= 30) {
-            speedWindIndex = 0.75;
-        } else if (weatherData.getWindSpeed() > 30) {
-            speedWindIndex = 0.7;
+            windSpeedIndex = 1.1;
+        } else if (weatherData.getWindSpeed() <= 20) {
+            windSpeedIndex = 0.8;
+        } else if (weatherData.getWindSpeed() <= 30) {
+            windSpeedIndex = 0.75;
+        } else {
+            windSpeedIndex = 0.7;
         }
-        whetherIndex = rainIndex * temperatureIndex * speedWindIndex;
-        return whetherIndex;
+        System.out.println("Rain Index: " + rainIndex);
+        System.out.println("Temperature Index: " + temperatureIndex);
+        System.out.println("Wind Speed Index: " + windSpeedIndex);
+        return rainIndex * temperatureIndex * windSpeedIndex;
     }
+
 }

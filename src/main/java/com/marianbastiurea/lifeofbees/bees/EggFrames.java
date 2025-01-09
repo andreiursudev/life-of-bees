@@ -87,6 +87,7 @@ public class EggFrames {
 
     public int ageOneDay(int eggsToAdd) {
         int currentEggs = getEggs();
+        System.out.println("numarul de oua in EggsFrames este: " + currentEggs);
         int maxEggs = maxEggPerFrame * numberOfEggFrames;
         eggsByDay.addFirst(Math.min(eggsToAdd, maxEggs - currentEggs));
         return eggsByDay.removeLast();

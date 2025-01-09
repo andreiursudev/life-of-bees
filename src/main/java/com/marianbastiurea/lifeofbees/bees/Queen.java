@@ -22,8 +22,10 @@ public class Queen {
     }
 
 
-    public int ageOneDay(LocalDate currentDate, double whetherIndex) {
-        return (int) (2000 * this.ageOfQueenIndex() * Honey.honeyProductivity(Honey.honeyType(currentDate)) * whetherIndex);
+    public int ageOneDay(LocalDate currentDate, double weatherIndex) {
+        System.out.println("weather index in Queen este: "+weatherIndex);
+        System.out.println("Honey.honeyType(currentDate) in Queen este: "+Honey.honeyType(currentDate));
+        return (int) (2200 * this.ageOfQueenIndex() * Honey.honeyProductivity(Honey.honeyType(currentDate)) * weatherIndex);
     }
 
     public double ageOfQueenIndex() {

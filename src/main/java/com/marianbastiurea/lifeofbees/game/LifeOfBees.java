@@ -112,6 +112,7 @@ public class LifeOfBees {
                 hive.changeQueen(currentDate);
                 double weatherIndex = dailyWeather.weatherIndex(dailyWeather);
                 int numberOfEggs = queen.ageOneDay(currentDate, weatherIndex);
+                System.out.println("numarul zilnic de oua: "+numberOfEggs);
                 hive.ageOneDay(numberOfEggs);
                 hive.fillUpExistingHoneyFramesFromHive(currentDate);
                 hive.getBeesBatches().removeFirst();
