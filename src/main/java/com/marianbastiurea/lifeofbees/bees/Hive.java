@@ -150,24 +150,21 @@ public class Hive {
     }
 
     public boolean checkIfHiveCouldBeSplit(LocalDate currentDate) {
-        if (this.itWasSplit) {
-            return false;
-        }
-        return BeeTime.timeToSplitHive(currentDate) && this.eggFrames.isFullEggFrames() &&
+        return !this.itWasSplit &&
+                BeeTime.timeToSplitHive(currentDate) &&
+                this.eggFrames.isFullEggFrames() &&
                 this.eggFrames.is80PercentFull();
     }
 
     public void addNewEggsFrameInHive() {
-        if (this.eggFrames != null) {
+        if (this.eggFrames != null)
             this.eggFrames.incrementNumberOfEggFrames();
-        }
     }
 
     public void addHoneyBatches
             (List<HoneyBatch> honeyBatches) {
-        if (honeyBatches != null && !honeyBatches.isEmpty()) {
+        if (honeyBatches != null && !honeyBatches.isEmpty())
             this.honeyBatches.addAll(honeyBatches);
-        }
     }
 
     public void changeQueen(LocalDate currentDate) {
@@ -197,10 +194,9 @@ public class Hive {
 
     public void removeBeesBatches() {
         LinkedList<Integer> beesBatches = getBeesBatches();
-        for (int i = 0; i < 2 && !beesBatches.isEmpty(); i++) {
-            beesBatches.removeLast();
-        }
+        beesBatches.subList(Math.max(0, beesBatches.size() - 2), beesBatches.size()).clear();
     }
+
 
     public void fillUpExistingHoneyFramesFromHive(LocalDate currentDate) {
         Random random = new Random();
