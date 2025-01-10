@@ -53,24 +53,19 @@ public class HoneyFrames {
     }
 
     public double harvestHoneyFromHoneyFrames() {
-        double totalKgOfHoney = 0;
-        for (HoneyFrame honeyFrame : this.getHoneyFrame()) {
-            if (honeyFrame.isHarvestable()) {
-                totalKgOfHoney += honeyFrame.harvest();
-            }
-        }
-        return totalKgOfHoney;
+        return this.getHoneyFrame().stream()
+                .filter(HoneyFrame::isHarvestable)
+                .mapToDouble(HoneyFrame::harvest)
+                .sum();
     }
 
+
     public int getNumberOfFullHoneyFrame() {
-        int honeyFrameFull = 0;
-        for (int i = 0; i < this.getHoneyFrame().size(); i++) {
-            if (this.getHoneyFrame().get(i).isFull() && honeyFrameFull < this.getHoneyFrame().size()) {
-                honeyFrameFull += 1;
-            }
-        }
-        return honeyFrameFull;
+        return (int) this.getHoneyFrame().stream()
+                .filter(HoneyFrame::isFull)
+                .count();
     }
+
 
     public HoneyFrames splitHoneyFrames() {
         HoneyFrames newHiveHoneyFrames = new HoneyFrames(new ArrayList<>());
@@ -82,11 +77,11 @@ public class HoneyFrames {
     }
 
     public void removeHoneyFrames() {
-        List<HoneyFrame> honeyFrames = getHoneyFrame();
-        for (int i = 0; i < 2 && !honeyFrames.isEmpty(); i++) {
-            honeyFrames.removeLast();
+        for (int i = 0; i < 2 && !getHoneyFrame().isEmpty(); i++) {
+            getHoneyFrame().removeLast();
         }
     }
+
 
     public void fillUpAHoneyFrame(double kgOfHoneyToAdd) {
         int numberOfHoneyFrameNotFull = getHoneyFrame().size() - getNumberOfFullHoneyFrame();
