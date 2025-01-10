@@ -25,11 +25,10 @@ public class EggFrames {
     public static EggFrames getRandomEggFrames() {
         Random random = new Random();
         EggFrames eggFrames = new EggFrames(random.nextInt(3, 5));
-        for (int j = 0; j < 20; j++) {
-            eggFrames.ageOneDay(random.nextInt(800, 901));
-        }
+        random.ints(20, 800, 901).forEach(eggFrames::ageOneDay);
         return eggFrames;
     }
+
 
     public int getNumberOfEggFrames() {
         return numberOfEggFrames;
@@ -37,73 +36,63 @@ public class EggFrames {
 
     public EggFrames splitEggFrames() {
         LinkedList<Integer> newEggBatches = new LinkedList<>();
-        LinkedList<Integer> updatedEggBatches = new LinkedList<>();
-        for (int eggs : eggsByDay) {
+        eggsByDay.replaceAll(eggs -> {
             int halfEggs = eggs / 2;
             newEggBatches.add(halfEggs);
-            updatedEggBatches.add(halfEggs);
-        }
-        eggsByDay = updatedEggBatches;
+            return halfEggs;
+        });
         numberOfEggFrames = 3;
         return new EggFrames(3, newEggBatches);
     }
 
+
     List<Integer> extractEggBatchesForFrame() {
         int currentSum = 0;
         int index = 0;
-        while (index < eggsByDay.size() && currentSum + eggsByDay.get(index) <= maxEggPerFrame) {
-            currentSum += eggsByDay.get(index);
+        while (index < eggsByDay.size() && (currentSum += eggsByDay.get(index)) <= maxEggPerFrame) {
             index++;
         }
         List<Integer> extractedBatches = new ArrayList<>(eggsByDay.subList(0, index));
-        for (int i = 0; i < index; i++) {
-            eggsByDay.set(i, 0);
-        }
+        eggsByDay.subList(0, index).replaceAll(x -> 0);
         numberOfEggFrames--;
         return extractedBatches;
     }
 
+
     public void addEggBatches(List<Integer> batchesToAdd) {
-        for (int i = 0; i < batchesToAdd.size(); i++) {
+        for (int i = 0; i < batchesToAdd.size(); i++)
             eggsByDay.set(i, eggsByDay.get(i) + batchesToAdd.get(i));
-        }
         numberOfEggFrames++;
     }
 
     public boolean isFull() {
-        int totalEggs = getEggs();
-        return totalEggs >= maxEggPerFrame * numberOfEggFrames;
+        return getEggs() >= maxEggPerFrame * numberOfEggFrames;
     }
+
 
     public int getEggs() {
         return eggsByDay.stream().mapToInt(Integer::intValue).sum();
     }
 
     public boolean is80PercentFull() {
-        int totalEggs = getEggs();
-        System.out.println("totalEggs: " + totalEggs);
-        return totalEggs >= numberOfEggFrames * maxEggPerFrame * 0.8;
+        return getEggs()>= numberOfEggFrames * maxEggPerFrame * 0.8;
     }
 
     public int ageOneDay(int eggsToAdd) {
-        int currentEggs = getEggs();
-        System.out.println("numarul de oua in EggsFrames este: " + currentEggs);
-        int maxEggs = maxEggPerFrame * numberOfEggFrames;
-        eggsByDay.addFirst(Math.min(eggsToAdd, maxEggs - currentEggs));
+        eggsByDay.addFirst(Math.min(eggsToAdd, maxEggPerFrame * numberOfEggFrames - getEggs()));
         return eggsByDay.removeLast();
     }
 
+
     public void incrementNumberOfEggFrames() {
-        if (this.numberOfEggFrames < 6) {
+        if (this.numberOfEggFrames < 6)
             this.numberOfEggFrames++;
-        }
     }
 
     public boolean isFullEggFrames() {
-        System.out.println("EggFrames number: " + numberOfEggFrames);
-        int maxEggFrames = 6;
-        return numberOfEggFrames == maxEggFrames;
+        return numberOfEggFrames == 6;
     }
+
 
     public boolean checkIfAll6EggsFrameAre80PercentFull() {
         return isFullEggFrames() || !is80PercentFull();
