@@ -307,7 +307,7 @@ public class LifeOfBeesController {
     @GetMapping("/HiveHistory/{gameId}")
     public List<HiveHistory> getHiveHistory(@PathVariable String gameId,
                                             @RequestParam("hiveId") Integer hiveId) {
-        GameHistory gameHistory = gameHistoryService.findGameBygameId(gameId);
+        GameHistory gameHistory = gameHistoryService.findGameByGameId(gameId);
 
         List<HiveHistory> hiveHistories = new ArrayList<>();
         for (LifeOfBees game : gameHistory.getGamesHistory()) {
@@ -323,7 +323,7 @@ public class LifeOfBeesController {
 
     @GetMapping("/apiaryHistory/{gameId}")
     public ResponseEntity<List<ApiaryHistory>> getApiaryHistory(@PathVariable String gameId) throws JsonProcessingException {
-        GameHistory gameHistory = gameHistoryService.findGameBygameId(gameId);
+        GameHistory gameHistory = gameHistoryService.findGameByGameId(gameId);
         List<ApiaryHistory> apiaryHistories = new ArrayList<>();
         for (LifeOfBees game : gameHistory.getGamesHistory()) {
             Apiary apiary = game.getApiary();

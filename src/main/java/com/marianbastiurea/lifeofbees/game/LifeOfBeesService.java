@@ -36,7 +36,6 @@ public class LifeOfBeesService {
             List<String> gamesList = user.getGamesList();
             return lifeOfBeesRepository.findAllById(gamesList);
         }
-
         return List.of();
     }
 
@@ -48,8 +47,6 @@ public class LifeOfBeesService {
                 return List.of();
             }
             List<LifeOfBees> userGames = lifeOfBeesRepository.findAllById(gamesList);
-            System.out.println("aceasta e lista de jocuri din getGamesForUserByType: " + userGames);
-
             return userGames.stream()
                     .filter(game -> gameType.equals(game.getGameType()))
                     .collect(Collectors.toList());

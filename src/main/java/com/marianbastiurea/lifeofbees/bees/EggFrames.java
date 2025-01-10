@@ -75,7 +75,7 @@ public class EggFrames {
     }
 
     public boolean is80PercentFull() {
-        return getEggs()>= numberOfEggFrames * maxEggPerFrame * 0.8;
+        return getEggs() >= numberOfEggFrames * maxEggPerFrame * 0.8;
     }
 
     public int ageOneDay(int eggsToAdd) {

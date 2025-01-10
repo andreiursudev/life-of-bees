@@ -79,7 +79,7 @@ public class Apiary {
                 hive.getEggFrames().splitEggFrames(),
                 hive.getHoneyFrames().splitHoneyFrames(),
                 hive.splitBeesBatches(),
-                new ArrayList<>(), 
+                new ArrayList<>(),
                 new Queen(0),
                 false
         );

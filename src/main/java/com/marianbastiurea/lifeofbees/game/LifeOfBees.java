@@ -103,7 +103,7 @@ public class LifeOfBees {
         System.out.println("Weather data primit: " + allWeatherData);
         for (int dailyIterator = 0; dailyIterator < 7; dailyIterator++) {
             dailyWeather = weatherDataNextWeek.get(dailyIterator);
-            System.out.println("ziua: "+dailyIterator+" si vremea este: "+dailyWeather);
+            System.out.println("ziua: " + dailyIterator + " si vremea este: " + dailyWeather);
             if (dailyWeather == null) {
                 throw new RuntimeException("Weather data not found for " + currentDate);
             }
@@ -112,7 +112,7 @@ public class LifeOfBees {
                 hive.changeQueen(currentDate);
                 double weatherIndex = dailyWeather.weatherIndex(dailyWeather);
                 int numberOfEggs = queen.ageOneDay(currentDate, weatherIndex);
-                System.out.println("numarul zilnic de oua: "+numberOfEggs);
+                System.out.println("numarul zilnic de oua: " + numberOfEggs);
                 hive.ageOneDay(numberOfEggs);
                 hive.fillUpExistingHoneyFramesFromHive(currentDate);
                 hive.getBeesBatches().removeFirst();

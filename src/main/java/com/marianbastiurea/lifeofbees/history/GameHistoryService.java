@@ -17,7 +17,7 @@ public class GameHistoryService {
         this.gameHistoryRepository = gameHistoryRepository;
     }
 
-    public GameHistory findGameBygameId(String gameId) {
+    public GameHistory findGameByGameId(String gameId) {
         return gameHistoryRepository.findByGameId(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
     }
