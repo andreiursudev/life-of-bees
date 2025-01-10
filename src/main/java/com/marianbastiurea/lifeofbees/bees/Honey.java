@@ -1,8 +1,11 @@
 package com.marianbastiurea.lifeofbees.bees;
 
+import com.marianbastiurea.lifeofbees.time.BeeTime;
+
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Honey {
@@ -39,25 +42,24 @@ public class Honey {
     }
 
     public static List<HoneyBatch> harvestHoney(Hive hive, LocalDate currentDate) {
-        List<HoneyBatch> honeyBatches = new ArrayList<>();
-        int dayOfMonth = currentDate.getDayOfMonth();
-        if ((currentDate.getMonthValue() >= 4 && currentDate.getMonthValue() <= 8)
-                && (dayOfMonth == 10 || dayOfMonth == 20) && !hive.isItWasSplit()) {
-            HoneyFrames honeyFrames = hive.getHoneyFrames();
-            double harvestedHoney = honeyFrames.harvestHoneyFromHoneyFrames();
-            if (harvestedHoney > 0) {
-                hive.setItWasHarvested(true);
-                System.out.println("harvested honey from hive: " + hive.getId());
-                HoneyBatch honeyBatch = new HoneyBatch(
-                        hive.getId(),
-                        harvestedHoney,
-                        honeyType(currentDate),
-                        false
-                );
-                honeyBatches.add(honeyBatch);
-            }
+        if (!BeeTime.timeToHarvestHive(currentDate) || hive.isItWasSplit()) {
+            return Collections.emptyList();
         }
-        return honeyBatches;
+        double harvestedHoney = hive.getHoneyFrames().harvestHoneyFromHoneyFrames();
+        if (harvestedHoney <= 0) {
+            return Collections.emptyList();
+        }
+
+        hive.setItWasHarvested(true);
+        HoneyBatch honeyBatch = new HoneyBatch(
+                hive.getId(),
+                harvestedHoney,
+                honeyType(currentDate),
+                false
+        );
+
+        return List.of(honeyBatch);
     }
+
 }
 

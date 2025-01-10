@@ -19,6 +19,13 @@ public class BeeTime {
                 (dayOfMonth == 1 || dayOfMonth == 10);
     }
 
+    public static boolean timeToHarvestHive(LocalDate currentDate) {
+        int dayOfMonth = currentDate.getDayOfMonth();
+        return (currentDate.getMonthValue() >= 4 && currentDate.getMonthValue() <= 8)
+                && (dayOfMonth == 10 || dayOfMonth == 20);
+    }
+
+
     public LocalDate getCurrentDate() {
         return currentDate;
     }

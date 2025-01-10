@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 public class Hive {
@@ -157,9 +158,9 @@ public class Hive {
     }
 
     public void addNewEggsFrameInHive() {
-        if (this.eggFrames != null)
-            this.eggFrames.incrementNumberOfEggFrames();
+        Optional.ofNullable(this.eggFrames).ifPresent(EggFrames::incrementNumberOfEggFrames);
     }
+
 
     public void addHoneyBatches
             (List<HoneyBatch> honeyBatches) {
