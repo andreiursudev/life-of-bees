@@ -30,27 +30,6 @@ public class LifeOfBeesService {
         this.mongoTemplate = mongoTemplate;
     }
 
-//    public WeatherData fetchWeatherForDate(LocalDate date) {
-//        String weatherApiUrl = "http://localhost:8081/api/weather/" + date;
-//
-//        try {
-//            RestTemplate restTemplate = new RestTemplate();
-//            WeatherData weatherData = restTemplate.getForObject(weatherApiUrl, WeatherData.class);
-//
-//            if (weatherData != null) {
-//                allWeatherData.put(date.toString(), weatherData);
-//                System.out.println("Fetched weather data: " + weatherData);
-//                return weatherData;
-//            } else {
-//                System.err.println("Weather data is null for date: " + date);
-//                return null;
-//            }
-//        } catch (Exception e) {
-//            System.err.println("Error fetching weather data for date " + date + ": " + e.getMessage());
-//            return null;
-//        }
-//    }
-
     public List<LifeOfBees> getGamesForJohnDoe() {
         User user = userService.findUserByUsername("johndoe");
         if (user != null) {
@@ -62,8 +41,6 @@ public class LifeOfBeesService {
     }
 
     public List<LifeOfBees> getGamesForUserByType(String userId, String gameType) {
-        System.out.println("acesta e userId in getGamesForUserByType: " + userId);
-        System.out.println("acesta e gameType in getGamesForUserByType: " + gameType);
         User user = userService.findUserByUserId(userId);
         if (user != null) {
             List<String> gamesList = user.getGamesList();

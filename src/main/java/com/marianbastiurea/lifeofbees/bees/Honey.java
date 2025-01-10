@@ -28,9 +28,10 @@ public class Honey {
                     ? HoneyType.Linden
                     : HoneyType.WildFlower;
             case JULY -> HoneyType.SunFlower;
-            default -> null;
+            default -> HoneyType.WildFlower;
         };
     }
+
 
     public static double honeyProductivity(HoneyType honeyType) {
         return switch (honeyType) {
