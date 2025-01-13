@@ -1,9 +1,8 @@
 package com.marianbastiurea.lifeofbees.view;
 
 import com.marianbastiurea.lifeofbees.action.ActionsOfTheWeek;
+import com.marianbastiurea.lifeofbees.time.BeeTime;
 import com.marianbastiurea.lifeofbees.weather.WeatherData;
-
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,9 +14,10 @@ public class GameResponse {
     private double windSpeed;
     private double precipitation;
     private double moneyInTheBank;
-    private LocalDate currentDate;
+    private BeeTime currentDate;
     private double totalKgOfHoneyHarvested;
     private ActionsOfTheWeek actionsOfTheWeek;
+    private Integer removedHiveId;
 
     public String getId() {
         return id;
@@ -27,11 +27,11 @@ public class GameResponse {
         this.id = id;
     }
 
-    public LocalDate getCurrentDate() {
+    public BeeTime getCurrentDate() {
         return currentDate;
     }
 
-    public void setCurrentDate(LocalDate currentDate) {
+    public void setCurrentDate(BeeTime currentDate) {
         this.currentDate = currentDate;
     }
 
@@ -112,6 +112,14 @@ public class GameResponse {
                 ", totalKgOfHoneyHarvested=" + totalKgOfHoneyHarvested +
                 ", actionsOfTheWeek=" + actionsOfTheWeek +
                 '}';
+    }
+
+    public void setRemovedHiveId(Integer removedHiveId) {
+        this.removedHiveId = removedHiveId;
+    }
+
+    public Integer getRemovedHiveId() {
+        return removedHiveId;
     }
 }
 

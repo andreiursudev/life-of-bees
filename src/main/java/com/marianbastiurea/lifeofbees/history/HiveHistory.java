@@ -1,12 +1,11 @@
 package com.marianbastiurea.lifeofbees.history;
 
 import com.marianbastiurea.lifeofbees.bees.Hive;
+import com.marianbastiurea.lifeofbees.time.BeeTime;
 import com.marianbastiurea.lifeofbees.weather.WeatherData;
 
-import java.time.LocalDate;
-
 public class HiveHistory {
-    private LocalDate currentDate;
+    private BeeTime currentDate;
     private WeatherData weatherData;
     private double moneyInTheBank;
     private Hive hive;
@@ -15,7 +14,7 @@ public class HiveHistory {
     public HiveHistory() {
     }
 
-    public HiveHistory(LocalDate currentDate, WeatherData weatherData, double moneyInTheBank, Hive hive) {
+    public HiveHistory(BeeTime currentDate, WeatherData weatherData, double moneyInTheBank, Hive hive) {
         this.currentDate = currentDate;
         this.weatherData = weatherData;
         this.moneyInTheBank = moneyInTheBank;
@@ -23,11 +22,11 @@ public class HiveHistory {
     }
 
 
-    public LocalDate getCurrentDate() {
+    public BeeTime getCurrentDate() {
         return currentDate;
     }
 
-    public void setCurrentDate(LocalDate currentDate) {
+    public void setCurrentDate(BeeTime currentDate) {
         this.currentDate = currentDate;
     }
 

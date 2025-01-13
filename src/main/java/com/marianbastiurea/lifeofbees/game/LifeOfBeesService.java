@@ -1,23 +1,15 @@
 package com.marianbastiurea.lifeofbees.game;
 
-import com.marianbastiurea.lifeofbees.users.User;
-import com.marianbastiurea.lifeofbees.users.UserService;
-import com.marianbastiurea.lifeofbees.weather.WeatherData;
+import com.marianbastiurea.lifeofbees.users.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class LifeOfBeesService {
-
-    private final Map<String, WeatherData> allWeatherData = new HashMap<>();
-
-    private final MongoTemplate mongoTemplate;
 
     @Autowired
     private UserService userService;
@@ -25,9 +17,9 @@ public class LifeOfBeesService {
     @Autowired
     private LifeOfBeesRepository lifeOfBeesRepository;
 
-    @Autowired
-    public LifeOfBeesService(MongoTemplate mongoTemplate) {
-        this.mongoTemplate = mongoTemplate;
+
+    public Optional<LifeOfBees> getByGameId(String gameId) {
+        return lifeOfBeesRepository.findByGameId(gameId);
     }
 
     public List<LifeOfBees> getGamesForJohnDoe() {
@@ -54,4 +46,7 @@ public class LifeOfBeesService {
         return List.of();
     }
 
+    public LifeOfBees save(LifeOfBees lifeOfBeesGame) {
+        return lifeOfBeesRepository.save(lifeOfBeesGame);
+    }
 }

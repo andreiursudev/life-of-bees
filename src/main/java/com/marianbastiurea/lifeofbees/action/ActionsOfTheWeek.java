@@ -28,7 +28,8 @@ public class ActionsOfTheWeek {
         return actions;
     }
 
-    public void addAllActions(LifeOfBees lifeOfBees) {
+    public void createActions(LifeOfBees lifeOfBees) {
+        actions.clear();
         for (ActionType actionType : ActionType.values()) {
             Object data = actionType.getProducer().produce(lifeOfBees);
             if (data != null &&

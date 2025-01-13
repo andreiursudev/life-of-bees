@@ -25,7 +25,7 @@ public class EggFrames {
     public static EggFrames getRandomEggFrames() {
         Random random = new Random();
         EggFrames eggFrames = new EggFrames(random.nextInt(3, 5));
-        random.ints(20, 800, 901).forEach(eggFrames::ageOneDay);
+        random.ints(20, 800, 901).forEach(eggFrames::iterateOneDay);
         return eggFrames;
     }
 
@@ -78,7 +78,7 @@ public class EggFrames {
         return getEggs() >= numberOfEggFrames * maxEggPerFrame * 0.8;
     }
 
-    public int ageOneDay(int eggsToAdd) {
+    public int iterateOneDay(int eggsToAdd) {
         eggsByDay.addFirst(Math.min(eggsToAdd, maxEggPerFrame * numberOfEggFrames - getEggs()));
         return eggsByDay.removeLast();
     }

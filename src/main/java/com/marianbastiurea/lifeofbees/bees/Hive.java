@@ -1,13 +1,8 @@
 package com.marianbastiurea.lifeofbees.bees;
 
 import com.marianbastiurea.lifeofbees.time.BeeTime;
-
-import java.time.LocalDate;
 import java.time.Month;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 public class Hive {
     public boolean itWasSplit;
@@ -150,7 +145,7 @@ public class Hive {
         this.itWasHarvested = itWasHarvested;
     }
 
-    public boolean checkIfHiveCouldBeSplit(LocalDate currentDate) {
+    public boolean checkIfHiveCouldBeSplit(BeeTime currentDate) {
         return !this.itWasSplit &&
                 BeeTime.timeToSplitHive(currentDate) &&
                 this.eggFrames.isFullEggFrames() &&
@@ -168,7 +163,7 @@ public class Hive {
             this.honeyBatches.addAll(honeyBatches);
     }
 
-    public void changeQueen(LocalDate currentDate) {
+    public void maybeChangeQueen(BeeTime currentDate) {
         double numberRandom = Math.random();
         Month month = currentDate.getMonth();
         int dayOfMonth = currentDate.getDayOfMonth();
@@ -177,10 +172,37 @@ public class Hive {
         }
     }
 
-    public void ageOneDay(int numberOfEggs) {
-        int bees = getEggFrames().ageOneDay(numberOfEggs);
+    public void iterateOneDay(BeeTime currentDate, double weatherIndex) {
+        maybeChangeQueen(currentDate);
+        int numberOfEggs = queen.iterateOneDay(currentDate, weatherIndex);
+        int bees = eggFrames.iterateOneDay(numberOfEggs);
         getBeesBatches().add(bees);
+        fillUpExistingHoneyFramesFromHive(currentDate);
+        getBeesBatches().removeFirst();
+        List<HoneyBatch> harvestedHoneyBatches = harvestHoney(currentDate);
+        addHoneyBatches(harvestedHoneyBatches);
     }
+
+    public List<HoneyBatch> harvestHoney(BeeTime currentDate) {
+        if (!BeeTime.timeToHarvestHive(currentDate) || isItWasSplit()) {
+            return Collections.emptyList();
+        }
+        double harvestedHoney = getHoneyFrames().harvestHoneyFromHoneyFrames();
+        if (harvestedHoney <= 0) {
+            return Collections.emptyList();
+        }
+
+        setItWasHarvested(true);
+        HoneyBatch honeyBatch = new HoneyBatch(
+                getId(),
+                harvestedHoney,
+                Honey.honeyType(currentDate),
+                false
+        );
+
+        return List.of(honeyBatch);
+    }
+
 
     public LinkedList<Integer> splitBeesBatches() {
         LinkedList<Integer> newHiveBeesBatches = new LinkedList<>(getBeesBatches());
@@ -199,7 +221,7 @@ public class Hive {
     }
 
 
-    public void fillUpExistingHoneyFramesFromHive(LocalDate currentDate) {
+    public void fillUpExistingHoneyFramesFromHive(BeeTime currentDate) {
         Random random = new Random();
         int numberOfFlight = random.nextInt(3, 6);
         double kgOfHoneyToAdd = this.getBeesBatches().stream().mapToInt(Integer::intValue).sum() * numberOfFlight * 0.00002 * Honey.honeyProductivity(Honey.honeyType(currentDate));//0.02gr/flight/bee

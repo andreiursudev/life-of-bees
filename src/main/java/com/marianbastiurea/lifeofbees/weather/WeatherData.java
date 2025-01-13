@@ -1,12 +1,12 @@
 package com.marianbastiurea.lifeofbees.weather;
 
-import java.time.LocalDate;
+import com.marianbastiurea.lifeofbees.time.BeeTime;
 
 public class WeatherData {
     private double windSpeed;// in km/h
     private double temperature;// in Celsius Degree
     private double precipitation;//in mm
-    private LocalDate date;//
+    private BeeTime date;//
 
     public WeatherData(double windSpeed, double temperature, double precipitation) {
         this.windSpeed = windSpeed;
@@ -18,7 +18,7 @@ public class WeatherData {
     public WeatherData() {
     }
 
-    public WeatherData(LocalDate date) {
+    public WeatherData(BeeTime date) {
         this.date = date;
     }
 
@@ -46,11 +46,11 @@ public class WeatherData {
         this.precipitation = precipitation;
     }
 
-    public LocalDate getDate() {
+    public BeeTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(BeeTime date) {
         this.date = date;
     }
 
@@ -64,31 +64,31 @@ public class WeatherData {
                 '}';
     }
 
-    public double weatherIndex(WeatherData weatherData) {
+    public double weatherIndex() {
         double rainIndex;
         double temperatureIndex;
         double windSpeedIndex;
-        if (weatherData.getPrecipitation() <= 4) {
+        if (getPrecipitation() <= 4) {
             rainIndex = 1.1;
-        } else if (weatherData.getPrecipitation() <= 16) {
+        } else if (getPrecipitation() <= 16) {
             rainIndex = 0.95;
-        } else if (weatherData.getPrecipitation() <= 50) {
+        } else if (getPrecipitation() <= 50) {
             rainIndex = 0.9;
         } else {
             rainIndex = 0.7;
         }
-        if (weatherData.getTemperature() <= 10) {
+        if (getTemperature() <= 10) {
             temperatureIndex = 0.8;
-        } else if (weatherData.getTemperature() < 30) {
+        } else if (getTemperature() < 30) {
             temperatureIndex = 1.2;
         } else {
             temperatureIndex = 0.8;
         }
-        if (weatherData.getWindSpeed() <= 10) {
+        if (getWindSpeed() <= 10) {
             windSpeedIndex = 1.1;
-        } else if (weatherData.getWindSpeed() <= 20) {
+        } else if (getWindSpeed() <= 20) {
             windSpeedIndex = 0.8;
-        } else if (weatherData.getWindSpeed() <= 30) {
+        } else if (getWindSpeed() <= 30) {
             windSpeedIndex = 0.75;
         } else {
             windSpeedIndex = 0.7;

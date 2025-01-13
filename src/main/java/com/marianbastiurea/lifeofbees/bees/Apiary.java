@@ -1,27 +1,29 @@
 package com.marianbastiurea.lifeofbees.bees;
 
 import com.marianbastiurea.lifeofbees.game.LifeOfBees;
-
-import java.time.LocalDate;
 import java.time.Month;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import com.marianbastiurea.lifeofbees.time.BeeTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Apiary {
 
     private List<Hive> hives;
     private HarvestHoney totalHarvestedHoney;
+    private static final Logger logger = LoggerFactory.getLogger(Apiary.class);
 
     public Apiary(List<Hive> hives) {
         this.hives = hives;
         this.totalHarvestedHoney = new HarvestHoney(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
     }
 
-    private static Integer randomRemoveAHive(List<Hive> hives) {
+    private Integer randomRemoveAHive() {
         if (hives.isEmpty()) return 0;
         Hive hiveToRemove = hives.remove(new Random().nextInt(hives.size()));
-        System.out.println("hive removed: " + hiveToRemove.getId());
         return hiveToRemove.getId();
     }
 
@@ -50,7 +52,7 @@ public class Apiary {
         return null;
     }
 
-    public List<Hive> createHive(int numberOfHives, LocalDate date) {
+    public List<Hive> createHive(int numberOfHives) {
         Random random = new Random();
         return IntStream.rangeClosed(1, numberOfHives).mapToObj(i -> new Hive(
                 i,
@@ -86,8 +88,8 @@ public class Apiary {
 
         hives.add(newHive);
 
-        System.out.println("this is parent hive: " + hive);
-        System.out.println("this is child hive: " + newHive);
+        logger.info("this is parent hive: {}", hive);
+        logger.info("this is child hive: {}", newHive);
     }
 
     public Integer hibernate() {
@@ -101,10 +103,10 @@ public class Apiary {
             hive.getHoneyFrames().removeHoneyFrames();
             hive.removeBeesBatches();
         });
-        return randomRemoveAHive(this.getHives());
+        return randomRemoveAHive();
     }
 
-    public Integer checkInsectControl(LocalDate currentDate) {
+    public Integer checkInsectControl(BeeTime currentDate) {
         int dayOfMonth = currentDate.getDayOfMonth();
         return ((currentDate.getMonthValue() >= 4 && currentDate.getMonthValue() <= 8)
                 && (dayOfMonth >= 10 && dayOfMonth <= 15) ||
@@ -120,7 +122,7 @@ public class Apiary {
         }
     }
 
-    public Integer checkFeedBees(LocalDate currentDate) {
+    public Integer checkFeedBees(BeeTime currentDate) {
         return (currentDate.getMonth() == Month.SEPTEMBER)
                 ? this.getHives().size()
                 : 0;

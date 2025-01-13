@@ -1,6 +1,6 @@
 package com.marianbastiurea.lifeofbees.bees;
 
-import java.time.LocalDate;
+import com.marianbastiurea.lifeofbees.time.BeeTime;
 
 public class Queen {
     private int ageOfQueen;
@@ -22,7 +22,7 @@ public class Queen {
     }
 
 
-    public int ageOneDay(LocalDate currentDate, double weatherIndex) {
+    public int iterateOneDay(BeeTime currentDate, double weatherIndex) {
         return (int) (2200 * this.ageOfQueenIndex() * Honey.honeyProductivity(Honey.honeyType(currentDate)) * weatherIndex);
     }
 
