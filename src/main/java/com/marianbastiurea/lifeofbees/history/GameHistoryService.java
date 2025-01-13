@@ -15,8 +15,7 @@ public class GameHistoryService {
         this.gameHistoryRepository = gameHistoryRepository;
     }
     public List<GameHistory> findGameHistoriesByGameId(String gameId) {
-        //TODO finish implementation
-        return null;
+        return gameHistoryRepository.findByGameId(gameId);
     }
 
 

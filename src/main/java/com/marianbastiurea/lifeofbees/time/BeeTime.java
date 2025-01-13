@@ -72,4 +72,11 @@ public class BeeTime {
     public BeeTime addingDays(long days) {
         return new BeeTime(this.currentDate.plusDays(days));
     }
+
+    public boolean timeForInsectControl(BeeTime currentDate) {
+        int dayOfMonth = currentDate.getDayOfMonth();
+        return (currentDate.getMonthValue() >= 4 && currentDate.getMonthValue() <= 8)
+                && (dayOfMonth >= 10 && dayOfMonth <= 15) ||
+                (dayOfMonth >= 20 && dayOfMonth <= 25);
+    }
 }

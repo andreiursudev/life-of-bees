@@ -16,12 +16,9 @@ public class LifeOfBees {
     private String userId;
     private Apiary apiary;
     private ActionsOfTheWeek actionsOfTheWeek;
-    private String gameName;
-    private String location;
+    private final String gameName;
+    private final String location;
     private Integer removedHiveId;
-
-
-    //TODO Replace LocalDate with BeeTime
     private BeeTime currentDate;
     private WeatherData weatherData;
     private double moneyInTheBank;
@@ -65,7 +62,6 @@ public class LifeOfBees {
             for (Hive hive : apiary.getHives()) {
                 hive.iterateOneDay(currentDate, weatherIndex);
             }
-
             apiary.honeyHarvestedByHoneyType();
             this.setTotalKgOfHoneyHarvested(apiary.getTotalKgHoneyHarvested());
             BeeTime targetDate = new BeeTime(currentDate.getYear(), 9, 30);

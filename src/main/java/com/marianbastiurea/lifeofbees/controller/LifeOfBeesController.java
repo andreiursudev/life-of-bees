@@ -8,7 +8,6 @@ import com.marianbastiurea.lifeofbees.security.JwtTokenProvider;
 import com.marianbastiurea.lifeofbees.time.BeeTime;
 import com.marianbastiurea.lifeofbees.users.*;
 import com.marianbastiurea.lifeofbees.view.*;
-import com.marianbastiurea.lifeofbees.view.HomePageGameResponse;
 import com.marianbastiurea.lifeofbees.weather.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

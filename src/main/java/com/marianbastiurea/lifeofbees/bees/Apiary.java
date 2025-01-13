@@ -107,10 +107,7 @@ public class Apiary {
     }
 
     public Integer checkInsectControl(BeeTime currentDate) {
-        int dayOfMonth = currentDate.getDayOfMonth();
-        return ((currentDate.getMonthValue() >= 4 && currentDate.getMonthValue() <= 8)
-                && (dayOfMonth >= 10 && dayOfMonth <= 15) ||
-                (dayOfMonth >= 20 && dayOfMonth <= 25))
+        return currentDate.timeForInsectControl(currentDate)
                 ? this.getHives().size()
                 : 0;
     }

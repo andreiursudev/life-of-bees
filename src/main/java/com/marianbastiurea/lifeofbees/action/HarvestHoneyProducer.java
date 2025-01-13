@@ -1,11 +1,9 @@
 package com.marianbastiurea.lifeofbees.action;
 
-import com.marianbastiurea.lifeofbees.bees.Apiary;
-import com.marianbastiurea.lifeofbees.bees.Hive;
+import com.marianbastiurea.lifeofbees.bees.*;
 import com.marianbastiurea.lifeofbees.game.LifeOfBees;
+import java.util.*;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class HarvestHoneyProducer implements ActionOfTheWeekProducer {
 
