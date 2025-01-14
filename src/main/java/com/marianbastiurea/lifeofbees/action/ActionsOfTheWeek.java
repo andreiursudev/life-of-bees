@@ -20,7 +20,7 @@ public class ActionsOfTheWeek {
                 '}';
     }
 
-    public void put(ActionType value,Object data) {
+    public void put(ActionType value, Object data) {
         actions.put(value, data);
     }
 
@@ -31,7 +31,7 @@ public class ActionsOfTheWeek {
     public void createActions(LifeOfBees lifeOfBees) {
         actions.clear();
         for (ActionType actionType : ActionType.values()) {
-            Object data =  actionType.getProducer().produce(lifeOfBees);
+            Object data = actionType.getProducer().produce(lifeOfBees);
             if (data != null &&
                     !(data instanceof Number && ((Number) data).intValue() == 0) &&
                     !(data instanceof Collection && ((Collection<?>) data).isEmpty())) {
@@ -40,7 +40,7 @@ public class ActionsOfTheWeek {
         }
     }
 
-    public  void executeActions(LifeOfBees lifeOfBees, Map<ActionType, Object> actions) {
+    public void executeActions(LifeOfBees lifeOfBees, Map<ActionType, Object> actions) {
         if (actions == null || actions.isEmpty()) {
             System.out.println("No actions to do");
             return;

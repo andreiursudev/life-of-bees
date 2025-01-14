@@ -1,6 +1,7 @@
 package com.marianbastiurea.lifeofbees.game;
 
-import com.marianbastiurea.lifeofbees.users.*;
+import com.marianbastiurea.lifeofbees.users.User;
+import com.marianbastiurea.lifeofbees.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

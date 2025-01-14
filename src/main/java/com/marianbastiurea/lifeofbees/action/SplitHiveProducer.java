@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class SplitHiveProducer implements ActionOfTheWeekProducer <List<Integer>> {
+public class SplitHiveProducer implements ActionOfTheWeekProducer<List<Integer>> {
     @Override
     public List<Integer> produce(LifeOfBees lifeOfBees) {
         Apiary apiary = lifeOfBees.getApiary();

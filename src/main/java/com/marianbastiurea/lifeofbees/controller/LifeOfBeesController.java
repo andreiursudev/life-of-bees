@@ -2,21 +2,37 @@ package com.marianbastiurea.lifeofbees.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.marianbastiurea.lifeofbees.action.ActionType;
-import com.marianbastiurea.lifeofbees.bees.*;
-import com.marianbastiurea.lifeofbees.game.*;
-import com.marianbastiurea.lifeofbees.history.*;
+import com.marianbastiurea.lifeofbees.bees.Apiary;
+import com.marianbastiurea.lifeofbees.bees.HarvestHoney;
+import com.marianbastiurea.lifeofbees.bees.Hive;
+import com.marianbastiurea.lifeofbees.game.LifeOfBees;
+import com.marianbastiurea.lifeofbees.game.LifeOfBeesFactory;
+import com.marianbastiurea.lifeofbees.game.LifeOfBeesService;
+import com.marianbastiurea.lifeofbees.history.ApiaryHistory;
+import com.marianbastiurea.lifeofbees.history.GameHistory;
+import com.marianbastiurea.lifeofbees.history.GameHistoryService;
+import com.marianbastiurea.lifeofbees.history.HiveHistory;
 import com.marianbastiurea.lifeofbees.security.JwtTokenProvider;
 import com.marianbastiurea.lifeofbees.time.BeeTime;
-import com.marianbastiurea.lifeofbees.users.*;
-import com.marianbastiurea.lifeofbees.view.*;
-import com.marianbastiurea.lifeofbees.weather.*;
+import com.marianbastiurea.lifeofbees.users.User;
+import com.marianbastiurea.lifeofbees.users.UserService;
+import com.marianbastiurea.lifeofbees.view.GameRequest;
+import com.marianbastiurea.lifeofbees.view.GameResponse;
+import com.marianbastiurea.lifeofbees.view.HivesView;
+import com.marianbastiurea.lifeofbees.view.HomePageGameResponse;
+import com.marianbastiurea.lifeofbees.weather.WeatherData;
+import com.marianbastiurea.lifeofbees.weather.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
 import java.security.Principal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -36,8 +52,8 @@ public class LifeOfBeesController {
 
 
     public LifeOfBeesController(
-                                UserService userService, JwtTokenProvider jwtTokenProvider,
-                                GameHistoryService gameHistoryService) {
+            UserService userService, JwtTokenProvider jwtTokenProvider,
+            GameHistoryService gameHistoryService) {
         this.userService = userService;
         this.jwtTokenProvider = jwtTokenProvider;
         this.gameHistoryService = gameHistoryService;
@@ -295,7 +311,7 @@ public class LifeOfBeesController {
     @GetMapping("/HiveHistory/{gameId}")
     public List<HiveHistory> getHiveHistory(@PathVariable String gameId,
                                             @RequestParam("hiveId") Integer hiveId) {
-         List<GameHistory> gameHistory = gameHistoryService.findGameHistoriesByGameId(gameId);
+        List<GameHistory> gameHistory = gameHistoryService.findGameHistoriesByGameId(gameId);
 
         List<HiveHistory> hiveHistories = new ArrayList<>();
         for (GameHistory game : gameHistory) {
