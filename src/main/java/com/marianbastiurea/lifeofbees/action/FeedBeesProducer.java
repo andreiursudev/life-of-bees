@@ -5,9 +5,9 @@ import com.marianbastiurea.lifeofbees.game.LifeOfBees;
 import com.marianbastiurea.lifeofbees.time.BeeTime;
 
 
-public class FeedBeesProducer implements ActionOfTheWeekProducer {
+public class FeedBeesProducer implements ActionOfTheWeekProducer <Integer> {
     @Override
-    public Object produce(LifeOfBees lifeOfBees) {
+    public Integer produce(LifeOfBees lifeOfBees) {
         Apiary apiary = lifeOfBees.getApiary();
         BeeTime currentDate = lifeOfBees.getCurrentDate();
         return apiary.checkFeedBees(currentDate);
