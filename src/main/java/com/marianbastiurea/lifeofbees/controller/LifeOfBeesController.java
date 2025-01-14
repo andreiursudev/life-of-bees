@@ -110,34 +110,19 @@ public class LifeOfBeesController {
             @RequestBody Map<String, Map<ActionType, Object>> requestData,
             Principal principal) {
         System.out.println("Request for iterate gameId: " + gameId);
-
-        // Obține jocul asociat cu gameId
         LifeOfBees lifeOfBeesGame = lifeOfBeesService.getByGameId(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
-
-        // Obține datele meteo pentru săptămâna următoare
         List<WeatherData> weatherDataNextWeek = weatherService.getWeatherForNextWeek(lifeOfBeesGame.getCurrentDate());
-
-        // Verifică drepturile de acces pentru utilizatorul curent
         String userId = principal.getName();
         accessDenied(lifeOfBeesGame, userId);
-
-        // Extrage acțiunile din cererea HTTP
         Map<ActionType, Object> actions = requestData.get("actions");
         if (actions == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing 'actions' data in request");
         }
 
-        // Iterează o săptămână folosind datele primite
         lifeOfBeesGame.iterateOneWeek(actions, weatherDataNextWeek);
-
-        // Salvează starea actualizată a jocului
         lifeOfBeesService.save(lifeOfBeesGame);
-
-        // Creează un răspuns pentru client
         GameResponse response = getGameResponse(lifeOfBeesGame);
-
-        // Salvează istoricul jocului
         gameHistoryService.saveGameHistory(lifeOfBeesGame);
 
         return response;

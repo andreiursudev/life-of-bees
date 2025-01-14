@@ -7,20 +7,6 @@ import com.marianbastiurea.lifeofbees.time.BeeTime;
 
 import java.util.ArrayList;
 import java.util.List;
-//
-//public class SplitHiveProducer implements ActionOfTheWeekProducer {
-//    @Override
-//    public Object produce(LifeOfBees lifeOfBees) {
-//        Apiary apiary = lifeOfBees.getApiary();
-//        BeeTime currentDate = lifeOfBees.getCurrentDate();
-//        List<Integer> hiveIds = new ArrayList<>();
-//        for (Hive hive : apiary.getHives()) {
-//            if (hive.checkIfHiveCouldBeSplit(currentDate))
-//                hiveIds.add(hive.getId());
-//        }
-//        return hiveIds;
-//    }
-//}
 
 
 public class SplitHiveProducer implements ActionOfTheWeekProducer <List<Integer>> {

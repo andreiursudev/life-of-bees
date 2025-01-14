@@ -42,14 +42,17 @@ public class LifeOfBees {
         this.actionsOfTheWeek=actionsOfTheWeek;
     }
 
+
     @Override
     public String toString() {
         return "LifeOfBees{" +
                 "gameId='" + gameId + '\'' +
                 ", userId='" + userId + '\'' +
                 ", apiary=" + apiary +
+                ", actionsOfTheWeek=" + actionsOfTheWeek +
                 ", gameName='" + gameName + '\'' +
                 ", location='" + location + '\'' +
+                ", removedHiveId=" + removedHiveId +
                 ", currentDate=" + currentDate +
                 ", weatherData=" + weatherData +
                 ", moneyInTheBank=" + moneyInTheBank +
