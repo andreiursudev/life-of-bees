@@ -58,7 +58,7 @@ public class LifeOfBees {
                 '}';
     }
 
-    public <T> void iterateOneWeek(Map<ActionType, T> actions, List<WeatherData> weatherDataNextWeek) {
+    public void iterateOneWeek(Map<ActionType, Object> actions, List<WeatherData> weatherDataNextWeek) {
         ActionsOfTheWeek actionsOfTheWeek = new ActionsOfTheWeek();
         actionsOfTheWeek.executeActions(this, actions);
         for (int dailyIterator = 0; dailyIterator < 7; dailyIterator++) {

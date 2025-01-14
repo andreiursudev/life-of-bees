@@ -105,9 +105,9 @@ public class LifeOfBeesController {
 
 
     @PostMapping("/iterate/{gameId}")
-    public <T> GameResponse iterateWeek(
+    public GameResponse iterateWeek(
             @PathVariable String gameId,
-            @RequestBody Map<String, Map<ActionType, T>> requestData,
+            @RequestBody Map<String, Map<ActionType, Object>> requestData,
             Principal principal) {
         System.out.println("Request for iterate gameId: " + gameId);
 
@@ -123,7 +123,7 @@ public class LifeOfBeesController {
         accessDenied(lifeOfBeesGame, userId);
 
         // Extrage acțiunile din cererea HTTP
-        Map<ActionType, T> actions = requestData.get("actions");
+        Map<ActionType, Object> actions = requestData.get("actions");
         if (actions == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing 'actions' data in request");
         }

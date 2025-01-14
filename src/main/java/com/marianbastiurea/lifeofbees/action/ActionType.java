@@ -10,19 +10,19 @@ public enum ActionType{
     HARVEST_HONEY(new HarvestHoneyProducer(), (o, o2) -> {
     });
 
-    private final ActionOfTheWeekProducer <?> producer;
-    private final ActionOfTheWeekConsumer <?> biConsumer;
+    private final ActionOfTheWeekProducer  producer;
+    private final ActionOfTheWeekConsumer  biConsumer;
 
-    ActionType(ActionOfTheWeekProducer<?> producer, ActionOfTheWeekConsumer<?> biConsumer) {
+    ActionType(ActionOfTheWeekProducer producer, ActionOfTheWeekConsumer biConsumer) {
         this.producer = producer;
         this.biConsumer = biConsumer;
     }
 
-    public ActionOfTheWeekProducer<?> getProducer() {
+    public ActionOfTheWeekProducer getProducer() {
         return producer;
     }
 
-    public ActionOfTheWeekConsumer<?> getBiConsumer() {
+    public ActionOfTheWeekConsumer getBiConsumer() {
         return biConsumer;
     }
 }

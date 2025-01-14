@@ -68,8 +68,8 @@ import java.util.Map;
 //}
 
 
-public class ActionsOfTheWeek<T> {
-    private Map<ActionType, T> actions;
+public class ActionsOfTheWeek {
+    private Map<ActionType, Object> actions;
 
     public ActionsOfTheWeek() {
         this.actions = new HashMap<>();
@@ -82,18 +82,18 @@ public class ActionsOfTheWeek<T> {
                 '}';
     }
 
-    public void put(ActionType value, T data) {
+    public void put(ActionType value,Object data) {
         actions.put(value, data);
     }
 
-    public Map<ActionType, T> getActions() {
+    public Map<ActionType, Object> getActions() {
         return actions;
     }
 
     public void createActions(LifeOfBees lifeOfBees) {
         actions.clear();
         for (ActionType actionType : ActionType.values()) {
-            T data = (T) actionType.getProducer().produce(lifeOfBees);
+            Object data =  actionType.getProducer().produce(lifeOfBees);
             if (data != null &&
                     !(data instanceof Number && ((Number) data).intValue() == 0) &&
                     !(data instanceof Collection && ((Collection<?>) data).isEmpty())) {
@@ -102,19 +102,19 @@ public class ActionsOfTheWeek<T> {
         }
     }
 
-    public  void executeActions(LifeOfBees lifeOfBees, Map<ActionType, T> actions) {
+    public  void executeActions(LifeOfBees lifeOfBees, Map<ActionType, Object> actions) {
         if (actions == null || actions.isEmpty()) {
             System.out.println("No actions to do");
             return;
         }
 
-        for (Map.Entry<ActionType, T> action : actions.entrySet()) {
+        for (Map.Entry<ActionType, Object> action : actions.entrySet()) {
             ActionType actionType = action.getKey();
-            T actionData = action.getValue();
+            Object actionData = action.getValue();
 
             try {
 
-                ActionOfTheWeekConsumer<T> biConsumer = (ActionOfTheWeekConsumer<T>) actionType.getBiConsumer();
+                ActionOfTheWeekConsumer biConsumer = actionType.getBiConsumer();
                 biConsumer.accept(lifeOfBees, actionData);
             } catch (ClassCastException e) {
                 System.out.println("Error: Mismatched type for action " + actionType.name());
