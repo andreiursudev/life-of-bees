@@ -112,9 +112,6 @@ public class LifeOfBeesController {
         LifeOfBees lifeOfBeesGame = lifeOfBeesService.getByGameId(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
         List<WeatherData> weatherDataNextWeek = weatherService.getWeatherForNextWeek(lifeOfBeesGame.getCurrentDate());
-        if (weatherDataNextWeek.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Weather data for the next week not found");
-        }
         String userId = principal.getName();
         accessDenied(lifeOfBeesGame, userId);
         Object data = requestData.get("actions");

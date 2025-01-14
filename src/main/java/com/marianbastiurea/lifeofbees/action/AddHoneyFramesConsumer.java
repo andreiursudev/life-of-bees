@@ -4,13 +4,31 @@ import com.marianbastiurea.lifeofbees.bees.*;
 import com.marianbastiurea.lifeofbees.game.LifeOfBees;
 
 import java.util.List;
+//
+//public class AddHoneyFramesConsumer implements ActionOfTheWeekConsumer {
+//
+//
+//    @Override
+//    public void accept(LifeOfBees lifeOfBees, Object data) {
+//        List<Integer> honeyHiveIds = (List<Integer>) data;
+//        Apiary apiary = lifeOfBees.getApiary();
+//        if (honeyHiveIds != null) {
+//            honeyHiveIds.forEach(hiveId -> {
+//                Hive hive = apiary.getHiveById(hiveId);
+//                if (hive != null) {
+//                    hive.getHoneyFrames().addNewHoneyFrameInHive();
+//                }
+//            });
+//        }
+//    }
+//}
 
-public class AddHoneyFramesConsumer implements ActionOfTheWeekConsumer {
+
+public class AddHoneyFramesConsumer implements ActionOfTheWeekConsumer<List<Integer>> {
 
 
     @Override
-    public void accept(LifeOfBees lifeOfBees, Object data) {
-        List<Integer> honeyHiveIds = (List<Integer>) data;
+    public void accept(LifeOfBees lifeOfBees, List<Integer> honeyHiveIds) {
         Apiary apiary = lifeOfBees.getApiary();
         if (honeyHiveIds != null) {
             honeyHiveIds.forEach(hiveId -> {
@@ -22,4 +40,3 @@ public class AddHoneyFramesConsumer implements ActionOfTheWeekConsumer {
         }
     }
 }
-

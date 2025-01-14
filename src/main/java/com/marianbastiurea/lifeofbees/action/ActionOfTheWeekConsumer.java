@@ -2,6 +2,7 @@ package com.marianbastiurea.lifeofbees.action;
 
 import com.marianbastiurea.lifeofbees.game.LifeOfBees;
 
-public interface ActionOfTheWeekConsumer {
-    void accept(LifeOfBees lifeOfBees, Object data);
+@FunctionalInterface
+public interface ActionOfTheWeekConsumer<T> {
+    void accept(LifeOfBees lifeOfBees, T data);
 }

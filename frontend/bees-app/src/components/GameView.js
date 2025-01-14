@@ -33,31 +33,42 @@ const GameView = () => {
             console.error('Game ID is missing!');
             return;
         }
-
+    
         async function fetchGameData() {
             try {
                 console.log('am primit datele in gameView pentru ID:', gameId);
                 const data = await getGame(gameId);
                 console.log('datele primite din Java:', data);
-                const currentDate = new Date(data.currentDate);
+    
+                // Extragem data curentă
+                const currentDateStr = data.currentDate.currentDate; // Ex: "2024-03-01"
+                console.log('Data curentă (string):', currentDateStr);
+    
+                // Transformăm în obiect Date
+                const currentDate = new Date(currentDateStr);
+                console.log('Obiect Date generat:', currentDate);
+    
+                // Setăm luna și ziua folosind obiectul Date
                 setMonth(currentDate.getMonth() + 1);
-                console.log('luna curenta este: ', currentDate.getMonth() + 1);
+                console.log('Luna curentă este:', currentDate.getMonth() + 1);
+    
                 setDay(currentDate.getDate());
-                console.log('ziua este: ' + currentDate.getDate());
+                console.log('Ziua curentă este:', currentDate.getDate());
+    
+                // Setăm restul datelor jocului
                 setGameData(data);
                 setUpdatedGameData(data);
-
-
+    
             } catch (error) {
                 console.error('No receiving data in GameView:', error);
             } finally {
                 setLoading(false);
             }
         }
-
+    
         fetchGameData();
-    }, []);
-
+    }, [gameId]);
+    
     const handleYesNoChange = (actionType, response) => {
         setSelectedActions((prevSelectedActions) => ({
             ...prevSelectedActions,
@@ -116,9 +127,9 @@ const GameView = () => {
                 setUpdatedGameData(updatedGameData);
                 setSelectedActions({});
 
-                const currentDate = new Date(updatedGameData.currentDate);
-                setMonth(currentDate.getMonth() + 1);
-                setDay(currentDate.getDate());
+                const currentDate = new Date(updatedGameData.currentDate.currentDate);
+                setMonth(currentDate.currentDate.getMonth() + 1);
+                setDay(currentDate.currentDate.getDate());
             }
         } catch (error) {
             console.error("Error iterating week:", error);
@@ -207,10 +218,10 @@ const GameView = () => {
     };
 
     const isMarchOrApril = () => {
-        if (!gameData || !gameData.currentDate) {
+        if (!gameData || !gameData.currentDate.currentDate) {
             return false;
         }
-        const currentMonth = new Date(gameData.currentDate).getMonth() + 1;
+        const currentMonth = new Date(gameData.currentDate.currentDate).getMonth() + 1;
         return currentMonth === 3 || currentMonth === 4;
     };
 
@@ -405,7 +416,7 @@ const GameView = () => {
 
                 <div className="col-md-3">
                     <div className="d-flex flex-column align-items-center">
-                        <p className="btn-custom p-custom mb-2">Date: {gameData ? gameData.currentDate : 'Loading...'}</p>
+                        <p className="btn-custom p-custom mb-2">Date: {gameData ? gameData.currentDate.currentDate : 'Loading...'}</p>
                         <p className="btn-custom p-custom mb-2">
                             Temp: {gameData && gameData.temperature !== undefined ? gameData.temperature.toFixed(2) : '0.00'}
                         </p>

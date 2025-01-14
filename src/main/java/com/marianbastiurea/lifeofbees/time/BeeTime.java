@@ -16,6 +16,8 @@ public class BeeTime {
         this.currentDate = LocalDate.of(year, month, day);
     }
 
+    public BeeTime() {
+    }
 
     public static boolean timeToSplitHive(BeeTime currentDate) {
         Month month = currentDate.getMonth();
@@ -78,5 +80,16 @@ public class BeeTime {
         return (currentDate.getMonthValue() >= 4 && currentDate.getMonthValue() <= 8)
                 && (dayOfMonth >= 10 && dayOfMonth <= 15) ||
                 (dayOfMonth >= 20 && dayOfMonth <= 25);
+    }
+
+    public String toFormattedDate() {
+        return currentDate.toString(); // Format implicit ISO-8601: YYYY-MM-DD
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "currentDate=" + currentDate +
+                '}';
     }
 }

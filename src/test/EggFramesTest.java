@@ -12,37 +12,37 @@ class EggFramesTest {
         EggFrames eggFrames = new EggFrames(3);
 
         for (int i = 0; i < 20; i++) {
-            eggFrames.ageOneDay(i);
+            eggFrames.iterateOneDay(i);
         }
 
         for (int i = 0; i < 20; i++) {
-            Assertions.assertEquals(i, eggFrames.ageOneDay(0));
+            Assertions.assertEquals(i, eggFrames.iterateOneDay(0));
         }
     }
 
     @Test
     void maxEggsCannotBeExceed() {
         EggFrames eggFrames = new EggFrames(1);
-        eggFrames.ageOneDay(6500);
+        eggFrames.iterateOneDay(6500);
 
         for (int i = 0; i < 19; i++) {
-            Assertions.assertEquals(0, eggFrames.ageOneDay(0));
+            Assertions.assertEquals(0, eggFrames.iterateOneDay(0));
         }
-        Assertions.assertEquals(EggFrames.maxEggPerFrame, eggFrames.ageOneDay(0));
+        Assertions.assertEquals(EggFrames.maxEggPerFrame, eggFrames.iterateOneDay(0));
     }
 
     @Test
     void isSplitEggFramesOk() {
         EggFrames eggFrames = new EggFrames(1);
         for (int i = 0; i < 20; i++) {
-            eggFrames.ageOneDay(100);
+            eggFrames.iterateOneDay(100);
         }
         EggFrames newEggFrames=eggFrames.splitEggFrames();
         for (int i = 0; i < 20; i++) {
-            assertEquals(50, eggFrames.ageOneDay(0));
+            assertEquals(50, eggFrames.iterateOneDay(0));
         }
         for (int i = 0; i < 20; i++) {
-            assertEquals(50, newEggFrames.ageOneDay(0));
+            assertEquals(50, newEggFrames.iterateOneDay(0));
 
         }
 

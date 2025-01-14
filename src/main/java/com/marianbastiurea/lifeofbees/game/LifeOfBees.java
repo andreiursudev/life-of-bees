@@ -27,7 +27,7 @@ public class LifeOfBees {
 
     public LifeOfBees(String gameName, String userId, String gameType, Apiary apiary,
                       String location, BeeTime currentDate, WeatherData weatherData,
-                      double moneyInTheBank, double totalKgOfHoneyHarvested) {
+                      double moneyInTheBank, double totalKgOfHoneyHarvested,ActionsOfTheWeek actionsOfTheWeek ) {
         this.apiary = apiary;
         this.gameName = gameName;
         this.location = location;
@@ -37,6 +37,7 @@ public class LifeOfBees {
         this.totalKgOfHoneyHarvested = totalKgOfHoneyHarvested;
         this.userId = userId;
         this.gameType = gameType;
+        this.actionsOfTheWeek=actionsOfTheWeek;
     }
 
     @Override
