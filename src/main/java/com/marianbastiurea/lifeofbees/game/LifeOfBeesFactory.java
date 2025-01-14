@@ -25,6 +25,6 @@ public class LifeOfBeesFactory {
         List<Hive> newHives = apiary.createHive(numberOfStartingHives);
         apiary.getHives().addAll(newHives);
         return new LifeOfBees(gameName, userId, gameType, apiary, location, date,
-                weatherData, moneyInTheBank, totalKgOfHoney);
+                weatherData, moneyInTheBank, totalKgOfHoney, null);
     }
 }

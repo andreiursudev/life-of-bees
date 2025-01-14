@@ -1,6 +1,6 @@
 package com.marianbastiurea.lifeofbees.action;
 
-public enum ActionType<T>{
+public enum ActionType{
     ADD_EGGS_FRAME(new AddEggsFramesProducer(), new AddEggsFramesConsumer()),
     ADD_HONEY_FRAME(new AddHoneyFramesProducer(), new AddHoneyFramesConsumer()),
     MOVE_EGGS_FRAME(new MoveAnEggsFrameProducer(), new MoveAnEggsFrameConsumer()),
@@ -10,8 +10,8 @@ public enum ActionType<T>{
     HARVEST_HONEY(new HarvestHoneyProducer(), (o, o2) -> {
     });
 
-    private final ActionOfTheWeekProducer <T> producer;
-    private final ActionOfTheWeekConsumer <T> biConsumer;
+    private final ActionOfTheWeekProducer <?> producer;
+    private final ActionOfTheWeekConsumer <?> biConsumer;
 
     ActionType(ActionOfTheWeekProducer<?> producer, ActionOfTheWeekConsumer<?> biConsumer) {
         this.producer = producer;

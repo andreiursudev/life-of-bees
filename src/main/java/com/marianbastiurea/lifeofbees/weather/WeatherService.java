@@ -27,7 +27,7 @@ public class WeatherService {
     public List<WeatherData> getWeatherForNextWeek(BeeTime startDate) {
         String formattedStartingDate = startDate.toFormattedDate();
         BeeTime endDate = startDate.addingDays(6);
-        String formattedEndingDate = startDate.toFormattedDate();
+        String formattedEndingDate = endDate.toFormattedDate();
         String weatherApiUrl = "http://localhost:8081/api/weather?startDate=" + formattedStartingDate + "&endDate=" + formattedEndingDate;
         WeatherData[] weatherDataArray = restTemplate.getForObject(weatherApiUrl, WeatherData[].class);
         return weatherDataArray != null ? Arrays.asList(weatherDataArray) : new ArrayList<>();

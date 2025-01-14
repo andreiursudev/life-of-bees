@@ -102,29 +102,25 @@ public class ActionsOfTheWeek<T> {
         }
     }
 
-    public void executeActions(LifeOfBees lifeOfBees, T data) {
-        if (data == null) {
+    public  void executeActions(LifeOfBees lifeOfBees, Map<ActionType, T> actions) {
+        if (actions == null || actions.isEmpty()) {
             System.out.println("No actions to do");
             return;
         }
-        if (!(data instanceof Map)) {
-            System.out.println("Invalid data format");
-            return;
-        }
-        Map<String, T> stringKeyActions = (Map<String, T>) data;
-        Map<ActionType, T> actions = new HashMap<>();
-        for (Map.Entry<String, T> entry : stringKeyActions.entrySet()) {
-            try {
-                ActionType actionType = ActionType.valueOf(entry.getKey());
-                actions.put(actionType, entry.getValue());
-            } catch (IllegalArgumentException e) {
-                System.out.println("Unknown action type: " + entry.getKey());
-            }
-        }
+
         for (Map.Entry<ActionType, T> action : actions.entrySet()) {
             ActionType actionType = action.getKey();
             T actionData = action.getValue();
-            actionType.getBiConsumer().accept(lifeOfBees, actionData);
+
+            try {
+
+                ActionOfTheWeekConsumer<T> biConsumer = (ActionOfTheWeekConsumer<T>) actionType.getBiConsumer();
+                biConsumer.accept(lifeOfBees, actionData);
+            } catch (ClassCastException e) {
+                System.out.println("Error: Mismatched type for action " + actionType.name());
+            }
         }
     }
+
+
 }

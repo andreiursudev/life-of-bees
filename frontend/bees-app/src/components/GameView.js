@@ -33,42 +33,42 @@ const GameView = () => {
             console.error('Game ID is missing!');
             return;
         }
-    
+
         async function fetchGameData() {
             try {
                 console.log('am primit datele in gameView pentru ID:', gameId);
                 const data = await getGame(gameId);
                 console.log('datele primite din Java:', data);
-    
+
                 // Extragem data curentă
                 const currentDateStr = data.currentDate.currentDate; // Ex: "2024-03-01"
                 console.log('Data curentă (string):', currentDateStr);
-    
+
                 // Transformăm în obiect Date
                 const currentDate = new Date(currentDateStr);
                 console.log('Obiect Date generat:', currentDate);
-    
+
                 // Setăm luna și ziua folosind obiectul Date
                 setMonth(currentDate.getMonth() + 1);
                 console.log('Luna curentă este:', currentDate.getMonth() + 1);
-    
+
                 setDay(currentDate.getDate());
                 console.log('Ziua curentă este:', currentDate.getDate());
-    
+
                 // Setăm restul datelor jocului
                 setGameData(data);
                 setUpdatedGameData(data);
-    
+
             } catch (error) {
                 console.error('No receiving data in GameView:', error);
             } finally {
                 setLoading(false);
             }
         }
-    
+
         fetchGameData();
     }, [gameId]);
-    
+
     const handleYesNoChange = (actionType, response) => {
         setSelectedActions((prevSelectedActions) => ({
             ...prevSelectedActions,
@@ -107,7 +107,7 @@ const GameView = () => {
                     }
                     else if (['INSECT_CONTROL', 'FEED_BEES'].includes(actionType)) {
                         acc[actionType] = selectedActions[key];
-                    } else{
+                    } else {
                         acc[actionType].push(selectedActions[key]);
                     }
 
@@ -127,9 +127,9 @@ const GameView = () => {
                 setUpdatedGameData(updatedGameData);
                 setSelectedActions({});
 
-                const currentDate = new Date(updatedGameData.currentDate.currentDate);
-                setMonth(currentDate.currentDate.getMonth() + 1);
-                setDay(currentDate.currentDate.getDate());
+                const dateObject = new Date(updatedGameData.currentDate.currentDate);
+                setMonth(dateObject.getMonth() + 1); // getMonth() returnează luna de la 0 la 11
+                setDay(dateObject.getDate());       // getDate() returnează ziua lunii
             }
         } catch (error) {
             console.error("Error iterating week:", error);
@@ -385,13 +385,13 @@ const GameView = () => {
                                                                     </p>
                                                                 );
 
-                                                                case "HIBERNATE":
-                                                                    return (
-                                                                        <p>
-                                                                            <span>Your hive with id {actionData} died during last winter.</span>
-                                                                        </p>
-                                                                    );
-                                                                
+                                                            case "HIBERNATE":
+                                                                return (
+                                                                    <p>
+                                                                        <span>Your hive with id {actionData} died during last winter.</span>
+                                                                    </p>
+                                                                );
+
 
                                                             default:
                                                                 return null;

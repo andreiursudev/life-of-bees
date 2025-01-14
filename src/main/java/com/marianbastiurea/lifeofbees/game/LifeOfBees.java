@@ -1,5 +1,6 @@
 package com.marianbastiurea.lifeofbees.game;
 
+import com.marianbastiurea.lifeofbees.action.ActionType;
 import com.marianbastiurea.lifeofbees.action.ActionsOfTheWeek;
 import com.marianbastiurea.lifeofbees.bees.*;
 import com.marianbastiurea.lifeofbees.time.BeeTime;
@@ -7,6 +8,7 @@ import com.marianbastiurea.lifeofbees.weather.WeatherData;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
+import java.util.Map;
 
 
 @Document(collection = "games")
@@ -56,8 +58,9 @@ public class LifeOfBees {
                 '}';
     }
 
-    public void iterateOneWeek(Object data, List<WeatherData> weatherDataNextWeek) {
-        actionsOfTheWeek.executeActions(this, data);
+    public <T> void iterateOneWeek(Map<ActionType, T> actions, List<WeatherData> weatherDataNextWeek) {
+        ActionsOfTheWeek actionsOfTheWeek = new ActionsOfTheWeek();
+        actionsOfTheWeek.executeActions(this, actions);
         for (int dailyIterator = 0; dailyIterator < 7; dailyIterator++) {
             double weatherIndex = weatherDataNextWeek.get(dailyIterator).weatherIndex();
             for (Hive hive : apiary.getHives()) {
@@ -77,6 +80,8 @@ public class LifeOfBees {
             currentDate.addDays(1);
         }
         actionsOfTheWeek.createActions(this);
+        this.setActionsOfTheWeek(actionsOfTheWeek);
+        System.out.println("acestea sunt actions:"+actionsOfTheWeek);
     }
 
 
