@@ -25,7 +25,7 @@ public class FeedBeesConsumer implements ActionOfTheWeekConsumer<String> {
 
 
     @Override
-    public void accept(LifeOfBees lifeOfBees, String answera) {
+    public void accept(LifeOfBees lifeOfBees, String answer) {
         Apiary apiary = lifeOfBees.getApiary();
         if ("yes".equals(answer)) {
             int cost = apiary.getHives().size() * 10;
