@@ -71,7 +71,7 @@ const HiveHistory = () => {
 
                                 return (
                                     <tr key={index}>
-                                        <td>{entry.currentDate}</td>
+                                        <td>{entry.currentDate.currentDate}</td>
                                         <td>{entry.weatherData.temperature}°C</td>
                                         <td>{entry.weatherData.windSpeed} km/h</td>
                                         <td>{entry.weatherData.precipitation} mm</td>

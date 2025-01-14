@@ -2,45 +2,32 @@ package com.marianbastiurea.lifeofbees.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.marianbastiurea.lifeofbees.action.ActionType;
-import com.marianbastiurea.lifeofbees.bees.Apiary;
-import com.marianbastiurea.lifeofbees.bees.HarvestHoney;
-import com.marianbastiurea.lifeofbees.bees.Hive;
-import com.marianbastiurea.lifeofbees.game.LifeOfBees;
-import com.marianbastiurea.lifeofbees.game.LifeOfBeesFactory;
-import com.marianbastiurea.lifeofbees.game.LifeOfBeesService;
-import com.marianbastiurea.lifeofbees.history.ApiaryHistory;
-import com.marianbastiurea.lifeofbees.history.GameHistory;
-import com.marianbastiurea.lifeofbees.history.GameHistoryService;
-import com.marianbastiurea.lifeofbees.history.HiveHistory;
+import com.marianbastiurea.lifeofbees.bees.*;
+import com.marianbastiurea.lifeofbees.game.*;
+import com.marianbastiurea.lifeofbees.history.*;
 import com.marianbastiurea.lifeofbees.security.JwtTokenProvider;
 import com.marianbastiurea.lifeofbees.time.BeeTime;
-import com.marianbastiurea.lifeofbees.users.User;
-import com.marianbastiurea.lifeofbees.users.UserService;
-import com.marianbastiurea.lifeofbees.view.GameRequest;
-import com.marianbastiurea.lifeofbees.view.GameResponse;
-import com.marianbastiurea.lifeofbees.view.HivesView;
-import com.marianbastiurea.lifeofbees.view.HomePageGameResponse;
-import com.marianbastiurea.lifeofbees.weather.WeatherData;
-import com.marianbastiurea.lifeofbees.weather.WeatherService;
+import com.marianbastiurea.lifeofbees.users.*;
+import com.marianbastiurea.lifeofbees.view.*;
+import com.marianbastiurea.lifeofbees.weather.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
 @RestController
 @RequestMapping("/api/bees")
 public class LifeOfBeesController {
+    private static final Logger logger = LoggerFactory.getLogger(LifeOfBeesController.class);
 
-    //Logger log = Logger.getLogger(LifeOfBeesController.class)
+
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
     private final GameHistoryService gameHistoryService;
@@ -67,7 +54,7 @@ public class LifeOfBeesController {
 
     @PostMapping("/game")
     public ResponseEntity<Map<String, String>> createGame(@RequestBody GameRequest gameRequest, @RequestHeader("Authorization") String authorizationHeader) {
-        //log.info("gameRequest");
+        logger.info("Received request to create game: {}", gameRequest);
         String jwtToken = authorizationHeader.replace("Bearer ", "");
         BeeTime startDate = new BeeTime(gameRequest.getStartDate());
         WeatherData weatherData = weatherService.getWeatherData(startDate);
@@ -102,20 +89,20 @@ public class LifeOfBeesController {
         Map<String, String> response = new HashMap<>();
         response.put("token", jwtToken);
         response.put("gameId", savedGame.getGameId());
-        //log.info("response");
+        logger.info("Game created successfully: {}", response);
         return ResponseEntity.ok(response);
     }
 
 
     @GetMapping("/game/{gameId}")
     public GameResponse getGame(@PathVariable String gameId, Principal principal) {
-        System.out.println("request for gameId: " + gameId);
+        logger.info("Received request for gameId: {}", gameId);
         LifeOfBees lifeOfBeesGame = lifeOfBeesService.getByGameId(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
         String userId = principal.getName();
         accessDenied(lifeOfBeesGame, userId);
         GameResponse response = getGameResponse(lifeOfBeesGame);
-        System.out.println("Data send to React: " + response);
+        logger.info("Game sent to React: {}", response);
         return response;
     }
 
@@ -125,7 +112,7 @@ public class LifeOfBeesController {
             @PathVariable String gameId,
             @RequestBody Map<String, Map<ActionType, Object>> requestData,
             Principal principal) {
-        System.out.println("Request for iterate gameId: " + gameId);
+        logger.info("Received request for iterate gameId: {}", gameId);
         LifeOfBees lifeOfBeesGame = lifeOfBeesService.getByGameId(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
         List<WeatherData> weatherDataNextWeek = weatherService.getWeatherForNextWeek(lifeOfBeesGame.getCurrentDate());
@@ -135,12 +122,11 @@ public class LifeOfBeesController {
         if (actions == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Missing 'actions' data in request");
         }
-
         lifeOfBeesGame.iterateOneWeek(actions, weatherDataNextWeek);
         lifeOfBeesService.save(lifeOfBeesGame);
         GameResponse response = getGameResponse(lifeOfBeesGame);
         gameHistoryService.saveGameHistory(lifeOfBeesGame);
-
+        logger.info("Game sent to React: {}", response);
         return response;
     }
 
@@ -166,10 +152,10 @@ public class LifeOfBeesController {
 
     @GetMapping("/getHoneyQuantities/{gameId}")
     public ResponseEntity<HarvestHoney> getHoneyQuantities(@PathVariable String gameId, Principal principal) {
-        System.out.println("request for getHoneyQuantities, gameId: " + gameId);
+        logger.info("Request for getHoneyQuantities, gameId:  {}", gameId);
         LifeOfBees lifeOfBeesGame = lifeOfBeesService.getByGameId(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
-        System.out.println("Acesta e jocul primit in getHoney:" + lifeOfBeesGame);
+        logger.info("Acesta e jocul primit in getHoney: {}",lifeOfBeesGame);
         String userId = principal.getName();
         accessDenied(lifeOfBeesGame, userId);
         Apiary apiary = lifeOfBeesGame.getApiary();
@@ -183,7 +169,7 @@ public class LifeOfBeesController {
             @PathVariable String gameId,
             @RequestBody Map<String, Double> requestData,
             Principal principal) {
-        System.out.println("request for selling honey, gameId: " + gameId);
+        logger.info("Request for selling honey, gameId:  {}", gameId);
         LifeOfBees lifeOfBeesGame = lifeOfBeesService.getByGameId(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
 
@@ -214,7 +200,6 @@ public class LifeOfBeesController {
                         soldHoneyData.FalseIndigo = entry.getValue();
                         break;
                     default:
-                        System.out.println("Tip de miere invalid: " + entry.getKey());
                         return ResponseEntity.badRequest().body("Invalid honey type: " + entry.getKey());
                 }
             }
@@ -233,21 +218,15 @@ public class LifeOfBeesController {
             @PathVariable String gameId,
             @RequestBody Map<String, Integer> request,
             Principal principal) {
-        System.out.println("Request to buy hives, gameId: " + gameId);
+        logger.info("Request to buy hives gameId:  {}", gameId);
         LifeOfBees lifeOfBeesGame = lifeOfBeesService.getByGameId(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
         String userId = principal.getName();
         accessDenied(lifeOfBeesGame, userId);
         Integer numberOfHives = request.get("numberOfHives");
-        if (numberOfHives == null || numberOfHives <= 0) {
-            return ResponseEntity.badRequest().body("Invalid number of hives.");
-        }
         Apiary apiary = lifeOfBeesGame.getApiary();
         apiary.addHivesToApiary(apiary.createHive(numberOfHives), lifeOfBeesGame);
         double totalCost = numberOfHives * 500;
-        if (lifeOfBeesGame.getMoneyInTheBank() < totalCost) {
-            return ResponseEntity.badRequest().body("Insufficient funds to buy hives.");
-        }
         lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() - totalCost);
         lifeOfBeesService.save(lifeOfBeesGame);
         return ResponseEntity.ok("Hives bought successfully.");
@@ -257,23 +236,19 @@ public class LifeOfBeesController {
     public List<HomePageGameResponse> getJohnDoeGames() {
         List<LifeOfBees> userGames = lifeOfBeesService.getGamesForJohnDoe();
         if (userGames.isEmpty()) {
-            System.out.println("No games for JohnDoe.");
+            logger.info("No games for JohnDoe.");
         } else {
-            System.out.println("JohnDoe's games: " + userGames);
+            logger.info("JohnDoe's games: {}", userGames);
         }
         return userGames.stream()
-                .map(game -> {
-                    System.out.println("Total Honey Harvested (before): " + game.getTotalKgOfHoneyHarvested());
-                    System.out.println("Money in the Bank (before): " + game.getMoneyInTheBank());
-                    return new HomePageGameResponse(
-                            game.getGameName(),
-                            game.getLocation(),
-                            game.getApiary().getHives().size(),
-                            game.getMoneyInTheBank(),
-                            game.getTotalKgOfHoneyHarvested(),
-                            game.getGameId()
-                    );
-                })
+                .map(game -> new HomePageGameResponse(
+                        game.getGameName(),
+                        game.getLocation(),
+                        game.getApiary().getHives().size(),
+                        game.getMoneyInTheBank(),
+                        game.getTotalKgOfHoneyHarvested(),
+                        game.getGameId()
+                ))
                 .collect(Collectors.toList());
 
     }
@@ -289,10 +264,11 @@ public class LifeOfBeesController {
                     .toList();
         }
         if (userGames.isEmpty()) {
-            System.out.println("No games found for for userId: " + userId
-                    + (gameType != null ? " game type: " + gameType : "."));
+            logger.info("No games found for userId: {}{}", userId,
+                    gameType != null ? " game type: " + gameType : ".");
+
         } else {
-            System.out.println("Games found for userId: " + userId
+            logger.info("Games found for userId: " + userId
                     + (gameType != null ? " game type: " + gameType : "")
                     + ": " + userGames);
         }
@@ -311,8 +287,8 @@ public class LifeOfBeesController {
     @GetMapping("/HiveHistory/{gameId}")
     public List<HiveHistory> getHiveHistory(@PathVariable String gameId,
                                             @RequestParam("hiveId") Integer hiveId) {
+        logger.info("Request to show hiveHistory for gameId:  {}", gameId);
         List<GameHistory> gameHistory = gameHistoryService.findGameHistoriesByGameId(gameId);
-
         List<HiveHistory> hiveHistories = new ArrayList<>();
         for (GameHistory game : gameHistory) {
             LifeOfBees lifeOfBees = game.getGameHistory();
@@ -328,6 +304,8 @@ public class LifeOfBeesController {
 
     @GetMapping("/apiaryHistory/{gameId}")
     public ResponseEntity<List<ApiaryHistory>> getApiaryHistory(@PathVariable String gameId) throws JsonProcessingException {
+
+        logger.info("Request to show apiaryHistory for gameId:  {}", gameId);
         List<GameHistory> gameHistory = gameHistoryService.findGameHistoriesByGameId(gameId);
         List<ApiaryHistory> apiaryHistories = new ArrayList<>();
         for (GameHistory game : gameHistory) {

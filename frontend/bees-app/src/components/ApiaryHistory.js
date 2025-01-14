@@ -61,7 +61,7 @@ const ApiaryHistory = () => {
                                 <React.Fragment key={index}>
                                     {/* Primul rând combinat cu primul stup */}
                                     <tr>
-                                        <td>{entry.currentDate}</td>
+                                        <td>{entry.currentDate.currentDate}</td>
                                         <td>{entry.weatherData?.temperature?.toFixed(2) || '0.00'}°C</td>
                                         <td>{entry.weatherData?.windSpeed?.toFixed(2) || '0.00'}m/s</td>
                                         <td>{entry.weatherData?.precipitation?.toFixed(2) || '0.00'}mm</td>
