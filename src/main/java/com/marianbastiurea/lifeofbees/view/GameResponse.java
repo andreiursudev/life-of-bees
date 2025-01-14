@@ -3,6 +3,7 @@ package com.marianbastiurea.lifeofbees.view;
 import com.marianbastiurea.lifeofbees.action.ActionsOfTheWeek;
 import com.marianbastiurea.lifeofbees.time.BeeTime;
 import com.marianbastiurea.lifeofbees.weather.WeatherData;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,12 +115,12 @@ public class GameResponse {
                 '}';
     }
 
-    public void setRemovedHiveId(Integer removedHiveId) {
-        this.removedHiveId = removedHiveId;
-    }
-
     public Integer getRemovedHiveId() {
         return removedHiveId;
+    }
+
+    public void setRemovedHiveId(Integer removedHiveId) {
+        this.removedHiveId = removedHiveId;
     }
 }
 

@@ -6,8 +6,7 @@ import com.marianbastiurea.lifeofbees.game.LifeOfBees;
 import java.util.List;
 
 
-
-public class MoveAnEggsFrameProducer implements ActionOfTheWeekProducer <List<List<Integer>>> {
+public class MoveAnEggsFrameProducer implements ActionOfTheWeekProducer<List<List<Integer>>> {
     @Override
     public List<List<Integer>> produce(LifeOfBees lifeOfBees) {
         Apiary apiary = lifeOfBees.getApiary();

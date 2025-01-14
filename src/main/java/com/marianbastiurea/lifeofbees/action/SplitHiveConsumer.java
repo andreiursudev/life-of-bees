@@ -7,10 +7,9 @@ import com.marianbastiurea.lifeofbees.game.LifeOfBees;
 import java.util.List;
 
 
-
 public class SplitHiveConsumer implements ActionOfTheWeekConsumer<List<Integer>> {
     @Override
-    public void accept(LifeOfBees lifeOfBees,  List<Integer> hiveIds) {
+    public void accept(LifeOfBees lifeOfBees, List<Integer> hiveIds) {
         Apiary apiary = lifeOfBees.getApiary();
         if (hiveIds != null) {
             hiveIds.forEach(hiveId -> {

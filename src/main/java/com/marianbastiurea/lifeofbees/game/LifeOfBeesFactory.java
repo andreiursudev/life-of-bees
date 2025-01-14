@@ -4,6 +4,7 @@ import com.marianbastiurea.lifeofbees.bees.Apiary;
 import com.marianbastiurea.lifeofbees.bees.Hive;
 import com.marianbastiurea.lifeofbees.time.BeeTime;
 import com.marianbastiurea.lifeofbees.weather.WeatherData;
+
 import java.util.ArrayList;
 import java.util.List;
 

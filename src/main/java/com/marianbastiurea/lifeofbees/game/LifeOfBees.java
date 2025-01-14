@@ -2,24 +2,26 @@ package com.marianbastiurea.lifeofbees.game;
 
 import com.marianbastiurea.lifeofbees.action.ActionType;
 import com.marianbastiurea.lifeofbees.action.ActionsOfTheWeek;
-import com.marianbastiurea.lifeofbees.bees.*;
+import com.marianbastiurea.lifeofbees.bees.Apiary;
+import com.marianbastiurea.lifeofbees.bees.Hive;
 import com.marianbastiurea.lifeofbees.time.BeeTime;
 import com.marianbastiurea.lifeofbees.weather.WeatherData;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.List;
 import java.util.Map;
 
 
 @Document(collection = "games")
 public class LifeOfBees {
+    private final String gameName;
+    private final String location;
     @Id
     private String gameId;
     private String userId;
     private Apiary apiary;
     private ActionsOfTheWeek actionsOfTheWeek;
-    private final String gameName;
-    private final String location;
     private Integer removedHiveId;
     private BeeTime currentDate;
     private WeatherData weatherData;
@@ -29,7 +31,7 @@ public class LifeOfBees {
 
     public LifeOfBees(String gameName, String userId, String gameType, Apiary apiary,
                       String location, BeeTime currentDate, WeatherData weatherData,
-                      double moneyInTheBank, double totalKgOfHoneyHarvested,ActionsOfTheWeek actionsOfTheWeek ) {
+                      double moneyInTheBank, double totalKgOfHoneyHarvested, ActionsOfTheWeek actionsOfTheWeek) {
         this.apiary = apiary;
         this.gameName = gameName;
         this.location = location;
@@ -39,7 +41,7 @@ public class LifeOfBees {
         this.totalKgOfHoneyHarvested = totalKgOfHoneyHarvested;
         this.userId = userId;
         this.gameType = gameType;
-        this.actionsOfTheWeek=actionsOfTheWeek;
+        this.actionsOfTheWeek = actionsOfTheWeek;
     }
 
 
@@ -84,7 +86,7 @@ public class LifeOfBees {
         }
         actionsOfTheWeek.createActions(this);
         this.setActionsOfTheWeek(actionsOfTheWeek);
-        System.out.println("acestea sunt actions:"+actionsOfTheWeek);
+        System.out.println("acestea sunt actions:" + actionsOfTheWeek);
     }
 
 
@@ -168,11 +170,11 @@ public class LifeOfBees {
         this.gameType = gameType;
     }
 
-    public void setRemovedHiveId(Integer removedHiveId) {
-        this.removedHiveId = removedHiveId;
-    }
-
     public Integer getRemovedHiveId() {
         return removedHiveId;
+    }
+
+    public void setRemovedHiveId(Integer removedHiveId) {
+        this.removedHiveId = removedHiveId;
     }
 }

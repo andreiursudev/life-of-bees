@@ -1,20 +1,20 @@
 package com.marianbastiurea.lifeofbees.bees;
 
 import com.marianbastiurea.lifeofbees.game.LifeOfBees;
+import com.marianbastiurea.lifeofbees.time.BeeTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.time.Month;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import com.marianbastiurea.lifeofbees.time.BeeTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public class Apiary {
 
+    private static final Logger logger = LoggerFactory.getLogger(Apiary.class);
     private List<Hive> hives;
     private HarvestHoney totalHarvestedHoney;
-    private static final Logger logger = LoggerFactory.getLogger(Apiary.class);
 
     public Apiary(List<Hive> hives) {
         this.hives = hives;

@@ -6,7 +6,7 @@ import com.marianbastiurea.lifeofbees.game.LifeOfBees;
 import java.util.List;
 
 
-public class MoveAnEggsFrameConsumer implements ActionOfTheWeekConsumer <List<List<Integer>>> {
+public class MoveAnEggsFrameConsumer implements ActionOfTheWeekConsumer<List<List<Integer>>> {
 
     @Override
     public void accept(LifeOfBees lifeOfBees, List<List<Integer>> hiveIdPair) {
