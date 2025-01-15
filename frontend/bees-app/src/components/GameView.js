@@ -24,6 +24,8 @@ const GameView = () => {
     const [loading, setLoading] = useState(false);
     const [month, setMonth] = useState(null);
     const [day, setDay] = useState(null);
+    const [removedHiveMessage, setRemovedHiveMessage] = useState("");
+
 
 
     useEffect(() => {
@@ -37,7 +39,7 @@ const GameView = () => {
                 console.log('am primit datele in gameView pentru ID:', gameId);
                 const data = await getGame(gameId);
                 console.log('datele primite din Java:', data);
-                const currentDateStr = data.currentDate.currentDate; 
+                const currentDateStr = data.currentDate.currentDate;
                 console.log('Data curentă (string):', currentDateStr);
                 const currentDate = new Date(currentDateStr);
                 console.log('Obiect Date generat:', currentDate);
@@ -71,6 +73,11 @@ const GameView = () => {
             [`${actionType}-${hiveId}`]: !prevSelectedActions[`${actionType}-${hiveId}`],
         }));
     };
+
+    const showRemovedHiveMessage = (removedHiveId) => {
+        setRemovedHiveMessage(`Hive with ID ${removedHiveId} has been removed.`);
+    };
+
 
     const handleIterateWeek = async () => {
         if (!gameId) {
@@ -116,10 +123,14 @@ const GameView = () => {
                 setGameData(updatedGameData);
                 setUpdatedGameData(updatedGameData);
                 setSelectedActions({});
-
+                if (updatedGameData.removedHiveId) {
+                    showRemovedHiveMessage(updatedGameData.removedHiveId);
+                } else {
+                    setRemovedHiveMessage(""); 
+                }
                 const dateObject = new Date(updatedGameData.currentDate.currentDate);
-                setMonth(dateObject.getMonth() + 1); 
-                setDay(dateObject.getDate());      
+                setMonth(dateObject.getMonth() + 1);
+                setDay(dateObject.getDate());
             }
         } catch (error) {
             console.error("Error iterating week:", error);
@@ -236,7 +247,6 @@ const GameView = () => {
 
     return (
         <div className="body-gameView">
-
             <div className="row">
                 <div className="col-md-6">
                     <div className="row">
@@ -271,6 +281,9 @@ const GameView = () => {
                 <div className="col-md-3">
                     <div className="card mb-3">
                         <div className="card-body">
+
+                        {removedHiveMessage && <p>{removedHiveMessage}</p>}
+
                             {updatedGameData && updatedGameData.actionsOfTheWeek ? (
                                 updatedGameData.actionsOfTheWeek.actions &&
                                     Object.keys(updatedGameData.actionsOfTheWeek.actions).length > 0 ? (
@@ -374,6 +387,7 @@ const GameView = () => {
                                                                         ))}
                                                                     </p>
                                                                 );
+
                                                             default:
                                                                 return null;
                                                         }
