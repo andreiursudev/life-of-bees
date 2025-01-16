@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../App.css';
 import NewGameModal from './CreateNewGame';
 import ApiaryCardsRow from './ApiaryCardsRow';
@@ -24,6 +24,16 @@ const HomePage = () => {
         password: '',
         confirmPassword: '',
     });
+
+    useEffect(() => {
+        const storedToken = localStorage.getItem('authToken');
+        const storedUsername = localStorage.getItem('username');
+        console.log('Rehydrating auth state:', { storedToken, storedUsername });
+        if (storedToken && storedUsername) {
+            setIsAuthenticated(true);
+            setUsername(storedUsername);
+        }
+    }, []);
 
     const handlePublicGameClick = () => {
         setGameType("public");
@@ -55,6 +65,7 @@ const HomePage = () => {
     const handleLogout = () => {
         localStorage.removeItem('authToken');
         localStorage.removeItem('userId');
+        localStorage.removeItem('username');
         setIsAuthenticated(false);
         setUsername(null);
     };
@@ -73,9 +84,12 @@ const HomePage = () => {
     const handleSignIn = async (username, password) => {
         try {
             const response = await authenticateUser({ username, password });
-
+            console.log('Response from server in SignIn:', response);
             localStorage.setItem('authToken', response.token);
             localStorage.setItem('userId', response.userId);
+            localStorage.setItem('username', username);
+            console.log('Username saved to localStorage in SignIn:', username);
+            console.log('User signed in signIn:', {userId, username });
             setIsAuthenticated(true);
             setShowAuthModal(false);
             setUsername(username);
@@ -89,9 +103,11 @@ const HomePage = () => {
     const handleSignUp = async (username, password) => {
         try {
             const { token, userId } = await registerUser({ username, password });
-
             localStorage.setItem('authToken', token);
             localStorage.setItem('userId', userId);
+            localStorage.setItem('username', username);
+            console.log('Username saved to localStorage in SignUp:', username);
+            console.log('User signed up:', { token, userId, username });
             setIsAuthenticated(true);
             setShowAuthModal(false);
             setUsername(username);
@@ -112,6 +128,8 @@ const HomePage = () => {
     const handleGameClick = (gameId) => {
         navigate(`/GameView/${gameId}`);
     };
+
+    
 
     return (
         <div className="container">
@@ -186,8 +204,6 @@ const HomePage = () => {
                                     />
                                 </div>
                         )}
-
-                        {activeTab === "Map" && <div>Map content goes here.</div>}
                     </div>
                 
             </div>

@@ -19,8 +19,16 @@ const AuthModal = ({ handleClose, handleSubmit, handleInputChange, formData, isS
 
         try {
             const response = await handleGoogleLogin(credentialResponse);
-            setUsername(response.email);
+            setUsername(response.username);
             setIsAuthenticated(true);
+            localStorage.setItem('authToken',response.token);
+            localStorage.setItem('userId', response.userId);
+            localStorage.setItem('username',response.username);
+            console.log('Autentificare cu Google reușită:', {
+                username: response.username,
+                token: response.token,
+                userId: response.userId,
+            });
         } catch (error) {
             console.error('Error sending Google token to backend:', error);
         }

@@ -117,28 +117,22 @@ public class AuthController {
             if (googleIdToken != null) {
                 GoogleIdToken.Payload payload = googleIdToken.getPayload();
                 email = payload.getEmail();
-                String name = (String) payload.get("name");
-            } else {
+                String username = email.split("@")[0];
 
+                User user = oAuth2UserServiceHelper.processOAuthPostLogin(email, "GOOGLE");
+                System.out.println("User processed successfully: " + user);
+                String token = jwtTokenProvider.generateToken(user.getUserId());
+                System.out.println("Generated JWT token: " + token);
+                System.out.println("Returning success response with user details.");
+                return ResponseEntity.ok(Map.of(
+                        "userId", user.getUserId(),
+                        "username", username,
+                        "token", token
+                ));
+            } else {
                 System.out.println("OAuth2User principal is null. Returning unauthorized response.");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Principal is null");
             }
-
-            if (email == null) {
-                System.out.println("Email is missing. Returning bad request response.");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body("Email or providerId is missing");
-            }
-            User user = oAuth2UserServiceHelper.processOAuthPostLogin(email, "GOOGLE");
-            System.out.println("User processed successfully: " + user);
-            String token = jwtTokenProvider.generateToken(user.getUserId());
-            System.out.println("Generated JWT token: " + token);
-            System.out.println("Returning success response with user details.");
-            return ResponseEntity.ok(Map.of(
-                    "userId", user.getUserId(),
-                    "email", user.getEmail(),
-                    "token", token
-            ));
         } catch (Exception e) {
             System.out.println("An error occurred during Google OAuth authentication: " + e.getMessage());
             e.printStackTrace();
@@ -146,6 +140,10 @@ public class AuthController {
                     .body("An error occurred during Google OAuth authentication");
         }
     }
+
+
+
+
 
     @PostMapping("/oauth/github")
     public ResponseEntity<?> authenticateWithGitHub(@AuthenticationPrincipal OAuth2User principal) {
