@@ -126,7 +126,7 @@ const GameView = () => {
                 if (updatedGameData.removedHiveId) {
                     showRemovedHiveMessage(updatedGameData.removedHiveId);
                 } else {
-                    setRemovedHiveMessage(""); 
+                    setRemovedHiveMessage("");
                 }
                 const dateObject = new Date(updatedGameData.currentDate.currentDate);
                 setMonth(dateObject.getMonth() + 1);
@@ -273,17 +273,12 @@ const GameView = () => {
                     >
                         Game History
                     </button>
-
-
                 </div>
-
 
                 <div className="col-md-3">
                     <div className="card mb-3">
                         <div className="card-body">
-
-                        {removedHiveMessage && <p>{removedHiveMessage}</p>}
-
+                            {removedHiveMessage && <p>{removedHiveMessage}</p>}
                             {updatedGameData && updatedGameData.actionsOfTheWeek ? (
                                 updatedGameData.actionsOfTheWeek.actions &&
                                     Object.keys(updatedGameData.actionsOfTheWeek.actions).length > 0 ? (
