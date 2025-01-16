@@ -75,7 +75,10 @@ export const getGitHubClientId = async () => {
 
 export const handleGitHubLogin = async () => {
     try {
-        const clientId = await getGitHubClientId();
+        const clientId = await getGitHubClientId(); 
+        if (!clientId) {
+            throw new Error('Client ID not found in localStorage');
+        }
         const redirectUri = "http://localhost:8080/login/oauth2/code/github"; 
         const oauthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=user`;
         window.location.href = oauthUrl;
@@ -85,7 +88,7 @@ export const handleGitHubLogin = async () => {
     }
 };
 
-export const authenticateWithGitHub = async (code) => {
+/* export const authenticateWithGitHub = async (code) => {
     try {
         const response = await apiClient.post('/auth/oauth/github', { code });
         const { token, email, userId } = response.data;
@@ -96,7 +99,7 @@ export const authenticateWithGitHub = async (code) => {
         console.error('GitHub authentication failed:', error.response?.data || error.message);
         throw error;
     }
-};
+};*/
 
 
 export const authenticateUser = async (authData) => {

@@ -32,6 +32,7 @@ function App() {
   const fetchGitHubClientId = async () => {
     try {
       const clientId = await getGitHubClientId();
+      localStorage.setItem('clientId', clientId);
       setGitHubClientId(clientId);
     } catch (error) {
       console.error('Failed to fetch GitHub Client ID:', error);

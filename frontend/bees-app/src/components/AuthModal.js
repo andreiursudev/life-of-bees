@@ -15,15 +15,13 @@ const AuthModal = ({ handleClose, handleSubmit, handleInputChange, formData, isS
     const handleGoogleSuccess = async (credentialResponse) => {
         console.log('Google Login Success:', credentialResponse);
 
-
-
         try {
             const response = await handleGoogleLogin(credentialResponse);
             setUsername(response.username);
             setIsAuthenticated(true);
-            localStorage.setItem('authToken',response.token);
+            localStorage.setItem('authToken', response.token);
             localStorage.setItem('userId', response.userId);
-            localStorage.setItem('username',response.username);
+            localStorage.setItem('username', response.username);
             console.log('Autentificare cu Google reușită:', {
                 username: response.username,
                 token: response.token,
@@ -34,11 +32,39 @@ const AuthModal = ({ handleClose, handleSubmit, handleInputChange, formData, isS
         }
     };
 
+    const handleGitHubSuccess = async (code) => {
+        console.log('GitHub Login Success. Authorization code:', code);
+
+        try {
+
+            const response = await handleGitHubLogin(code);
+            setUsername(response.username);
+            setIsAuthenticated(true);
+            localStorage.setItem('authToken', response.token);
+            localStorage.setItem('userId', response.userId);
+            localStorage.setItem('username', response.username);
+
+            console.log('Autentificare cu GitHub reușită:', {
+                username: response.username,
+                token: response.token,
+                userId: response.userId,
+            });
+        } catch (error) {
+            console.error('Error sending GitHub code to backend:', error.response?.data || error.message);
+        }
+    };
+
+
+
     const handleGoogleFailure = (error) => {
         console.error('Google Login Failure:', error);
         setAuthMessage('Google Login failed. Please try again.');
     };
 
+    const handleGitHubFailure = (error) => {
+        console.error('GitHub Login Failure:', error);
+        setAuthMessage('GitHub Login failed. Please try again.');
+    };
     const toggleSignUp = () => {
         setIsSignUp((prev) => !prev);
     };
@@ -71,14 +97,19 @@ const AuthModal = ({ handleClose, handleSubmit, handleInputChange, formData, isS
                             />
                         </div>
 
-                        <div className="mb-3">
-                            <button
-                                onClick={handleGitHubLogin}
-                                className="btn btn-dark w-100"
-                            >
-                                Login with GitHub
-                            </button>
-                        </div>
+                        <button
+                            onClick={async () => {
+                                try {
+                                    handleGitHubSuccess();
+                                } catch (error) {
+                                    handleGitHubFailure(error); 
+                                }
+                            }}
+                            className="btn btn-dark w-100"
+                        >
+                            Login with GitHub
+                        </button>
+
                         <p className="fs-6 text-center"> Or with username and password</p>
                         <form
                             onSubmit={(e) => {
