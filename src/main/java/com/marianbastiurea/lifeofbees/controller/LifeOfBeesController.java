@@ -152,10 +152,10 @@ public class LifeOfBeesController {
 
     @GetMapping("/getHoneyQuantities/{gameId}")
     public ResponseEntity<HarvestHoney> getHoneyQuantities(@PathVariable String gameId, Principal principal) {
-        logger.info("Request for getHoneyQuantities, gameId:  {}", gameId);
+        logger.info("Request for honey harvested in game:  {}", gameId);
         LifeOfBees lifeOfBeesGame = lifeOfBeesService.getByGameId(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
-        logger.info("Acesta e jocul primit in getHoney: {}",lifeOfBeesGame);
+        logger.info("This is the game received to extract honey harvested: {}",lifeOfBeesGame);
         String userId = principal.getName();
         accessDenied(lifeOfBeesGame, userId);
         Apiary apiary = lifeOfBeesGame.getApiary();
@@ -169,7 +169,7 @@ public class LifeOfBeesController {
             @PathVariable String gameId,
             @RequestBody Map<String, Double> requestData,
             Principal principal) {
-        logger.info("Request for selling honey, gameId:  {}", gameId);
+        logger.info("Request for selling honey quantities for game:  {}", gameId);
         LifeOfBees lifeOfBeesGame = lifeOfBeesService.getByGameId(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
 
@@ -218,7 +218,7 @@ public class LifeOfBeesController {
             @PathVariable String gameId,
             @RequestBody Map<String, Integer> request,
             Principal principal) {
-        logger.info("Request to buy hives gameId:  {}", gameId);
+        logger.info("Request to buy hives in game:  {}", gameId);
         LifeOfBees lifeOfBeesGame = lifeOfBeesService.getByGameId(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
         String userId = principal.getName();
@@ -287,7 +287,7 @@ public class LifeOfBeesController {
     @GetMapping("/HiveHistory/{gameId}")
     public List<HiveHistory> getHiveHistory(@PathVariable String gameId,
                                             @RequestParam("hiveId") Integer hiveId) {
-        logger.info("Request to show hiveHistory for gameId:  {}", gameId);
+        logger.info("Request to show history for a hive from game:  {}", gameId);
         List<GameHistory> gameHistory = gameHistoryService.findGameHistoriesByGameId(gameId);
         List<HiveHistory> hiveHistories = new ArrayList<>();
         for (GameHistory game : gameHistory) {
@@ -305,7 +305,7 @@ public class LifeOfBeesController {
     @GetMapping("/apiaryHistory/{gameId}")
     public ResponseEntity<List<ApiaryHistory>> getApiaryHistory(@PathVariable String gameId) throws JsonProcessingException {
 
-        logger.info("Request to show apiaryHistory for gameId:  {}", gameId);
+        logger.info("Request to show history of apiary from game:  {}", gameId);
         List<GameHistory> gameHistory = gameHistoryService.findGameHistoriesByGameId(gameId);
         List<ApiaryHistory> apiaryHistories = new ArrayList<>();
         for (GameHistory game : gameHistory) {
