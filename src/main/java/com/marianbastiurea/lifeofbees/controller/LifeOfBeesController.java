@@ -96,7 +96,7 @@ public class LifeOfBeesController {
 
     @GetMapping("/game/{gameId}")
     public GameResponse getGame(@PathVariable String gameId, Principal principal) {
-        logger.info("Received request for gameId: {}", gameId);
+        logger.info("Received request for game: {}", gameId);
         LifeOfBees lifeOfBeesGame = lifeOfBeesService.getByGameId(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
         String userId = principal.getName();
@@ -112,7 +112,7 @@ public class LifeOfBeesController {
             @PathVariable String gameId,
             @RequestBody Map<String, Map<ActionType, Object>> requestData,
             Principal principal) {
-        logger.info("Received request for iterate gameId: {}", gameId);
+        logger.info("Received request for iterate game: {}", gameId);
         LifeOfBees lifeOfBeesGame = lifeOfBeesService.getByGameId(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
         List<WeatherData> weatherDataNextWeek = weatherService.getWeatherForNextWeek(lifeOfBeesGame.getCurrentDate());
@@ -145,7 +145,7 @@ public class LifeOfBeesController {
         gameResponse.setCurrentDate(game.getCurrentDate());
         gameResponse.setTotalKgOfHoneyHarvested(game.getTotalKgOfHoneyHarvested());
         gameResponse.setRemovedHiveId(game.getRemovedHiveId());
-        System.out.println("data send to React: " + gameResponse);
+        logger.info("Data send it to React:  {}", gameResponse);
         return gameResponse;
     }
 
@@ -161,6 +161,7 @@ public class LifeOfBeesController {
         Apiary apiary = lifeOfBeesGame.getApiary();
         apiary.honeyHarvestedByHoneyType();
         HarvestHoney honeyData = apiary.getTotalHarvestedHoney();
+        logger.info("Response for getHoneyQuantities:  {}", honeyData);
         return ResponseEntity.ok(honeyData);
     }
 
@@ -209,6 +210,7 @@ public class LifeOfBeesController {
         lifeOfBeesGame.setTotalKgOfHoneyHarvested(apiary.getTotalKgHoneyHarvested());
         lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() + revenue);
         lifeOfBeesService.save(lifeOfBeesGame);
+        logger.info("Honey quantities in stock after selling:{}",apiary.getTotalHarvestedHoney());
         return ResponseEntity.ok("Stock and revenue updated successfully.");
     }
 
@@ -229,6 +231,7 @@ public class LifeOfBeesController {
         double totalCost = numberOfHives * 500;
         lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() - totalCost);
         lifeOfBeesService.save(lifeOfBeesGame);
+        logger.info("new {} hives was added to apiary in game: {}", numberOfHives, gameId);
         return ResponseEntity.ok("Hives bought successfully.");
     }
 
@@ -299,6 +302,7 @@ public class LifeOfBeesController {
             hiveHistory.setHive(lifeOfBees.getApiary().getHiveById(hiveId));
             hiveHistories.add(hiveHistory);
         }
+        logger.info("history of {} hive was send it to game: {}", hiveId,gameId);
         return hiveHistories;
     }
 
@@ -320,6 +324,7 @@ public class LifeOfBeesController {
             apiaryHistory.setHive(apiary.getHives());
             apiaryHistories.add(apiaryHistory);
         }
+       logger.info("Apiary's history was sent to React for game: {}",gameId);
         return ResponseEntity.ok(apiaryHistories);
     }
 
