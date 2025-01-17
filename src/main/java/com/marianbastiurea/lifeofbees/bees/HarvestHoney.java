@@ -1,8 +1,5 @@
 package com.marianbastiurea.lifeofbees.bees;
 
-//public class HarvestHoney {
-//    //TODO inlocuieste toate campurile cu un singur camp Map<HoneyType, Integer> honeyTypeToAmount
-
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -10,7 +7,6 @@ public class HarvestHoney {
     private Map<HoneyType, Double> honeyTypeToAmount;
 
     public HarvestHoney() {
-        // Initialize the map with default values of 0.0 for each HoneyType
         honeyTypeToAmount = new EnumMap<>(HoneyType.class);
         for (HoneyType type : HoneyType.values()) {
             honeyTypeToAmount.put(type, 0.0);

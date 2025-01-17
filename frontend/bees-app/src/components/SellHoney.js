@@ -17,10 +17,13 @@ const RowText = ({ honeyType, quantity, price, onQuantityChange }) => {
     const [sellQuantity, setSellQuantity] = useState(0.0);
 
     const handleInputChange = (event) => {
-        const value = Math.max(0, Math.min(parseFloat(event.target.value), quantity)) || 0.0;
+        let value = parseFloat(event.target.value);
+        value = Math.max(0, Math.min(value, quantity));
+        value = parseFloat(value.toFixed(2));
         setSellQuantity(value);
         onQuantityChange(value, honeyType, price);
     };
+    
 
     const totalValue = (sellQuantity * price).toFixed(2);
 
@@ -35,7 +38,7 @@ const RowText = ({ honeyType, quantity, price, onQuantityChange }) => {
                     type="number"
                     min="0"
                     max={quantity.toFixed(2)}
-                    step="0.01"
+                    step="0.5"
                     value={sellQuantity || ''}
                     onChange={handleInputChange}
                     style={{ width: '150px' }}
@@ -68,7 +71,7 @@ const SellHoney = () => {
 
                 const parsedData = Object.entries(honeyTypeToAmount).map(([honeyType, quantity]) => ({
                     honeyType,
-                    quantity: parseFloat(quantity),
+                    quantity: parseFloat(quantity.toFixed(2)),
                 }));
 
                 setHoneyData(parsedData);
@@ -86,7 +89,7 @@ const SellHoney = () => {
     const updateTotalSoldValue = (sellQuantity, honeyType, price) => {
         setSoldValues((prevSoldValues) => ({
             ...prevSoldValues,
-            [honeyType]: parseFloat(sellQuantity) || 0.0,
+            [honeyType]: parseFloat(sellQuantity.toFixed(2)) || 0.0,
         }));
         setSoldValueTotals((prevSoldValueTotals) => ({
             ...prevSoldValueTotals,
@@ -102,7 +105,7 @@ const SellHoney = () => {
         const formattedSoldData = Object.entries(soldValues)
             .filter(([_, quantity]) => quantity > 0)
             .reduce((acc, [honeyType, quantity]) => {
-                acc[honeyType] = parseFloat(quantity);
+                acc[honeyType] = parseFloat(quantity.toFixed(2));
                 return acc;
             }, {});
 

@@ -244,8 +244,6 @@ public ResponseEntity<String> sendSellHoneyQuantities(
         logger.error("Access denied for user: {} on gameId: {}", userId, gameId);
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access denied");
     }
-
-    // Obținerea venitului total
     double revenue = 0.0;
     if (requestData.containsKey("totalValue")) {
         try {
@@ -258,10 +256,8 @@ public ResponseEntity<String> sendSellHoneyQuantities(
     } else {
         logger.warn("Warning: totalValue not provided in the request.");
     }
-
-    // Preluarea mapării dintre tipurile de miere și cantități
     @SuppressWarnings("unchecked")
-    Map<String, Double> honeyTypeToAmount = null;
+    Map<String, Double> honeyTypeToAmount;
     try {
         honeyTypeToAmount = (Map<String, Double>) requestData.get("honeyTypeToAmount");
         logger.info("Step 7: Extracted honeyTypeToAmount: {}", honeyTypeToAmount);
@@ -274,8 +270,6 @@ public ResponseEntity<String> sendSellHoneyQuantities(
         logger.warn("Warning: honeyTypeToAmount is null or empty.");
         return ResponseEntity.badRequest().body("No honey quantities provided for selling.");
     }
-
-    // Procesarea datelor despre miere vândută
     HarvestHoney soldHoneyData = new HarvestHoney();
     for (Map.Entry<String, Double> entry : honeyTypeToAmount.entrySet()) {
         try {
@@ -287,18 +281,13 @@ public ResponseEntity<String> sendSellHoneyQuantities(
             return ResponseEntity.badRequest().body("Invalid honey type: " + entry.getKey());
         }
     }
-
-    // Actualizarea stocului de miere și a veniturilor
     logger.info("Step 9: Updating honey stock and revenue...");
     Apiary apiary = lifeOfBeesGame.getApiary();
     apiary.updateHoneyStock(soldHoneyData);
     logger.info("Step 10: Updated honey stock: {}", apiary.getTotalHarvestedHoney());
-
     lifeOfBeesGame.setTotalKgOfHoneyHarvested(apiary.getTotalKgHoneyHarvested());
     lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() + revenue);
     logger.info("Step 11: Updated game revenue to: {}", lifeOfBeesGame.getMoneyInTheBank());
-
-    // Salvarea modificărilor
     try {
         lifeOfBeesService.save(lifeOfBeesGame);
         logger.info("Step 12: Game data saved successfully.");
