@@ -125,25 +125,6 @@ public class Apiary {
                 : 0;
     }
 
-
-//    public void honeyHarvestedByHoneyType() {
-//        Map<HoneyType, Double> honeyHarvested = hives.stream()
-//                .flatMap(hive -> hive.getHoneyBatches().stream())
-//                .filter(honeyBatch -> !honeyBatch.isProcessed())
-//                .peek(honeyBatch -> honeyBatch.setProcessed(true))
-//                .collect(Collectors.groupingBy(
-//                        HoneyBatch::getHoneyType,
-//                        Collectors.summingDouble(HoneyBatch::getKgOfHoney)
-//                ));
-//
-//        totalHarvestedHoney.setAcacia(totalHarvestedHoney.getAcacia() + honeyHarvested.getOrDefault(HoneyType.Acacia, 0.0));
-//        totalHarvestedHoney.setRapeseed(totalHarvestedHoney.getRapeseed() + honeyHarvested.getOrDefault(HoneyType.Rapeseed, 0.0));
-//        totalHarvestedHoney.setWildFlower(totalHarvestedHoney.getWildFlower() + honeyHarvested.getOrDefault(HoneyType.WildFlower, 0.0));
-//        totalHarvestedHoney.setLinden(totalHarvestedHoney.getLinden() + honeyHarvested.getOrDefault(HoneyType.Linden, 0.0));
-//        totalHarvestedHoney.setSunFlower(totalHarvestedHoney.getSunFlower() + honeyHarvested.getOrDefault(HoneyType.SunFlower, 0.0));
-//        totalHarvestedHoney.setFalseIndigo(totalHarvestedHoney.getFalseIndigo() + honeyHarvested.getOrDefault(HoneyType.FalseIndigo, 0.0));
-//    }
-
     public void honeyHarvestedByHoneyType() {
         Map<HoneyType, Double> honeyHarvested = hives.stream()
                 .flatMap(hive -> hive.getHoneyBatches().stream())
@@ -160,29 +141,11 @@ public class Apiary {
         });
     }
 
-//    public double getTotalKgHoneyHarvested() {
-//        return totalHarvestedHoney.getAcacia()
-//                + totalHarvestedHoney.getRapeseed()
-//                + totalHarvestedHoney.getWildFlower()
-//                + totalHarvestedHoney.getLinden()
-//                + totalHarvestedHoney.getSunFlower()
-//                + totalHarvestedHoney.getFalseIndigo();
-//    }
-
 public double getTotalKgHoneyHarvested() {
     return totalHarvestedHoney.getHoneyTypeToAmount().values().stream()
             .mapToDouble(Double::doubleValue)
             .sum();
 }
-
-//    public void updateHoneyStock(HarvestHoney soldHoneyData) {
-//        totalHarvestedHoney.setAcacia(totalHarvestedHoney.getAcacia() - soldHoneyData.Acacia);
-//        totalHarvestedHoney.setRapeseed(totalHarvestedHoney.getRapeseed() - soldHoneyData.Rapeseed);
-//        totalHarvestedHoney.setWildFlower(totalHarvestedHoney.getWildFlower() - soldHoneyData.WildFlower);
-//        totalHarvestedHoney.setLinden(totalHarvestedHoney.getLinden() - soldHoneyData.Linden);
-//        totalHarvestedHoney.setSunFlower(totalHarvestedHoney.getSunFlower() - soldHoneyData.SunFlower);
-//        totalHarvestedHoney.setFalseIndigo(totalHarvestedHoney.getFalseIndigo() - soldHoneyData.FalseIndigo);
-//    }
 
     public void updateHoneyStock(HarvestHoney soldHoneyData) {
         soldHoneyData.getHoneyTypeToAmount().forEach((honeyType, amountSold) -> {
@@ -209,7 +172,8 @@ public double getTotalKgHoneyHarvested() {
         hiveIdPair.forEach(hiveIds -> {
             Hive sourceHive = this.getHiveById(hiveIds.get(0));
             Hive destinationHive = this.getHiveById(hiveIds.get(1));
-            //TODO mutarea unui egg frame este divizata in urmatoarele 3 linii de cod, nu e ok. Fa totul intro singura metoda void moveAnEggFrame(EggFrames eggFrames) in clasa EggFrames
+            //TODO mutarea unui egg frame este divizata in urmatoarele 3 linii de cod, nu e ok.
+            // Fa totul intro singura metoda void moveAnEggFrame(EggFrames eggFrames) in clasa EggFrames
             List<Integer> eggBatchesToMove = sourceHive.getEggFrames().extractEggBatchesForFrame();
             destinationHive.getEggFrames().addEggBatches(eggBatchesToMove);
             sourceHive.setWasMovedAnEggsFrame(true);

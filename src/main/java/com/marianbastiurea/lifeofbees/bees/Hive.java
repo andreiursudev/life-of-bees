@@ -155,11 +155,12 @@ public class Hive {
                 this.eggFrames.is80PercentFull();
     }
 
-    public void addNewEggsFrameInHive() {
-        //TODO eggFrames nu ar trebui sa fie niciodata null
-        Optional.ofNullable(this.eggFrames).ifPresent(EggFrames::incrementNumberOfEggFrames);
-    }
 
+    public void addNewEggsFrameInHive() {
+        if (this.eggFrames != null) {
+            this.eggFrames.incrementNumberOfEggFrames();
+        }
+    }
 
     public void addHoneyBatches
             (List<HoneyBatch> honeyBatches) {
@@ -171,8 +172,7 @@ public class Hive {
         double numberRandom = Math.random();
         Month month = currentDate.getMonth();
         int dayOfMonth = currentDate.getDayOfMonth();
-        //TODO logica asta se apeleaza in fiecare zi asa ca in medie regina se va schimba de 10 ori in luna mai in fiecare an, fa o logica corecta sau renunta la ea
-        if ((numberRandom < 0.5 && month == Month.MAY && dayOfMonth > 1 && dayOfMonth < 20) || queen.getAgeOfQueen() == 5) {
+        if ((numberRandom < 0.5 && month == Month.MAY && dayOfMonth > 1 && dayOfMonth < 20) && queen.getAgeOfQueen() == 5) {
             queen = new Queen(0);
         }
     }
@@ -201,7 +201,7 @@ public class Hive {
         HoneyBatch honeyBatch = new HoneyBatch(
                 getId(),
                 harvestedHoney,
-                Honey.honeyType(currentDate),
+                BeeTime.honeyType(currentDate),
                 false
         );
 
@@ -229,7 +229,13 @@ public class Hive {
     public void fillUpExistingHoneyFramesFromHive(BeeTime currentDate) {
         Random random = new Random();
         int numberOfFlight = random.nextInt(3, 6);
-        double kgOfHoneyToAdd = this.getBeesBatches().stream().mapToInt(Integer::intValue).sum() * numberOfFlight * 0.00002 * Honey.honeyProductivity(Honey.honeyType(currentDate));//0.02gr/flight/bee
+        HoneyType honeyType = BeeTime.honeyType(currentDate);
+        double productivity = honeyType.getProductivity();
+        double totalBeesBatches = this.getBeesBatches().stream()
+                .mapToInt(Integer::intValue)
+                .sum();
+        double kgOfHoneyToAdd = totalBeesBatches * numberOfFlight * 0.00002 * productivity;
+
         honeyFrames.fillUpAHoneyFrame(kgOfHoneyToAdd);
     }
 
