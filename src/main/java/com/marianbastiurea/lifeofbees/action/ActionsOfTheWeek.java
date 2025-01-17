@@ -5,6 +5,7 @@ import com.marianbastiurea.lifeofbees.game.LifeOfBees;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class ActionsOfTheWeek {
     private Map<ActionType, Object> actions;
@@ -28,15 +29,14 @@ public class ActionsOfTheWeek {
         return actions;
     }
 
+
     public void createActions(LifeOfBees lifeOfBees) {
         actions.clear();
         for (ActionType actionType : ActionType.values()) {
-            Object data = actionType.getProducer().produce(lifeOfBees);
-            if (data != null &&
-                    !(data instanceof Number && ((Number) data).intValue() == 0) &&
-                    !(data instanceof Collection && ((Collection<?>) data).isEmpty())) {
-                actions.put(actionType, data);
-            }
+            Optional.ofNullable(actionType.getProducer().produce(lifeOfBees))
+                    .filter(data -> !(data instanceof Number && ((Number) data).intValue() == 0))
+                    .filter(data -> !(data instanceof Collection && ((Collection<?>) data).isEmpty()))
+                    .ifPresent(data -> actions.put(actionType, data));
         }
     }
 

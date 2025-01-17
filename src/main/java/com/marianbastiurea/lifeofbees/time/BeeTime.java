@@ -26,6 +26,7 @@ public class BeeTime {
     public static boolean timeToSplitHive(BeeTime currentDate) {
         Month month = currentDate.getMonth();
         int dayOfMonth = currentDate.getDayOfMonth();
+        //TODO sunt sanse sa nu se intample niciodata, e aceasi problema pe care o aveai si in timeForInsectControl
         return (month == Month.APRIL || month == Month.MAY) &&
                 (dayOfMonth == 1 || dayOfMonth == 10);
     }

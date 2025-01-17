@@ -22,6 +22,8 @@ public class EggFrames {
         this.eggsByDay = new LinkedList<>(Collections.nCopies(daysToHatch, 0));
     }
 
+    //TODO sterge metoda getRandomEggFrames si muta logica in public EggFrames()
+
     public static EggFrames getRandomEggFrames() {
         Random random = new Random();
         EggFrames eggFrames = new EggFrames(random.nextInt(3, 5));
@@ -44,7 +46,6 @@ public class EggFrames {
         numberOfEggFrames = 3;
         return new EggFrames(3, newEggBatches);
     }
-
 
     List<Integer> extractEggBatchesForFrame() {
         int currentSum = 0;
@@ -83,9 +84,9 @@ public class EggFrames {
         return eggsByDay.removeLast();
     }
 
-
     public void incrementNumberOfEggFrames() {
-        if (this.numberOfEggFrames < 6)
+        int maxNumberOfEggFrames=6;
+        if (this.numberOfEggFrames < maxNumberOfEggFrames)
             this.numberOfEggFrames++;
     }
 

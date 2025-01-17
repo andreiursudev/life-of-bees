@@ -1,82 +1,52 @@
 package com.marianbastiurea.lifeofbees.bees;
 
-public class HarvestHoney {
-    public double Acacia = 0.0;
-    public double Rapeseed = 0.0;
-    public double WildFlower = 0.0;
-    public double Linden = 0.0;
-    public double SunFlower = 0.0;
-    public double FalseIndigo = 0;
+//public class HarvestHoney {
+//    //TODO inlocuieste toate campurile cu un singur camp Map<HoneyType, Integer> honeyTypeToAmount
 
-    public HarvestHoney(double acacia, double rapeseed, double wildFlower, double linden, double sunFlower, double falseIndigo) {
-        Acacia = acacia;
-        Rapeseed = rapeseed;
-        WildFlower = wildFlower;
-        Linden = linden;
-        SunFlower = sunFlower;
-        FalseIndigo = falseIndigo;
-    }
+import java.util.EnumMap;
+import java.util.Map;
+
+public class HarvestHoney {
+    private Map<HoneyType, Double> honeyTypeToAmount;
 
     public HarvestHoney() {
+        // Initialize the map with default values of 0.0 for each HoneyType
+        honeyTypeToAmount = new EnumMap<>(HoneyType.class);
+        for (HoneyType type : HoneyType.values()) {
+            honeyTypeToAmount.put(type, 0.0);
+        }
     }
 
-    public double getAcacia() {
-        return Acacia;
+    public HarvestHoney(double acacia, double rapeseed, double wildFlower, double linden, double sunFlower, double falseIndigo) {
+        this(); // Initialize the map with default values
+        honeyTypeToAmount.put(HoneyType.Acacia, acacia);
+        honeyTypeToAmount.put(HoneyType.Rapeseed, rapeseed);
+        honeyTypeToAmount.put(HoneyType.WildFlower, wildFlower);
+        honeyTypeToAmount.put(HoneyType.Linden, linden);
+        honeyTypeToAmount.put(HoneyType.SunFlower, sunFlower);
+        honeyTypeToAmount.put(HoneyType.FalseIndigo, falseIndigo);
     }
 
-    public void setAcacia(double acacia) {
-        Acacia = acacia;
+    public double getHoneyAmount(HoneyType type) {
+        return honeyTypeToAmount.getOrDefault(type, 0.0);
     }
 
-    public double getRapeseed() {
-        return Rapeseed;
+    public void setHoneyAmount(HoneyType type, double amount) {
+        honeyTypeToAmount.put(type, amount);
     }
 
-    public void setRapeseed(double rapeseed) {
-        Rapeseed = rapeseed;
+    public Map<HoneyType, Double> getHoneyTypeToAmount() {
+        return honeyTypeToAmount;
     }
 
-    public double getWildFlower() {
-        return WildFlower;
-    }
-
-    public void setWildFlower(double wildFlower) {
-        WildFlower = wildFlower;
-    }
-
-    public double getLinden() {
-        return Linden;
-    }
-
-    public void setLinden(double linden) {
-        Linden = linden;
-    }
-
-    public double getSunFlower() {
-        return SunFlower;
-    }
-
-    public void setSunFlower(double sunFlower) {
-        SunFlower = sunFlower;
-    }
-
-    public double getFalseIndigo() {
-        return FalseIndigo;
-    }
-
-    public void setFalseIndigo(double falseIndigo) {
-        FalseIndigo = falseIndigo;
+    public void setHoneyTypeToAmount(Map<HoneyType, Double> honeyTypeToAmount) {
+        this.honeyTypeToAmount = honeyTypeToAmount;
     }
 
     @Override
     public String toString() {
         return "HarvestHoney{" +
-                "Acacia=" + Acacia +
-                ", Rapeseed=" + Rapeseed +
-                ", WildFlower=" + WildFlower +
-                ", Linden=" + Linden +
-                ", SunFlower=" + SunFlower +
-                ", FalseIndigo=" + FalseIndigo +
+                "honeyTypeToAmount=" + honeyTypeToAmount +
                 '}';
     }
 }

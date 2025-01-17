@@ -102,7 +102,7 @@ public class LifeOfBeesController {
         String userId = principal.getName();
         accessDenied(lifeOfBeesGame, userId);
         GameResponse response = getGameResponse(lifeOfBeesGame);
-        logger.info("Game sent to React: {}", response);
+        logger.info("Game sent to React from getGame: {}", response);
         return response;
     }
 
@@ -126,12 +126,13 @@ public class LifeOfBeesController {
         lifeOfBeesService.save(lifeOfBeesGame);
         GameResponse response = getGameResponse(lifeOfBeesGame);
         gameHistoryService.saveGameHistory(lifeOfBeesGame);
-        logger.info("Game sent to React: {}", response);
+        logger.info("Game sent to React from iterateWeek: {}", response);
         return response;
     }
 
 
     public GameResponse getGameResponse(LifeOfBees game) {
+        logger.info("game received in GameResponse: {}",game);
         GameResponse gameResponse = new GameResponse();
         gameResponse.setId(game.getGameId());
         for (Hive hive : game.getApiary().getHives()) {
@@ -145,7 +146,7 @@ public class LifeOfBeesController {
         gameResponse.setCurrentDate(game.getCurrentDate());
         gameResponse.setTotalKgOfHoneyHarvested(game.getTotalKgOfHoneyHarvested());
         gameResponse.setRemovedHiveId(game.getRemovedHiveId());
-        logger.info("Data send it to React:  {}", gameResponse);
+        logger.info("Data saved it GameResponse:  {}", gameResponse);
         return gameResponse;
     }
 
@@ -165,54 +166,152 @@ public class LifeOfBeesController {
         return ResponseEntity.ok(honeyData);
     }
 
-    @PostMapping("/sellHoney/{gameId}")
-    public ResponseEntity<String> sendSellHoneyQuantities(
-            @PathVariable String gameId,
-            @RequestBody Map<String, Double> requestData,
-            Principal principal) {
-        logger.info("Request for selling honey quantities for game:  {}", gameId);
-        LifeOfBees lifeOfBeesGame = lifeOfBeesService.getByGameId(gameId)
+//    @PostMapping("/sellHoney/{gameId}")
+//    public ResponseEntity<String> sendSellHoneyQuantities(
+//            @PathVariable String gameId,
+//            @RequestBody Map<String, Double> requestData,
+//            Principal principal) {
+//        logger.info("Request for selling honey quantities for game:  {}", gameId);
+//        LifeOfBees lifeOfBeesGame = lifeOfBeesService.getByGameId(gameId)
+//                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
+//
+//        String userId = principal.getName();
+//        accessDenied(lifeOfBeesGame, userId);
+//        double revenue = requestData.getOrDefault("totalValue", 0.0);
+//        HarvestHoney soldHoneyData = new HarvestHoney();
+//
+//        for (Map.Entry<String, Double> entry : requestData.entrySet()) {
+//            if (!entry.getKey().equalsIgnoreCase("totalValue")) {
+//                switch (entry.getKey().toLowerCase()) {
+//                    case "acacia":
+//                        soldHoneyData.Acacia = entry.getValue();
+//                        break;
+//                    case "rapeseed":
+//                        soldHoneyData.Rapeseed = entry.getValue();
+//                        break;
+//                    case "wildflower":
+//                        soldHoneyData.WildFlower = entry.getValue();
+//                        break;
+//                    case "linden":
+//                        soldHoneyData.Linden = entry.getValue();
+//                        break;
+//                    case "sunflower":
+//                        soldHoneyData.SunFlower = entry.getValue();
+//                        break;
+//                    case "falseindigo":
+//                        soldHoneyData.FalseIndigo = entry.getValue();
+//                        break;
+//                    default:
+//                        return ResponseEntity.badRequest().body("Invalid honey type: " + entry.getKey());
+//                }
+//            }
+//        }
+//        Apiary apiary = lifeOfBeesGame.getApiary();
+//        apiary.updateHoneyStock(soldHoneyData);
+//        lifeOfBeesGame.setTotalKgOfHoneyHarvested(apiary.getTotalKgHoneyHarvested());
+//        lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() + revenue);
+//        lifeOfBeesService.save(lifeOfBeesGame);
+//        logger.info("Honey quantities in stock after selling:{}",apiary.getTotalHarvestedHoney());
+//        return ResponseEntity.ok("Stock and revenue updated successfully.");
+//    }
+
+@PostMapping("/sellHoney/{gameId}")
+public ResponseEntity<String> sendSellHoneyQuantities(
+        @PathVariable String gameId,
+        @RequestBody Map<String, Object> requestData,
+        Principal principal) {
+    logger.info("Step 1: Received request for selling honey for gameId: {}", gameId);
+    logger.info("Step 2: Request payload: {}", requestData);
+
+    // Verificarea existenței jocului
+    LifeOfBees lifeOfBeesGame;
+    try {
+        lifeOfBeesGame = lifeOfBeesService.getByGameId(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
-
-        String userId = principal.getName();
-        accessDenied(lifeOfBeesGame, userId);
-        double revenue = requestData.getOrDefault("totalValue", 0.0);
-        HarvestHoney soldHoneyData = new HarvestHoney();
-
-        for (Map.Entry<String, Double> entry : requestData.entrySet()) {
-            if (!entry.getKey().equalsIgnoreCase("totalValue")) {
-                switch (entry.getKey().toLowerCase()) {
-                    case "acacia":
-                        soldHoneyData.Acacia = entry.getValue();
-                        break;
-                    case "rapeseed":
-                        soldHoneyData.Rapeseed = entry.getValue();
-                        break;
-                    case "wildflower":
-                        soldHoneyData.WildFlower = entry.getValue();
-                        break;
-                    case "linden":
-                        soldHoneyData.Linden = entry.getValue();
-                        break;
-                    case "sunflower":
-                        soldHoneyData.SunFlower = entry.getValue();
-                        break;
-                    case "falseindigo":
-                        soldHoneyData.FalseIndigo = entry.getValue();
-                        break;
-                    default:
-                        return ResponseEntity.badRequest().body("Invalid honey type: " + entry.getKey());
-                }
-            }
-        }
-        Apiary apiary = lifeOfBeesGame.getApiary();
-        apiary.updateHoneyStock(soldHoneyData);
-        lifeOfBeesGame.setTotalKgOfHoneyHarvested(apiary.getTotalKgHoneyHarvested());
-        lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() + revenue);
-        lifeOfBeesService.save(lifeOfBeesGame);
-        logger.info("Honey quantities in stock after selling:{}",apiary.getTotalHarvestedHoney());
-        return ResponseEntity.ok("Stock and revenue updated successfully.");
+        logger.info("Step 3: Game found successfully for gameId: {}", gameId);
+    } catch (ResponseStatusException e) {
+        logger.error("Error: Game not found for gameId: {}", gameId);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Game not found");
     }
+
+    // Verificarea drepturilor de acces
+    String userId = principal.getName();
+    logger.info("Step 4: Verifying access rights for user: {}", userId);
+    try {
+        accessDenied(lifeOfBeesGame, userId);
+        logger.info("Step 5: Access rights validated successfully for user: {}", userId);
+    } catch (Exception e) {
+        logger.error("Access denied for user: {} on gameId: {}", userId, gameId);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access denied");
+    }
+
+    // Obținerea venitului total
+    double revenue = 0.0;
+    if (requestData.containsKey("totalValue")) {
+        try {
+            revenue = Double.parseDouble(requestData.get("totalValue").toString());
+            logger.info("Step 6: Extracted revenue (totalValue): {}", revenue);
+        } catch (NumberFormatException e) {
+            logger.error("Error: Invalid totalValue format: {}", requestData.get("totalValue"));
+            return ResponseEntity.badRequest().body("Invalid totalValue format");
+        }
+    } else {
+        logger.warn("Warning: totalValue not provided in the request.");
+    }
+
+    // Preluarea mapării dintre tipurile de miere și cantități
+    @SuppressWarnings("unchecked")
+    Map<String, Double> honeyTypeToAmount = null;
+    try {
+        honeyTypeToAmount = (Map<String, Double>) requestData.get("honeyTypeToAmount");
+        logger.info("Step 7: Extracted honeyTypeToAmount: {}", honeyTypeToAmount);
+    } catch (ClassCastException e) {
+        logger.error("Error: Invalid format for honeyTypeToAmount. Expected Map<String, Double>");
+        return ResponseEntity.badRequest().body("Invalid format for honeyTypeToAmount");
+    }
+
+    if (honeyTypeToAmount == null || honeyTypeToAmount.isEmpty()) {
+        logger.warn("Warning: honeyTypeToAmount is null or empty.");
+        return ResponseEntity.badRequest().body("No honey quantities provided for selling.");
+    }
+
+    // Procesarea datelor despre miere vândută
+    HarvestHoney soldHoneyData = new HarvestHoney();
+    for (Map.Entry<String, Double> entry : honeyTypeToAmount.entrySet()) {
+        try {
+            HoneyType honeyType = HoneyType.valueOf(entry.getKey());
+            soldHoneyData.setHoneyAmount(honeyType, entry.getValue());
+            logger.info("Step 8: Processed honey type: {} with amount: {}", honeyType, entry.getValue());
+        } catch (IllegalArgumentException e) {
+            logger.error("Error: Invalid honey type received: {}", entry.getKey());
+            return ResponseEntity.badRequest().body("Invalid honey type: " + entry.getKey());
+        }
+    }
+
+    // Actualizarea stocului de miere și a veniturilor
+    logger.info("Step 9: Updating honey stock and revenue...");
+    Apiary apiary = lifeOfBeesGame.getApiary();
+    apiary.updateHoneyStock(soldHoneyData);
+    logger.info("Step 10: Updated honey stock: {}", apiary.getTotalHarvestedHoney());
+
+    lifeOfBeesGame.setTotalKgOfHoneyHarvested(apiary.getTotalKgHoneyHarvested());
+    lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() + revenue);
+    logger.info("Step 11: Updated game revenue to: {}", lifeOfBeesGame.getMoneyInTheBank());
+
+    // Salvarea modificărilor
+    try {
+        lifeOfBeesService.save(lifeOfBeesGame);
+        logger.info("Step 12: Game data saved successfully.");
+    } catch (Exception e) {
+        logger.error("Error: Failed to save game data: {}", e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save game data.");
+    }
+
+    logger.info("Step 13: Request processed successfully. Returning response.");
+    return ResponseEntity.ok("Stock and revenue updated successfully.");
+}
+
+
 
 
     @PostMapping("/buyHives/{gameId}")

@@ -10,6 +10,7 @@ public class Honey {
     public Honey() {
     }
 
+    //TODO metoda asta nu are nevoie de nimic din clasa Honey ci doar de BeeTime currentDate. Muta metoda in clasa Beetime
     public static HoneyType honeyType(BeeTime currentDate) {
         Month month = currentDate.getMonth();
         int dayOfMonth = currentDate.getDayOfMonth();
@@ -30,6 +31,7 @@ public class Honey {
     }
 
 
+    //TODO Muta productivitatea intr-un camp din enumul HoneyType
     public static double honeyProductivity(HoneyType honeyType) {
         return switch (honeyType) {
             case Acacia, Linden -> 1;

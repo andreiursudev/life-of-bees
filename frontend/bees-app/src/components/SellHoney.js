@@ -14,10 +14,10 @@ const RowHeader = () => (
 );
 
 const RowText = ({ honeyType, quantity, price, onQuantityChange }) => {
-    const [sellQuantity, setSellQuantity] = useState(0);
+    const [sellQuantity, setSellQuantity] = useState(0.0);
 
     const handleInputChange = (event) => {
-        const value = Math.max(0, Math.min(Number(event.target.value), quantity)) || 0;
+        const value = Math.max(0, Math.min(parseFloat(event.target.value), quantity)) || 0.0;
         setSellQuantity(value);
         onQuantityChange(value, honeyType, price);
     };
@@ -27,33 +27,33 @@ const RowText = ({ honeyType, quantity, price, onQuantityChange }) => {
     return (
         <div className="row-text">
             <p className="btn-custom-sell mb-2">{honeyType}</p>
-            <p className="btn-custom-sell mb-2">{quantity}</p>
-            <p className="btn-custom-sell mb-2">{price}</p>
+            <p className="btn-custom-sell mb-2">{quantity.toFixed(2)}</p>
+            <p className="btn-custom-sell mb-2">{price.toFixed(2)}</p>
             <form>
                 <input
                     className="btn-custom-sell mb-2"
                     type="number"
                     min="0"
-                    max={quantity}
+                    max={quantity.toFixed(2)}
+                    step="0.01"
                     value={sellQuantity || ''}
                     onChange={handleInputChange}
                     style={{ width: '150px' }}
                 />
             </form>
-
             <p className="btn-custom-sell mb-2">${totalValue}</p>
         </div>
     );
 };
+
 const SellHoney = () => {
     const [searchParams] = useSearchParams();
     const gameId = searchParams.get('gameId');
     const [honeyData, setHoneyData] = useState([]);
     const [soldValues, setSoldValues] = useState({});
     const [soldValueTotals, setSoldValueTotals] = useState({});
-    const [totalHoneyQuantity, setTotalHoneyQuantity] = useState(0);
+    const [totalHoneyQuantity, setTotalHoneyQuantity] = useState(0.0);
     const navigate = useNavigate();
-    console.log('acesta e gameId: ',gameId);
 
     useEffect(() => {
         const fetchHoneyData = async () => {
@@ -64,14 +64,16 @@ const SellHoney = () => {
 
             try {
                 const data = await getHoneyQuantities(gameId);
+                const honeyTypeToAmount = data.honeyTypeToAmount || {};
 
-                const parsedData = Object.entries(data).map(([honeyType, quantity]) => ({
+                const parsedData = Object.entries(honeyTypeToAmount).map(([honeyType, quantity]) => ({
                     honeyType,
-                    quantity,
+                    quantity: parseFloat(quantity),
                 }));
+
                 setHoneyData(parsedData);
 
-                const totalQuantity = parsedData.reduce((acc, item) => acc + item.quantity, 0);
+                const totalQuantity = parsedData.reduce((acc, item) => acc + item.quantity, 0.0);
                 setTotalHoneyQuantity(totalQuantity);
             } catch (error) {
                 console.error('Error fetching honey data:', error);
@@ -81,11 +83,10 @@ const SellHoney = () => {
         fetchHoneyData();
     }, [gameId]);
 
-
     const updateTotalSoldValue = (sellQuantity, honeyType, price) => {
         setSoldValues((prevSoldValues) => ({
             ...prevSoldValues,
-            [honeyType]: sellQuantity || 0,
+            [honeyType]: parseFloat(sellQuantity) || 0.0,
         }));
         setSoldValueTotals((prevSoldValueTotals) => ({
             ...prevSoldValueTotals,
@@ -94,10 +95,8 @@ const SellHoney = () => {
     };
 
     const totalSoldValue = Object.values(soldValueTotals)
-        .reduce((acc, val) => acc + Number(val), 0)
+        .reduce((acc, val) => acc + parseFloat(val), 0.0)
         .toFixed(2);
-
-
 
     const handleSubmit = async () => {
         const formattedSoldData = Object.entries(soldValues)
@@ -108,24 +107,20 @@ const SellHoney = () => {
             }, {});
 
         try {
-
             const payload = {
                 gameId,
-                soldData: formattedSoldData,
-                totalValue: parseFloat(totalSoldValue)
+                honeyTypeToAmount: formattedSoldData,
+                totalValue: parseFloat(totalSoldValue),
             };
 
             console.log('Payload trimis din SellHoney:', JSON.stringify(payload, null, 2));
 
-            await sendSellHoneyQuantities.updateHoneyStock(gameId, formattedSoldData, parseFloat(totalSoldValue)); // Transmitem gameId
-            navigate('/gameView', {
-                state: { gameId },
-            });
+            await sendSellHoneyQuantities.updateHoneyStock(gameId, formattedSoldData, parseFloat(totalSoldValue));
+            navigate('/gameView', { state: { gameId } });
         } catch (error) {
             console.error('Error submitting total sold value:', error);
         }
     };
-
 
     return (
         <div className="body-sell">
@@ -137,8 +132,8 @@ const SellHoney = () => {
                         className="btn-custom-sell mb-2"
                         key={honeyType}
                         honeyType={honeyType}
-                        quantity={quantity.toFixed(2)}
-                        price={honeyType === "acacia" ? 6 : 3}
+                        quantity={quantity}
+                        price={honeyType === 'Acacia' ? 6 : 3}
                         onQuantityChange={updateTotalSoldValue}
                     />
                 ))}

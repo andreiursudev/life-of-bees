@@ -114,21 +114,21 @@ const GameView = () => {
             const actionsOfTheWeek = {
                 actions: actionsByType,
             };
-            console.log("Actions of the week being sent:", actionsOfTheWeek);
             const response = await iterateWeek(gameId, actionsOfTheWeek);
+            console.log("Actions of the week being sent:", actionsOfTheWeek);
             console.log("Response from backend:", response);
             if (response) {
                 console.log("Week iterated successfully!");
-                const updatedGameData = await getGame(gameId);
-                setGameData(updatedGameData);
-                setUpdatedGameData(updatedGameData);
+                /*const updatedGameData = await getGame(gameId);*/
+                setGameData(response);
+                setUpdatedGameData(response);
                 setSelectedActions({});
-                if (updatedGameData.removedHiveId) {
-                    showRemovedHiveMessage(updatedGameData.removedHiveId);
+                if (response.removedHiveId) {
+                    showRemovedHiveMessage(response.removedHiveId);
                 } else {
                     setRemovedHiveMessage("");
                 }
-                const dateObject = new Date(updatedGameData.currentDate.currentDate);
+                const dateObject = new Date(response.currentDate.currentDate);
                 setMonth(dateObject.getMonth() + 1);
                 setDay(dateObject.getDate());
             }
@@ -278,6 +278,8 @@ const GameView = () => {
                 <div className="col-md-3">
                     <div className="card mb-3">
                         <div className="card-body">
+                        {console.log("Updated game data:", updatedGameData)}
+
                             {removedHiveMessage && <p>{removedHiveMessage}</p>}
                             {updatedGameData && updatedGameData.actionsOfTheWeek ? (
                                 updatedGameData.actionsOfTheWeek.actions &&

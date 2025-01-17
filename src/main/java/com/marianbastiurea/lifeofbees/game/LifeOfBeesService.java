@@ -26,6 +26,7 @@ public class LifeOfBeesService {
     public List<LifeOfBees> getGamesForJohnDoe() {
         User user = userService.findUserByUsername("johndoe");
         if (user != null) {
+            //TODO recomand sa cauti jocurile dupa userId si sa stergi gamesList din user.
             List<String> gamesList = user.getGamesList();
             return lifeOfBeesRepository.findAllById(gamesList);
         }
@@ -39,6 +40,7 @@ public class LifeOfBeesService {
             if (gamesList.isEmpty()) {
                 return List.of();
             }
+            //TODO cauta direct dupa abele criterii userId si gameType in acelas timp
             List<LifeOfBees> userGames = lifeOfBeesRepository.findAllById(gamesList);
             return userGames.stream()
                     .filter(game -> gameType.equals(game.getGameType()))

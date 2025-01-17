@@ -10,6 +10,8 @@ public class Hive {
     public boolean wasMovedAnEggsFrame;
     public List<HoneyBatch> honeyBatches;
     public boolean itWasHarvested;
+
+    //TODO creaza o clasa BeesBatches in care sa encapsulezi campul beesBatches
     LinkedList<Integer> beesBatches = new LinkedList<>();
     private int id;
     private EggFrames eggFrames;
@@ -154,6 +156,7 @@ public class Hive {
     }
 
     public void addNewEggsFrameInHive() {
+        //TODO eggFrames nu ar trebui sa fie niciodata null
         Optional.ofNullable(this.eggFrames).ifPresent(EggFrames::incrementNumberOfEggFrames);
     }
 
@@ -168,6 +171,7 @@ public class Hive {
         double numberRandom = Math.random();
         Month month = currentDate.getMonth();
         int dayOfMonth = currentDate.getDayOfMonth();
+        //TODO logica asta se apeleaza in fiecare zi asa ca in medie regina se va schimba de 10 ori in luna mai in fiecare an, fa o logica corecta sau renunta la ea
         if ((numberRandom < 0.5 && month == Month.MAY && dayOfMonth > 1 && dayOfMonth < 20) || queen.getAgeOfQueen() == 5) {
             queen = new Queen(0);
         }
@@ -204,7 +208,7 @@ public class Hive {
         return List.of(honeyBatch);
     }
 
-
+    //TODO cred ca ceva e gresit aici, fa un unit test sa verifici daca totul e ok
     public LinkedList<Integer> splitBeesBatches() {
         LinkedList<Integer> newHiveBeesBatches = new LinkedList<>(getBeesBatches());
         for (int i = 0; i < getBeesBatches().size(); i++) {

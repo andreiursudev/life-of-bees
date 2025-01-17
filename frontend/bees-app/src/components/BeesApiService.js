@@ -158,12 +158,18 @@ export const getHoneyQuantities = async (gameId) => {
         throw error;
     }
 };
-
 export const sendSellHoneyQuantities = {
-    updateHoneyStock: async (gameId, soldData, totalValue) => {
+    updateHoneyStock: async (gameId, honeyTypeToAmount, totalValue) => {
         try {
-            const payload = { ...soldData, totalValue };
+            // Construim payload-ul cu structura corectă
+            const payload = {
+                honeyTypeToAmount,
+                totalValue,
+            };
+
             console.log('Payload din BeesApiService:', JSON.stringify(payload, null, 2));
+
+            // Trimitem request-ul către backend
             const response = await apiClient.post(`/bees/sellHoney/${gameId}`, payload);
             return response.data;
         } catch (error) {
@@ -172,6 +178,7 @@ export const sendSellHoneyQuantities = {
         }
     },
 };
+
 
 export const buyHives = async (gameId, numberOfHives) => {
     try {
