@@ -8,6 +8,7 @@ import com.marianbastiurea.lifeofbees.action.ActionsOfTheWeek;
 import com.marianbastiurea.lifeofbees.time.BeeTime;
 import com.marianbastiurea.lifeofbees.weather.WeatherData;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,9 +20,9 @@ public class GameResponse {
     private double windSpeed;
     private double precipitation;
     private double moneyInTheBank;
-    private BeeTime currentDate;
+    private LocalDate currentDate;
     private double totalKgOfHoneyHarvested;
-    private ActionsOfTheWeek actionsOfTheWeek;
+    private ActionsOfTheWeek actions;
     private Integer removedHiveId;
 
     public String getId() {
@@ -32,11 +33,11 @@ public class GameResponse {
         this.id = id;
     }
 
-    public BeeTime getCurrentDate() {
+    public LocalDate getCurrentDate() {
         return currentDate;
     }
 
-    public void setCurrentDate(BeeTime currentDate) {
+    public void setCurrentDate(LocalDate currentDate) {
         this.currentDate = currentDate;
     }
 
@@ -96,12 +97,12 @@ public class GameResponse {
         }
     }
 
-    public ActionsOfTheWeek getActionsOfTheWeek() {
-        return actionsOfTheWeek;
+    public ActionsOfTheWeek getActions() {
+        return actions;
     }
 
-    public void setActionsOfTheWeek(ActionsOfTheWeek actionsOfTheWeek) {
-        this.actionsOfTheWeek = actionsOfTheWeek;
+    public void setActions(ActionsOfTheWeek actions) {
+        this.actions = actions;
     }
 
     @Override
@@ -115,7 +116,7 @@ public class GameResponse {
                 ", moneyInTheBank=" + moneyInTheBank +
                 ", currentDate=" + currentDate +
                 ", totalKgOfHoneyHarvested=" + totalKgOfHoneyHarvested +
-                ", actionsOfTheWeek=" + actionsOfTheWeek +
+                ", actionsOfTheWeek=" + actions +
                 '}';
     }
 

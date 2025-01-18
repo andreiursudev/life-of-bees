@@ -39,7 +39,7 @@ const GameView = () => {
                 console.log('am primit datele in gameView pentru ID:', gameId);
                 const data = await getGame(gameId);
                 console.log('datele primite din Java:', data);
-                const currentDateStr = data.currentDate.currentDate;
+                const currentDateStr = data.currentDate;
                 console.log('Data curentă (string):', currentDateStr);
                 const currentDate = new Date(currentDateStr);
                 console.log('Obiect Date generat:', currentDate);
@@ -84,8 +84,9 @@ const GameView = () => {
             console.error("Game ID is missing!");
             return;
         }
-
+    
         try {
+            // Construirea actionsOfTheWeek rămâne la fel
             const actionsByType = Object.keys(selectedActions)
                 .filter(key => selectedActions[key])
                 .reduce((acc, key) => {
@@ -93,7 +94,7 @@ const GameView = () => {
                     if (!acc[actionType]) {
                         acc[actionType] = [];
                     }
-
+    
                     if (['ADD_EGGS_FRAME', 'ADD_HONEY_FRAME', 'SPLIT_HIVE'].includes(actionType)) {
                         acc[actionType].push(parseInt(sourceHiveId));
                     } else if (actionType === 'MOVE_EGGS_FRAME' && sourceHiveId && destinationHiveId) {
@@ -101,34 +102,42 @@ const GameView = () => {
                             parseInt(sourceHiveId),
                             parseInt(destinationHiveId),
                         ]);
-                    }
-                    else if (['INSECT_CONTROL', 'FEED_BEES'].includes(actionType)) {
+                    } else if (['INSECT_CONTROL', 'FEED_BEES'].includes(actionType)) {
                         acc[actionType] = selectedActions[key];
                     } else {
                         acc[actionType].push(selectedActions[key]);
                     }
-
+    
                     return acc;
                 }, {});
-
+    
             const actionsOfTheWeek = {
                 actions: actionsByType,
             };
-            const response = await iterateWeek(gameId, actionsOfTheWeek);
+    
+            // Trimiterea datelor către backend
             console.log("Actions of the week being sent:", actionsOfTheWeek);
+            const response = await iterateWeek(gameId, actionsOfTheWeek);
+    
+            // Verificăm răspunsul primit de la backend
             console.log("Response from backend:", response);
             if (response) {
+                // Prelucrarea răspunsului (adaptare la noul format)
+                const updatedGameData = processBackendResponse(response);
+    
+                // Actualizarea stării
                 console.log("Week iterated successfully!");
-                /*const updatedGameData = await getGame(gameId);*/
-                setGameData(response);
-                setUpdatedGameData(response);
+                setGameData(updatedGameData);
+                setUpdatedGameData(updatedGameData);
                 setSelectedActions({});
+    
                 if (response.removedHiveId) {
                     showRemovedHiveMessage(response.removedHiveId);
                 } else {
                     setRemovedHiveMessage("");
                 }
-                const dateObject = new Date(response.currentDate.currentDate);
+    
+                const dateObject = new Date(updatedGameData.currentDate);
                 setMonth(dateObject.getMonth() + 1);
                 setDay(dateObject.getDate());
             }
@@ -136,7 +145,19 @@ const GameView = () => {
             console.error("Error iterating week:", error);
         }
     };
-
+    
+    // Funcție separată pentru procesarea răspunsului backend-ului
+    const processBackendResponse = (response) => {
+        // Dacă formatul răspunsului conține un nou format, îl adaptăm aici
+        // De exemplu, dacă răspunsul include date într-o structură mai complexă:
+        const updatedData = {
+            ...response,
+            // Transformări suplimentare, dacă este necesar
+        };
+    
+        return updatedData;
+    };
+    
 
     const flowerImage = useMemo(() => {
         if (!month || !day) {
@@ -219,10 +240,10 @@ const GameView = () => {
     };
 
     const isMarchOrApril = () => {
-        if (!gameData || !gameData.currentDate.currentDate) {
+        if (!gameData || !gameData.currentDate) {
             return false;
         }
-        const currentMonth = new Date(gameData.currentDate.currentDate).getMonth() + 1;
+        const currentMonth = new Date(gameData.currentDate).getMonth() + 1;
         return currentMonth === 3 || currentMonth === 4;
     };
 
@@ -243,7 +264,6 @@ const GameView = () => {
         console.log("Navigating to ApiaryHistory with gameId:", gameId);
         navigate('/ApiaryHistory', { state: { gameId: gameId } });
     };
-
 
     return (
         <div className="body-gameView">
@@ -276,139 +296,139 @@ const GameView = () => {
                 </div>
 
                 <div className="col-md-3">
-                    <div className="card mb-3">
-                        <div className="card-body">
-                        {console.log("Updated game data:", updatedGameData)}
+    <div className="card mb-3">
+        <div className="card-body">
+            {console.log("Updated game data:", updatedGameData)}
 
-                            {removedHiveMessage && <p>{removedHiveMessage}</p>}
-                            {updatedGameData && updatedGameData.actionsOfTheWeek ? (
-                                updatedGameData.actionsOfTheWeek.actions &&
-                                    Object.keys(updatedGameData.actionsOfTheWeek.actions).length > 0 ? (
-                                    <div>
-                                        <p>Actions of the week:</p>
-                                        <form>
-                                            {Object.keys(updatedGameData.actionsOfTheWeek.actions).map((actionType) => (
-                                                <div key={actionType}>
-                                                    <h5>{formatActionType(actionType)}</h5>
-                                                    {(() => {
-                                                        const actionData = updatedGameData.actionsOfTheWeek.actions[actionType];
-                                                        switch (actionType) {
-                                                            case "ADD_EGGS_FRAME":
-                                                            case "ADD_HONEY_FRAME":
-                                                            case "SPLIT_HIVE":
-                                                                return actionData.map((hiveId, index) => (
-                                                                    <div key={`${actionType}-${index}`} className="form-check">
-                                                                        <input
-                                                                            type="checkbox"
-                                                                            className="form-check-input"
-                                                                            id={`hive-${actionType}-${hiveId}`}
-                                                                            checked={selectedActions[`${actionType}-${hiveId}`] || false}
-                                                                            onChange={() => handleCheckboxChange(actionType, hiveId)}
-                                                                        />
-                                                                        <label className="form-check-label" htmlFor={`hive-${actionType}-${hiveId}`}>
-                                                                            Hive {hiveId}
-                                                                        </label>
-                                                                    </div>
-                                                                ));
+            {removedHiveMessage && <p>{removedHiveMessage}</p>}
+            {updatedGameData && updatedGameData.actions && updatedGameData.actions.actions ? (
+                Object.keys(updatedGameData.actions.actions).length > 0 ? (
+                    <div>
+                        <p>Actions of the week:</p>
+                        <form>
+                            {Object.keys(updatedGameData.actions.actions).map((actionType) => (
+                                <div key={actionType}>
+                                    <h5>{formatActionType(actionType)}</h5>
+                                    {(() => {
+                                        const actionData = updatedGameData.actions.actions[actionType];
+                                        switch (actionType) {
+                                            case "ADD_EGGS_FRAME":
+                                            case "ADD_HONEY_FRAME":
+                                            case "SPLIT_HIVE":
+                                                return actionData.map((hiveId, index) => (
+                                                    <div key={`${actionType}-${index}`} className="form-check">
+                                                        <input
+                                                            type="checkbox"
+                                                            className="form-check-input"
+                                                            id={`hive-${actionType}-${hiveId}`}
+                                                            checked={selectedActions[`${actionType}-${hiveId}`] || false}
+                                                            onChange={() => handleCheckboxChange(actionType, hiveId)}
+                                                        />
+                                                        <label className="form-check-label" htmlFor={`hive-${actionType}-${hiveId}`}>
+                                                            Hive {hiveId}
+                                                        </label>
+                                                    </div>
+                                                ));
 
-                                                            case "MOVE_EGGS_FRAME":
-                                                                return actionData.map((pair, index) => {
-                                                                    const checkboxKey = `${actionType}-${pair[0]}-${pair[1]}`;
-                                                                    const isInactive = Object.keys(selectedActions).some(key =>
-                                                                        key.startsWith(`${actionType}-${pair[0]}-`) && selectedActions[key]
-                                                                    );
-                                                                    return (
-                                                                        <div key={`${actionType}-${index}`}>
-                                                                            <label>
-                                                                                <input
-                                                                                    type="checkbox"
-                                                                                    checked={!!selectedActions[checkboxKey]}
-                                                                                    onChange={() => {
-                                                                                        if (!isInactive) {
-                                                                                            setSelectedActions((prevSelectedActions) => {
-                                                                                                const newSelectedActions = { ...prevSelectedActions };
-                                                                                                Object.keys(newSelectedActions).forEach((key) => {
-                                                                                                    if (key.startsWith(`${actionType}-${pair[0]}-`)) {
-                                                                                                        delete newSelectedActions[key];
-                                                                                                    }
-                                                                                                });
-                                                                                                newSelectedActions[checkboxKey] = !prevSelectedActions[checkboxKey];
-                                                                                                return newSelectedActions;
-                                                                                            });
-                                                                                        }
-                                                                                    }}
-                                                                                    disabled={isInactive}
-                                                                                />
-                                                                                Move frame from hive {pair[0]} to hive {pair[1]}
-                                                                            </label>
-                                                                        </div>
-                                                                    );
-                                                                });
+                                            case "MOVE_EGGS_FRAME":
+                                                return actionData.map((pair, index) => {
+                                                    const checkboxKey = `${actionType}-${pair[0]}-${pair[1]}`;
+                                                    const isInactive = Object.keys(selectedActions).some(key =>
+                                                        key.startsWith(`${actionType}-${pair[0]}-`) && selectedActions[key]
+                                                    );
+                                                    return (
+                                                        <div key={`${actionType}-${index}`}>
+                                                            <label>
+                                                                <input
+                                                                    type="checkbox"
+                                                                    checked={!!selectedActions[checkboxKey]}
+                                                                    onChange={() => {
+                                                                        if (!isInactive) {
+                                                                            setSelectedActions((prevSelectedActions) => {
+                                                                                const newSelectedActions = { ...prevSelectedActions };
+                                                                                Object.keys(newSelectedActions).forEach((key) => {
+                                                                                    if (key.startsWith(`${actionType}-${pair[0]}-`)) {
+                                                                                        delete newSelectedActions[key];
+                                                                                    }
+                                                                                });
+                                                                                newSelectedActions[checkboxKey] = !prevSelectedActions[checkboxKey];
+                                                                                return newSelectedActions;
+                                                                            });
+                                                                        }
+                                                                    }}
+                                                                    disabled={isInactive}
+                                                                />
+                                                                Move frame from hive {pair[0]} to hive {pair[1]}
+                                                            </label>
+                                                        </div>
+                                                    );
+                                                });
 
-                                                            case "FEED_BEES":
-                                                            case "INSECT_CONTROL":
-                                                                return (
-                                                                    <div>
-                                                                        <div className="form-check">
-                                                                            <label>
-                                                                                <input
-                                                                                    type="radio"
-                                                                                    name={`yesNo-${actionType}`}
-                                                                                    value="yes"
-                                                                                    checked={selectedActions[actionType] === "yes"}
-                                                                                    onChange={() => handleYesNoChange(actionType, "yes")}
-                                                                                />
-                                                                                Yes
-                                                                            </label>
-                                                                            <label>
-                                                                                <input
-                                                                                    type="radio"
-                                                                                    name={`yesNo-${actionType}`}
-                                                                                    value="no"
-                                                                                    checked={selectedActions[actionType] === "no"}
-                                                                                    onChange={() => handleYesNoChange(actionType, "no")}
-                                                                                />
-                                                                                No
-                                                                            </label>
-                                                                        </div>
-                                                                    </div>
-                                                                );
+                                            case "FEED_BEES":
+                                            case "INSECT_CONTROL":
+                                                return (
+                                                    <div>
+                                                        <div className="form-check">
+                                                            <label>
+                                                                <input
+                                                                    type="radio"
+                                                                    name={`yesNo-${actionType}`}
+                                                                    value="yes"
+                                                                    checked={selectedActions[actionType] === "yes"}
+                                                                    onChange={() => handleYesNoChange(actionType, "yes")}
+                                                                />
+                                                                Yes
+                                                            </label>
+                                                            <label>
+                                                                <input
+                                                                    type="radio"
+                                                                    name={`yesNo-${actionType}`}
+                                                                    value="no"
+                                                                    checked={selectedActions[actionType] === "no"}
+                                                                    onChange={() => handleYesNoChange(actionType, "no")}
+                                                                />
+                                                                No
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                );
 
-                                                            case "HARVEST_HONEY":
-                                                                return (
-                                                                    <p>
-                                                                        {actionData.map((hiveId, index) => (
-                                                                            <span key={`${actionType}-${index}`}>
-                                                                                Hive {hiveId}{index < actionData.length - 1 ? ', ' : ''}
-                                                                            </span>
-                                                                        ))}
-                                                                    </p>
-                                                                );
+                                            case "HARVEST_HONEY":
+                                                return (
+                                                    <p>
+                                                        {actionData.map((hiveId, index) => (
+                                                            <span key={`${actionType}-${index}`}>
+                                                                Hive {hiveId}{index < actionData.length - 1 ? ', ' : ''}
+                                                            </span>
+                                                        ))}
+                                                    </p>
+                                                );
 
-                                                            default:
-                                                                return null;
-                                                        }
-                                                    })()}
-                                                    <hr />
-                                                </div>
-                                            ))}
-                                        </form>
-                                    </div>
-                                ) : (
-                                    <p>Weekly checking</p>
-                                )
-                            ) : (
-                                <p>Weekly checking</p>
-                            )}
-                        </div>
+                                            default:
+                                                return null;
+                                        }
+                                    })()}
+                                    <hr />
+                                </div>
+                            ))}
+                        </form>
                     </div>
-                </div>
+                ) : (
+                    <p>Weekly checking</p>
+                )
+            ) : (
+                <p>Weekly checking</p>
+            )}
+        </div>
+    </div>
+</div>
+
 
 
 
                 <div className="col-md-3">
                     <div className="d-flex flex-column align-items-center">
-                        <p className="btn-custom p-custom mb-2">Date: {gameData ? gameData.currentDate.currentDate : 'Loading...'}</p>
+                        <p className="btn-custom p-custom mb-2">Date: {gameData ? gameData.currentDate : 'Loading...'}</p>
                         <p className="btn-custom p-custom mb-2">
                             Temp: {gameData && gameData.temperature !== undefined ? gameData.temperature.toFixed(2) : '0.00'}
                         </p>

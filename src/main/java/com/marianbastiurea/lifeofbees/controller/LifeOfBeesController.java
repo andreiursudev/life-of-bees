@@ -155,11 +155,11 @@ public class LifeOfBeesController {
             gameResponse.getHives().add(new HivesView(hive.getId(), hive.getAgeOfQueen(), hive.getEggFrames().getNumberOfEggFrames(), hive.getHoneyFrames().getHoneyFrame().size(), hive.isItWasSplit()));
         }
         gameResponse.setTemperature(game.getWeatherData().getTemperature());
-        gameResponse.setActionsOfTheWeek(game.getActionsOfTheWeek());
+        gameResponse.setActions(game.getActionsOfTheWeek());
         gameResponse.setWindSpeed(game.getWeatherData().getWindSpeed());
         gameResponse.setMoneyInTheBank(game.getMoneyInTheBank());
         gameResponse.setPrecipitation(game.getWeatherData().getPrecipitation());
-        gameResponse.setCurrentDate(game.getCurrentDate());
+        gameResponse.setCurrentDate(game.getCurrentDate().getLocalDate());
         gameResponse.setTotalKgOfHoneyHarvested(game.getTotalKgOfHoneyHarvested());
         gameResponse.setRemovedHiveId(game.getRemovedHiveId());
         logger.info("Data saved it GameResponse:  {}", gameResponse);
