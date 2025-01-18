@@ -3,6 +3,7 @@ package com.marianbastiurea.lifeofbees.view;
 
 //TODO Decupleaza view-ul de business logic.
 // Ar fi bine ca GameResponse sa nu importe clasele astea din alte pachete. Daca se fac schimbari acolo, se va schimba si view si frontendul.
+
 import com.marianbastiurea.lifeofbees.action.ActionsOfTheWeek;
 import com.marianbastiurea.lifeofbees.time.BeeTime;
 import com.marianbastiurea.lifeofbees.weather.WeatherData;

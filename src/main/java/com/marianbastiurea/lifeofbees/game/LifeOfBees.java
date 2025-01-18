@@ -64,7 +64,7 @@ public class LifeOfBees {
     }
 
     public void iterateOneWeek(Map<ActionType, Object> actions, List<WeatherData> weatherDataNextWeek) {
-            actionsOfTheWeek.executeActions(this, actions);
+        actionsOfTheWeek.executeActions(this, actions);
         for (int dailyIterator = 0; dailyIterator < 7; dailyIterator++) {
             double weatherIndex = weatherDataNextWeek.get(dailyIterator).weatherIndex();
             for (Hive hive : apiary.getHives()) {

@@ -142,9 +142,6 @@ public class AuthController {
     }
 
 
-
-
-
     @PostMapping("/oauth/github")
     public ResponseEntity<?> authenticateWithGitHub(@AuthenticationPrincipal OAuth2User principal) {
         System.out.println("Starting GitHub OAuth authentication process.");

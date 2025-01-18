@@ -39,6 +39,25 @@ public class BeeTime {
                 && (dayOfMonth == 10 || dayOfMonth == 20);
     }
 
+    public static HoneyType honeyType(BeeTime currentDate) {
+        Month month = currentDate.getMonth();
+        int dayOfMonth = currentDate.getDayOfMonth();
+        return switch (month) {
+            case MARCH, AUGUST, SEPTEMBER -> HoneyType.WildFlower;
+            case APRIL -> dayOfMonth <= 20
+                    ? HoneyType.Rapeseed
+                    : HoneyType.WildFlower;
+            case MAY -> dayOfMonth <= 20
+                    ? HoneyType.Acacia
+                    : HoneyType.FalseIndigo;
+            case JUNE -> dayOfMonth <= 20
+                    ? HoneyType.Linden
+                    : HoneyType.WildFlower;
+            case JULY -> HoneyType.SunFlower;
+            default -> HoneyType.WildFlower;
+        };
+    }
+
     public LocalDate getCurrentDate() {
         return currentDate;
     }
@@ -95,24 +114,5 @@ public class BeeTime {
         return "{" +
                 "currentDate=" + currentDate +
                 '}';
-    }
-
-    public static HoneyType honeyType(BeeTime currentDate) {
-        Month month = currentDate.getMonth();
-        int dayOfMonth = currentDate.getDayOfMonth();
-        return switch (month) {
-            case MARCH, AUGUST, SEPTEMBER -> HoneyType.WildFlower;
-            case APRIL -> dayOfMonth <= 20
-                    ? HoneyType.Rapeseed
-                    : HoneyType.WildFlower;
-            case MAY -> dayOfMonth <= 20
-                    ? HoneyType.Acacia
-                    : HoneyType.FalseIndigo;
-            case JUNE -> dayOfMonth <= 20
-                    ? HoneyType.Linden
-                    : HoneyType.WildFlower;
-            case JULY -> HoneyType.SunFlower;
-            default -> HoneyType.WildFlower;
-        };
     }
 }

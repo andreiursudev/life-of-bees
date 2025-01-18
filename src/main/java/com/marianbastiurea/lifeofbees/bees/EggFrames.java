@@ -85,7 +85,7 @@ public class EggFrames {
     }
 
     public void incrementNumberOfEggFrames() {
-        int maxNumberOfEggFrames=6;
+        int maxNumberOfEggFrames = 6;
         if (this.numberOfEggFrames < maxNumberOfEggFrames)
             this.numberOfEggFrames++;
     }
