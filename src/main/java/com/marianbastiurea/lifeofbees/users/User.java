@@ -33,14 +33,18 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
+    public static User createWithUsernameAndPassword(String username, String password) {
+        User user = new User();
+        user.username = username;
+        user.password = password;
+        return user;
     }
 
-    public User( String email, String provider) {
-        this.email = email;
-        this.provider = provider;
+    public static User createWithEmailAndProvider(String email, String provider) {
+        User user = new User();
+        user.email = email;
+        user.provider = provider;
+        return user;
     }
 
     public String getUserId() {

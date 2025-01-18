@@ -154,24 +154,10 @@ public double getTotalKgHoneyHarvested() {
         });
     }
 
-//    public List<List<Integer>> checkIfCanMoveAnEggsFrame() {
-//        List<Hive> hives = this.getHives();
-//
-//        return hives.stream()
-//                .filter(sourceHive -> sourceHive.getEggFrames().checkIfAll6EggsFrameAre80PercentFull()
-//                        && !sourceHive.itWasSplit
-//                        && !sourceHive.wasMovedAnEggsFrame)
-//                .flatMap(sourceHive -> hives.stream()
-//                        .filter(targetHive -> targetHive.itWasSplit && targetHive.getQueen().getAgeOfQueen() == 0)
-//                        .map(targetHive -> Arrays.asList(sourceHive.getId(), targetHive.getId()))
-//                )
-//                .collect(Collectors.toList());
-//    }
-
     public List<List<Integer>> checkIfCanMoveAnEggsFrame() {
         List<Hive> hives = this.getHives();
 
-        List<List<Integer>> result = hives.stream()
+        return hives.stream()
                 .filter(sourceHive -> sourceHive.getEggFrames().checkIfAll6EggsFrameAre80PercentFull()
                         && !sourceHive.itWasSplit
                         && !sourceHive.wasMovedAnEggsFrame)
@@ -180,9 +166,9 @@ public double getTotalKgHoneyHarvested() {
                         .map(targetHive -> Arrays.asList(sourceHive.getId(), targetHive.getId()))
                 )
                 .collect(Collectors.toList());
-
-        return result.isEmpty() ? null : result;
     }
+
+
 
 
     public void moveAnEggsFrame(List<List<Integer>> hiveIdPair) {

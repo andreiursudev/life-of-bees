@@ -101,7 +101,6 @@ public class LifeOfBeesController {
         );
 
         LifeOfBees savedGame = lifeOfBeesService.save(lifeOfBeesGame);
-        userService.addGameToUser(user, lifeOfBeesGame.getGameId());
         gameHistoryService.saveGameHistory(savedGame);
         Map<String, String> response = new HashMap<>();
         response.put("token", jwtToken);
@@ -339,8 +338,8 @@ public class LifeOfBeesController {
     }
 
     @GetMapping("/JohnDoeGames")
-    public List<HomePageGameResponse> getJohnDoeGames() {
-        List<LifeOfBees> userGames = lifeOfBeesService.getGamesForJohnDoe();
+    public List<HomePageGameResponse> getJohnDoeGames(@RequestParam String userId) {
+        List<LifeOfBees> userGames = lifeOfBeesService.getGamesForJohnDoe(userId);
         if (userGames.isEmpty()) {
             logger.info("No games for JohnDoe.");
         } else {

@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,10 +29,7 @@ public class UserService {
             return existingUser.get().getUserId();
         }
         String encodedPassword = passwordEncoder.encode(registerRequest.getPassword());
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(encodedPassword);
-
+        User user = User.createWithUsernameAndPassword(username, encodedPassword);
         try {
             User savedUser = userRepository.save(user);
             return savedUser.getUserId();
@@ -44,24 +39,7 @@ public class UserService {
     }
 
 
-    public void addGameToUser(User user, String gameId) {
-        if (user != null) {
-            List<String> gamesList = user.getGamesList();
-            if (gamesList == null) {
-                gamesList = new ArrayList<>();
-                user.setGamesList(gamesList);
-            }
-            if (!gamesList.contains(gameId)) {
-                gamesList.add(gameId);
-                userRepository.save(user);
-                System.out.println("Gameid: " + gameId + " adăugat la id utilizator: " + user.getUserId());
-            } else {
-                System.out.println("Gameid: " + gameId + " deja există în lista utilizatorului: " + user.getUserId());
-            }
-        } else {
-            throw new IllegalArgumentException("User is null. Cannot add game.");
-        }
-    }
+
 
     public User findUserByUsername(String username) {
         return userRepository.findByUsername(username).orElse(null);
@@ -76,7 +54,6 @@ public class UserService {
         if (user == null) {
             user = new User();
             user.setUsername(gameRequest.getUsername());
-            user.setGamesList(new ArrayList<>());
             userRepository.save(user);
             System.out.println("Utilizator creat cu numele in createGame: " + user);
         } else {

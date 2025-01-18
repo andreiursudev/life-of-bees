@@ -22,7 +22,6 @@ public class EggFrames {
         this.eggsByDay = new LinkedList<>(Collections.nCopies(daysToHatch, 0));
     }
 
-    //TODO sterge metoda getRandomEggFrames si muta logica in public EggFrames()
 
     public static EggFrames getRandomEggFrames() {
         Random random = new Random();
