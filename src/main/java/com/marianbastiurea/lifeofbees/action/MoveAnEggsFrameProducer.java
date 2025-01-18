@@ -4,12 +4,14 @@ import com.marianbastiurea.lifeofbees.bees.Apiary;
 import com.marianbastiurea.lifeofbees.game.LifeOfBees;
 
 import java.util.List;
-
+import java.util.Optional;
 
 public class MoveAnEggsFrameProducer implements ActionOfTheWeekProducer<List<List<Integer>>> {
+
     @Override
-    public List<List<Integer>> produce(LifeOfBees lifeOfBees) {
+    public Optional<List<List<Integer>>> produce(LifeOfBees lifeOfBees) {
         Apiary apiary = lifeOfBees.getApiary();
-        return apiary.checkIfCanMoveAnEggsFrame();
+        List<List<Integer>> result = apiary.checkIfCanMoveAnEggsFrame();
+        return result.isEmpty() ? Optional.empty() : Optional.of(result);
     }
 }

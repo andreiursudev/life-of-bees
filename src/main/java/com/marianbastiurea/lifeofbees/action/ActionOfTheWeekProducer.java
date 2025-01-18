@@ -2,6 +2,7 @@ package com.marianbastiurea.lifeofbees.action;
 
 import com.marianbastiurea.lifeofbees.game.LifeOfBees;
 
+import java.util.Optional;
 public interface ActionOfTheWeekProducer<T> {
-    T produce(LifeOfBees lifeOfBees);
+    Optional<T> produce(LifeOfBees lifeOfBees);
 }

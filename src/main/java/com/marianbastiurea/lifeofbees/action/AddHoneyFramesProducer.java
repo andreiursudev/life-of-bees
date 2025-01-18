@@ -6,10 +6,11 @@ import com.marianbastiurea.lifeofbees.game.LifeOfBees;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class AddHoneyFramesProducer implements ActionOfTheWeekProducer<List<Integer>> {
     @Override
-    public List<Integer> produce(LifeOfBees lifeOfBees) {
+    public Optional<List<Integer>> produce(LifeOfBees lifeOfBees) {
         List<Integer> hiveIds = new ArrayList<>();
         Apiary apiary = lifeOfBees.getApiary();
         for (Hive hive : apiary.getHives()) {
@@ -17,6 +18,7 @@ public class AddHoneyFramesProducer implements ActionOfTheWeekProducer<List<Inte
                 hiveIds.add(hive.getId());
             }
         }
-        return hiveIds;
+        return hiveIds.isEmpty() ? Optional.empty() : Optional.of(hiveIds);
     }
 }
+

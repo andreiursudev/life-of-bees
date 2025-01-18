@@ -7,11 +7,9 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
+
 
 @Document(collection = "users")
 public class User implements UserDetails {
@@ -23,7 +21,6 @@ public class User implements UserDetails {
     private String username;
 
     private String password;
-    private List<String> gamesList = new ArrayList<>();
 
     @Email(message = "Email should be valid")
     @NotBlank(message = "Email cannot be blank")
@@ -36,14 +33,12 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String username, String password, List<String> gamesList) {
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.gamesList = gamesList != null ? new ArrayList<>(gamesList) : new ArrayList<>();
     }
 
-    public User(List<String> gamesList, String email, String provider) {
-        this.gamesList = gamesList;
+    public User( String email, String provider) {
         this.email = email;
         this.provider = provider;
     }
@@ -70,14 +65,6 @@ public class User implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public List<String> getGamesList() {
-        return gamesList;
-    }
-
-    public void setGamesList(List<String> gamesList) {
-        this.gamesList = gamesList;
     }
 
     public String getEmail() {

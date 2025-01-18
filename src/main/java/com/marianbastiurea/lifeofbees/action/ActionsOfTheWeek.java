@@ -33,10 +33,8 @@ public class ActionsOfTheWeek {
     public void createActions(LifeOfBees lifeOfBees) {
         actions.clear();
         for (ActionType actionType : ActionType.values()) {
-            Optional.ofNullable(actionType.getProducer().produce(lifeOfBees))
-                    .filter(data -> !(data instanceof Number && ((Number) data).intValue() == 0))
-                    .filter(data -> !(data instanceof Collection && ((Collection<?>) data).isEmpty()))
-                    .ifPresent(data -> actions.put(actionType, data));
+            Optional<?> dataOptional = actionType.getProducer().produce(lifeOfBees);
+            dataOptional.ifPresent(data -> actions.put(actionType, data));
         }
     }
 
