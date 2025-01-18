@@ -33,10 +33,6 @@ public class GameHistory {
         return gameHistory;
     }
 
-    public void setGameHistory(LifeOfBees gameHistory) {
-        this.gameHistory = gameHistory;
-    }
-
     @Override
     public String toString() {
         return "GameHistory{" +

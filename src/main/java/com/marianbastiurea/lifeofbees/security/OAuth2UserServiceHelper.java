@@ -28,9 +28,7 @@ public class OAuth2UserServiceHelper {
 
         System.out.println("No existing user found for email in OAuth2UserServiceHelper: " + email + ". Creating a new user.");
         try {
-            User newUser = new User();
-            newUser.setEmail(email);
-            newUser.setProvider(providerId);
+            User newUser = User.createWithEmailAndProvider(email, providerId);
             User savedUser = userRepository.save(newUser);
             System.out.println("New user successfully created in OAuth2UserServiceHelper: " + savedUser);
             return savedUser;

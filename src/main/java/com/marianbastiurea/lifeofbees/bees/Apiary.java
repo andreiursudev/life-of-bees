@@ -141,11 +141,11 @@ public class Apiary {
         });
     }
 
-public double getTotalKgHoneyHarvested() {
-    return totalHarvestedHoney.getHoneyTypeToAmount().values().stream()
-            .mapToDouble(Double::doubleValue)
-            .sum();
-}
+    public double getTotalKgHoneyHarvested() {
+        return totalHarvestedHoney.getHoneyTypeToAmount().values().stream()
+                .mapToDouble(Double::doubleValue)
+                .sum();
+    }
 
     public void updateHoneyStock(HarvestHoney soldHoneyData) {
         soldHoneyData.getHoneyTypeToAmount().forEach((honeyType, amountSold) -> {
@@ -167,8 +167,6 @@ public double getTotalKgHoneyHarvested() {
                 )
                 .collect(Collectors.toList());
     }
-
-
 
 
     public void moveAnEggsFrame(List<List<Integer>> hiveIdPair) {

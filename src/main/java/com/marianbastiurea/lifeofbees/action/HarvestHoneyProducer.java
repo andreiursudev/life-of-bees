@@ -7,6 +7,7 @@ import com.marianbastiurea.lifeofbees.game.LifeOfBees;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 public class HarvestHoneyProducer implements ActionOfTheWeekProducer<List<Integer>> {
 
     @Override

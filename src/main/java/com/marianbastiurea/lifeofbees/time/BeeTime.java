@@ -25,11 +25,6 @@ public class BeeTime {
         this.currentDate = LocalDate.parse(date);
     }
 
-    public LocalDate getLocalDate() {
-        return currentDate;
-    }
-
-
     public static boolean timeToSplitHive(BeeTime currentDate) {
         Month month = currentDate.getMonth();
         int dayOfMonth = currentDate.getDayOfMonth();
@@ -61,6 +56,10 @@ public class BeeTime {
             case JULY -> HoneyType.SunFlower;
             default -> HoneyType.WildFlower;
         };
+    }
+
+    public LocalDate getLocalDate() {
+        return currentDate;
     }
 
     public LocalDate getCurrentDate() {

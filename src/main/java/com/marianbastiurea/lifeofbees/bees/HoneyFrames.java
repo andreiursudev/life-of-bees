@@ -40,11 +40,11 @@ public class HoneyFrames {
     }
 
     public boolean canAddANewHoneyFrameInHive() {
+        int maxNumberOfHoneyFrames = 6;
         long honeyFrameFull = getHoneyFrame().stream()
                 .filter(HoneyFrame::isHarvestable)
                 .count();
-        //TODO 6 is a magic number
-        return getHoneyFrame().size() < 6 && honeyFrameFull == getHoneyFrame().size();
+        return getHoneyFrame().size() < maxNumberOfHoneyFrames && honeyFrameFull == getHoneyFrame().size();
     }
 
     public void addNewHoneyFrameInHive() {
