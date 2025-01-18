@@ -14,7 +14,7 @@ public class HarvestHoney {
     }
 
     public HarvestHoney(double acacia, double rapeseed, double wildFlower, double linden, double sunFlower, double falseIndigo) {
-        this(); // Initialize the map with default values
+        this();
         honeyTypeToAmount.put(HoneyType.Acacia, acacia);
         honeyTypeToAmount.put(HoneyType.Rapeseed, rapeseed);
         honeyTypeToAmount.put(HoneyType.WildFlower, wildFlower);

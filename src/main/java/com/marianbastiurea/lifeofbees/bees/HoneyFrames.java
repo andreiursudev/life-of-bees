@@ -15,7 +15,6 @@ public class HoneyFrames {
         this.honeyFrame = honeyFrame;
     }
 
-    //TODO muta logica in constructorul public HoneyFrames()
     public static HoneyFrames getRandomHoneyFrames() {
         Random random = new Random();
         HoneyFrames honeyFrames = new HoneyFrames(new ArrayList<>());

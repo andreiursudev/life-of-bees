@@ -1,7 +1,8 @@
 package com.marianbastiurea.lifeofbees.bees;
 
 
-//TODO Clasa asta este doar o structura intermediara dintre HoneyFrames si HarvestedHoney. Sterge clasa HoneyBatch si transforma direct din HoneyFrames in HarvestedHoney
+//TODO Clasa asta este doar o structura intermediara dintre HoneyFrames si HarvestedHoney.
+// Sterge clasa HoneyBatch si transforma direct din HoneyFrames in HarvestedHoney
 public class HoneyBatch {
     private final int hiveId;
     private final double kgOfHoney;

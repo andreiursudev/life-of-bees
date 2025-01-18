@@ -28,9 +28,9 @@ public class BeeTime {
     public static boolean timeToSplitHive(BeeTime currentDate) {
         Month month = currentDate.getMonth();
         int dayOfMonth = currentDate.getDayOfMonth();
-        //TODO sunt sanse sa nu se intample niciodata, e aceasi problema pe care o aveai si in timeForInsectControl
-        return (month == Month.APRIL || month == Month.MAY) &&
-                (dayOfMonth == 1 || dayOfMonth == 10);
+        return (month == Month.APRIL || month == Month.MAY)
+                && (dayOfMonth >= 9 && dayOfMonth <= 16) ||
+                (dayOfMonth >= 19 && dayOfMonth <= 25);
     }
 
     public static boolean timeToHarvestHive(BeeTime currentDate) {
@@ -101,8 +101,8 @@ public class BeeTime {
     public boolean timeForInsectControl(BeeTime currentDate) {
         int dayOfMonth = currentDate.getDayOfMonth();
         return (currentDate.getMonthValue() >= 4 && currentDate.getMonthValue() <= 8)
-                && (dayOfMonth >= 10 && dayOfMonth <= 15) ||
-                (dayOfMonth >= 20 && dayOfMonth <= 25);
+                && (dayOfMonth >= 9 && dayOfMonth <= 16) ||
+                (dayOfMonth >= 19 && dayOfMonth <= 25);
     }
 
     public String toFormattedDate() {

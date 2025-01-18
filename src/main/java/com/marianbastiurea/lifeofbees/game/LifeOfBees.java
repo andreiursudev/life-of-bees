@@ -85,7 +85,6 @@ public class LifeOfBees {
         }
         actionsOfTheWeek.createActions(this);
         this.setActionsOfTheWeek(actionsOfTheWeek);
-        System.out.println("acestea sunt actions:" + actionsOfTheWeek);
     }
 
 
