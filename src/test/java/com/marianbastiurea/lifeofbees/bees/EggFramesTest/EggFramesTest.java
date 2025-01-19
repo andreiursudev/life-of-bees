@@ -1,3 +1,5 @@
+package com.marianbastiurea.lifeofbees.bees.EggFramesTest;
+
 import com.marianbastiurea.lifeofbees.bees.EggFrames;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

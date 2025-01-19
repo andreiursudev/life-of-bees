@@ -9,7 +9,6 @@ public class Queen {
         this.ageOfQueen = ageOfQueen;
     }
 
-
     public Queen() {
     }
 
@@ -22,11 +21,10 @@ public class Queen {
     }
 
     public int iterateOneDay(BeeTime currentDate, double weatherIndex) {
-        HoneyType honeyType = BeeTime.honeyType(currentDate);
+        HoneyType honeyType = currentDate.honeyType();
         double productivity = honeyType.getProductivity();
         return (int) (2200 * this.ageOfQueenIndex() * productivity * weatherIndex);
     }
-
 
     public double ageOfQueenIndex() {
         int ageOfQueen = this.getAgeOfQueen();

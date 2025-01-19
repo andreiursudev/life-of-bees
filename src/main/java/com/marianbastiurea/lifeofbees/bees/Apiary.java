@@ -97,7 +97,7 @@ public class Apiary {
         this.getHives().forEach(hive -> {
             hive.getQueen().setAgeOfQueen(hive.getQueen().getAgeOfQueen() + 1);
             hive.setItWasSplit(false);
-            hive.setWasMovedAnEggsFrame(false);
+            hive.getEggFrames().setWasMovedAnEggsFrame(false);
             hive.getHoneyBatches().clear();
             hive.getEggFrames().extractEggBatchesForFrame();
             hive.getHoneyFrames().removeHoneyFrames();
@@ -107,7 +107,7 @@ public class Apiary {
     }
 
     public Integer checkInsectControl(BeeTime currentDate) {
-        return currentDate.timeForInsectControl(currentDate)
+        return currentDate.timeForInsectControl()
                 ? this.getHives().size()
                 : 0;
     }
@@ -160,7 +160,7 @@ public class Apiary {
         return hives.stream()
                 .filter(sourceHive -> sourceHive.getEggFrames().checkIfAll6EggsFrameAre80PercentFull()
                         && !sourceHive.itWasSplit
-                        && !sourceHive.wasMovedAnEggsFrame)
+                        && !sourceHive.getEggFrames().wasMovedAnEggsFrame)
                 .flatMap(sourceHive -> hives.stream()
                         .filter(targetHive -> targetHive.itWasSplit && targetHive.getQueen().getAgeOfQueen() == 0)
                         .map(targetHive -> Arrays.asList(sourceHive.getId(), targetHive.getId()))
@@ -173,23 +173,37 @@ public class Apiary {
         hiveIdPair.forEach(hiveIds -> {
             Hive sourceHive = this.getHiveById(hiveIds.get(0));
             Hive destinationHive = this.getHiveById(hiveIds.get(1));
-            //TODO mutarea unui egg frame este divizata in urmatoarele 3 linii de cod, nu e ok.
-            // Fa totul intro singura metoda void moveAnEggFrame(EggFrames eggFrames) in clasa EggFrames
-            List<Integer> eggBatchesToMove = sourceHive.getEggFrames().extractEggBatchesForFrame();
-            destinationHive.getEggFrames().addEggBatches(eggBatchesToMove);
-            sourceHive.setWasMovedAnEggsFrame(true);
-            System.out.println("Acesta e stupul sursa: " + sourceHive.getEggFrames());
-            System.out.println("Acestea sunt ramele destinatie: " + destinationHive.getEggFrames());
+            EggFrames sourceEggFrames = sourceHive.getEggFrames();
+            EggFrames destinationEggFrame = destinationHive.getEggFrames();
+            sourceEggFrames.moveAnEggFrame(destinationEggFrame);
+            List<Integer> eggBatchesToMove = sourceEggFrames.extractEggBatchesForFrame();
+            destinationEggFrame.addEggBatches(eggBatchesToMove);
+            sourceHive.getEggFrames().setWasMovedAnEggsFrame(true);
         });
     }
 
+//    public void addHivesToApiary(List<Hive> newHives, LifeOfBees lifeOfBeesgame) {
+//        List<Hive> existingHives = lifeOfBeesgame.getApiary().getHives();
+//        for (Hive hive : newHives) {
+//            hive.setId(existingHives.size() + 1);
+//            existingHives.add(hive);
+//        }
+//    }
 
-    public void addHivesToApiary(List<Hive> newHives, LifeOfBees lifeOfBeesgame) {
-        List<Hive> existingHives = lifeOfBeesgame.getApiary().getHives();
+
+    public void addHivesToApiary(List<Hive> newHives, LifeOfBees lifeOfBeesGame) {
+        List<Hive> existingHives = lifeOfBeesGame.getApiary().getHives();
+        Set<Integer> existingHiveIds = existingHives.stream()
+                .map(Hive::getId)
+                .collect(Collectors.toSet());
         for (Hive hive : newHives) {
-            hive.setId(existingHives.size() + 1);
+            int newHiveId = 1;
+            while (existingHiveIds.contains(newHiveId)) {
+                newHiveId++;
+            }
+            hive.setId(newHiveId);
+            existingHiveIds.add(newHiveId);
             existingHives.add(hive);
         }
     }
 }
-

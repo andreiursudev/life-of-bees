@@ -3,12 +3,12 @@ import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import '../App.css';
 import HiveCard from './HiveCard';
 import { getGame, iterateWeek, buyHives } from './BeesApiService';
-import rapeseedFlower from '../rapeseed-flower.jpg';
-import wildFlower from '../wild-flower.jpg';
-import acaciaFlower from '../acacia-flower.jpg';
-import lindenFlower from '../linden-flower.jpg';
-import sunFlower from '../sun-flower.jpg';
-import falseIndigoFlower from '../false-indigo-flower.jpg';
+import rapeseedFlower from '../flowersPhotos/rapeseed-flower.jpg';
+import wildFlower from '../flowersPhotos/wild-flower.jpg';
+import acaciaFlower from '../flowersPhotos/acacia-flower.jpg';
+import lindenFlower from '../flowersPhotos/linden-flower.jpg';
+import sunFlower from '../flowersPhotos/sun-flower.jpg';
+import falseIndigoFlower from '../flowersPhotos/false-indigo-flower.jpg';
 import BuyHivesModal from './BuyHivesModal';
 
 

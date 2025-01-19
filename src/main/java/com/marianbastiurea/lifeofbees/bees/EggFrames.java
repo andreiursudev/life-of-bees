@@ -7,10 +7,21 @@ public class EggFrames {
     public final static int maxEggPerFrame = 6400;
     private int numberOfEggFrames;
     private LinkedList<Integer> eggsByDay;
+    private static final int daysToHatch = 20;
+    public boolean wasMovedAnEggsFrame;
 
-    public EggFrames(int numberOfEggFrames, LinkedList<Integer> eggsByDay) {
+    public boolean isWasMovedAnEggsFrame() {
+        return wasMovedAnEggsFrame;
+    }
+
+    public void setWasMovedAnEggsFrame(boolean wasMovedAnEggsFrame) {
+        this.wasMovedAnEggsFrame = wasMovedAnEggsFrame;
+    }
+
+    public EggFrames(int numberOfEggFrames, LinkedList<Integer> eggsByDay, boolean wasMovedAnEggsFrame) {
         this.numberOfEggFrames = numberOfEggFrames;
         this.eggsByDay = eggsByDay;
+        this.wasMovedAnEggsFrame = wasMovedAnEggsFrame;
     }
 
     public EggFrames() {
@@ -18,7 +29,6 @@ public class EggFrames {
 
     public EggFrames(int numberOfEggFrames) {
         this.numberOfEggFrames = numberOfEggFrames;
-        int daysToHatch = 20;
         this.eggsByDay = new LinkedList<>(Collections.nCopies(daysToHatch, 0));
     }
 
@@ -26,7 +36,7 @@ public class EggFrames {
     public static EggFrames getRandomEggFrames() {
         Random random = new Random();
         EggFrames eggFrames = new EggFrames(random.nextInt(3, 5));
-        random.ints(20, 800, 901).forEach(eggFrames::iterateOneDay);
+        random.ints(daysToHatch, 800, 901).forEach(eggFrames::iterateOneDay);
         return eggFrames;
     }
 
@@ -43,7 +53,7 @@ public class EggFrames {
             return halfEggs;
         });
         numberOfEggFrames = 3;
-        return new EggFrames(3, newEggBatches);
+        return new EggFrames(3, newEggBatches,false);
     }
 
     List<Integer> extractEggBatchesForFrame() {
@@ -108,5 +118,26 @@ public class EggFrames {
                 "numberOfEggFrames=" + numberOfEggFrames +
                 ", eggBatches=" + eggsByDay +
                 '}';
+    }
+
+    public void moveAnEggFrame(EggFrames destinationEggFrame) {
+        for (int i = 0; i < daysToHatch; i++) {
+            Integer sourceEggs = eggsByDay.get(i);
+            Integer destinationEggs = destinationEggFrame.eggsByDay.get(i);
+            int eggsToMove = sourceEggs / numberOfEggFrames;
+            eggsByDay.set(i, sourceEggs - eggsToMove);
+            destinationEggFrame.eggsByDay.set(i, destinationEggs + eggsToMove);
+        }
+        numberOfEggFrames--;
+        destinationEggFrame.numberOfEggFrames++;
+    }
+
+    public void hibernate() {
+        for (int i = 0; i < daysToHatch; i++) {
+            Integer sourceEggs = eggsByDay.get(i);
+            int eggsToMove = sourceEggs / numberOfEggFrames;
+            eggsByDay.set(i, sourceEggs - eggsToMove);
+        }
+        numberOfEggFrames--;
     }
 }

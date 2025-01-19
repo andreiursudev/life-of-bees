@@ -21,11 +21,12 @@ public class BeeTime {
     public BeeTime() {
     }
 
+
     public BeeTime(String date) {
         this.currentDate = LocalDate.parse(date);
     }
 
-    public static boolean timeToSplitHive(BeeTime currentDate) {
+    public boolean timeToSplitHive() {
         Month month = currentDate.getMonth();
         int dayOfMonth = currentDate.getDayOfMonth();
         return (month == Month.APRIL || month == Month.MAY)
@@ -33,13 +34,13 @@ public class BeeTime {
                 (dayOfMonth >= 19 && dayOfMonth <= 25);
     }
 
-    public static boolean timeToHarvestHive(BeeTime currentDate) {
+    public boolean timeToHarvestHive() {
         int dayOfMonth = currentDate.getDayOfMonth();
         return (currentDate.getMonthValue() >= 4 && currentDate.getMonthValue() <= 8)
                 && (dayOfMonth == 10 || dayOfMonth == 20);
     }
 
-    public static HoneyType honeyType(BeeTime currentDate) {
+    public HoneyType honeyType( ) {
         Month month = currentDate.getMonth();
         int dayOfMonth = currentDate.getDayOfMonth();
         return switch (month) {
@@ -62,20 +63,12 @@ public class BeeTime {
         return currentDate;
     }
 
-    public LocalDate getCurrentDate() {
-        return currentDate;
-    }
-
     public void setCurrentDate(LocalDate currentDate) {
         this.currentDate = currentDate;
     }
 
     public int getDayOfMonth() {
         return currentDate.getDayOfMonth();
-    }
-
-    public int getMonthValue() {
-        return currentDate.getMonthValue();
     }
 
     public Month getMonth() {
@@ -86,27 +79,23 @@ public class BeeTime {
         return currentDate.getYear();
     }
 
-    public boolean isEqual(BeeTime other) {
-        return this.currentDate.isEqual(other.getCurrentDate());
-    }
-
-    public void updateDate(int year, int month, int day) {
-        this.currentDate = LocalDate.of(year, month, day);
-    }
-
-    public void addDays(int days) {
-        this.currentDate = this.currentDate.plusDays(days);
+    public void addDay() {
+        this.currentDate = this.currentDate.plusDays(1);
     }
 
     public BeeTime addingDays(long days) {
         return new BeeTime(this.currentDate.plusDays(days));
     }
 
-    public boolean timeForInsectControl(BeeTime currentDate) {
+    public boolean timeForInsectControl() {
         int dayOfMonth = currentDate.getDayOfMonth();
         return (currentDate.getMonthValue() >= 4 && currentDate.getMonthValue() <= 8)
                 && (dayOfMonth >= 9 && dayOfMonth <= 16) ||
                 (dayOfMonth >= 19 && dayOfMonth <= 25);
+    }
+
+    public boolean isEndOfSeason() {
+        return currentDate.isEqual(LocalDate.of(currentDate.getYear(), 9, 30));
     }
 
     public String toFormattedDate() {
@@ -118,5 +107,9 @@ public class BeeTime {
         return "{" +
                 "currentDate=" + currentDate +
                 '}';
+    }
+
+    public void changeYear() {
+        currentDate = currentDate.plusYears(1).withMonth(3).withDayOfMonth(1);
     }
 }

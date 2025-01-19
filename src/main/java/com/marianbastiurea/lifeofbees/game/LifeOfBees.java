@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 import java.util.Map;
 
-
+//TODO explica de ce ai ales o baza de date no-sql si nu un relationala
 @Document(collection = "games")
 public class LifeOfBees {
     private final String gameName;
@@ -65,27 +65,31 @@ public class LifeOfBees {
 
     public void iterateOneWeek(Map<ActionType, Object> actions, List<WeatherData> weatherDataNextWeek) {
         actionsOfTheWeek.executeActions(this, actions);
+        WeatherData currentWeatherData = null;
         for (int dailyIterator = 0; dailyIterator < 7; dailyIterator++) {
-            double weatherIndex = weatherDataNextWeek.get(dailyIterator).weatherIndex();
+            currentWeatherData = weatherDataNextWeek.get(dailyIterator);
+            double weatherIndex = currentWeatherData.weatherIndex();
             for (Hive hive : apiary.getHives()) {
                 hive.iterateOneDay(currentDate, weatherIndex);
             }
             apiary.honeyHarvestedByHoneyType();
             this.setTotalKgOfHoneyHarvested(apiary.getTotalKgHoneyHarvested());
-            BeeTime targetDate = new BeeTime(currentDate.getYear(), 9, 30);
-            if (currentDate.isEqual(targetDate)) {
-                currentDate.updateDate(currentDate.getYear() + 1, 3, 1);
+            if (currentDate.isEndOfSeason()) {
+                currentDate.changeYear();
                 Integer removedHiveId = apiary.hibernate();
                 this.setRemovedHiveId(removedHiveId);
                 break;
             } else {
                 this.setRemovedHiveId(null);
             }
-            currentDate.addDays(1);
+            currentDate.addDay();
         }
+        weatherData = currentWeatherData;
         actionsOfTheWeek.createActions(this);
         this.setActionsOfTheWeek(actionsOfTheWeek);
     }
+
+
 
 
     public Apiary getApiary() {

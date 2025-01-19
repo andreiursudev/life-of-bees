@@ -10,7 +10,6 @@ import java.util.Random;
 
 public class Hive {
     public boolean itWasSplit;
-    public boolean wasMovedAnEggsFrame;
     public List<HoneyBatch> honeyBatches;
     public boolean itWasHarvested;
 
@@ -37,9 +36,7 @@ public class Hive {
         this.queen = queen;
     }
 
-    public Hive(boolean wasMovedAnEggsFrame) {
-        this.wasMovedAnEggsFrame = wasMovedAnEggsFrame;
-    }
+
 
     public Hive(
             int hiveIdCounter,
@@ -53,7 +50,6 @@ public class Hive {
             boolean itWasHarvested) {
         this.id = hiveIdCounter;
         this.itWasSplit = itWasSplit;
-        this.wasMovedAnEggsFrame = wasMovedAnEggsFrame;
         this.eggFrames = eggFrames;
         this.honeyFrames = honeyFrames;
         this.beesBatches = beesBatches;
@@ -70,16 +66,12 @@ public class Hive {
         this.itWasSplit = itWasSplit;
     }
 
-    public void setWasMovedAnEggsFrame(boolean wasMovedAnEggsFrame) {
-        this.wasMovedAnEggsFrame = wasMovedAnEggsFrame;
-    }
 
     @Override
     public String toString() {
         return "Hive{" +
                 "id=" + id +
                 ", itWasSplit=" + this.itWasSplit +
-                ",wasMovedAnEggsFrame=" + this.wasMovedAnEggsFrame +
                 ", numberOfHoneyFrame=" + this.honeyFrames.getHoneyFrame().size() +
                 ", numberOfEggsFrame=" + this.eggFrames.getNumberOfEggFrames() + "\n" +
                 ", eggFrames=" + this.eggFrames + "\n" +
@@ -153,7 +145,7 @@ public class Hive {
 
     public boolean checkIfHiveCouldBeSplit(BeeTime currentDate) {
         return !this.itWasSplit &&
-                BeeTime.timeToSplitHive(currentDate) &&
+                currentDate.timeToSplitHive() &&
                 this.eggFrames.isFullEggFrames() &&
                 this.eggFrames.is80PercentFull();
     }
@@ -175,7 +167,7 @@ public class Hive {
         double numberRandom = Math.random();
         Month month = currentDate.getMonth();
         int dayOfMonth = currentDate.getDayOfMonth();
-        if ((numberRandom < 0.5 && month == Month.MAY && dayOfMonth > 1 && dayOfMonth < 20) && queen.getAgeOfQueen() == 5) {
+        if ((numberRandom < 0.3 && month == Month.MAY && dayOfMonth == 1) || queen.getAgeOfQueen() == 5) {
             queen = new Queen(0);
         }
     }
@@ -192,7 +184,7 @@ public class Hive {
     }
 
     public List<HoneyBatch> harvestHoney(BeeTime currentDate) {
-        if (!BeeTime.timeToHarvestHive(currentDate) || isItWasSplit()) {
+        if (!currentDate.timeToHarvestHive() || isItWasSplit()) {
             return Collections.emptyList();
         }
         double harvestedHoney = getHoneyFrames().harvestHoneyFromHoneyFrames();
@@ -204,7 +196,7 @@ public class Hive {
         HoneyBatch honeyBatch = new HoneyBatch(
                 getId(),
                 harvestedHoney,
-                BeeTime.honeyType(currentDate),
+                currentDate.honeyType(),
                 false
         );
 
@@ -232,7 +224,7 @@ public class Hive {
     public void fillUpExistingHoneyFramesFromHive(BeeTime currentDate) {
         Random random = new Random();
         int numberOfFlight = random.nextInt(3, 6);
-        HoneyType honeyType = BeeTime.honeyType(currentDate);
+        HoneyType honeyType = currentDate.honeyType();
         double productivity = honeyType.getProductivity();
         double totalBeesBatches = this.getBeesBatches().stream()
                 .mapToInt(Integer::intValue)
