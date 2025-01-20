@@ -382,9 +382,7 @@ public class LifeOfBeesController {
     public ResponseEntity<String> deleteGame(@PathVariable String gameId) {
         try {
             boolean gameExistsInMain = lifeOfBeesService.existsById(gameId);
-            System.out.println(" jocul exita din games" + gameExistsInMain);
             boolean gameExistsInHistory = gameHistoryService.existsByGameId(gameId);
-            System.out.println("jocul exista in gamesHistory: " + gameExistsInHistory);
             if (!gameExistsInMain && !gameExistsInHistory) {
                 throw new IllegalArgumentException("Game with ID " + gameId + " does not exist in any collection.");
             }
