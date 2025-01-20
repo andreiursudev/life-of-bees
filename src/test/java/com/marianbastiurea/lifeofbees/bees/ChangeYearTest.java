@@ -1,4 +1,4 @@
-package com.marianbastiurea.lifeofbees.bees.BeeTimeTest;
+package com.marianbastiurea.lifeofbees.bees;
 
 import com.marianbastiurea.lifeofbees.time.BeeTime;
 import org.junit.jupiter.api.Test;

@@ -42,4 +42,13 @@ public class LifeOfBeesService {
     public LifeOfBees save(LifeOfBees lifeOfBeesGame) {
         return lifeOfBeesRepository.save(lifeOfBeesGame);
     }
+
+    public void deleteGameById(String gameId) {
+        if (lifeOfBeesRepository.existsById(gameId)) {
+            lifeOfBeesRepository.deleteById(gameId);
+            System.out.println("Game with ID " + gameId + " has been deleted.");
+        } else {
+            throw new IllegalArgumentException("Game with ID " + gameId + " does not exist.");
+        }
+    }
 }

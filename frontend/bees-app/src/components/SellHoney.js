@@ -105,7 +105,7 @@ const SellHoney = () => {
         const formattedSoldData = Object.entries(soldValues)
             .filter(([_, quantity]) => quantity > 0)
             .reduce((acc, [honeyType, quantity]) => {
-                acc[honeyType] = parseFloat(quantity.toFixed(2));
+                acc[honeyType] = parseFloat(quantity);
                 return acc;
             }, {});
 

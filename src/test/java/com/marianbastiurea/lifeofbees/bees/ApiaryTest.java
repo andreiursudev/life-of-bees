@@ -1,4 +1,4 @@
-package com.marianbastiurea.lifeofbees.bees.ApiaryTest;
+package com.marianbastiurea.lifeofbees.bees;
 
 import org.junit.jupiter.api.Test;
 

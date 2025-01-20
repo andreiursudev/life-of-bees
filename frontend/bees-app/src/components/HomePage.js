@@ -3,7 +3,7 @@ import '../App.css';
 import NewGameModal from './CreateNewGame';
 import ApiaryCardsRow from './ApiaryCardsRow';
 import AuthModal from './AuthModal';
-import { authenticateUser, registerUser } from './BeesApiService';
+import { authenticateUser, registerUser, deleteGame } from './BeesApiService';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 
@@ -18,6 +18,7 @@ const HomePage = () => {
     const [username, setUsername] = useState(null);
     const [gameType, setGameType] = useState(null);
     const [activeTab, setActiveTab] = useState("Public Game");
+    const [games, setGames] = useState([]);
 
     const [formData, setFormData] = useState({
         username: '',
@@ -129,6 +130,15 @@ const HomePage = () => {
         navigate(`/GameView/${gameId}`);
     };
 
+    const handleDelete = async (gameId) => {
+        try {
+            await deleteGame(gameId); 
+            setGames((prevGames) => prevGames.filter((game) => game.id !== gameId)); 
+            console.log(`Jocul cu ID-ul ${gameId} a fost șters.`);
+        } catch (error) {
+            console.error(`Eroare la ștergerea jocului cu ID-ul ${gameId}:`, error.message);
+        }
+    };
     
 
     return (
@@ -191,6 +201,7 @@ const HomePage = () => {
                                     isAuthenticated={isAuthenticated}
                                     userId={userId}
                                     onGameClick={handleGameClick}
+                                    handleDelete={handleDelete}
                                 />
                         )}
 
@@ -201,6 +212,7 @@ const HomePage = () => {
                                         isAuthenticated={isAuthenticated}
                                         userId={userId}
                                         onGameClick={handleGameClick}
+                                        handleDelete={handleDelete}
                                     />
                                 </div>
                         )}

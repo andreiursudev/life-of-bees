@@ -93,7 +93,6 @@ public class Apiary {
     }
 
     public Integer hibernate() {
-
         this.getHives().forEach(hive -> {
             hive.getQueen().setAgeOfQueen(hive.getQueen().getAgeOfQueen() + 1);
             hive.setItWasSplit(false);
@@ -181,14 +180,6 @@ public class Apiary {
             sourceHive.getEggFrames().setWasMovedAnEggsFrame(true);
         });
     }
-
-//    public void addHivesToApiary(List<Hive> newHives, LifeOfBees lifeOfBeesgame) {
-//        List<Hive> existingHives = lifeOfBeesgame.getApiary().getHives();
-//        for (Hive hive : newHives) {
-//            hive.setId(existingHives.size() + 1);
-//            existingHives.add(hive);
-//        }
-//    }
 
 
     public void addHivesToApiary(List<Hive> newHives, LifeOfBees lifeOfBeesGame) {

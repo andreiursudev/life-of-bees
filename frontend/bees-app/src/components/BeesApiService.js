@@ -161,15 +161,11 @@ export const getHoneyQuantities = async (gameId) => {
 export const sendSellHoneyQuantities = {
     updateHoneyStock: async (gameId, honeyTypeToAmount, totalValue) => {
         try {
-            // Construim payload-ul cu structura corectă
             const payload = {
                 honeyTypeToAmount,
                 totalValue,
             };
-
             console.log('Payload din BeesApiService:', JSON.stringify(payload, null, 2));
-
-            // Trimitem request-ul către backend
             const response = await apiClient.post(`/bees/sellHoney/${gameId}`, payload);
             return response.data;
         } catch (error) {
@@ -248,7 +244,7 @@ export const fetchWeatherForStartDate = async (location) => {
     }
 };
 */
-
+/*
 export const getJohnDoeGames = async () => {
     try {
         const response = await apiClient.get('/bees/JohnDoeGames');
@@ -257,7 +253,24 @@ export const getJohnDoeGames = async () => {
         console.error('Eroare la obținerea jocurilor recente:', error);
         throw error;
     }
+}; */
+
+export const getJohnDoeGames = async () => {
+    try {
+        const userId = localStorage.getItem('userId');
+        if (!userId) {
+            throw new Error('User ID nu este disponibil în localStorage.');
+        }
+        const response = await apiClient.get(`/bees/JohnDoeGames`, {
+            params: { userId }, 
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Eroare la obținerea jocurilor recente:', error);
+        throw error;
+    }
 };
+
 
 export const getGamesForUserByType = async (userId, gameType) => {
     const response = await apiClient.get('/bees/gamesForUser', {
@@ -299,3 +312,18 @@ export const getApiaryHistory = async (gameId) => {
         );
     }
 };
+
+export const deleteGame = async (gameId) => {
+    try {
+        const response = await apiClient.delete(`/bees/deleteGame/${gameId}`);
+        console.log('This game will be deleted:', response);
+        if (!response || !response.data) {
+            throw new Error('No data returned from the server');
+        }
+        return response.data;
+    } catch (error) {
+        console.error('Eroare la ștergerea jocului:', error.message);
+        throw error; 
+    }
+};
+
