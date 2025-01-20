@@ -12,8 +12,6 @@ public class Hive {
     public boolean itWasSplit;
     public List<HoneyBatch> honeyBatches;
     public boolean itWasHarvested;
-
-    //TODO creaza o clasa BeesBatches in care sa encapsulezi campul beesBatches
     LinkedList<Integer> beesBatches = new LinkedList<>();
     private int id;
     private EggFrames eggFrames;

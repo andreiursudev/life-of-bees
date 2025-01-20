@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 import java.util.Map;
 
-//TODO explica de ce ai ales o baza de date no-sql si nu un relationala
+
 @Document(collection = "games")
 public class LifeOfBees {
     private final String gameName;

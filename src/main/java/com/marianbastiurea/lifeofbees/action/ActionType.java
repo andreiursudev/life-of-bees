@@ -1,6 +1,5 @@
 package com.marianbastiurea.lifeofbees.action;
 
-//TODO explica cum ai folosit strategy pattern pentru a decupla logica actiunilor
 public enum ActionType {
     ADD_EGGS_FRAME(new AddEggsFramesProducer(), new AddEggsFramesConsumer()),
     ADD_HONEY_FRAME(new AddHoneyFramesProducer(), new AddHoneyFramesConsumer()),
