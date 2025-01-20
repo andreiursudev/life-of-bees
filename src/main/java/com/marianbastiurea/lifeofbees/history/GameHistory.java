@@ -20,6 +20,9 @@ public class GameHistory {
         this.gameHistory = gameHistory;
     }
 
+    public String getGameHistoryId() {
+        return gameHistoryId;
+    }
 
     public String getGameId() {
         return gameId;

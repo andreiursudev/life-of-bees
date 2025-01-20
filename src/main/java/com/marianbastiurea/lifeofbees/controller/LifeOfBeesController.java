@@ -381,10 +381,27 @@ public class LifeOfBeesController {
     @DeleteMapping("deleteGame/{gameId}")
     public ResponseEntity<String> deleteGame(@PathVariable String gameId) {
         try {
-            lifeOfBeesService.deleteGameById(gameId);
-            return ResponseEntity.ok("Game deleted successfully.");
+            boolean gameExistsInMain = lifeOfBeesService.existsById(gameId);
+            System.out.println(" jocul exita din games" + gameExistsInMain);
+            boolean gameExistsInHistory = gameHistoryService.existsByGameId(gameId);
+            System.out.println("jocul exista in gamesHistory: " + gameExistsInHistory);
+            if (!gameExistsInMain && !gameExistsInHistory) {
+                throw new IllegalArgumentException("Game with ID " + gameId + " does not exist in any collection.");
+            }
+
+            if (gameExistsInMain) {
+                lifeOfBeesService.deleteGameById(gameId);
+            }
+
+            if (gameExistsInHistory) {
+                gameHistoryService.deleteGameById(gameId);
+            }
+
+            return ResponseEntity.ok("Game deleted successfully from relevant collections.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while deleting the game.");
         }
     }
 
