@@ -1,5 +1,8 @@
 package com.marianbastiurea.lifeofbees.bees;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.*;
 
 public class EggFrames {
@@ -9,6 +12,14 @@ public class EggFrames {
     private LinkedList<Integer> eggsByDay;
     private static final int daysToHatch = 20;
     public boolean wasMovedAnEggsFrame;
+    int maxNumberOfEggFrames = 6;
+    private static final Logger logger = LoggerFactory.getLogger(Apiary.class);
+
+    public EggFrames(int numberOfEggFrames, LinkedList<Integer> eggsByDay) {
+        this.numberOfEggFrames = numberOfEggFrames;
+        this.eggsByDay = new LinkedList<>(eggsByDay);
+    }
+
 
     public boolean isWasMovedAnEggsFrame() {
         return wasMovedAnEggsFrame;
@@ -45,6 +56,10 @@ public class EggFrames {
         return numberOfEggFrames;
     }
 
+    public void setNumberOfEggFrames(int numberOfEggFrames) {
+        this.numberOfEggFrames = numberOfEggFrames;
+    }
+
     public EggFrames splitEggFrames() {
         LinkedList<Integer> newEggBatches = new LinkedList<>();
         eggsByDay.replaceAll(eggs -> {
@@ -53,7 +68,7 @@ public class EggFrames {
             return halfEggs;
         });
         numberOfEggFrames = 3;
-        return new EggFrames(3, newEggBatches,false);
+        return new EggFrames(3, newEggBatches, false);
     }
 
     List<Integer> extractEggBatchesForFrame() {
@@ -94,13 +109,12 @@ public class EggFrames {
     }
 
     public void incrementNumberOfEggFrames() {
-        int maxNumberOfEggFrames = 6;
         if (this.numberOfEggFrames < maxNumberOfEggFrames)
             this.numberOfEggFrames++;
     }
 
     public boolean isFullEggFrames() {
-        return numberOfEggFrames == 6;
+        return numberOfEggFrames == maxNumberOfEggFrames;
     }
 
 
@@ -120,17 +134,20 @@ public class EggFrames {
                 '}';
     }
 
+
     public void moveAnEggFrame(EggFrames destinationEggFrame) {
         for (int i = 0; i < daysToHatch; i++) {
-            Integer sourceEggs = eggsByDay.get(i);
-            Integer destinationEggs = destinationEggFrame.eggsByDay.get(i);
+            int sourceEggs = eggsByDay.get(i);
+            int destinationEggs = destinationEggFrame.eggsByDay.get(i);
             int eggsToMove = sourceEggs / numberOfEggFrames;
             eggsByDay.set(i, sourceEggs - eggsToMove);
             destinationEggFrame.eggsByDay.set(i, destinationEggs + eggsToMove);
         }
+        setWasMovedAnEggsFrame(true);
         numberOfEggFrames--;
         destinationEggFrame.numberOfEggFrames++;
     }
+
 
     public void hibernate() {
         for (int i = 0; i < daysToHatch; i++) {

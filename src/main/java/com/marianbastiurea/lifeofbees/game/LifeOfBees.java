@@ -15,8 +15,8 @@ import java.util.Map;
 
 @Document(collection = "games")
 public class LifeOfBees {
-    private final String gameName;
-    private final String location;
+    private  String gameName;
+    private  String location;
     @Id
     private String gameId;
     private String userId;
@@ -44,6 +44,8 @@ public class LifeOfBees {
         this.actionsOfTheWeek = new ActionsOfTheWeek();
     }
 
+    public LifeOfBees() {
+    }
 
     @Override
     public String toString() {
