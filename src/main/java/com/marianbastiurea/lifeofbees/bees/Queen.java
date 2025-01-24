@@ -2,6 +2,8 @@ package com.marianbastiurea.lifeofbees.bees;
 
 import com.marianbastiurea.lifeofbees.time.BeeTime;
 
+import java.util.Objects;
+
 public class Queen {
     private int ageOfQueen;
 
@@ -33,5 +35,25 @@ public class Queen {
             case 4 -> 0.75;
             default -> 0;
         };
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Queen queen = (Queen) o;
+        return ageOfQueen == queen.ageOfQueen;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(ageOfQueen);
+    }
+
+    @Override
+    public String toString() {
+        return "Queen{" +
+                "ageOfQueen=" + ageOfQueen +
+                '}';
     }
 }

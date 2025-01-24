@@ -2,8 +2,11 @@ package com.marianbastiurea.lifeofbees.bees;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import java.util.Random;
 
+import static com.marianbastiurea.lifeofbees.bees.EggFrames.maxEggPerFrame;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 class EggFramesTest {
@@ -29,7 +32,7 @@ class EggFramesTest {
         for (int i = 0; i < 19; i++) {
             Assertions.assertEquals(0, eggFrames.iterateOneDay(0));
         }
-        Assertions.assertEquals(EggFrames.maxEggPerFrame, eggFrames.iterateOneDay(0));
+        Assertions.assertEquals(maxEggPerFrame, eggFrames.iterateOneDay(0));
     }
 
     @Test
@@ -48,5 +51,35 @@ class EggFramesTest {
         }
 
     }
+
+    @Test
+    public void testExtractEggBatchesForFrame() {
+
+        Random random = new Random();
+         EggFrames eggFrames = new EggFrames(random.nextInt(3, 5));
+        random.ints(20, 800, 901).forEach(eggFrames::iterateOneDay);
+        int initialNumberOfEggFrames = eggFrames.getNumberOfEggFrames();
+        int initialTotalEggs=eggFrames.getEggs();
+        eggFrames.extractEggBatchesForFrame();
+        assertEquals(initialNumberOfEggFrames - 1, eggFrames.getNumberOfEggFrames(),
+                "The number of egg frames should be reduced by 1 after extraction.");
+
+        int currentSum = 0;
+        for (int i = 0; i < 1; i++) {
+            currentSum += eggFrames.eggsByDay.get(i);
+            if (currentSum <= maxEggPerFrame) {
+                assertEquals(0, eggFrames.eggsByDay.get(i),
+                        "Eggs in the extracted range should be set to 0.");
+            } else {
+                break;
+            }
+        }
+        int remainingTotalEggs = eggFrames.getEggs();
+        int extractedEggs = initialTotalEggs - remainingTotalEggs;
+        assertTrue(extractedEggs <= maxEggPerFrame,
+                "The total number of extracted eggs should not exceed the maximum capacity per frame.");
+    }
+
+
 
 }

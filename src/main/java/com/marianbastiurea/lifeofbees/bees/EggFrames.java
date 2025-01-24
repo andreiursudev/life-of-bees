@@ -9,7 +9,7 @@ public class EggFrames {
 
     public final static int maxEggPerFrame = 6400;
     private int numberOfEggFrames;
-    private LinkedList<Integer> eggsByDay;
+    public LinkedList<Integer> eggsByDay;
     private static final int daysToHatch = 20;
     public boolean wasMovedAnEggsFrame;
     int maxNumberOfEggFrames = 6;
@@ -43,11 +43,17 @@ public class EggFrames {
         this.eggsByDay = new LinkedList<>(Collections.nCopies(daysToHatch, 0));
     }
 
+    public EggFrames(int numberOfEggFrames, int eggsPerDay) {
+        this.numberOfEggFrames = numberOfEggFrames;
+        this.eggsByDay = new LinkedList<>(Collections.nCopies(daysToHatch, eggsPerDay));
+    }
+
 
     public static EggFrames getRandomEggFrames() {
         Random random = new Random();
         EggFrames eggFrames = new EggFrames(random.nextInt(3, 5));
         random.ints(daysToHatch, 800, 901).forEach(eggFrames::iterateOneDay);
+        logger.debug("Finishing method getRandomEggFrames");
         return eggFrames;
     }
 
@@ -61,6 +67,7 @@ public class EggFrames {
     }
 
     public EggFrames splitEggFrames() {
+        logger.debug("Starting method splitEggFrames with eggsByDay: {}",eggsByDay);
         LinkedList<Integer> newEggBatches = new LinkedList<>();
         eggsByDay.replaceAll(eggs -> {
             int halfEggs = eggs / 2;
@@ -68,20 +75,23 @@ public class EggFrames {
             return halfEggs;
         });
         numberOfEggFrames = 3;
+        logger.debug("finishing method splitEggFrames");
         return new EggFrames(3, newEggBatches, false);
     }
 
-    List<Integer> extractEggBatchesForFrame() {
+    public void extractEggBatchesForFrame() {
+        logger.debug("starting extractEggBatchesForFrame with eggsByDay: {}",eggsByDay);
         int currentSum = 0;
         int index = 0;
         while (index < eggsByDay.size() && (currentSum += eggsByDay.get(index)) <= maxEggPerFrame) {
             index++;
         }
-        List<Integer> extractedBatches = new ArrayList<>(eggsByDay.subList(0, index));
         eggsByDay.subList(0, index).replaceAll(x -> 0);
         numberOfEggFrames--;
-        return extractedBatches;
+        logger.debug("Finishing method extractEggBatchesForFrame");
     }
+
+
 
 
     public void addEggBatches(List<Integer> batchesToAdd) {
@@ -126,14 +136,6 @@ public class EggFrames {
         return !isFullEggFrames() && is80PercentFull();
     }
 
-    @Override
-    public String toString() {
-        return "EggFrames{" +
-                "numberOfEggFrames=" + numberOfEggFrames +
-                ", eggBatches=" + eggsByDay +
-                '}';
-    }
-
 
     public void moveAnEggFrame(EggFrames destinationEggFrame) {
         for (int i = 0; i < daysToHatch; i++) {
@@ -156,5 +158,28 @@ public class EggFrames {
             eggsByDay.set(i, sourceEggs - eggsToMove);
         }
         numberOfEggFrames--;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EggFrames eggFrames = (EggFrames) o;
+        return numberOfEggFrames == eggFrames.numberOfEggFrames && wasMovedAnEggsFrame == eggFrames.wasMovedAnEggsFrame && maxNumberOfEggFrames == eggFrames.maxNumberOfEggFrames && Objects.equals(eggsByDay, eggFrames.eggsByDay);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(numberOfEggFrames, eggsByDay, wasMovedAnEggsFrame, maxNumberOfEggFrames);
+    }
+
+    @Override
+    public String toString() {
+        return "EggFrames{" +
+                "numberOfEggFrames=" + numberOfEggFrames +
+                ", eggsByDay=" + eggsByDay +
+                ", wasMovedAnEggsFrame=" + wasMovedAnEggsFrame +
+                ", maxNumberOfEggFrames=" + maxNumberOfEggFrames +
+                '}';
     }
 }

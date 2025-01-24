@@ -17,4 +17,11 @@ public enum HoneyType {
     public double getProductivity() {
         return productivity;
     }
+
+    @Override
+    public String toString() {
+        return "HoneyType{" +
+                "productivity=" + productivity +
+                '}';
+    }
 }

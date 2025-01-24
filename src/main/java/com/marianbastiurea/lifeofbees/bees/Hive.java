@@ -3,15 +3,13 @@ package com.marianbastiurea.lifeofbees.bees;
 import com.marianbastiurea.lifeofbees.time.BeeTime;
 
 import java.time.Month;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Hive {
     public boolean itWasSplit;
     public List<HoneyBatch> honeyBatches;
     public boolean itWasHarvested;
+    //TODO creaza clasa BeesBatches si folosesteo in loc de LinkedList<Integer> beesBatches
     LinkedList<Integer> beesBatches = new LinkedList<>();
     private int id;
     private EggFrames eggFrames;
@@ -21,32 +19,17 @@ public class Hive {
     public Hive() {
     }
 
-    public Hive(EggFrames eggFrames, LinkedList<Integer> beesBatches, HoneyFrames honeyFrames, List<HoneyBatch> honeyBatches) {
-        this.eggFrames = eggFrames;
-        this.beesBatches = beesBatches;
-        this.honeyFrames = honeyFrames;
-        this.honeyBatches = honeyBatches;
-    }
-
-    public Hive(int id, boolean itWasSplit, Queen queen) {
-        this.id = id;
-        this.itWasSplit = itWasSplit;
-        this.queen = queen;
-    }
-
-
 
     public Hive(
-            int hiveIdCounter,
+            int id,
             boolean itWasSplit,
-            boolean wasMovedAnEggsFrame,
             EggFrames eggFrames,
             HoneyFrames honeyFrames,
             LinkedList<Integer> beesBatches,
             List<HoneyBatch> honeyBatches,
             Queen queen,
             boolean itWasHarvested) {
-        this.id = hiveIdCounter;
+        this.id = id;
         this.itWasSplit = itWasSplit;
         this.eggFrames = eggFrames;
         this.honeyFrames = honeyFrames;
@@ -62,23 +45,6 @@ public class Hive {
 
     public void setItWasSplit(boolean itWasSplit) {
         this.itWasSplit = itWasSplit;
-    }
-
-
-    @Override
-    public String toString() {
-        return "Hive{" +
-                "id=" + id +
-                ", itWasSplit=" + this.itWasSplit +
-                ", numberOfHoneyFrame=" + this.honeyFrames.getHoneyFrame().size() +
-                ", numberOfEggsFrame=" + this.eggFrames.getNumberOfEggFrames() + "\n" +
-                ", eggFrames=" + this.eggFrames + "\n" +
-                ", age of queen=" + this.queen.getAgeOfQueen() +
-                ", beesBatches=" + this.beesBatches +
-                ", honeyFrames=" + this.honeyFrames +
-                ", itWasHarvested=" + this.itWasHarvested +
-                ", honeyBatches=" + this.honeyBatches +
-                '}';
     }
 
     public EggFrames getEggFrames() {
@@ -201,21 +167,20 @@ public class Hive {
         return List.of(honeyBatch);
     }
 
-    //TODO cred ca ceva e gresit aici, fa un unit test sa verifici daca totul e ok
     public LinkedList<Integer> splitBeesBatches() {
-        LinkedList<Integer> newHiveBeesBatches = new LinkedList<>(getBeesBatches());
-        for (int i = 0; i < getBeesBatches().size(); i++) {
-            int bees = getBeesBatches().get(i);
+        LinkedList<Integer> newHiveBeesBatches = new LinkedList<>();
+        for (int i = 0; i < beesBatches.size(); i++) {
+            int bees = beesBatches.get(i);
             int beesToTransfer = bees / 2;
-            getBeesBatches().set(i, bees - beesToTransfer);
+            beesBatches.set(i, bees - beesToTransfer);
             newHiveBeesBatches.add(beesToTransfer);
         }
         return newHiveBeesBatches;
     }
 
     public void removeBeesBatches() {
-        LinkedList<Integer> beesBatches = getBeesBatches();
-        beesBatches.subList(Math.max(0, beesBatches.size() - 2), beesBatches.size()).clear();
+        getBeesBatches().removeLast();
+        getBeesBatches().removeLast();
     }
 
 
@@ -232,4 +197,25 @@ public class Hive {
         honeyFrames.fillUpAHoneyFrame(kgOfHoneyToAdd);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Hive hive = (Hive) o;
+        return itWasSplit == hive.itWasSplit && itWasHarvested == hive.itWasHarvested && id == hive.id && Objects.equals(honeyBatches, hive.honeyBatches) && Objects.equals(beesBatches, hive.beesBatches) && Objects.equals(eggFrames, hive.eggFrames) && Objects.equals(queen, hive.queen) && Objects.equals(honeyFrames, hive.honeyFrames);
+    }
+
+    @Override
+    public String toString() {
+        return "Hive{" +
+                "itWasSplit=" + itWasSplit +
+                ", honeyBatches=" + honeyBatches +
+                ", itWasHarvested=" + itWasHarvested +
+                ", beesBatches=" + beesBatches +
+                ", id=" + id +
+                ", eggFrames=" + eggFrames +
+                ", queen=" + queen +
+                ", honeyFrames=" + honeyFrames +
+                '}';
+    }
 }

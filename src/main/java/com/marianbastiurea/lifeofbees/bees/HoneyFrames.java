@@ -1,8 +1,6 @@
 package com.marianbastiurea.lifeofbees.bees;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class HoneyFrames {
 
@@ -13,6 +11,10 @@ public class HoneyFrames {
 
     public HoneyFrames(List<HoneyFrame> honeyFrame) {
         this.honeyFrame = honeyFrame;
+    }
+
+    public HoneyFrames(int numberOfHoneyFrames, int honeyPerFrame) {
+        this.honeyFrame = new ArrayList<>(Collections.nCopies(numberOfHoneyFrames, new HoneyFrame(honeyPerFrame)));
     }
 
     public static HoneyFrames getRandomHoneyFrames() {
@@ -30,13 +32,6 @@ public class HoneyFrames {
 
     public void setHoneyFrame(List<HoneyFrame> honeyFrame) {
         this.honeyFrame = honeyFrame;
-    }
-
-    @Override
-    public String toString() {
-        return "HoneyFrames{" +
-                "honeyFrame=" + honeyFrame +
-                '}';
     }
 
     public boolean canAddANewHoneyFrameInHive() {
@@ -89,6 +84,48 @@ public class HoneyFrames {
         for (HoneyFrame honeyFrame : getHoneyFrame()) {
             honeyFrame.fill(kgOfHoneyToAdd / numberOfHoneyFrameNotFull);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HoneyFrames that = (HoneyFrames) o;
+        return Objects.equals(honeyFrame, that.honeyFrame);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(honeyFrame);
+    }
+
+    @Override
+    public String toString() {
+        return "HoneyFrames{" +
+                "honeyFrame=" + honeyFrame +
+                '}';
+    }
+
+
+    public double getTotalKgHoneyHarvested() {
+        double totalKg = totalHarvestedHoney.getHoneyTypeToAmount().values().stream()
+                .mapToDouble(Double::doubleValue)
+                .sum();
+        logger.debug("Finished getTotalKgHoneyHarvested. Total kg of honey harvested: {}", totalKg);
+        return totalKg;
+    }
+
+
+    public void updateHoneyStock(HarvestHoney soldHoneyData) {
+        logger.debug("Starting updateHoneyStock method with soldHoneyData = {}", soldHoneyData);
+
+        soldHoneyData.getHoneyTypeToAmount().forEach((honeyType, amountSold) -> {
+            double currentAmount = totalHarvestedHoney.getHoneyAmount(honeyType);
+            totalHarvestedHoney.setHoneyAmount(honeyType, currentAmount - amountSold);
+            logger.debug("Updated honey stock for {}: current amount = {}, amount sold = {}", honeyType, currentAmount, amountSold);
+        });
+
+        logger.debug("Finished updateHoneyStock. Updated totalHarvestedHoney = {}", totalHarvestedHoney);
     }
 }
 

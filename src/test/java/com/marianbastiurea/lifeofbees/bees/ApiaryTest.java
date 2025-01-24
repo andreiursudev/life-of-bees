@@ -29,7 +29,6 @@ public class ApiaryTest {
             hives.add(new Hive(
                     i,
                     false,
-                    false,
                     EggFrames.getRandomEggFrames(),
                     HoneyFrames.getRandomHoneyFrames(),
                     new LinkedList<>(),
@@ -94,7 +93,6 @@ public class ApiaryTest {
         assertNotEquals(parentHive.getBeesBatches(), newHive.getBeesBatches(), "BeesBatches should be split");
     }
 
-
     @Test
     void testHibernate() {
         Random random = new Random();
@@ -136,7 +134,7 @@ public class ApiaryTest {
         hive2.setEggFrames(eggFrames);
         hive2.setHoneyFrames(honeyFrames);
         hive2.setBeesBatches(beesBatches);
-        hive2.setQueen(new Queen(3)); // Another hive with a different queen
+        hive2.setQueen(new Queen(3));
         hive2.setHoneyBatches(honeyBatches2);
         List<Hive> hives = new ArrayList<>();
         hives.add(hive1);
@@ -163,36 +161,14 @@ public class ApiaryTest {
     @Test
     public void testRemoveLastTwoBeesBatches() {
         LinkedList<Integer> beesBatches = new LinkedList<>();
-        for (int i = 0; i < 30; i++) {
-            beesBatches.add(100);
-        }
-        Hive hive1 = new Hive();
-        hive1.setId(1);
-        hive1.setBeesBatches(new LinkedList<>(beesBatches));
-        Hive hive2 = new Hive();
-        hive2.setId(2);
-        hive2.setBeesBatches(new LinkedList<>(beesBatches));
-
-        List<Hive> hives = new ArrayList<>();
-        hives.add(hive1);
-        hives.add(hive2);
-
-        Apiary apiary = new Apiary(hives);
-
-        for (Hive hive : hives) {
-            hive.getBeesBatches().removeLast();
-            hive.getBeesBatches().removeLast();
-        }
-
-        for (Hive hive : apiary.getHives()) {
-            assertEquals(28, hive.getBeesBatches().size(), "Each hive should have 28 bees batches after removal");
-        }
-        for (Hive hive : apiary.getHives()) {
-            LinkedList<Integer> remainingBatches = hive.getBeesBatches();
-            for (int i = 0; i < 28; i++) {
-                assertEquals(100, remainingBatches.get(i), "Remaining batches should have 100 bees each");
-            }
-        }
+        beesBatches.add(100);
+        beesBatches.add(100);
+        Hive hive = new Hive();
+        hive.setId(1);
+        hive.setBeesBatches(new LinkedList<>(beesBatches));
+         assertEquals(2, hive.getBeesBatches().size(), "Hive should initially have 2 bees batches");
+        hive.removeBeesBatches();
+        assertEquals(0, hive.getBeesBatches().size(), "Hive should have 0 bees batches after removal");
     }
 
 
