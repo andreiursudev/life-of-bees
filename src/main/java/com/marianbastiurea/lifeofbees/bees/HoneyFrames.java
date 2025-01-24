@@ -107,26 +107,7 @@ public class HoneyFrames {
     }
 
 
-    public double getTotalKgHoneyHarvested() {
-        double totalKg = totalHarvestedHoney.getHoneyTypeToAmount().values().stream()
-                .mapToDouble(Double::doubleValue)
-                .sum();
-        logger.debug("Finished getTotalKgHoneyHarvested. Total kg of honey harvested: {}", totalKg);
-        return totalKg;
-    }
 
-
-    public void updateHoneyStock(HarvestHoney soldHoneyData) {
-        logger.debug("Starting updateHoneyStock method with soldHoneyData = {}", soldHoneyData);
-
-        soldHoneyData.getHoneyTypeToAmount().forEach((honeyType, amountSold) -> {
-            double currentAmount = totalHarvestedHoney.getHoneyAmount(honeyType);
-            totalHarvestedHoney.setHoneyAmount(honeyType, currentAmount - amountSold);
-            logger.debug("Updated honey stock for {}: current amount = {}, amount sold = {}", honeyType, currentAmount, amountSold);
-        });
-
-        logger.debug("Finished updateHoneyStock. Updated totalHarvestedHoney = {}", totalHarvestedHoney);
-    }
 }
 
 

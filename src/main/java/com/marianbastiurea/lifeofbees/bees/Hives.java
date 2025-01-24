@@ -2,6 +2,8 @@ package com.marianbastiurea.lifeofbees.bees;
 
 import com.marianbastiurea.lifeofbees.game.LifeOfBees;
 import com.marianbastiurea.lifeofbees.time.BeeTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Month;
 import java.util.*;
@@ -10,10 +12,18 @@ import java.util.stream.IntStream;
 
 public class Hives {
     private List<Hive> hives;
+    private static final Logger logger = LoggerFactory.getLogger(Apiary.class);
+    private static final Random RANDOM = new Random();
+
+
+    public void setHives(List<Hive> hives) {
+        this.hives = hives;
+    }
 
     public Hives(){
         this.hives = new ArrayList<>();
     }
+
 
     public Hives(Hive... hives) {
         this.hives = new ArrayList<>(Arrays.asList(hives));
@@ -67,9 +77,12 @@ public class Hives {
 
 
     public Integer randomRemoveAHive() {
-        if (hives.isEmpty()) return 0;
-        Hive hiveToRemove = hives.remove(new Random().nextInt(hives.size()));
-        logger.debug("Hive removed with hiveId: {}", hiveToRemove.getId());
+        if (hives.isEmpty()) {
+            return 0;
+        }
+        int indexToRemove = RANDOM.nextInt(hives.size());
+        Hive hiveToRemove = hives.remove(indexToRemove);
+        logger.debug("Hive removed with hiveId: {}. Remaining hives: {}", hiveToRemove.getId(), hives.size());
         return hiveToRemove.getId();
     }
 
@@ -86,8 +99,6 @@ public class Hives {
     }
 
     public List<List<Integer>> checkIfCanMoveAnEggsFrame() {
-        List<Hive> hives = this.getHives();
-
         return hives.stream()
                 .filter(sourceHive -> sourceHive.getEggFrames().checkIfAll6EggsFrameAre80PercentFull()
                         && !sourceHive.itWasSplit
@@ -98,6 +109,7 @@ public class Hives {
                 )
                 .collect(Collectors.toList());
     }
+
 
 
     public void moveAnEggsFrame(List<List<Integer>> hiveIdPair) {
@@ -113,7 +125,7 @@ public class Hives {
     }
 
 
-    public void addHivesToApiary(List<Hive> newHives, LifeOfBees lifeOfBeesGame) {
+    public void addHivesToApiary(Hives newHives, LifeOfBees lifeOfBeesGame) {
         logger.debug("Starting addHivesToApiary with list of hives {} and game {} ", newHives, lifeOfBeesGame);
         List<Hive> existingHives = lifeOfBeesGame.getApiary().getHives();
         Set<Integer> existingHiveIds = existingHives.stream()

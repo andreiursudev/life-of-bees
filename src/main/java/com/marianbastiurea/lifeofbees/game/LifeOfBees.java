@@ -4,6 +4,7 @@ import com.marianbastiurea.lifeofbees.action.ActionType;
 import com.marianbastiurea.lifeofbees.action.ActionsOfTheWeek;
 import com.marianbastiurea.lifeofbees.bees.Apiary;
 import com.marianbastiurea.lifeofbees.bees.Hive;
+import com.marianbastiurea.lifeofbees.bees.Hives;
 import com.marianbastiurea.lifeofbees.time.BeeTime;
 import com.marianbastiurea.lifeofbees.weather.WeatherData;
 import org.springframework.data.annotation.Id;
@@ -21,6 +22,7 @@ public class LifeOfBees {
     private String gameId;
     private String userId;
     private Apiary apiary;
+    private Hives hives;
     private ActionsOfTheWeek actionsOfTheWeek;
     private Integer removedHiveId;
     private BeeTime currentDate;
@@ -31,7 +33,7 @@ public class LifeOfBees {
 
     public LifeOfBees(String gameName, String userId, String gameType, Apiary apiary,
                       String location, BeeTime currentDate, WeatherData weatherData,
-                      double moneyInTheBank, double totalKgOfHoneyHarvested, ActionsOfTheWeek actionsOfTheWeek) {
+                      double moneyInTheBank, double totalKgOfHoneyHarvested, ActionsOfTheWeek actionsOfTheWeek, Hives hives) {
         this.apiary = apiary;
         this.gameName = gameName;
         this.location = location;
@@ -42,6 +44,7 @@ public class LifeOfBees {
         this.userId = userId;
         this.gameType = gameType;
         this.actionsOfTheWeek = new ActionsOfTheWeek();
+        this.hives=hives;
     }
 
     public LifeOfBees() {
@@ -50,12 +53,13 @@ public class LifeOfBees {
     @Override
     public String toString() {
         return "LifeOfBees{" +
-                "gameId='" + gameId + '\'' +
+                "gameName='" + gameName + '\'' +
+                ", location='" + location + '\'' +
+                ", gameId='" + gameId + '\'' +
                 ", userId='" + userId + '\'' +
                 ", apiary=" + apiary +
+                ", hives=" + hives +
                 ", actionsOfTheWeek=" + actionsOfTheWeek +
-                ", gameName='" + gameName + '\'' +
-                ", location='" + location + '\'' +
                 ", removedHiveId=" + removedHiveId +
                 ", currentDate=" + currentDate +
                 ", weatherData=" + weatherData +
@@ -71,7 +75,7 @@ public class LifeOfBees {
         for (int dailyIterator = 0; dailyIterator < 7; dailyIterator++) {
             currentWeatherData = weatherDataNextWeek.get(dailyIterator);
             double weatherIndex = currentWeatherData.weatherIndex();
-            for (Hive hive : apiary.getHives()) {
+            for (Hive hive : hives.getHives()) {
                 hive.iterateOneDay(currentDate, weatherIndex);
             }
             apiary.honeyHarvestedByHoneyType();
