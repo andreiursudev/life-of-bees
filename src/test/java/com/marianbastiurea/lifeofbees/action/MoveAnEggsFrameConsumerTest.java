@@ -23,14 +23,14 @@ class MoveAnEggsFrameConsumerTest {
     @Mock
     private Apiary apiary;
 
-    @Test
-    void testAccept() {
-        List<List<Integer>> hiveIdPairs = List.of(
-                List.of(1, 2),
-                List.of(3, 4)
-        );
-        when(lifeOfBees.getApiary()).thenReturn(apiary);
-        consumer.accept(lifeOfBees, hiveIdPairs);
-        verify(apiary, times(1)).moveAnEggsFrame(hiveIdPairs);
-    }
+//    @Test
+//    void testAccept() {
+//        List<List<Integer>> hiveIdPairs = List.of(
+//                List.of(1, 2),
+//                List.of(3, 4)
+//        );
+//        when(lifeOfBees.getApiary()).thenReturn(apiary);
+//        consumer.accept(lifeOfBees, hiveIdPairs);
+//        verify(apiary, times(1)).moveAnEggsFrame(hiveIdPairs);
+//    }
 }

@@ -13,7 +13,7 @@ public class AddHoneyFramesProducer implements ActionOfTheWeekProducer<List<Inte
     public Optional<List<Integer>> produce(LifeOfBees lifeOfBees) {
         List<Integer> hiveIds = new ArrayList<>();
         Apiary apiary = lifeOfBees.getApiary();
-        for (Hive hive : apiary.getHives()) {
+        for (Hive hive : apiary.getHives().getHives()) {
             if (hive.getHoneyFrames().canAddANewHoneyFrameInHive()) {
                 hiveIds.add(hive.getId());
             }

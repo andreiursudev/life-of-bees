@@ -20,11 +20,13 @@ public class Hives {
         this.hives = hives;
     }
 
-    public Hives(){
+    public Hives() {
         this.hives = new ArrayList<>();
     }
 
-
+    public Hives(List<Hive> hives) {
+        this.hives = hives;
+    }
     public Hives(Hive... hives) {
         this.hives = new ArrayList<>(Arrays.asList(hives));
     }
@@ -38,7 +40,7 @@ public class Hives {
                 true,
                 hive.getEggFrames().splitEggFrames(),
                 hive.getHoneyFrames().splitHoneyFrames(),
-                hive.splitBeesBatches(),
+                hive.getBeesBatches().splitBeesBatches(),
                 new ArrayList<>(),
                 new Queen(0),
                 false));
@@ -67,6 +69,7 @@ public class Hives {
                 "hives=" + hives +
                 '}';
     }
+
     public List<Hive> getHives() {
         return hives;
     }
@@ -111,7 +114,6 @@ public class Hives {
     }
 
 
-
     public void moveAnEggsFrame(List<List<Integer>> hiveIdPair) {
         logger.debug("Starting moveAnEggsFrame method with hiveIdPair: {}", hiveIdPair);
         hiveIdPair.forEach(hiveIds -> {
@@ -125,13 +127,13 @@ public class Hives {
     }
 
 
-    public void addHivesToApiary(Hives newHives, LifeOfBees lifeOfBeesGame) {
+    public void addNewHivesToHives(Hives newHives, LifeOfBees lifeOfBeesGame) {
         logger.debug("Starting addHivesToApiary with list of hives {} and game {} ", newHives, lifeOfBeesGame);
-        List<Hive> existingHives = lifeOfBeesGame.getApiary().getHives();
+        List<Hive> existingHives = lifeOfBeesGame.getApiary().getHives().getHives();
         Set<Integer> existingHiveIds = existingHives.stream()
                 .map(Hive::getId)
                 .collect(Collectors.toSet());
-        for (Hive hive : newHives) {
+        for (Hive hive : newHives.getHives()) {
             int newHiveId = 1;
             while (existingHiveIds.contains(newHiveId)) {
                 newHiveId++;
@@ -152,37 +154,46 @@ public class Hives {
             hive.getHoneyBatches().clear();
             hive.getEggFrames().extractEggBatchesForFrame();
             hive.getHoneyFrames().removeHoneyFrames();
-            hive.removeBeesBatches();
+            hive.getBeesBatches().removeBeesBatches();
         });
         logger.debug("Completed hibernate method.");
         return randomRemoveAHive();
     }
 
 
-    public List<Hive> createHive(int numberOfHives) {
-        logger.debug("Starting createHive method with numberOfHives = {}", numberOfHives);
-        Random random = new Random();
 
-        List<Hive> hives = IntStream.rangeClosed(1, numberOfHives).mapToObj(i -> {
+
+    public static Hives createHives(int numberOfHives) {
+        List<Hive> hiveList = IntStream.rangeClosed(1, numberOfHives).mapToObj(i -> {
             logger.debug("Creating hive with id = {}", i);
+            BeesBatches beesBatches = new BeesBatches(
+                    IntStream.range(0, 30)
+                            .mapToObj(k -> RANDOM.nextInt(600, 700))
+                            .collect(Collectors.toCollection(LinkedList::new))
+            );
             Hive hive = new Hive(
                     i,
                     false,
                     EggFrames.getRandomEggFrames(),
                     HoneyFrames.getRandomHoneyFrames(),
-                    IntStream.range(0, 30)
-                            .mapToObj(k -> random.nextInt(600, 700))
-                            .collect(Collectors.toCollection(LinkedList::new)),
+                    beesBatches,
                     new ArrayList<>(),
-                    new Queen(random.nextInt(1, 6)),
+                    new Queen(RANDOM.nextInt(1, 6)),
                     false
             );
+
             logger.debug("Hive created: {}", hive);
             return hive;
         }).collect(Collectors.toList());
 
-        logger.debug("Finished creating {} hives", hives.size());
-        return hives;
+        logger.debug("Finished creating {} hives", hiveList.size());
+
+        return new Hives(hiveList);
+    }
+
+
+    public void addAll(List<Hive> newHives) {
+        this.hives.addAll(newHives);
     }
 
 }

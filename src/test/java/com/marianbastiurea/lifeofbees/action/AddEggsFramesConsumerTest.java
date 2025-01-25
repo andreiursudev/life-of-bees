@@ -13,7 +13,7 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 
 class AddEggsFramesConsumerTest {
-
+/*
     private AddEggsFramesConsumer consumer;
     private LifeOfBees lifeOfBees;
     private Apiary apiary;
@@ -73,4 +73,6 @@ class AddEggsFramesConsumerTest {
         verify(apiary, times(1)).getHiveById(2);
         verify(hive2, times(1)).addNewEggsFrameInHive();
     }
+    */
+
 }

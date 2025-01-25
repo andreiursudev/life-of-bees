@@ -13,9 +13,9 @@ public class SplitHiveConsumer implements ActionOfTheWeekConsumer<List<Integer>>
         Apiary apiary = lifeOfBees.getApiary();
         if (hiveIds != null) {
             hiveIds.forEach(hiveId -> {
-                Hive hive = apiary.getHiveById(hiveId);
+                Hive hive = apiary.getHives().getHiveById(hiveId);
                 if (hive != null) {
-                    apiary.splitHive(hive);
+                    apiary.getHives().splitHive(hive.getId());
                 }
             });
         }

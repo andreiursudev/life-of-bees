@@ -2,6 +2,7 @@ package com.marianbastiurea.lifeofbees.game;
 
 import com.marianbastiurea.lifeofbees.bees.Apiary;
 import com.marianbastiurea.lifeofbees.bees.Hive;
+import com.marianbastiurea.lifeofbees.bees.Hives;
 import com.marianbastiurea.lifeofbees.time.BeeTime;
 import com.marianbastiurea.lifeofbees.weather.WeatherData;
 
@@ -22,9 +23,8 @@ public class LifeOfBeesFactory {
         BeeTime date = new BeeTime(startingDate);
         double moneyInTheBank = 3000.0;
         double totalKgOfHoney = 0;
-        Apiary apiary = new Apiary(new ArrayList<>());
-        List<Hive> newHives = apiary.createHive(numberOfStartingHives);
-        apiary.getHives().addAll(newHives);
+        Hives hives = Hives.createHives(numberOfStartingHives);
+        Apiary apiary = new Apiary(hives);
         return new LifeOfBees(gameName, userId, gameType, apiary, location, date,
                 weatherData, moneyInTheBank, totalKgOfHoney, null);
     }

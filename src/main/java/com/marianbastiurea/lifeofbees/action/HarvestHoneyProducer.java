@@ -15,7 +15,7 @@ public class HarvestHoneyProducer implements ActionOfTheWeekProducer<List<Intege
         List<Integer> hiveIds = new ArrayList<>();
         Apiary apiary = lifeOfBees.getApiary();
 
-        for (Hive hive : apiary.getHives()) {
+        for (Hive hive : apiary.getHives().getHives()) {
             if (hive.isItWasHarvested()) {
                 hiveIds.add(hive.getId());
             }

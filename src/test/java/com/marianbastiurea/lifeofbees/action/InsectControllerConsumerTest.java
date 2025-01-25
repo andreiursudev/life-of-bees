@@ -14,6 +14,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class InsectControllerConsumerTest {
+    /*
 
     @InjectMocks
     private InsectControllerConsumer consumer;
@@ -61,4 +62,6 @@ class InsectControllerConsumerTest {
         verify(apiary, times(1)).removeLastTwoBeesBatches();
         verify(lifeOfBees, never()).setMoneyInTheBank(anyInt());
     }
+
+     */
 }

@@ -11,6 +11,6 @@ public class MoveAnEggsFrameConsumer implements ActionOfTheWeekConsumer<List<Lis
     @Override
     public void accept(LifeOfBees lifeOfBees, List<List<Integer>> hiveIdPair) {
         Apiary apiary = lifeOfBees.getApiary();
-        apiary.moveAnEggsFrame(hiveIdPair);
+        apiary.getHives().moveAnEggsFrame(hiveIdPair);
     }
 }

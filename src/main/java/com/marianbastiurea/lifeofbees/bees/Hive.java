@@ -9,8 +9,7 @@ public class Hive {
     public boolean itWasSplit;
     public List<HoneyBatch> honeyBatches;
     public boolean itWasHarvested;
-    //TODO creaza clasa BeesBatches si folosesteo in loc de LinkedList<Integer> beesBatches
-    LinkedList<Integer> beesBatches = new LinkedList<>();
+    public BeesBatches beesBatches;
     private int id;
     private EggFrames eggFrames;
     private Queen queen;
@@ -25,7 +24,7 @@ public class Hive {
             boolean itWasSplit,
             EggFrames eggFrames,
             HoneyFrames honeyFrames,
-            LinkedList<Integer> beesBatches,
+            BeesBatches beesBatches,
             List<HoneyBatch> honeyBatches,
             Queen queen,
             boolean itWasHarvested) {
@@ -91,11 +90,11 @@ public class Hive {
         this.honeyFrames = honeyFrames1;
     }
 
-    public LinkedList<Integer> getBeesBatches() {
+    public BeesBatches getBeesBatches() {
         return beesBatches;
     }
 
-    public void setBeesBatches(LinkedList<Integer> beesBatches) {
+    public void setBeesBatches(BeesBatches beesBatches) {
         this.beesBatches = beesBatches;
     }
 
@@ -140,9 +139,9 @@ public class Hive {
         maybeChangeQueen(currentDate);
         int numberOfEggs = queen.iterateOneDay(currentDate, weatherIndex);
         int bees = eggFrames.iterateOneDay(numberOfEggs);
-        getBeesBatches().add(bees);
+        beesBatches.getBeesBatches().add(bees);
         fillUpExistingHoneyFramesFromHive(currentDate);
-        getBeesBatches().removeFirst();
+        beesBatches.getBeesBatches().removeFirst();
         List<HoneyBatch> harvestedHoneyBatches = harvestHoney(currentDate);
         addHoneyBatches(harvestedHoneyBatches);
     }
@@ -167,21 +166,7 @@ public class Hive {
         return List.of(honeyBatch);
     }
 
-    public LinkedList<Integer> splitBeesBatches() {
-        LinkedList<Integer> newHiveBeesBatches = new LinkedList<>();
-        for (int i = 0; i < beesBatches.size(); i++) {
-            int bees = beesBatches.get(i);
-            int beesToTransfer = bees / 2;
-            beesBatches.set(i, bees - beesToTransfer);
-            newHiveBeesBatches.add(beesToTransfer);
-        }
-        return newHiveBeesBatches;
-    }
 
-    public void removeBeesBatches() {
-        getBeesBatches().removeLast();
-        getBeesBatches().removeLast();
-    }
 
 
     public void fillUpExistingHoneyFramesFromHive(BeeTime currentDate) {
@@ -189,7 +174,7 @@ public class Hive {
         int numberOfFlight = random.nextInt(3, 6);
         HoneyType honeyType = currentDate.honeyType();
         double productivity = honeyType.getProductivity();
-        double totalBeesBatches = this.getBeesBatches().stream()
+        double totalBeesBatches = this.beesBatches.getBeesBatches().stream()
                 .mapToInt(Integer::intValue)
                 .sum();
         double kgOfHoneyToAdd = totalBeesBatches * numberOfFlight * 0.00002 * productivity;

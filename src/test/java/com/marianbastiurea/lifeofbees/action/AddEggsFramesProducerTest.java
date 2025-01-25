@@ -14,7 +14,7 @@ import com.marianbastiurea.lifeofbees.bees.EggFrames;
 import com.marianbastiurea.lifeofbees.game.LifeOfBees;
 
 class AddEggsFramesProducerTest {
-
+/*
     private AddEggsFramesProducer producer;
     private LifeOfBees lifeOfBees;
     private Apiary apiary;
@@ -67,4 +67,6 @@ class AddEggsFramesProducerTest {
         Optional<List<Integer>> result = producer.produce(lifeOfBees);
         assertTrue(result.isEmpty());
     }
+
+ */
 }

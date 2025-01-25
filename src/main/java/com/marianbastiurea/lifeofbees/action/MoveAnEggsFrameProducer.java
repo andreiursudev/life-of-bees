@@ -11,7 +11,7 @@ public class MoveAnEggsFrameProducer implements ActionOfTheWeekProducer<List<Lis
     @Override
     public Optional<List<List<Integer>>> produce(LifeOfBees lifeOfBees) {
         Apiary apiary = lifeOfBees.getApiary();
-        List<List<Integer>> result = apiary.checkIfCanMoveAnEggsFrame();
+        List<List<Integer>> result = apiary.getHives().checkIfCanMoveAnEggsFrame();
         return result.isEmpty() ? Optional.empty() : Optional.of(result);
     }
 }

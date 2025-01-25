@@ -151,7 +151,7 @@ public class LifeOfBeesController {
         logger.info("game received in GameResponse: {}", game);
         GameResponse gameResponse = new GameResponse();
         gameResponse.setId(game.getGameId());
-        for (Hive hive : game.getApiary().getHives()) {
+        for (Hive hive : game.getApiary().getHives().getHives()) {
             gameResponse.getHives().add(new HivesView(hive.getId(), hive.getAgeOfQueen(), hive.getEggFrames().getNumberOfEggFrames(), hive.getHoneyFrames().getHoneyFrame().size(), hive.isItWasSplit()));
         }
         gameResponse.setTemperature(game.getWeatherData().getTemperature());
@@ -276,7 +276,7 @@ public class LifeOfBeesController {
         accessDenied(lifeOfBeesGame, userId);
         Integer numberOfHives = request.get("numberOfHives");
         Apiary apiary = lifeOfBeesGame.getApiary();
-        apiary.addHivesToApiary(apiary.createHive(numberOfHives), lifeOfBeesGame);
+        apiary.getHives().addNewHivesToHives(apiary.getHives().createHives(numberOfHives), lifeOfBeesGame);
         double totalCost = numberOfHives * 500;
         lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() - totalCost);
         lifeOfBeesService.save(lifeOfBeesGame);
@@ -296,7 +296,7 @@ public class LifeOfBeesController {
                 .map(game -> new HomePageGameResponse(
                         game.getGameName(),
                         game.getLocation(),
-                        game.getApiary().getHives().size(),
+                        game.getApiary().getHives().getHives().size(),
                         game.getMoneyInTheBank(),
                         game.getTotalKgOfHoneyHarvested(),
                         game.getGameId()
@@ -328,7 +328,7 @@ public class LifeOfBeesController {
                 .map(game -> new HomePageGameResponse(
                         game.getGameName(),
                         game.getLocation(),
-                        game.getApiary().getHives().size(),
+                        game.getApiary().getHives().getHives().size(),
                         game.getMoneyInTheBank(),
                         game.getTotalKgOfHoneyHarvested(),
                         game.getGameId()
@@ -348,7 +348,7 @@ public class LifeOfBeesController {
             hiveHistory.setCurrentDate(lifeOfBees.getCurrentDate());
             hiveHistory.setWeatherData(lifeOfBees.getWeatherData());
             hiveHistory.setMoneyInTheBank(lifeOfBees.getMoneyInTheBank());
-            hiveHistory.setHive(lifeOfBees.getApiary().getHiveById(hiveId));
+            hiveHistory.setHive(lifeOfBees.getApiary().getHives().getHiveById(hiveId));
             hiveHistories.add(hiveHistory);
         }
         logger.info("history of {} hive was send it to game: {}", hiveId, gameId);
@@ -370,7 +370,7 @@ public class LifeOfBeesController {
             apiaryHistory.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank());
             apiaryHistory.setTotalKgOfHoneyHarvested(lifeOfBeesGame.getTotalKgOfHoneyHarvested());
             apiaryHistory.setActionsOfTheWeek(lifeOfBeesGame.getActionsOfTheWeek());
-            apiaryHistory.setHive(apiary.getHives());
+            apiaryHistory.setHive(apiary.getHives().getHives());
             apiaryHistories.add(apiaryHistory);
         }
         logger.info("Apiary's history was sent to React for game: {}", gameId);

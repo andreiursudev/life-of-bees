@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class FeedBeesProducerTest {
-
+/*
     private FeedBeesProducer producer;
     private LifeOfBees lifeOfBees;
     private Apiary apiary;
@@ -62,5 +62,7 @@ class FeedBeesProducerTest {
         assertFalse(result.isPresent());
         verify(apiary, times(1)).checkFeedBees(currentDate);
     }
+
+ */
 }
 

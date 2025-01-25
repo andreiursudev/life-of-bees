@@ -12,7 +12,7 @@ public class InsectControlProducer implements ActionOfTheWeekProducer<Integer> {
     public Optional<Integer> produce(LifeOfBees lifeOfBees) {
         Apiary apiary = lifeOfBees.getApiary();
         BeeTime currentDate = lifeOfBees.getCurrentDate();
-        Integer result = apiary.checkInsectControl(currentDate);
+        Integer result = apiary.getHives().checkInsectControl(currentDate);
         return (result > 0) ? Optional.of(result) : Optional.empty();
     }
 }

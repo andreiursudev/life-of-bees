@@ -12,7 +12,7 @@ public class AddEggsFramesConsumer implements ActionOfTheWeekConsumer<List<Integ
     public void accept(LifeOfBees lifeOfBees, List<Integer> eggHiveIds) {
         if (eggHiveIds != null) {
             eggHiveIds.forEach(hiveId -> {
-                Hive hive = lifeOfBees.getApiary().getHiveById(hiveId);
+                Hive hive = lifeOfBees.getApiary().getHives().getHiveById(hiveId);
                 if (hive != null) {
                     hive.addNewEggsFrameInHive();
                 }

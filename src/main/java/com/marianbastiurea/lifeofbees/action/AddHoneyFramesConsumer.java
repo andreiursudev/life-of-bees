@@ -14,7 +14,7 @@ public class AddHoneyFramesConsumer implements ActionOfTheWeekConsumer<List<Inte
         Apiary apiary = lifeOfBees.getApiary();
         if (honeyHiveIds != null) {
             honeyHiveIds.forEach(hiveId -> {
-                Hive hive = apiary.getHiveById(hiveId);
+                Hive hive = apiary.getHives().getHiveById(hiveId);
                 if (hive != null) {
                     hive.getHoneyFrames().addNewHoneyFrameInHive();
                 }

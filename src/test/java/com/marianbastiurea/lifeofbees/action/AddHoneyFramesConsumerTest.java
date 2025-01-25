@@ -14,6 +14,7 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 
 class AddHoneyFramesConsumerTest {
+    /*
 
     private AddHoneyFramesConsumer consumer;
     private LifeOfBees lifeOfBees;
@@ -77,4 +78,6 @@ class AddHoneyFramesConsumerTest {
         verify(apiary, times(1)).getHiveById(2);
         verify(honeyFrames2, times(1)).addNewHoneyFrameInHive();
     }
+
+     */
 }

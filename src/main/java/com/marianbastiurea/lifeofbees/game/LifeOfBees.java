@@ -22,7 +22,6 @@ public class LifeOfBees {
     private String gameId;
     private String userId;
     private Apiary apiary;
-    private Hives hives;
     private ActionsOfTheWeek actionsOfTheWeek;
     private Integer removedHiveId;
     private BeeTime currentDate;
@@ -33,7 +32,7 @@ public class LifeOfBees {
 
     public LifeOfBees(String gameName, String userId, String gameType, Apiary apiary,
                       String location, BeeTime currentDate, WeatherData weatherData,
-                      double moneyInTheBank, double totalKgOfHoneyHarvested, ActionsOfTheWeek actionsOfTheWeek, Hives hives) {
+                      double moneyInTheBank, double totalKgOfHoneyHarvested, ActionsOfTheWeek actionsOfTheWeek) {
         this.apiary = apiary;
         this.gameName = gameName;
         this.location = location;
@@ -44,7 +43,6 @@ public class LifeOfBees {
         this.userId = userId;
         this.gameType = gameType;
         this.actionsOfTheWeek = new ActionsOfTheWeek();
-        this.hives=hives;
     }
 
     public LifeOfBees() {
@@ -58,7 +56,6 @@ public class LifeOfBees {
                 ", gameId='" + gameId + '\'' +
                 ", userId='" + userId + '\'' +
                 ", apiary=" + apiary +
-                ", hives=" + hives +
                 ", actionsOfTheWeek=" + actionsOfTheWeek +
                 ", removedHiveId=" + removedHiveId +
                 ", currentDate=" + currentDate +
@@ -75,14 +72,14 @@ public class LifeOfBees {
         for (int dailyIterator = 0; dailyIterator < 7; dailyIterator++) {
             currentWeatherData = weatherDataNextWeek.get(dailyIterator);
             double weatherIndex = currentWeatherData.weatherIndex();
-            for (Hive hive : hives.getHives()) {
+            for (Hive hive : apiary.getHives().getHives()) {
                 hive.iterateOneDay(currentDate, weatherIndex);
             }
             apiary.honeyHarvestedByHoneyType();
             this.setTotalKgOfHoneyHarvested(apiary.getTotalKgHoneyHarvested());
             if (currentDate.isEndOfSeason()) {
                 currentDate.changeYear();
-                Integer removedHiveId = apiary.hibernate();
+                Integer removedHiveId = apiary.getHives().hibernate();
                 this.setRemovedHiveId(removedHiveId);
                 break;
             } else {

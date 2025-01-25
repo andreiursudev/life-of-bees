@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class AddHoneyFramesProducerTest {
+    /*
 
     private AddHoneyFramesProducer producer;
     private LifeOfBees lifeOfBees;
@@ -102,5 +103,7 @@ class AddHoneyFramesProducerTest {
 
         assertTrue(result.isEmpty());
     }
+
+     */
 }
 

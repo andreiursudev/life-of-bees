@@ -7,7 +7,7 @@ import java.util.LinkedList;
 
 public class BeesBatches {
 
-    LinkedList<Integer> beesBatches = new LinkedList<>();
+    LinkedList<Integer> beesBatches;
     private static final Logger logger = LoggerFactory.getLogger(Apiary.class);
 
     public BeesBatches(LinkedList<Integer> beesBatches) {
@@ -22,6 +22,9 @@ public class BeesBatches {
         this.beesBatches = beesBatches;
     }
 
+    public BeesBatches() {
+    }
+
     @Override
     public String toString() {
         return "BeesBatches{" +
@@ -29,18 +32,29 @@ public class BeesBatches {
                 '}';
     }
 
-    public void removeLastTwoBeesBatches(Hives hives) {
+    public void removeLastTwoBeesBatches() {
         logger.debug("Starting removeLastTwoBeesBatches method.");
-        for (Hive hive : hives.getHives()) {
-            LinkedList<Integer> beesBatches = hive.getBeesBatches();
             if (beesBatches != null && beesBatches.size() >= 2) {
                 beesBatches.removeLast();
-                 beesBatches.removeLast(); // Eliminăm penultimul lot
-            } else {
-                logger.warn("Hive {} does not have enough bee batches to remove.", hive);
+                beesBatches.removeLast();
             }
-        }
         logger.debug("Completed removeLastTwoBeesBatches method.");
+    }
+
+    public BeesBatches splitBeesBatches() {
+        LinkedList<Integer> newHiveBeesBatches = new LinkedList<>();
+        for (int i = 0; i < beesBatches.size(); i++) {
+            int bees = beesBatches.get(i);
+            int beesToTransfer = bees / 2;
+            beesBatches.set(i, bees - beesToTransfer);
+            newHiveBeesBatches.add(beesToTransfer);
+        }
+        return new BeesBatches(newHiveBeesBatches); // Returnează un obiect BeesBatches
+    }
+
+    public void removeBeesBatches() {
+        getBeesBatches().removeLast();
+        getBeesBatches().removeLast();
     }
 }
 
