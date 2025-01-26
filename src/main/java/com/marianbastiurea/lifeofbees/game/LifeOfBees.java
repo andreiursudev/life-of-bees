@@ -3,7 +3,6 @@ package com.marianbastiurea.lifeofbees.game;
 import com.marianbastiurea.lifeofbees.action.ActionType;
 import com.marianbastiurea.lifeofbees.action.ActionsOfTheWeek;
 import com.marianbastiurea.lifeofbees.bees.Apiary;
-import com.marianbastiurea.lifeofbees.bees.Hive;
 import com.marianbastiurea.lifeofbees.bees.Hives;
 import com.marianbastiurea.lifeofbees.time.BeeTime;
 import com.marianbastiurea.lifeofbees.weather.WeatherData;
@@ -24,7 +23,6 @@ public class LifeOfBees {
     private Apiary apiary;
     private ActionsOfTheWeek actionsOfTheWeek;
     private Integer removedHiveId;
-    private BeeTime currentDate;
     private WeatherData weatherData;
     private double moneyInTheBank;
     private double totalKgOfHoneyHarvested;
@@ -36,7 +34,6 @@ public class LifeOfBees {
         this.apiary = apiary;
         this.gameName = gameName;
         this.location = location;
-        this.currentDate = currentDate;
         this.weatherData = weatherData;
         this.moneyInTheBank = moneyInTheBank;
         this.totalKgOfHoneyHarvested = totalKgOfHoneyHarvested;
@@ -58,7 +55,6 @@ public class LifeOfBees {
                 ", apiary=" + apiary +
                 ", actionsOfTheWeek=" + actionsOfTheWeek +
                 ", removedHiveId=" + removedHiveId +
-                ", currentDate=" + currentDate +
                 ", weatherData=" + weatherData +
                 ", moneyInTheBank=" + moneyInTheBank +
                 ", totalKgOfHoneyHarvested=" + totalKgOfHoneyHarvested +
@@ -72,23 +68,21 @@ public class LifeOfBees {
         for (int dailyIterator = 0; dailyIterator < 7; dailyIterator++) {
             currentWeatherData = weatherDataNextWeek.get(dailyIterator);
             double weatherIndex = currentWeatherData.weatherIndex();
-            for (Hive hive : apiary.getHives().getHives()) {
-                hive.iterateOneDay(currentDate, weatherIndex);
-            }
+            Hives hives = apiary.getHives();
+            hives.iterateOneDay(weatherIndex);
             apiary.honeyHarvestedByHoneyType();
             this.setTotalKgOfHoneyHarvested(apiary.getTotalKgHoneyHarvested());
-            if (currentDate.isEndOfSeason()) {
-                currentDate.changeYear();
-                Integer removedHiveId = apiary.getHives().hibernate();
+            //Sterge HarvestHoneyProducer si muta logica lui aici
+            Integer removedHiveId = hives.hibernate();
+            if(removedHiveId != null){
                 this.setRemovedHiveId(removedHiveId);
                 break;
-            } else {
-                this.setRemovedHiveId(null);
             }
-            currentDate.addDay();
+            this.setRemovedHiveId(removedHiveId);
+
         }
         weatherData = currentWeatherData;
-        actionsOfTheWeek.createActions(this);
+        actionsOfTheWeek.createActions(apiary.getHives());
         this.setActionsOfTheWeek(actionsOfTheWeek);
     }
 
@@ -127,13 +121,6 @@ public class LifeOfBees {
         return location;
     }
 
-    public BeeTime getCurrentDate() {
-        return currentDate;
-    }
-
-    public void setCurrentDate(BeeTime currentDate) {
-        this.currentDate = currentDate;
-    }
 
     public double getTotalKgOfHoneyHarvested() {
         return totalKgOfHoneyHarvested;
@@ -181,5 +168,9 @@ public class LifeOfBees {
 
     public void setRemovedHiveId(Integer removedHiveId) {
         this.removedHiveId = removedHiveId;
+    }
+
+    public BeeTime getCurrentDate(){
+        return this.getApiary().getHives().getCurrentDate();
     }
 }

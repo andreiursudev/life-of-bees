@@ -132,7 +132,7 @@ public class LifeOfBeesController {
         logger.info("Received request for iterate game: {}", gameId);
         LifeOfBees lifeOfBeesGame = lifeOfBeesService.getByGameId(gameId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
-        List<WeatherData> weatherDataNextWeek = weatherService.getWeatherForNextWeek(lifeOfBeesGame.getCurrentDate());
+        List<WeatherData> weatherDataNextWeek = weatherService.getWeatherForNextWeek(lifeOfBeesGame.getApiary().getHives().getCurrentDate());
         String userId = principal.getName();
         accessDenied(lifeOfBeesGame, userId);
         Map<ActionType, Object> actions = requestData.get("actions");
@@ -160,7 +160,7 @@ public class LifeOfBeesController {
         gameResponse.setWindSpeed(game.getWeatherData().getWindSpeed());
         gameResponse.setMoneyInTheBank(game.getMoneyInTheBank());
         gameResponse.setPrecipitation(game.getWeatherData().getPrecipitation());
-        gameResponse.setCurrentDate(game.getCurrentDate().getLocalDate());
+        gameResponse.setCurrentDate(game.getApiary().getHives().getCurrentDate().getLocalDate());
         gameResponse.setTotalKgOfHoneyHarvested(game.getTotalKgOfHoneyHarvested());
         gameResponse.setRemovedHiveId(game.getRemovedHiveId());
         logger.info("Data saved it GameResponse:  {}", gameResponse);
@@ -277,7 +277,7 @@ public class LifeOfBeesController {
         accessDenied(lifeOfBeesGame, userId);
         Integer numberOfHives = request.get("numberOfHives");
         Apiary apiary = lifeOfBeesGame.getApiary();
-        apiary.getHives().addNewHivesToHives(apiary.getHives().createHives(numberOfHives), lifeOfBeesGame);
+        apiary.getHives().addNewHivesToHives(apiary.getHives().createHives(numberOfHives, apiary.getHives().getCurrentDate()), lifeOfBeesGame);
         double totalCost = numberOfHives * 500;
         lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() - totalCost);
         lifeOfBeesService.save(lifeOfBeesGame);

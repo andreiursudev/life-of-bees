@@ -18,6 +18,18 @@ public class Hive {
     public Hive() {
     }
 
+    public Hive(int id, EggFrames eggFrames) {
+        this(
+            id,
+            false,
+            eggFrames,
+            new HoneyFrames(),
+            new BeesBatches(),
+            new ArrayList<>(),
+            new Queen(),
+            false);
+    }
+
 
     public Hive(
             int id,
@@ -110,7 +122,7 @@ public class Hive {
         return !this.itWasSplit &&
                 currentDate.timeToSplitHive() &&
                 this.eggFrames.isFullEggFrames() &&
-                this.eggFrames.is80PercentFull();
+                this.eggFrames.isFull();
     }
 
 
@@ -165,8 +177,6 @@ public class Hive {
 
         return List.of(honeyBatch);
     }
-
-
 
 
     public void fillUpExistingHoneyFramesFromHive(BeeTime currentDate) {

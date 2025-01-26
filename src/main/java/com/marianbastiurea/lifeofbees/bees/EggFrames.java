@@ -5,14 +5,13 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
+import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.*;
+
 public class EggFrames {
 
-    public final static int maxEggPerFrame = 6400;
     private int numberOfEggFrames;
     public LinkedList<Integer> eggsByDay;
-    private static final int daysToHatch = 20;
     public boolean wasMovedAnEggsFrame;
-    int maxNumberOfEggFrames = 6;
     private static final Logger logger = LoggerFactory.getLogger(Apiary.class);
 
     public EggFrames(int numberOfEggFrames, LinkedList<Integer> eggsByDay) {
@@ -43,9 +42,13 @@ public class EggFrames {
         this.eggsByDay = new LinkedList<>(Collections.nCopies(daysToHatch, 0));
     }
 
-    public EggFrames(int numberOfEggFrames, int eggsPerDay) {
+    /*
+    Use this constructor for tests only.
+     */
+    public EggFrames(int numberOfEggFrames, double eggFramesFillPercentage) {
         this.numberOfEggFrames = numberOfEggFrames;
-        this.eggsByDay = new LinkedList<>(Collections.nCopies(daysToHatch, eggsPerDay));
+        double o = numberOfEggFrames * maxEggPerFrame * eggFramesFillPercentage / daysToHatch;
+        this.eggsByDay = new LinkedList<>(Collections.nCopies(daysToHatch, (int) o));
     }
 
 
@@ -100,17 +103,13 @@ public class EggFrames {
         numberOfEggFrames++;
     }
 
-    public boolean isFull() {
-        return getEggs() >= maxEggPerFrame * numberOfEggFrames;
-    }
-
 
     public int getEggs() {
         return eggsByDay.stream().mapToInt(Integer::intValue).sum();
     }
 
-    public boolean is80PercentFull() {
-        return getEggs() >= numberOfEggFrames * maxEggPerFrame * 0.8;
+    public boolean isFull() {
+        return getEggs() >= numberOfEggFrames * maxEggPerFrame * fullnessFactor;
     }
 
     public int iterateOneDay(int eggsToAdd) {
@@ -129,11 +128,11 @@ public class EggFrames {
 
 
     public boolean checkIfAll6EggsFrameAre80PercentFull() {
-        return isFullEggFrames() || !is80PercentFull();
+        return isFullEggFrames() || !isFull();
     }
 
     public boolean canAddNewEggsFrame() {
-        return !isFullEggFrames() && is80PercentFull();
+        return !isFullEggFrames() && isFull();
     }
 
 
@@ -165,7 +164,7 @@ public class EggFrames {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         EggFrames eggFrames = (EggFrames) o;
-        return numberOfEggFrames == eggFrames.numberOfEggFrames && wasMovedAnEggsFrame == eggFrames.wasMovedAnEggsFrame && maxNumberOfEggFrames == eggFrames.maxNumberOfEggFrames && Objects.equals(eggsByDay, eggFrames.eggsByDay);
+        return numberOfEggFrames == eggFrames.numberOfEggFrames && wasMovedAnEggsFrame == eggFrames.wasMovedAnEggsFrame && Objects.equals(eggsByDay, eggFrames.eggsByDay);
     }
 
     @Override

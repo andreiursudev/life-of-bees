@@ -15,18 +15,22 @@ public class Hives {
     private static final Logger logger = LoggerFactory.getLogger(Apiary.class);
     private static final Random RANDOM = new Random();
 
+    private BeeTime currentDate;
+
 
     public void setHives(List<Hive> hives) {
         this.hives = hives;
     }
 
-    public Hives() {
-        this.hives = new ArrayList<>();
+    public Hives(List<Hive> hiveList, BeeTime date) {
+        this.hives = hiveList;
+        this.currentDate = date;
     }
 
     public Hives(List<Hive> hives) {
         this.hives = hives;
     }
+
     public Hives(Hive... hives) {
         this.hives = new ArrayList<>(Arrays.asList(hives));
     }
@@ -95,7 +99,7 @@ public class Hives {
                 : 0;
     }
 
-    public Integer checkFeedBees(BeeTime currentDate) {
+    public Integer checkFeedBees() {
         return (currentDate.getMonth() == Month.SEPTEMBER)
                 ? this.getHives().size()
                 : 0;
@@ -147,23 +151,26 @@ public class Hives {
 
 
     public Integer hibernate() {
-        this.getHives().forEach(hive -> {
-            hive.getQueen().setAgeOfQueen(hive.getQueen().getAgeOfQueen() + 1);
-            hive.setItWasSplit(false);
-            hive.getEggFrames().setWasMovedAnEggsFrame(false);
-            hive.getHoneyBatches().clear();
-            hive.getEggFrames().extractEggBatchesForFrame();
-            hive.getHoneyFrames().removeHoneyFrames();
-            hive.getBeesBatches().removeBeesBatches();
-        });
-        logger.debug("Completed hibernate method.");
-        return randomRemoveAHive();
+        Integer removedHive = null;
+        if (currentDate.isEndOfSeason()) {
+            this.getHives().forEach(hive -> {
+                hive.getQueen().setAgeOfQueen(hive.getQueen().getAgeOfQueen() + 1);
+                hive.setItWasSplit(false);
+                hive.getEggFrames().setWasMovedAnEggsFrame(false);
+                hive.getHoneyBatches().clear();
+                hive.getEggFrames().extractEggBatchesForFrame();
+                hive.getHoneyFrames().removeHoneyFrames();
+                hive.getBeesBatches().removeBeesBatches();
+            });
+            logger.debug("Completed hibernate method.");
+            currentDate.changeYear();
+            removedHive = randomRemoveAHive();
+        }
+        return removedHive;
     }
 
 
-
-
-    public static Hives createHives(int numberOfHives) {
+    public static Hives createHives(int numberOfHives, BeeTime date) {
         List<Hive> hiveList = IntStream.rangeClosed(1, numberOfHives).mapToObj(i -> {
             logger.debug("Creating hive with id = {}", i);
             BeesBatches beesBatches = new BeesBatches(
@@ -188,7 +195,7 @@ public class Hives {
 
         logger.debug("Finished creating {} hives", hiveList.size());
 
-        return new Hives(hiveList);
+        return new Hives(hiveList, date);
     }
 
 
@@ -196,4 +203,14 @@ public class Hives {
         this.hives.addAll(newHives);
     }
 
+    public void iterateOneDay(double weatherIndex) {
+        for (Hive hive : hives) {
+            hive.iterateOneDay(currentDate, weatherIndex);
+        }
+        currentDate.addDay();
+    }
+
+    public BeeTime getCurrentDate() {
+        return currentDate;
+    }
 }
