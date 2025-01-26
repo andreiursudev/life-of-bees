@@ -63,7 +63,8 @@ const HiveHistory = () => {
                         {hiveHistoryData.length > 0 ? (
                             hiveHistoryData.map((entry, index) => {
                                 const hive = entry.hive;
-                                const beesNumber = hive.beesBatches.reduce((total, batch) => total + batch, 0);
+                                const beesNumber = hive.beesBatches?.beesBatches?.reduce((sum, batch) => sum + (batch || 0), 0) || 0;
+
                                 const honeyKg = hive.honeyBatches.reduce((total, batch) => total + batch.kgOfHoney, 0);
 
                                 const eggsFrameNo = hive.eggFrames.numberOfEggFrames;

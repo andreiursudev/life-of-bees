@@ -2,6 +2,7 @@ package com.marianbastiurea.lifeofbees.history;
 
 import com.marianbastiurea.lifeofbees.action.ActionsOfTheWeek;
 import com.marianbastiurea.lifeofbees.bees.Hive;
+import com.marianbastiurea.lifeofbees.bees.Hives;
 import com.marianbastiurea.lifeofbees.time.BeeTime;
 import com.marianbastiurea.lifeofbees.weather.WeatherData;
 
@@ -15,27 +16,19 @@ public class ApiaryHistory {
     private double moneyInTheBank;
     private double totalKgOfHoneyHarvested;
     private ActionsOfTheWeek actionsOfTheWeek;
-    private List<Hive> hive;
+    private Hives hives;
 
     public ApiaryHistory(BeeTime currentDate, WeatherData weatherData, double moneyInTheBank,
-                         double totalKgOfHoneyHarvested, ActionsOfTheWeek actionsOfTheWeek, List<Hive> hive) {
+                         double totalKgOfHoneyHarvested, ActionsOfTheWeek actionsOfTheWeek, Hives hives) {
         this.currentDate = currentDate;
         this.weatherData = weatherData;
         this.moneyInTheBank = moneyInTheBank;
         this.totalKgOfHoneyHarvested = totalKgOfHoneyHarvested;
         this.actionsOfTheWeek = actionsOfTheWeek;
-        this.hive = hive;
+        this.hives = hives;
     }
 
     public ApiaryHistory() {
-    }
-
-    public List<Hive> getHive() {
-        return hive;
-    }
-
-    public void setHive(List<Hive> hive) {
-        this.hive = hive;
     }
 
     public BeeTime getCurrentDate() {
@@ -78,6 +71,14 @@ public class ApiaryHistory {
         this.totalKgOfHoneyHarvested = totalKgOfHoneyHarvested;
     }
 
+    public Hives getHives() {
+        return hives;
+    }
+
+    public void setHives(Hives hives) {
+        this.hives = hives;
+    }
+
     @Override
     public String toString() {
         return "ApiaryHistory{" +
@@ -86,7 +87,7 @@ public class ApiaryHistory {
                 ", moneyInTheBank=" + moneyInTheBank +
                 ", totalKgOfHoneyHarvested=" + totalKgOfHoneyHarvested +
                 ", actionOfTheWeek=" + actionsOfTheWeek +
-                ", hive=" + hive +
+                ", hives=" + hives +
                 '}';
     }
 }

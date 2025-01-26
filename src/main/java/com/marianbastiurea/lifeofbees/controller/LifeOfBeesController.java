@@ -5,6 +5,7 @@ import com.marianbastiurea.lifeofbees.action.ActionType;
 import com.marianbastiurea.lifeofbees.bees.Apiary;
 import com.marianbastiurea.lifeofbees.bees.HarvestHoney;
 import com.marianbastiurea.lifeofbees.bees.Hive;
+import com.marianbastiurea.lifeofbees.bees.Hives;
 import com.marianbastiurea.lifeofbees.bees.HoneyType;
 import com.marianbastiurea.lifeofbees.game.LifeOfBees;
 import com.marianbastiurea.lifeofbees.game.LifeOfBeesFactory;
@@ -370,7 +371,9 @@ public class LifeOfBeesController {
             apiaryHistory.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank());
             apiaryHistory.setTotalKgOfHoneyHarvested(lifeOfBeesGame.getTotalKgOfHoneyHarvested());
             apiaryHistory.setActionsOfTheWeek(lifeOfBeesGame.getActionsOfTheWeek());
-            apiaryHistory.setHive(apiary.getHives().getHives());
+            Hives hives = new Hives();
+            hives.setHives(apiary.getHives().getHives());
+            apiaryHistory.setHives(hives);
             apiaryHistories.add(apiaryHistory);
         }
         logger.info("Apiary's history was sent to React for game: {}", gameId);
