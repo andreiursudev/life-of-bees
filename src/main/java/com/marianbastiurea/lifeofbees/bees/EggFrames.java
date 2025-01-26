@@ -69,18 +69,53 @@ public class EggFrames {
         this.numberOfEggFrames = numberOfEggFrames;
     }
 
+//    public EggFrames splitEggFrames() {
+//        logger.debug("Starting method splitEggFrames with eggsByDay: {}",eggsByDay);
+//        LinkedList<Integer> newEggBatches = new LinkedList<>();
+//        eggsByDay.replaceAll(eggs -> {
+//            int halfEggs = eggs / 2;
+//            newEggBatches.add(halfEggs);
+//            return halfEggs;
+//        });
+//        numberOfEggFrames = 3;
+//        logger.debug("finishing method splitEggFrames");
+//        return new EggFrames(3, newEggBatches, false);
+//    }
+
     public EggFrames splitEggFrames() {
-        logger.debug("Starting method splitEggFrames with eggsByDay: {}",eggsByDay);
-        LinkedList<Integer> newEggBatches = new LinkedList<>();
-        eggsByDay.replaceAll(eggs -> {
+        logger.debug("Starting method splitEggFrames with eggsByDay: {}", eggsByDay);
+
+        // Creăm două liste pentru cele două rame de ouă
+        LinkedList<Integer> newEggBatches1 = new LinkedList<>();
+        LinkedList<Integer> newEggBatches2 = new LinkedList<>();
+
+        // Log pentru începerea împărțirii
+        logger.info("Splitting eggs into two batches.");
+
+        // Împărțim ouăle la jumătate pentru fiecare zi
+        for (Integer eggs : eggsByDay) {
             int halfEggs = eggs / 2;
-            newEggBatches.add(halfEggs);
-            return halfEggs;
-        });
-        numberOfEggFrames = 3;
-        logger.debug("finishing method splitEggFrames");
-        return new EggFrames(3, newEggBatches, false);
+            newEggBatches1.add(halfEggs);
+            newEggBatches2.add(eggs - halfEggs); // A doua jumătate
+
+            // Log fiecare împărțire a ouălor
+            logger.info("Eggs for the day split: {} -> Batch 1: {}, Batch 2: {}", eggs, halfEggs, eggs - halfEggs);
+        }
+
+        numberOfEggFrames = 3; // Poți ajusta acest număr dacă este necesar
+
+
+        // Creăm și returnăm o nouă instanță de EggFrames cu noile liste
+        EggFrames newEggFrames = new EggFrames(3, newEggBatches1, false);
+
+        // Log pentru returnarea noilor egg frames
+        logger.info("Returning new EggFrames with {} egg batches.", newEggBatches1.size());
+
+        logger.info("noile rame splituite sunt {}", newEggFrames);
+        logger.debug("Finishing method splitEggFrames");
+        return newEggFrames;
     }
+
 
     public void extractEggBatchesForFrame() {
         logger.debug("starting extractEggBatchesForFrame with eggsByDay: {}",eggsByDay);

@@ -2,6 +2,8 @@ package com.marianbastiurea.lifeofbees.bees;
 
 import java.util.*;
 
+import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.*;
+
 public class HoneyFrames {
 
     private List<HoneyFrame> honeyFrame;
@@ -35,7 +37,7 @@ public class HoneyFrames {
     }
 
     public boolean canAddANewHoneyFrameInHive() {
-        int maxNumberOfHoneyFrames = 6;
+
         long honeyFrameFull = getHoneyFrame().stream()
                 .filter(HoneyFrame::isHarvestable)
                 .count();
@@ -65,7 +67,7 @@ public class HoneyFrames {
 
     public HoneyFrames splitHoneyFrames() {
         HoneyFrames newHiveHoneyFrames = new HoneyFrames(new ArrayList<>());
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             HoneyFrame frameToMove = getHoneyFrame().removeLast();
             newHiveHoneyFrames.getHoneyFrame().add(frameToMove);
         }
