@@ -3,12 +3,12 @@ package com.marianbastiurea.lifeofbees.bees;
 
 import org.springframework.data.annotation.Transient;
 
+import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.*;
 import java.util.Objects;
 
 class HoneyFrame {
 
-    @Transient
-    private final double maxKgOfHoneyPerFrame = 4.5;
+
     private double kgOfHoney;
 
     public HoneyFrame(double kgOfHoney) {
@@ -22,7 +22,7 @@ class HoneyFrame {
     }
 
     public boolean isHarvestable() {
-        return kgOfHoney > 4;
+        return kgOfHoney > minKgOfHoneyToHarvestAHoneyFrame;
     }
 
     public boolean isFull() {
@@ -40,7 +40,7 @@ class HoneyFrame {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         HoneyFrame that = (HoneyFrame) o;
-        return Double.compare(maxKgOfHoneyPerFrame, that.maxKgOfHoneyPerFrame) == 0 && Double.compare(kgOfHoney, that.kgOfHoney) == 0;
+        return Double.compare(kgOfHoney, that.kgOfHoney) == 0;
     }
 
     @Override

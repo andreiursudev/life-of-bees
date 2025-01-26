@@ -16,9 +16,7 @@ class AddEggsFramesProducerTest {
     void cantAddEggFrameToHiveWithMaxNumberOfEggFramesAndFullnessOverFullnessFactor() {
         AddEggsFramesProducer addEggsFramesProducer = new AddEggsFramesProducer();
         Hives hives = new Hives(new Hive(1, new EggFrames(maxNumberOfEggFrames, fullnessFactor + 0.1)));
-
         Optional<List<Integer>> result = addEggsFramesProducer.produce(hives);
-
         assertEquals(Optional.empty(), result);
     }
 

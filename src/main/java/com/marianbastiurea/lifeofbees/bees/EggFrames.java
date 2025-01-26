@@ -45,6 +45,12 @@ public class EggFrames {
     /*
     Use this constructor for tests only.
      */
+    public EggFrames(int numberOfEggFrames, int dailyEggs){
+        this.numberOfEggFrames = numberOfEggFrames;
+        this.eggsByDay = new LinkedList<>(Collections.nCopies(daysToHatch, dailyEggs));
+    }
+
+
     public EggFrames(int numberOfEggFrames, double eggFramesFillPercentage) {
         this.numberOfEggFrames = numberOfEggFrames;
         double o = numberOfEggFrames * maxEggPerFrame * eggFramesFillPercentage / daysToHatch;
@@ -85,32 +91,17 @@ public class EggFrames {
     public EggFrames splitEggFrames() {
         logger.debug("Starting method splitEggFrames with eggsByDay: {}", eggsByDay);
 
-        // Creăm două liste pentru cele două rame de ouă
-        LinkedList<Integer> newEggBatches1 = new LinkedList<>();
-        LinkedList<Integer> newEggBatches2 = new LinkedList<>();
+        LinkedList<Integer> newEggBatches = new LinkedList<>();
 
-        // Log pentru începerea împărțirii
         logger.info("Splitting eggs into two batches.");
-
-        // Împărțim ouăle la jumătate pentru fiecare zi
         for (Integer eggs : eggsByDay) {
             int halfEggs = eggs / 2;
-            newEggBatches1.add(halfEggs);
-            newEggBatches2.add(eggs - halfEggs); // A doua jumătate
+            newEggBatches.add(halfEggs);
 
-            // Log fiecare împărțire a ouălor
             logger.info("Eggs for the day split: {} -> Batch 1: {}, Batch 2: {}", eggs, halfEggs, eggs - halfEggs);
         }
-
-        numberOfEggFrames = 3; // Poți ajusta acest număr dacă este necesar
-
-
-        // Creăm și returnăm o nouă instanță de EggFrames cu noile liste
-        EggFrames newEggFrames = new EggFrames(3, newEggBatches1, false);
-
-        // Log pentru returnarea noilor egg frames
-        logger.info("Returning new EggFrames with {} egg batches.", newEggBatches1.size());
-
+        numberOfEggFrames = 3;
+        EggFrames newEggFrames = new EggFrames(3, newEggBatches, false);
         logger.info("noile rame splituite sunt {}", newEggFrames);
         logger.debug("Finishing method splitEggFrames");
         return newEggFrames;
