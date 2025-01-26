@@ -105,29 +105,29 @@ const ApiaryHistory = () => {
 
                                     </tr>
                                     {Array.isArray(entry.hives.hives) &&
-                                        entry.hives.hives.slice(1).map((hives) => (
-                                            <tr key={hives.hives.id}>
+                                        entry.hives.hives.slice(1).map((hive) => (
+                                            <tr key={hive.id}>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
-                                                <td>{hives.id}</td>
-                                               
-                                                <td>{hives.queen.ageOfQueen}</td>
+                                                <td>{hive.id}</td>
+                                                <td>{hive.queen.ageOfQueen}</td>
                                                 <td>
-                                                    {hives.honeyBatches.length > 0 ? hives.hives.honeyBatches[0].honeyType : ''}
+                                                    {hive.honeyBatches.length > 0 ? hive.honeyBatches[0].honeyType : ''}
                                                 </td>
                                                 <td>
-                                                    {hives.honeyBatches.reduce((sum, batch) => sum + batch.kgOfHoney, 0).toFixed(2)} kg
+                                                    {hive.honeyBatches.reduce((sum, batch) => sum + batch.kgOfHoney, 0).toFixed(2)} kg
                                                 </td>
-                                                <td>{hives.eggFrames.numberOfEggFrames}</td>
-                                                <td>{hives.honeyFrames.honeyFrame.length}</td>
-                                                <td>{hives.itWasSplit ? 'Yes' : 'No'}</td>
+                                                <td>{hive.eggFrames.numberOfEggFrames}</td>
+                                                <td>{hive.honeyFrames.honeyFrame.length}</td>
+                                                <td>{hive.itWasSplit ? 'Yes' : 'No'}</td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
                                             </tr>
-                                        ))}
+                                        ))
+                                    }
                                 </React.Fragment>
                             ))
                         ) : (

@@ -38,7 +38,7 @@ public class ActionsOfTheWeek {
         }
     }
 
-    public void executeActions(LifeOfBees lifeOfBees, Map<ActionType, Object> actions) {
+    public void executeActions(Hives hives, Map<ActionType, Object> actions) {
         if (actions == null || actions.isEmpty()) {
             System.out.println("No actions to do");
             return;
@@ -51,7 +51,7 @@ public class ActionsOfTheWeek {
             try {
 
                 ActionOfTheWeekConsumer biConsumer = actionType.getBiConsumer();
-                biConsumer.accept(lifeOfBees, actionData);
+                biConsumer.accept(hives, actionData);
             } catch (ClassCastException e) {
                 System.out.println("Error: Mismatched type for action " + actionType.name());
             }

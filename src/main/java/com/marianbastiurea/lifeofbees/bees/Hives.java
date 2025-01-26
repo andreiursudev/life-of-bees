@@ -17,6 +17,8 @@ public class Hives {
 
     private BeeTime currentDate;
 
+    public Hives() {
+    }
 
     public void setHives(List<Hive> hives) {
         this.hives = hives;
