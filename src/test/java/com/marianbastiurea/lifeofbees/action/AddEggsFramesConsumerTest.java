@@ -28,4 +28,20 @@ class AddEggsFramesConsumerTest {
         assertEquals(2, hive3.getEggFrames().getNumberOfEggFrames()); // No change
     }
 
+    @Test
+    void doesNothingWhenEggHiveIdsIsEmpty() {
+
+        AddEggsFramesConsumer consumer = new AddEggsFramesConsumer();
+
+        Hive hive1 = new Hive(1, new EggFrames(2, 0.8));
+        Hive hive2 = new Hive(2, new EggFrames(3, 0.8));
+
+        List<Hive> hiveList = new ArrayList<>(List.of(hive1, hive2));
+        Hives hives = new Hives(hiveList);
+        consumer.accept(hives, List.of());
+
+        assertEquals(2, hive1.getEggFrames().getNumberOfEggFrames());
+        assertEquals(3, hive2.getEggFrames().getNumberOfEggFrames());
+    }
+
 }
