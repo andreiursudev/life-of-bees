@@ -37,35 +37,17 @@ public class Hives {
         this.hives = new ArrayList<>(Arrays.asList(hives));
     }
 
-//    public void splitHive(Integer hiveId) {
-//        Hive hive = getHiveById(hiveId);
-//        if (!hive.getEggFrames().isFullEggFrames() || hive.isItWasSplit()) return;
-//        hive.setItWasSplit(true);
-//        hives.add(new Hive(
-//                hives.size() + 1,
-//                true,
-//                hive.getEggFrames().splitEggFrames(),
-//                hive.getHoneyFrames().splitHoneyFrames(),
-//                hive.getBeesBatches().splitBeesBatches(),
-//                new ArrayList<>(),
-//                new Queen(0),
-//                false));
-//    }
-
     public void splitHive(Integer hiveId) {
+        logger.debug("Starting splitHive for hiveId: {}", hiveId);
         Hive hive = getHiveById(hiveId);
-        logger.info("Attempting to split hive with ID: {}", hiveId);
         if (!hive.getEggFrames().isFullEggFrames() || hive.isItWasSplit()) {
             return;
         }
         hive.setItWasSplit(true);
-
         EggFrames newEggFrames = hive.getEggFrames().splitEggFrames();
         hive.setEggFrames(newEggFrames);
         HoneyFrames newHoneyFrames=hive.getHoneyFrames().splitHoneyFrames();
         hive.setHoneyFrames(newHoneyFrames);
-        logger.info("Egg frames  primite in splitHive din metoda splitEggsFrames din clasa EggFrames {}", newEggFrames);
-        logger.info("vechiul stup dupa ce a fost aplicata metoda splitHive {}", hive);
         hives.add(new Hive(
                 hives.size() + 1,
                 true,
@@ -75,8 +57,8 @@ public class Hives {
                 new ArrayList<>(),
                 new Queen(0),
                 false));
+        logger.debug("Completed splitHive for hiveId: {}", hiveId);
 
-        logger.info("noul stup dupa ce a fost aplicata metoda splitHive: {}" + hives);
     }
 
     public Hive getHiveById(Integer hiveId) {

@@ -1,8 +1,5 @@
 package com.marianbastiurea.lifeofbees.bees;
 
-
-import org.springframework.data.annotation.Transient;
-
 import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.*;
 import java.util.Objects;
 

@@ -75,34 +75,13 @@ public class EggFrames {
         this.numberOfEggFrames = numberOfEggFrames;
     }
 
-//    public EggFrames splitEggFrames() {
-//        logger.debug("Starting method splitEggFrames with eggsByDay: {}",eggsByDay);
-//        LinkedList<Integer> newEggBatches = new LinkedList<>();
-//        eggsByDay.replaceAll(eggs -> {
-//            int halfEggs = eggs / 2;
-//            newEggBatches.add(halfEggs);
-//            return halfEggs;
-//        });
-//        numberOfEggFrames = 3;
-//        logger.debug("finishing method splitEggFrames");
-//        return new EggFrames(3, newEggBatches, false);
-//    }
-
     public EggFrames splitEggFrames() {
-        logger.debug("Starting method splitEggFrames with eggsByDay: {}", eggsByDay);
-
         LinkedList<Integer> newEggBatches = new LinkedList<>();
-
-        logger.info("Splitting eggs into two batches.");
         for (Integer eggs : eggsByDay) {
             int halfEggs = eggs / 2;
-            newEggBatches.add(halfEggs);
-
-            logger.info("Eggs for the day split: {} -> Batch 1: {}, Batch 2: {}", eggs, halfEggs, eggs - halfEggs);
-        }
+            newEggBatches.add(halfEggs);}
         numberOfEggFrames = 3;
         EggFrames newEggFrames = new EggFrames(3, newEggBatches, false);
-        logger.info("noile rame splituite sunt {}", newEggFrames);
         logger.debug("Finishing method splitEggFrames");
         return newEggFrames;
     }
