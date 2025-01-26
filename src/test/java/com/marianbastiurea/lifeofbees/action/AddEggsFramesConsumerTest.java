@@ -4,11 +4,7 @@ import com.marianbastiurea.lifeofbees.bees.EggFrames;
 import com.marianbastiurea.lifeofbees.bees.Hive;
 import com.marianbastiurea.lifeofbees.bees.Hives;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AddEggsFramesConsumerTest {
