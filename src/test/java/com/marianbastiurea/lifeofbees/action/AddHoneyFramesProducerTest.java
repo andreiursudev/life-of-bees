@@ -12,26 +12,26 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AddHoneyFramesProducerTest {
-    //TODO formateaza codul, e ultima oara cand mai zic
     @Test
-    void cantAddHoneyFrameToHiveWithMaxNumberOfHoneyFrames(){
-        AddHoneyFramesProducer addHoneyFramesProducer=new AddHoneyFramesProducer();
-        Hives hives=new Hives( new Hive(1, new HoneyFrames(maxNumberOfHoneyFrames,4)));
-        Optional<List<Integer>> result=addHoneyFramesProducer.produce(hives);
-        assertEquals(Optional.empty(), result);
-    }
-    @Test
-    void addHoneyFramesProducerTest_mixedCases(){
-        AddHoneyFramesProducer addHoneyFramesProducer=new AddHoneyFramesProducer();
-        Hives hives=new Hives( new Hive(1, new HoneyFrames(maxNumberOfHoneyFrames-1,5)),
-                new Hive(2, new HoneyFrames(maxNumberOfHoneyFrames-1,3)),
-                new Hive(3,new HoneyFrames( maxNumberOfHoneyFrames,5))
-
+    void cantAddHoneyFrameToHiveWithMaxNumberOfHoneyFrames() {
+        Optional<List<Integer>> result = new AddHoneyFramesProducer().produce(
+                new Hives(new Hive(1, new HoneyFrames(maxNumberOfHoneyFrames, 4)))
         );
-        Optional<List<Integer>> result =addHoneyFramesProducer.produce(hives);
-
-        assertEquals(Optional.of(List.of(1)), result);
-
+        assertTrue(result.isEmpty(), "Should not add honey frame when at max capacity.");
     }
+
+    @Test
+    void addHoneyFramesProducerTest_mixedCases() {
+        Optional<List<Integer>> result = new AddHoneyFramesProducer().produce(
+                new Hives(
+                        new Hive(1, new HoneyFrames(maxNumberOfHoneyFrames - 1, 5)),
+                        new Hive(2, new HoneyFrames(maxNumberOfHoneyFrames - 1, 3)),
+                        new Hive(3, new HoneyFrames(maxNumberOfHoneyFrames, 5))
+                )
+        );
+
+        assertEquals(Optional.of(List.of(1)), result, "Only hive 1 should be eligible for adding honey frames.");
+    }
+
 
 }
