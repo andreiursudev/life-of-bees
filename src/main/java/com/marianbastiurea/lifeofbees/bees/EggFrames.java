@@ -112,10 +112,10 @@ public class EggFrames {
     public int getEggs() {
         return eggsByDay.stream().mapToInt(Integer::intValue).sum();
     }
-
-    public boolean isFull() {
-        return getEggs() >= numberOfEggFrames * maxEggPerFrame * fullnessFactor;
-    }
+//
+//    public boolean isFull() {
+//        return getEggs() >= numberOfEggFrames * maxEggPerFrame * fullnessFactor;
+//    }
 
     public int iterateOneDay(int eggsToAdd) {
         eggsByDay.addFirst(Math.min(eggsToAdd, maxEggPerFrame * numberOfEggFrames - getEggs()));
@@ -127,17 +127,32 @@ public class EggFrames {
             this.numberOfEggFrames++;
     }
 
-    public boolean isFullEggFrames() {
+    public boolean isMaxNumberOfEggFrames() {
         return numberOfEggFrames == maxNumberOfEggFrames;
     }
 
+//
+//    public boolean checkIfAll6EggsFrameAre80PercentFull() {
+//        return isFullEggFrames() || !isFull();
+//    }
 
-    public boolean checkIfAll6EggsFrameAre80PercentFull() {
-        return isFullEggFrames() || !isFull();
-    }
 
     public boolean canAddNewEggsFrame() {
-        return !isFullEggFrames() && isFull();
+        return !isMaxNumberOfEggFrames() && isFull();
+    }
+  public boolean checkIfAll6EggsFrameAre80PercentFull() {
+      logger.info("Checking if all 6 egg frames are 80% full...");
+      boolean result = isMaxNumberOfEggFrames() || isFull();
+      logger.info("Result of checkIfAll6EggsFrameAre80PercentFull: {}", result);
+      return result;
+  }
+
+    public boolean isFull() {
+        logger.info("Checking if egg frames are full...");
+        int eggs = getEggs();
+        boolean result = eggs >= numberOfEggFrames * maxEggPerFrame * fullnessFactor;
+        logger.info("Eggs in frames: {}, Fullness check result: {}", eggs, result);
+        return result;
     }
 
 

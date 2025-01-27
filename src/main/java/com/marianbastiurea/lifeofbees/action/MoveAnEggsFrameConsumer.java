@@ -1,5 +1,6 @@
 package com.marianbastiurea.lifeofbees.action;
 
+import com.marianbastiurea.lifeofbees.bees.Apiary;
 import com.marianbastiurea.lifeofbees.bees.Hives;
 import com.marianbastiurea.lifeofbees.game.LifeOfBees;
 
@@ -11,6 +12,7 @@ public class MoveAnEggsFrameConsumer implements ActionOfTheWeekConsumer<List<Lis
 
     @Override
     public void accept(LifeOfBees lifeOfBees , List<List<Integer>> hiveIdPair) {
-        hives.moveAnEggsFrame(hiveIdPair);
+        Apiary apiary = lifeOfBees.getApiary();
+        apiary.getHives().moveAnEggsFrame(hiveIdPair);
     }
 }

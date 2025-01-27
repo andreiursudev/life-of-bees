@@ -131,7 +131,7 @@ public class Hive {
     public boolean checkIfHiveCouldBeSplit(BeeTime currentDate) {
         return !this.itWasSplit &&
                 currentDate.timeToSplitHive() &&
-                this.eggFrames.isFullEggFrames() &&
+                this.eggFrames.isMaxNumberOfEggFrames() &&
                 this.eggFrames.isFull();
     }
 

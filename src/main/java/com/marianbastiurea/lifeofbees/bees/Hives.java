@@ -10,9 +10,11 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.maxNumberOfEggFrames;
+
 public class Hives {
     private List<Hive> hives;
-    private static final Logger logger = LoggerFactory.getLogger(Apiary.class);
+    private static final Logger logger = LoggerFactory.getLogger(Hives.class);
     private static final Random RANDOM = new Random();
 
     private BeeTime currentDate;
@@ -40,7 +42,7 @@ public class Hives {
     public void splitHive(Integer hiveId) {
         logger.debug("Starting splitHive for hiveId: {}", hiveId);
         Hive hive = getHiveById(hiveId);
-        if (!hive.getEggFrames().isFullEggFrames() || hive.isItWasSplit()) {
+        if (!hive.getEggFrames().isMaxNumberOfEggFrames() || hive.isItWasSplit()) {
             return;
         }
         hive.setItWasSplit(true);
@@ -105,24 +107,52 @@ public class Hives {
     }
 
     public boolean checkInsectControl() {
-        return currentDate.timeForInsectControl() ;
+        boolean result = currentDate.timeForInsectControl();
+        logger.info("Checking insect control in Hives: " + result + " for date: " + currentDate);
+        return result;
     }
 
     public boolean canFeedBees() {
         return currentDate.getMonth() == Month.SEPTEMBER;
     }
-
+//
+//
+//    public List<List<Integer>> checkIfCanMoveAnEggsFrame() {
+//        return hives.stream()
+//                .filter(sourceHive -> sourceHive.getEggFrames().checkIfAll6EggsFrameAre80PercentFull()
+//                        && !sourceHive.itWasSplit
+//                        && !sourceHive.getEggFrames().wasMovedAnEggsFrame)
+//                .flatMap(sourceHive -> hives.stream()
+//                        .filter(targetHive -> targetHive.itWasSplit && targetHive.getQueen().getAgeOfQueen() == 0)
+//                        .map(targetHive -> Arrays.asList(sourceHive.getId(), targetHive.getId()))
+//                )
+//                .collect(Collectors.toList());
+//    }
 
     public List<List<Integer>> checkIfCanMoveAnEggsFrame() {
-        return hives.stream()
-                .filter(sourceHive -> sourceHive.getEggFrames().checkIfAll6EggsFrameAre80PercentFull()
-                        && !sourceHive.itWasSplit
-                        && !sourceHive.getEggFrames().wasMovedAnEggsFrame)
+        logger.info("Starting checkIfCanMoveAnEggsFrame...");
+        List<List<Integer>> result = hives.stream()
+                .filter(sourceHive -> {
+                    boolean isEggFrameFull = sourceHive.getEggFrames().checkIfAll6EggsFrameAre80PercentFull();
+                    boolean isNotSplit = !sourceHive.itWasSplit;
+                    boolean wasNotMoved = !sourceHive.getEggFrames().wasMovedAnEggsFrame;
+                    logger.info("Checking source hive {}: isEggFrameFull = {}, isNotSplit = {}, wasNotMoved = {}",
+                            sourceHive.getId(), isEggFrameFull, isNotSplit, wasNotMoved);
+                    return isEggFrameFull && isNotSplit && wasNotMoved;
+                })
                 .flatMap(sourceHive -> hives.stream()
-                        .filter(targetHive -> targetHive.itWasSplit && targetHive.getQueen().getAgeOfQueen() == 0)
-                        .map(targetHive -> Arrays.asList(sourceHive.getId(), targetHive.getId()))
+                        .filter(targetHive -> targetHive.itWasSplit
+                                && targetHive.getQueen().getAgeOfQueen() == 0
+                                && targetHive.getEggFrames().getNumberOfEggFrames() < maxNumberOfEggFrames)
+                        .map(targetHive -> {
+                            logger.info("Found potential target hive {} for source hive {}", targetHive.getId(), sourceHive.getId());
+                            return Arrays.asList(sourceHive.getId(), targetHive.getId());
+                        })
                 )
                 .collect(Collectors.toList());
+
+        logger.info("Final result of checkIfCanMoveAnEggsFrame: {}", result);
+        return result;
     }
 
 

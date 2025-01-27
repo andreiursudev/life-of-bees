@@ -1,6 +1,9 @@
 package com.marianbastiurea.lifeofbees.time;
 
+import com.marianbastiurea.lifeofbees.bees.Apiary;
 import com.marianbastiurea.lifeofbees.bees.HoneyType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -9,7 +12,10 @@ import java.time.Month;
 public class BeeTime {
 
     private LocalDate currentDate;
-
+    private int year;
+    private int month;
+    private int day;
+    private static final Logger logger = LoggerFactory.getLogger(Apiary.class);
     public BeeTime(LocalDate currentDate) {
         this.currentDate = currentDate;
     }
@@ -18,6 +24,11 @@ public class BeeTime {
         this.currentDate = LocalDate.of(year, month, day);
     }
 
+//    public BeeTime(int year, int month, int day) {
+//        this.year = year;
+//        this.month = month;
+//        this.day = day;
+//    }
     public BeeTime() {
     }
 
@@ -87,12 +98,15 @@ public class BeeTime {
         return new BeeTime(this.currentDate.plusDays(days));
     }
 
-    public boolean timeForInsectControl() {
-        int dayOfMonth = currentDate.getDayOfMonth();
-        return (currentDate.getMonthValue() >= 4 && currentDate.getMonthValue() <= 8)
-                && (dayOfMonth >= 9 && dayOfMonth <= 16) ||
-                (dayOfMonth >= 19 && dayOfMonth <= 25);
-    }
+
+public boolean timeForInsectControl() {
+    int dayOfMonth = currentDate.getDayOfMonth();
+    int month = currentDate.getMonthValue();
+    boolean isValidMonth = (month >= 4 && month <= 8);
+    boolean isValidDay = (dayOfMonth >= 9 && dayOfMonth <= 16) || (dayOfMonth >= 19 && dayOfMonth <= 25);
+    return isValidMonth && isValidDay;
+}
+
 
     public boolean isEndOfSeason() {
         return currentDate.isEqual(LocalDate.of(currentDate.getYear(), 9, 30));

@@ -28,6 +28,7 @@ public class LifeOfBees {
     private double totalKgOfHoneyHarvested;
     private String gameType;
 
+
     public LifeOfBees(String gameName, String userId, String gameType, Apiary apiary,
                       String location, WeatherData weatherData,
                       double moneyInTheBank, double totalKgOfHoneyHarvested, ActionsOfTheWeek actionsOfTheWeek) {
@@ -82,7 +83,7 @@ public class LifeOfBees {
 
         }
         weatherData = currentWeatherData;
-        actionsOfTheWeek.createActions(this);
+        actionsOfTheWeek.createActions(apiary.getHives());
         this.setActionsOfTheWeek(actionsOfTheWeek);
     }
 
