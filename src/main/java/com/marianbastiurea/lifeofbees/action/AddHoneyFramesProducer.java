@@ -11,10 +11,10 @@ import java.util.Optional;
 
 public class AddHoneyFramesProducer implements ActionOfTheWeekProducer<List<Integer>> {
     @Override
-    public Optional<List<Integer>> produce(LifeOfBees lifeOfBees) {
+    public Optional<List<Integer>> produce(Hives hives) {
         List<Integer> hiveIds = new ArrayList<>();
-        Apiary apiary = lifeOfBees.getApiary();
-        for (Hive hive : apiary.getHives().getHives()) {
+
+        for (Hive hive : hives.getHives()) {
             if (hive.getHoneyFrames().canAddANewHoneyFrameInHive()) {
                 hiveIds.add(hive.getId());
             }

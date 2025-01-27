@@ -30,10 +30,10 @@ public class ActionsOfTheWeek {
     }
 
 
-    public void createActions(LifeOfBees lifeOfBees) {
+    public void createActions(Hives hives) {
         actions.clear();
         for (ActionType actionType : ActionType.values()) {
-            Optional<?> dataOptional = actionType.getProducer().produce(lifeOfBees);
+            Optional<?> dataOptional = actionType.getProducer().produce(hives);
             dataOptional.ifPresent(data -> actions.put(actionType, data));
         }
     }

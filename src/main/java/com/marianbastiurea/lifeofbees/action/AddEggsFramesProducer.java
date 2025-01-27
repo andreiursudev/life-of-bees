@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.Optional;
 
 public class AddEggsFramesProducer implements ActionOfTheWeekProducer<List<Integer>> {
-    public Optional<List<Integer>> produce(LifeOfBees lifeOfBees) {
+    public Optional<List<Integer>> produce(Hives hives) {
         List<Integer> hiveIds = new ArrayList<>();
-        Apiary apiary = lifeOfBees.getApiary();
-        for (Hive hive : apiary.getHives().getHives()) {
+
+        for (Hive hive : hives.getHives()) {
             if (hive.getEggFrames().canAddNewEggsFrame())
                 hiveIds.add(hive.getId());
         }
