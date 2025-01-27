@@ -25,9 +25,9 @@ class FeedBeesProducerTest {
                         new BeeTime(2023, 8, 22) // AUGUST
                 )
         );
-        assertTrue(result.isPresent(), "Result should not be empty.");
-        assertFalse(result.get(), "Month is not September, should not feed bees.");
+        assertTrue(result.isEmpty(), "Month is not September");
     }
+
 
 
     @Test
