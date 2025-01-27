@@ -9,13 +9,13 @@ public class InsectControllerConsumer implements ActionOfTheWeekConsumer<String>
 
 
     @Override
-    public void accept(Hives hives, String answer) {
-        LifeOfBees lifeOfBees = new LifeOfBees();
+    public void accept(LifeOfBees lifeOfBees, String answer) {
+
         if ("yes".equals(answer)) {
-            int cost = hives.getHives().size() * 10;
+            int cost = lifeOfBees.getApiary().getHives().getHives().size() * 10;
             lifeOfBees.setMoneyInTheBank(lifeOfBees.getMoneyInTheBank() - cost);
         } else {
-            for (Hive hive : hives.getHives()) {
+            for (Hive hive : lifeOfBees.getApiary().getHives().getHives()) {
                 hive.getBeesBatches().removeLastTwoBeesBatches();
             }
         }

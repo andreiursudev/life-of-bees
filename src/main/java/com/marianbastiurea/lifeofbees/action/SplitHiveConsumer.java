@@ -10,7 +10,7 @@ import java.util.List;
 
 public class SplitHiveConsumer implements ActionOfTheWeekConsumer<List<Integer>> {
     @Override
-    public void accept(Hives hives, List<Integer> hiveIds) {
+    public void accept(LifeOfBees lifeOfBees, List<Integer> hiveIds) {
 
         if (hiveIds != null) {
             hiveIds.forEach(hiveId -> {

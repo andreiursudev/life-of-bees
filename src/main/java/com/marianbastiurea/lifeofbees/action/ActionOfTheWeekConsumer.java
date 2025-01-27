@@ -5,5 +5,5 @@ import com.marianbastiurea.lifeofbees.game.LifeOfBees;
 
 @FunctionalInterface
 public interface ActionOfTheWeekConsumer<T> {
-    void accept(Hives hives, T data);
+    void accept(LifeOfBees lifeOfBees, T data);
 }

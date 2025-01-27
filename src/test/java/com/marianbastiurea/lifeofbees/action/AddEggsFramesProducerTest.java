@@ -1,6 +1,8 @@
 package com.marianbastiurea.lifeofbees.action;
 
 import com.marianbastiurea.lifeofbees.bees.*;
+import com.marianbastiurea.lifeofbees.game.LifeOfBees;
+import com.marianbastiurea.lifeofbees.weather.WeatherData;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -15,8 +17,22 @@ class AddEggsFramesProducerTest {
     @Test
     void cantAddEggFrameToHiveWithMaxNumberOfEggFramesAndFullnessOverFullnessFactor() {
         AddEggsFramesProducer addEggsFramesProducer = new AddEggsFramesProducer();
+
         Hives hives = new Hives(new Hive(1, new EggFrames(maxNumberOfEggFrames, fullnessFactor + 0.1)));
-        Optional<List<Integer>> result = addEggsFramesProducer.produce(hives);
+        Apiary apiary = new Apiary(hives);
+        LifeOfBees lifeOfBees = new LifeOfBees(
+                "testGame",
+                "userId",
+                "private",
+                apiary,
+                "TestLocation",
+                new WeatherData(),
+                0.0,
+                0.0,
+                new ActionsOfTheWeek()
+        );
+
+        Optional<List<Integer>> result = addEggsFramesProducer.produce(lifeOfBees);
         assertEquals(Optional.empty(), result);
     }
 
@@ -31,7 +47,7 @@ class AddEggsFramesProducerTest {
                 new Hive(5, new EggFrames(maxNumberOfEggFrames - 1, fullnessFactor - 0.1)
                 ));
 
-        Optional<List<Integer>> result = addEggsFramesProducer.produce(hives);
+        Optional<List<Integer>> result = addEggsFramesProducer.produce(l);
 
         assertEquals(Optional.of(List.of(3, 4)), result);
     }

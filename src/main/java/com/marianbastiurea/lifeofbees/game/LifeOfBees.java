@@ -29,7 +29,7 @@ public class LifeOfBees {
     private String gameType;
 
     public LifeOfBees(String gameName, String userId, String gameType, Apiary apiary,
-                      String location, BeeTime currentDate, WeatherData weatherData,
+                      String location, WeatherData weatherData,
                       double moneyInTheBank, double totalKgOfHoneyHarvested, ActionsOfTheWeek actionsOfTheWeek) {
         this.apiary = apiary;
         this.gameName = gameName;
@@ -63,7 +63,7 @@ public class LifeOfBees {
     }
 
     public void iterateOneWeek(Map<ActionType, Object> actions, List<WeatherData> weatherDataNextWeek) {
-        actionsOfTheWeek.executeActions(apiary.getHives(), actions);
+        actionsOfTheWeek.executeActions(this, actions);
         WeatherData currentWeatherData = null;
         for (int dailyIterator = 0; dailyIterator < 7; dailyIterator++) {
             currentWeatherData = weatherDataNextWeek.get(dailyIterator);
@@ -82,7 +82,7 @@ public class LifeOfBees {
 
         }
         weatherData = currentWeatherData;
-        actionsOfTheWeek.createActions(apiary.getHives());
+        actionsOfTheWeek.createActions(this);
         this.setActionsOfTheWeek(actionsOfTheWeek);
     }
 
