@@ -51,7 +51,7 @@ public class Hives {
         hives.add(new Hive(
                 hives.size() + 1,
                 true,
-                newEggFrames, // Utilizăm noile rame de ouă
+                newEggFrames,
                 newHoneyFrames,
                 hive.getBeesBatches().splitBeesBatches(),
                 new ArrayList<>(),
