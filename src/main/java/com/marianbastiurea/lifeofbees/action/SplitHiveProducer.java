@@ -12,10 +12,12 @@ import java.util.Optional;
 
 public class SplitHiveProducer implements ActionOfTheWeekProducer<List<Integer>> {
     @Override
-    public Optional<List<Integer>> produce(Hives hives) {
+    public Optional<List<Integer>> produce(LifeOfBees lifeOfBees) {
+        Apiary apiary = lifeOfBees.getApiary();
+        BeeTime currentDate = lifeOfBees.getCurrentDate();
         List<Integer> hiveIds = new ArrayList<>();
-        for (Hive hive : hives.getHives()) {
-            if (hive.checkIfHiveCouldBeSplit(hives.getCurrentDate())) {
+        for (Hive hive : apiary.getHives().getHives()) {
+            if (hive.checkIfHiveCouldBeSplit(currentDate)) {
                 hiveIds.add(hive.getId());
             }
         }

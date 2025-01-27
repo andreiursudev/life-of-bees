@@ -30,15 +30,15 @@ public class ActionsOfTheWeek {
     }
 
 
-    public void createActions(Hives hives) {
+    public void createActions(LifeOfBees lifeOfBees) {
         actions.clear();
         for (ActionType actionType : ActionType.values()) {
-            Optional<?> dataOptional = actionType.getProducer().produce(hives);
+            Optional<?> dataOptional = actionType.getProducer().produce(lifeOfBees);
             dataOptional.ifPresent(data -> actions.put(actionType, data));
         }
     }
 
-    public void executeActions(Hives hives, Map<ActionType, Object> actions) {
+    public void executeActions(LifeOfBees lifeOfBeess, Map<ActionType, Object> actions) {
         if (actions == null || actions.isEmpty()) {
             System.out.println("No actions to do");
             return;

@@ -3,7 +3,7 @@ package com.marianbastiurea.lifeofbees.bees;
 import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.*;
 import java.util.Objects;
 
-class HoneyFrame {
+public class HoneyFrame {
 
 
     private double kgOfHoney;

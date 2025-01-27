@@ -1,18 +1,17 @@
 package com.marianbastiurea.lifeofbees.action;
 
 import com.marianbastiurea.lifeofbees.bees.Apiary;
-import com.marianbastiurea.lifeofbees.bees.Hives;
 import com.marianbastiurea.lifeofbees.game.LifeOfBees;
-import com.marianbastiurea.lifeofbees.time.BeeTime;
+
 
 import java.util.Optional;
 
 
-public class InsectControlProducer implements ActionOfTheWeekProducer<Integer> {
+public class InsectControlProducer implements ActionOfTheWeekProducer<Boolean> {
     @Override
-    public Optional<Integer> produce(Hives hives) {
-        BeeTime currentDate = hives.getCurrentDate();
-        Integer result = hives.checkInsectControl(currentDate);
-        return (result > 0) ? Optional.of(result) : Optional.empty();
+    public Optional<Boolean> produce(LifeOfBees lifeOfBees) {
+        Apiary apiary = lifeOfBees.getApiary();
+        boolean canInsectControl =apiary.getHives().checkInsectControl();
+        return canInsectControl ? Optional.of(true) : Optional.empty();
     }
 }

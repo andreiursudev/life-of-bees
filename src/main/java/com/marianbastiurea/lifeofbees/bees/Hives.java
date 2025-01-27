@@ -104,10 +104,8 @@ public class Hives {
         return hiveToRemove.getId();
     }
 
-    public Integer checkInsectControl(BeeTime currentDate) {
-        return currentDate.timeForInsectControl()
-                ? this.getHives().size()
-                : 0;
+    public boolean checkInsectControl() {
+        return currentDate.timeForInsectControl() ;
     }
 
     public boolean canFeedBees() {
