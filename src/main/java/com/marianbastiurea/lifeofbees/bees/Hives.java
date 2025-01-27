@@ -110,11 +110,10 @@ public class Hives {
                 : 0;
     }
 
-    public Integer checkFeedBees() {
-        return (currentDate.getMonth() == Month.SEPTEMBER)
-                ? this.getHives().size()
-                : 0;
+    public boolean canFeedBees() {
+        return currentDate.getMonth() == Month.SEPTEMBER;
     }
+
 
     public List<List<Integer>> checkIfCanMoveAnEggsFrame() {
         return hives.stream()

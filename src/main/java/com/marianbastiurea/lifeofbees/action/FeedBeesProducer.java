@@ -5,11 +5,11 @@ import com.marianbastiurea.lifeofbees.bees.Hives;
 
 import java.util.Optional;
 
-public class FeedBeesProducer implements ActionOfTheWeekProducer<Integer> {
+public class FeedBeesProducer implements ActionOfTheWeekProducer<Boolean> {
 
     @Override
-    public Optional<Integer> produce(Hives hives) {
-        Integer result = hives.checkFeedBees();
-        return (result > 0) ? Optional.of(result) : Optional.empty();
+    public Optional<Boolean> produce(Hives hives) {
+        return hives.canFeedBees() ? Optional.of(true) : Optional.of(false);
     }
+
 }
