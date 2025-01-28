@@ -40,6 +40,16 @@ public class Hive {
                 new Queen(),
                 false);
  }
+    public Hive (int id, EggFrames eggFrames, boolean itWasSplit){
+        this(
+                id,
+                itWasSplit,
+               eggFrames,
+                new HoneyFrames(),new BeesBatches(),
+                new ArrayList<>(),
+                new Queen(),
+                false);
+    }
 
     public Hive(
             int id,

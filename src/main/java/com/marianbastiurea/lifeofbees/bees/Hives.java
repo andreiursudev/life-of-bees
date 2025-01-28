@@ -127,7 +127,6 @@ public class Hives {
                 })
                 .flatMap(sourceHive -> hives.stream()
                         .filter(targetHive -> targetHive.itWasSplit
-                                && targetHive.getQueen().getAgeOfQueen() == 0
                                 && targetHive.getEggFrames().getNumberOfEggFrames() < maxNumberOfEggFrames)
                         .map(targetHive -> {
                             return Arrays.asList(sourceHive.getId(), targetHive.getId());

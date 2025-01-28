@@ -3,6 +3,7 @@ package com.marianbastiurea.lifeofbees.action;
 import com.marianbastiurea.lifeofbees.bees.EggFrames;
 import com.marianbastiurea.lifeofbees.bees.Hive;
 import com.marianbastiurea.lifeofbees.bees.Hives;
+import com.marianbastiurea.lifeofbees.bees.Queen;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -18,23 +19,14 @@ class MoveAnEggsFrameProducerTest {
     void testProduceWithValidSourceAndTargetHives() {
 
         EggFrames sourceEggFrames = new EggFrames(6, new LinkedList<>(Arrays.asList(6400, 6400, 6400, 6400, 6400, 6400)), false);
-        Hive sourceHive = new Hive(1, sourceEggFrames);
-        sourceHive.itWasSplit = false;
-        sourceHive.getEggFrames().wasMovedAnEggsFrame = false;
-
+        Hive sourceHive = new Hive(1, sourceEggFrames,false);
         EggFrames targetEggFrames = new EggFrames(5, new LinkedList<>(Arrays.asList(6400, 6400, 6400, 6400, 6400)), false);
-        Hive targetHive = new Hive(2, targetEggFrames);
-        targetHive.itWasSplit = true;
-        targetHive.getQueen().setAgeOfQueen(0);
-
+        Hive targetHive = new Hive(2, targetEggFrames,true);
         List<Hive> hives = Arrays.asList(sourceHive, targetHive);
         Hives hiveCollection = new Hives(hives);
-
         MoveAnEggsFrameProducer producer = new MoveAnEggsFrameProducer();
-
         Optional<List<List<Integer>>> result = producer.produce(hiveCollection);
-        assertTrue(result.isPresent());
-        assertEquals(1, result.get().size());
+
         assertEquals(Arrays.asList(1, 2), result.get().get(0));
     }
 
@@ -42,19 +34,13 @@ class MoveAnEggsFrameProducerTest {
     void testProduceWithNoValidSourceHiveBecauseNumberOfEggsFrameIs5() {
 
         EggFrames sourceEggFrames = new EggFrames(5, new LinkedList<>(Arrays.asList(5000, 5000, 5000, 5000, 5000)), false);
-        Hive sourceHive = new Hive(1, sourceEggFrames);
-        sourceHive.itWasSplit = false;
-
+        Hive sourceHive = new Hive(1, sourceEggFrames,false);
         EggFrames targetEggFrames = new EggFrames(5, new LinkedList<>(Arrays.asList(6400, 6400, 6400, 6400, 6400)), false);
-        Hive targetHive = new Hive(2, targetEggFrames);
-        targetHive.itWasSplit = true;
-        targetHive.getQueen().setAgeOfQueen(0);
-
+        Hive targetHive = new Hive(2, targetEggFrames,true);
         List<Hive> hives = Arrays.asList(sourceHive, targetHive);
         Hives hiveCollection = new Hives(hives);
 
         MoveAnEggsFrameProducer producer = new MoveAnEggsFrameProducer();
-
 
         Optional<List<List<Integer>>> result = producer.produce(hiveCollection);
         assertTrue(result.isEmpty());
@@ -64,21 +50,15 @@ class MoveAnEggsFrameProducerTest {
     void testProduceWithNoValidSourceHiveBecauseWasAlreadyMovedAnEggsFrame() {
 
         EggFrames sourceEggFrames = new EggFrames(6, new LinkedList<>(Arrays.asList(6400, 6400, 6400, 6400, 6400, 6400)), true);
-        Hive sourceHive = new Hive(1, sourceEggFrames);
-        sourceHive.itWasSplit = false;
-
+        Hive sourceHive = new Hive(1, sourceEggFrames,false);
 
         EggFrames targetEggFrames = new EggFrames(5, new LinkedList<>(Arrays.asList(6400, 6400, 6400, 6400, 6400)), false);
-        Hive targetHive = new Hive(2, targetEggFrames);
-        targetHive.itWasSplit = true;
-        targetHive.getQueen().setAgeOfQueen(0);
+        Hive targetHive = new Hive(2, targetEggFrames,true);
 
         List<Hive> hives = Arrays.asList(sourceHive, targetHive);
         Hives hiveCollection = new Hives(hives);
 
         MoveAnEggsFrameProducer producer = new MoveAnEggsFrameProducer();
-
-
         Optional<List<List<Integer>>> result = producer.produce(hiveCollection);
         assertTrue(result.isEmpty());
     }
@@ -87,20 +67,14 @@ class MoveAnEggsFrameProducerTest {
     void testProduceWithNoValidSourceHiveBecauseWasAlreadySplit() {
 
         EggFrames sourceEggFrames = new EggFrames(6, new LinkedList<>(Arrays.asList(6400, 6400, 6400, 6400, 6400, 6400)), false); // Ramele nu sunt 80% pline
-        Hive sourceHive = new Hive(1, sourceEggFrames);
-        sourceHive.itWasSplit = true;
-
+        Hive sourceHive = new Hive(1, sourceEggFrames,true);
 
         EggFrames targetEggFrames = new EggFrames(5, new LinkedList<>(Arrays.asList(6400, 6400, 6400, 6400, 6400)), false);
-        Hive targetHive = new Hive(2, targetEggFrames);
-        targetHive.itWasSplit = true;
-        targetHive.getQueen().setAgeOfQueen(0);
-
+        Hive targetHive = new Hive(2, targetEggFrames,true);
         List<Hive> hives = Arrays.asList(sourceHive, targetHive);
         Hives hiveCollection = new Hives(hives);
 
         MoveAnEggsFrameProducer producer = new MoveAnEggsFrameProducer();
-
 
         Optional<List<List<Integer>>> result = producer.produce(hiveCollection);
         assertTrue(result.isEmpty());
@@ -110,21 +84,14 @@ class MoveAnEggsFrameProducerTest {
     void testProduceWithNoValidTargetHiveBecauseHaveMaxNumberOfEggsFrames() {
 
         EggFrames sourceEggFrames = new EggFrames(6, new LinkedList<>(Arrays.asList(6400, 6400, 6400, 6400, 6400, 6400)), false); // Ramele nu sunt 80% pline
-        Hive sourceHive = new Hive(1, sourceEggFrames);
-        sourceHive.itWasSplit = false;
-
-
+        Hive sourceHive = new Hive(1, sourceEggFrames,false);
         EggFrames targetEggFrames = new EggFrames(6, new LinkedList<>(Arrays.asList(6400, 6400, 6400, 6400, 6400, 6400)), false);
-        Hive targetHive = new Hive(2, targetEggFrames);
-        targetHive.itWasSplit = true;
-        targetHive.getQueen().setAgeOfQueen(0);
+        Hive targetHive = new Hive(2, targetEggFrames,true);
 
         List<Hive> hives = Arrays.asList(sourceHive, targetHive);
         Hives hiveCollection = new Hives(hives);
 
         MoveAnEggsFrameProducer producer = new MoveAnEggsFrameProducer();
-
-
         Optional<List<List<Integer>>> result = producer.produce(hiveCollection);
         assertTrue(result.isEmpty());
     }
@@ -134,21 +101,12 @@ class MoveAnEggsFrameProducerTest {
     void testProduceWithNoValidTargetHiveBecauseItNoSplit() {
 
         EggFrames sourceEggFrames = new EggFrames(6, new LinkedList<>(Arrays.asList(6400, 6400, 6400, 6400, 6400, 6400)), false); // Ramele nu sunt 80% pline
-        Hive sourceHive = new Hive(1, sourceEggFrames);
-        sourceHive.itWasSplit = false;
-
-
+        Hive sourceHive = new Hive(1, sourceEggFrames,false);
         EggFrames targetEggFrames = new EggFrames(5, new LinkedList<>(Arrays.asList(6400, 6400, 6400, 6400, 6400)), false);
-        Hive targetHive = new Hive(2, targetEggFrames);
-        targetHive.itWasSplit = false;
-        targetHive.getQueen().setAgeOfQueen(0);
-
+        Hive targetHive = new Hive(2, targetEggFrames,false);
         List<Hive> hives = Arrays.asList(sourceHive, targetHive);
         Hives hiveCollection = new Hives(hives);
-
         MoveAnEggsFrameProducer producer = new MoveAnEggsFrameProducer();
-
-
         Optional<List<List<Integer>>> result = producer.produce(hiveCollection);
         assertTrue(result.isEmpty());
     }

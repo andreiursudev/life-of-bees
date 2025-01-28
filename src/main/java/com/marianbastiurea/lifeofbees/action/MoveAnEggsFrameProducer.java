@@ -12,11 +12,6 @@ import java.util.Optional;
 public class MoveAnEggsFrameProducer implements ActionOfTheWeekProducer<List<List<Integer>>> {
     private static final Logger logger = LoggerFactory.getLogger(MoveAnEggsFrameProducer.class);
 
-//    @Override
-//    public Optional<List<List<Integer>>> produce(Hives hives) {
-//        List<List<Integer>> result = hives.checkIfCanMoveAnEggsFrame();
-//        return result.isEmpty() ? Optional.empty() : Optional.of(result);
-//    }
 
     @Override
     public Optional<List<List<Integer>>> produce(Hives hives) {
