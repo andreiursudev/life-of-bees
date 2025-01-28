@@ -12,7 +12,7 @@ public class EggFrames {
     private int numberOfEggFrames;
     public LinkedList<Integer> eggsByDay;
     public boolean wasMovedAnEggsFrame;
-    private static final Logger logger = LoggerFactory.getLogger(Apiary.class);
+    private static final Logger logger = LoggerFactory.getLogger(EggFrames.class);
 
     public EggFrames(int numberOfEggFrames, LinkedList<Integer> eggsByDay) {
         this.numberOfEggFrames = numberOfEggFrames;
@@ -112,10 +112,7 @@ public class EggFrames {
     public int getEggs() {
         return eggsByDay.stream().mapToInt(Integer::intValue).sum();
     }
-//
-//    public boolean isFull() {
-//        return getEggs() >= numberOfEggFrames * maxEggPerFrame * fullnessFactor;
-//    }
+
 
     public int iterateOneDay(int eggsToAdd) {
         eggsByDay.addFirst(Math.min(eggsToAdd, maxEggPerFrame * numberOfEggFrames - getEggs()));
@@ -131,20 +128,13 @@ public class EggFrames {
         return numberOfEggFrames == maxNumberOfEggFrames;
     }
 
-//
-//    public boolean checkIfAll6EggsFrameAre80PercentFull() {
-//        return isFullEggFrames() || !isFull();
-//    }
-
 
     public boolean canAddNewEggsFrame() {
         return !isMaxNumberOfEggFrames() && isFull();
     }
+
   public boolean checkIfAll6EggsFrameAre80PercentFull() {
-      logger.info("Checking if all 6 egg frames are 80% full...");
-      boolean result = isMaxNumberOfEggFrames() || isFull();
-      logger.info("Result of checkIfAll6EggsFrameAre80PercentFull: {}", result);
-      return result;
+      return isMaxNumberOfEggFrames() || isFull();
   }
 
     public boolean isFull() {

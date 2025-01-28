@@ -24,11 +24,6 @@ public class BeeTime {
         this.currentDate = LocalDate.of(year, month, day);
     }
 
-//    public BeeTime(int year, int month, int day) {
-//        this.year = year;
-//        this.month = month;
-//        this.day = day;
-//    }
     public BeeTime() {
     }
 

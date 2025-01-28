@@ -115,29 +115,14 @@ public class Hives {
     public boolean canFeedBees() {
         return currentDate.getMonth() == Month.SEPTEMBER;
     }
-//
-//
-//    public List<List<Integer>> checkIfCanMoveAnEggsFrame() {
-//        return hives.stream()
-//                .filter(sourceHive -> sourceHive.getEggFrames().checkIfAll6EggsFrameAre80PercentFull()
-//                        && !sourceHive.itWasSplit
-//                        && !sourceHive.getEggFrames().wasMovedAnEggsFrame)
-//                .flatMap(sourceHive -> hives.stream()
-//                        .filter(targetHive -> targetHive.itWasSplit && targetHive.getQueen().getAgeOfQueen() == 0)
-//                        .map(targetHive -> Arrays.asList(sourceHive.getId(), targetHive.getId()))
-//                )
-//                .collect(Collectors.toList());
-//    }
 
     public List<List<Integer>> checkIfCanMoveAnEggsFrame() {
-        logger.info("Starting checkIfCanMoveAnEggsFrame...");
+        logger.debug("Starting checkIfCanMoveAnEggsFrame...");
         List<List<Integer>> result = hives.stream()
                 .filter(sourceHive -> {
                     boolean isEggFrameFull = sourceHive.getEggFrames().checkIfAll6EggsFrameAre80PercentFull();
                     boolean isNotSplit = !sourceHive.itWasSplit;
                     boolean wasNotMoved = !sourceHive.getEggFrames().wasMovedAnEggsFrame;
-                    logger.info("Checking source hive {}: isEggFrameFull = {}, isNotSplit = {}, wasNotMoved = {}",
-                            sourceHive.getId(), isEggFrameFull, isNotSplit, wasNotMoved);
                     return isEggFrameFull && isNotSplit && wasNotMoved;
                 })
                 .flatMap(sourceHive -> hives.stream()
@@ -145,13 +130,11 @@ public class Hives {
                                 && targetHive.getQueen().getAgeOfQueen() == 0
                                 && targetHive.getEggFrames().getNumberOfEggFrames() < maxNumberOfEggFrames)
                         .map(targetHive -> {
-                            logger.info("Found potential target hive {} for source hive {}", targetHive.getId(), sourceHive.getId());
                             return Arrays.asList(sourceHive.getId(), targetHive.getId());
                         })
                 )
                 .collect(Collectors.toList());
-
-        logger.info("Final result of checkIfCanMoveAnEggsFrame: {}", result);
+        logger.debug("Finishing checkIfCanMoveAnEggsFrame...");
         return result;
     }
 
