@@ -106,11 +106,7 @@ public class Hives {
         return hiveToRemove.getId();
     }
 
-    public boolean checkInsectControl() {
-        boolean result = currentDate.timeForInsectControl();
-        logger.info("Checking insect control in Hives: " + result + " for date: " + currentDate);
-        return result;
-    }
+
 
 
     public List<List<Integer>> checkIfCanMoveAnEggsFrame() {

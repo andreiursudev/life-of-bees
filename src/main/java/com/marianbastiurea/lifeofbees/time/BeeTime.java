@@ -121,6 +121,10 @@ public boolean timeForInsectControl() {
     public boolean canFeedBees() {
         return currentDate.getMonth() == Month.SEPTEMBER;
     }
+    public boolean checkInsectControl() {
+
+        return this.timeForInsectControl();
+    }
 
 
     public void changeYear() {

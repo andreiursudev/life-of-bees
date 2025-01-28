@@ -15,13 +15,7 @@ class InsectControlProducerTest {
     @Test
     void cantDoInsectControlIfMonthIsMarch() {
         Optional<Boolean> result = new InsectControlProducer().produce(
-                new Hives(
-                        List.of(
-                                new Hive(1, new EggFrames(4, 0.1)),
-                                new Hive(2, new EggFrames(4, 0.1))
-                        ),
                         new BeeTime(2023, 3, 22)
-                )
         );
        assertTrue(result.isEmpty(), "Insect control should not be allowed in March.");
     }
@@ -29,13 +23,7 @@ class InsectControlProducerTest {
     @Test
     void cantDoInsectControlIfMonthIsAprilAndDayIs1() {
         Optional<Boolean> result = new InsectControlProducer().produce(
-                new Hives(
-                        List.of(
-                                new Hive(1, new EggFrames(4, 0.1)),
-                                new Hive(2, new EggFrames(4, 0.1))
-                        ),
                         new BeeTime(2023, 4, 1)
-                )
         );
         assertTrue(result.isEmpty(), "Insect control should not be allowed in 1st April");
     }
@@ -43,13 +31,7 @@ class InsectControlProducerTest {
     @Test
     void canDoInsectControlIfMonthIsAprilAndDayIs10() {
         Optional<Boolean> result = new InsectControlProducer().produce(
-                new Hives(
-                        List.of(
-                                new Hive(1, new EggFrames(4, 0.1)),
-                                new Hive(2, new EggFrames(4, 0.1))
-                        ),
                         new BeeTime(2023, 4, 10)
-                )
         );
         assertTrue(result.isPresent(), "Insect control should be allowed on the last valid day.");
         assertTrue(result.get(), "The result should contain true for the last valid day.");
