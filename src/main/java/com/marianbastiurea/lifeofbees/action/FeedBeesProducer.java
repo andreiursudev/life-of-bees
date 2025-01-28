@@ -1,18 +1,14 @@
 package com.marianbastiurea.lifeofbees.action;
-
-import com.marianbastiurea.lifeofbees.bees.Apiary;
-import com.marianbastiurea.lifeofbees.bees.Hives;
-import com.marianbastiurea.lifeofbees.game.LifeOfBees;
+import com.marianbastiurea.lifeofbees.time.BeeTime;
 
 
 import java.util.Optional;
 
-public class FeedBeesProducer implements ActionOfTheWeekProducer<Boolean> {
+public abstract class FeedBeesProducer extends WeeklyProducerAbstract<Boolean> {
     @Override
-    public Optional<Boolean> produce(Hives hives) {
-        boolean canFeed =hives.canFeedBees();
+    public Optional<Boolean> produce(BeeTime beeTime) {
+        boolean canFeed =beeTime.canFeedBees();
         return canFeed ? Optional.of(true) : Optional.empty();
     }
-
 
 }

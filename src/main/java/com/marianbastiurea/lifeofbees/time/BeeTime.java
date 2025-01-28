@@ -118,7 +118,13 @@ public boolean timeForInsectControl() {
                 '}';
     }
 
+    public boolean canFeedBees() {
+        return currentDate.getMonth() == Month.SEPTEMBER;
+    }
+
+
     public void changeYear() {
         currentDate = currentDate.plusYears(1).withMonth(3).withDayOfMonth(1);
     }
 }
+

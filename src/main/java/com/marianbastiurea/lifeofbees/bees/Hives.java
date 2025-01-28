@@ -112,9 +112,6 @@ public class Hives {
         return result;
     }
 
-    public boolean canFeedBees() {
-        return currentDate.getMonth() == Month.SEPTEMBER;
-    }
 
     public List<List<Integer>> checkIfCanMoveAnEggsFrame() {
         logger.debug("Starting checkIfCanMoveAnEggsFrame...");
