@@ -30,6 +30,18 @@ public class Hive {
             false);
     }
 
+    public Hive(int id, BeesBatches beesBatches) {
+        this(
+                id,
+                false,
+                new EggFrames(),
+                new HoneyFrames(),
+                beesBatches,
+                new ArrayList<>(),
+                new Queen(),
+                false);
+    }
+
  public Hive (int id, HoneyFrames honeyFrames){
         this(
                 id,
