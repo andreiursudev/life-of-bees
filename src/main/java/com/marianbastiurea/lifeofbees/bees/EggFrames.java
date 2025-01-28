@@ -45,9 +45,10 @@ public class EggFrames {
     /*
     Use this constructor for tests only.
      */
-    public EggFrames(int numberOfEggFrames, int dailyEggs){
+    public EggFrames(int numberOfEggFrames, int dailyEggs, boolean wasMovedAnEggsFrame){
         this.numberOfEggFrames = numberOfEggFrames;
         this.eggsByDay = new LinkedList<>(Collections.nCopies(daysToHatch, dailyEggs));
+        this.wasMovedAnEggsFrame=wasMovedAnEggsFrame;
     }
 
 
@@ -153,6 +154,7 @@ public class EggFrames {
             int eggsToMove = sourceEggs / numberOfEggFrames;
             eggsByDay.set(i, sourceEggs - eggsToMove);
             destinationEggFrame.eggsByDay.set(i, destinationEggs + eggsToMove);
+
         }
         setWasMovedAnEggsFrame(true);
         numberOfEggFrames--;
