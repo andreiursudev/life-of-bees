@@ -16,8 +16,17 @@ public class Hives {
     private static final Random RANDOM = new Random();
 
     private BeeTime currentDate;
-
+//
+//    public Hives() {
+//    }
     public Hives() {
+        this.hives = new ArrayList<>();
+    }
+
+
+
+    public List<Hive> getHives() {
+        return hives;
     }
 
     public void setHives(List<Hive> hives) {
@@ -85,9 +94,6 @@ public class Hives {
                 '}';
     }
 
-    public List<Hive> getHives() {
-        return hives;
-    }
 
     public boolean isEmpty() {
         return hives.isEmpty();

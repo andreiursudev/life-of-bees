@@ -24,15 +24,9 @@ class MoveAnEggsFrameConsumerTest {
                 new Hive(2,initialDestinationEggFrames,true));
         List<Integer> hiveIdPair = List.of(1, 2);
 
-        Apiary apiary = new Apiary(hives);
-
-        LifeOfBees lifeOfBees = new LifeOfBees(
-                "Test Game", "user123", "private", apiary,
-                "Test Location", new WeatherData(), 1000.0, 0.0, new ActionsOfTheWeek()
-        );
 
         MoveAnEggsFrameConsumer moveAnEggsFrameConsumer=new MoveAnEggsFrameConsumer();
-        moveAnEggsFrameConsumer.accept(lifeOfBees,List.of(hiveIdPair));
+        moveAnEggsFrameConsumer.accept(hives,List.of(hiveIdPair));
 
         Hives actual= new Hives(new Hive(1,finalSourceEggFrames,false),
                 new Hive (2, finalDestinationEggFrames,true));

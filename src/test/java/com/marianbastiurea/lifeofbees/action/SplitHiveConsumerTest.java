@@ -4,13 +4,14 @@ import com.marianbastiurea.lifeofbees.bees.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class SplitHiveConsumerTest {
 
     @Test
-    void testSplitHive() {
+    void testSplitHiveWithValidHiveId() {
 
         EggFrames eggFrames = new EggFrames(6,20,false);
         EggFrames halfEggFrames = new EggFrames(3, 10,false);
@@ -29,12 +30,16 @@ class SplitHiveConsumerTest {
         assertEquals(actual, hives);
     }
 
+    @Test
+    void testSplitHiveWithNoValidHiveId() {
 
+        Hives hives = new Hives();
+        SplitHiveConsumer splitHiveConsumer = new SplitHiveConsumer();
+        splitHiveConsumer.accept(hives, Collections.emptyList());
+        assertEquals(0, hives.getHives().size(), "Hives should remain empty when no valid IDs are provided.");
 
-
-
-
-
+    }
+    
     private static BeesBatches createBeesBatches(int x, int e) {
         BeesBatches beesBatches = new BeesBatches();
         for (int i = 0; i < x; i++) {

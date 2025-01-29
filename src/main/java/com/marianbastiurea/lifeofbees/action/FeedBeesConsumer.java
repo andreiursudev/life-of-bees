@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class FeedBeesConsumer implements ActionOfTheWeekConsumer<String> {
-    private static final Logger logger = LoggerFactory.getLogger(FeedBeesConsumer.class);
 
     @Override
     public void accept(LifeOfBees lifeOfBees, String answer) {

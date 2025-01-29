@@ -22,14 +22,9 @@ class AddHoneyFramesConsumerTest {
                 new Hive(1, new HoneyFrames(3,0)),
                 new Hive(2, new HoneyFrames(4,0)),
                 new Hive(3, new HoneyFrames(5,4)));
-        Apiary apiary = new Apiary(hives);
 
-        LifeOfBees lifeOfBees = new LifeOfBees(
-                "Test Game", "user123", "private", apiary,
-                "Test Location", new WeatherData(), 1000.0, 0.0, new ActionsOfTheWeek()
-        );
 
-        consumer.accept(lifeOfBees, List.of(1, 2));
+        consumer.accept(hives, List.of(1, 2));
 
         assertEquals(new Hives(
                 new Hive(1, new HoneyFrames(4,0)),
@@ -45,14 +40,9 @@ class AddHoneyFramesConsumerTest {
                 new Hive(1, new HoneyFrames(3,0)),
                 new Hive(2, new HoneyFrames(4,0)),
                 new Hive(3, new HoneyFrames(5,4)));
-        Apiary apiary = new Apiary(hives);
 
-        LifeOfBees lifeOfBees = new LifeOfBees(
-                "Test Game", "user123", "private", apiary,
-                "Test Location", new WeatherData(), 1000.0, 0.0, new ActionsOfTheWeek()
-        );
 
-        consumer.accept(lifeOfBees, List.of());
+        consumer.accept(hives, List.of());
         assertEquals(new Hives(
                 new Hive(1, new HoneyFrames(3,0)),
                 new Hive(2, new HoneyFrames(4,0)),

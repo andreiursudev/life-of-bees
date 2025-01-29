@@ -1,18 +1,13 @@
 package com.marianbastiurea.lifeofbees.action;
 
-import com.marianbastiurea.lifeofbees.bees.Apiary;
 import com.marianbastiurea.lifeofbees.bees.Hives;
-import com.marianbastiurea.lifeofbees.game.LifeOfBees;
-
-
 import java.util.List;
 
 
-public class MoveAnEggsFrameConsumer implements ActionOfTheWeekConsumer<List<List<Integer>>> {
+public class MoveAnEggsFrameConsumer extends  WeeklyConsumerAbstract<List<List<Integer>>> {
 
     @Override
-    public void accept(LifeOfBees lifeOfBees , List<List<Integer>> hiveIdPair) {
-        Apiary apiary = lifeOfBees.getApiary();
-        apiary.getHives().moveAnEggsFrame(hiveIdPair);
+    public void accept(Hives hives, List<List<Integer>> hiveIdPair) {
+        hives.moveAnEggsFrame(hiveIdPair);
     }
 }

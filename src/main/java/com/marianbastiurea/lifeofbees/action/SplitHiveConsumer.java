@@ -8,15 +8,14 @@ import com.marianbastiurea.lifeofbees.game.LifeOfBees;
 import java.util.List;
 
 
-public class SplitHiveConsumer implements ActionOfTheWeekConsumer<List<Integer>> {
+public class SplitHiveConsumer extends  WeeklyConsumerAbstract<List<Integer>> {
     @Override
-    public void accept(LifeOfBees lifeOfBees, List<Integer> hiveIds) {
-
+    public void accept(Hives hives, List<Integer> hiveIds) {
         if (hiveIds != null) {
             hiveIds.forEach(hiveId -> {
-                Hive hive =lifeOfBees.getApiary().getHives().getHiveById(hiveId);
+                Hive hive =hives.getHiveById(hiveId);
                 if (hive != null) {
-                    lifeOfBees.getApiary().getHives().splitHive(hive.getId());
+                    hives.splitHive(hive.getId());
                 }
             });
         }

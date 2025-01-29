@@ -7,13 +7,13 @@ import com.marianbastiurea.lifeofbees.game.LifeOfBees;
 import java.util.List;
 
 
-public class AddEggsFramesConsumer implements ActionOfTheWeekConsumer<List<Integer>> {
+public class AddEggsFramesConsumer extends  WeeklyConsumerAbstract <List<Integer>> {
 
     @Override
-    public void accept(LifeOfBees lifeOfBees, List<Integer> eggHiveIds) {
+    public void accept(Hives hives, List<Integer> eggHiveIds) {
         if (eggHiveIds != null) {
             eggHiveIds.forEach(hiveId -> {
-                Hive hive = lifeOfBees.getApiary().getHives().getHiveById(hiveId);
+                Hive hive = hives.getHiveById(hiveId);
                 if (hive != null) {
                     hive.addNewEggsFrameInHive();
                 }
