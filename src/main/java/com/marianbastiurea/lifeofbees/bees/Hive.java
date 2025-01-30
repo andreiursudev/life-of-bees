@@ -13,7 +13,7 @@ public class Hive {
     private int id;
     private EggFrames eggFrames;
     private Queen queen;
-    private HoneyFrames honeyFrames;
+    public HoneyFrames honeyFrames;
 
     public Hive() {
     }
@@ -52,6 +52,20 @@ public class Hive {
                 new Queen(),
                 false);
  }
+
+    public Hive (int id, HoneyFrames honeyFrames, List<HoneyBatch> honeyBatches){
+        this(
+                id,
+                false,
+                new EggFrames(),
+                honeyFrames,new BeesBatches(),
+                honeyBatches,
+                new Queen(),
+                false);
+    }
+
+
+
     public Hive (int id, EggFrames eggFrames, boolean itWasSplit){
         this(
                 id,
@@ -191,9 +205,7 @@ public class Hive {
     }
 
     public List<HoneyBatch> harvestHoney(BeeTime currentDate) {
-        if (!currentDate.timeToHarvestHive() || isItWasSplit()) {
-            return Collections.emptyList();
-        }
+
         double harvestedHoney = getHoneyFrames().harvestHoneyFromHoneyFrames();
         if (harvestedHoney <= 0) {
             return Collections.emptyList();
@@ -206,8 +218,17 @@ public class Hive {
                 currentDate.honeyType(),
                 false
         );
-
+        setItWasHarvested(false);
         return List.of(honeyBatch);
+    }
+
+    public List<Integer> checkIfHiveHaveHoneyToHarvest(BeeTime currentDate, int hiveId) {
+        if (!currentDate.timeToHarvestHive() || isItWasSplit()) {
+            return Collections.emptyList();
+        }
+        boolean hasHarvestableHoney = honeyFrames.getHoneyFrame().stream()
+                .anyMatch(HoneyFrame::isHarvestable);
+        return hasHarvestableHoney ? List.of(hiveId) : Collections.emptyList();
     }
 
 

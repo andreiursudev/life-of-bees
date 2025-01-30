@@ -73,7 +73,6 @@ public class LifeOfBees {
             hives.iterateOneDay(weatherIndex);
             apiary.honeyHarvestedByHoneyType();
             this.setTotalKgOfHoneyHarvested(apiary.getTotalKgHoneyHarvested());
-            //Sterge HarvestHoneyProducer si muta logica lui aici
             Integer removedHiveId = hives.hibernate();
             if(removedHiveId != null){
                 this.setRemovedHiveId(removedHiveId);

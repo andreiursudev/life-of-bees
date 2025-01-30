@@ -16,9 +16,7 @@ public class Hives {
     private static final Random RANDOM = new Random();
 
     private BeeTime currentDate;
-//
-//    public Hives() {
-//    }
+
     public Hives() {
         this.hives = new ArrayList<>();
     }

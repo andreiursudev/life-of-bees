@@ -39,7 +39,7 @@ class SplitHiveConsumerTest {
         assertEquals(0, hives.getHives().size(), "Hives should remain empty when no valid IDs are provided.");
 
     }
-    
+
     private static BeesBatches createBeesBatches(int x, int e) {
         BeesBatches beesBatches = new BeesBatches();
         for (int i = 0; i < x; i++) {

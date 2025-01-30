@@ -6,7 +6,7 @@ import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.*;
 
 public class HoneyFrames {
 
-    private List<HoneyFrame> honeyFrame;
+    public List<HoneyFrame> honeyFrame;
 
     public HoneyFrames() {
     }
