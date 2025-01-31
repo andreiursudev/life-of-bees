@@ -19,7 +19,7 @@ public class HoneyFrame {
     }
 
     public boolean isHarvestable() {
-        return kgOfHoney > minKgOfHoneyToHarvestAHoneyFrame;
+        return kgOfHoney >= minKgOfHoneyToHarvestAHoneyFrame;
     }
 
     public boolean isFull() {

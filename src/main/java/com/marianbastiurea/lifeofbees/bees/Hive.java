@@ -59,7 +59,7 @@ public class Hive {
                 false,
                 new EggFrames(),
                 honeyFrames,new BeesBatches(),
-                honeyBatches,
+                honeyBatches = new ArrayList<>(honeyBatches),
                 new Queen(),
                 false);
     }
@@ -218,6 +218,7 @@ public class Hive {
                 currentDate.honeyType(),
                 false
         );
+        this.honeyBatches.add(honeyBatch);
         setItWasHarvested(false);
         return List.of(honeyBatch);
     }

@@ -15,7 +15,6 @@ public class HarvestHoneyProducer implements ActionOfTheWeekProducer<List<Intege
             if (hive.isItWasHarvested()) {
                 hiveIds.add(hive.getId());
             }
-            hive.setItWasHarvested(false);
         }
         return hiveIds.isEmpty() ? Optional.empty() : Optional.of(hiveIds);
     }
