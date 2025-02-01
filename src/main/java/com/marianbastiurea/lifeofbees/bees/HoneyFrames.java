@@ -74,7 +74,7 @@ public class HoneyFrames {
         return newHiveHoneyFrames;
     }
 
-    public void removeHoneyFrames() {
+    public void removeLastTwoHoneyFrames() {
         for (int i = 0; i < 2 && !getHoneyFrame().isEmpty(); i++) {
             getHoneyFrame().removeLast();
         }

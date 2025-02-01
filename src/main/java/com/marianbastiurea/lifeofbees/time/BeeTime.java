@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.Objects;
 
 
 public class BeeTime {
@@ -124,6 +125,18 @@ public boolean timeForInsectControl() {
     public boolean checkInsectControl() {
 
         return this.timeForInsectControl();
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        BeeTime beeTime = (BeeTime) obj;
+        return Objects.equals(currentDate, beeTime.currentDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(currentDate);
     }
 
 

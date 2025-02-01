@@ -18,6 +18,11 @@ public class Apiary {
         this.totalHarvestedHoney = new HarvestHoney(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
     }
 
+    /* use only for test */
+    public Apiary(HarvestHoney harvestHoney) {
+        this.totalHarvestedHoney = harvestHoney;
+    }
+
 
     public HarvestHoney getTotalHarvestedHoney() {
         return totalHarvestedHoney;
@@ -68,6 +73,7 @@ public class Apiary {
     }
 
 
+
     public void updateHoneyStock(HarvestHoney soldHoneyData) {
         logger.debug("Starting updateHoneyStock method with soldHoneyData = {}", soldHoneyData);
 
@@ -79,6 +85,7 @@ public class Apiary {
 
         logger.debug("Finished updateHoneyStock. Updated totalHarvestedHoney = {}", totalHarvestedHoney);
     }
+
 
 
 }

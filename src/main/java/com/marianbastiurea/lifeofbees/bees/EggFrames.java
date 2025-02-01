@@ -88,17 +88,33 @@ public class EggFrames {
     }
 
 
-    public void extractEggBatchesForFrame() {
-        logger.debug("starting extractEggBatchesForFrame with eggsByDay: {}",eggsByDay);
-        int currentSum = 0;
-        int index = 0;
-        while (index < eggsByDay.size() && (currentSum += eggsByDay.get(index)) <= maxEggPerFrame) {
-            index++;
-        }
-        eggsByDay.subList(0, index).replaceAll(x -> 0);
-        numberOfEggFrames--;
-        logger.debug("Finishing method extractEggBatchesForFrame");
+//    public void extractEggBatchesForOneFrame() {
+//        logger.debug("starting extractEggBatchesForFrame with eggsByDay: {}",eggsByDay);
+//        int currentSum = 0;
+//        int index = 0;
+//        while (index < eggsByDay.size() && (currentSum += eggsByDay.get(index)) <= maxEggPerFrame) {
+//            index++;
+//        }
+//        eggsByDay.subList(0, index).replaceAll(x -> 0);
+//        numberOfEggFrames--;
+//        logger.debug("Finishing method extractEggBatchesForFrame");
+//    }
+public void extractEggBatchesForOneFrame() {
+    logger.debug("starting extractEggBatchesForFrame with eggsByDay: {}", eggsByDay);
+    int currentSum = 0;
+    int index = 0;
+
+    // Căutăm până unde putem adăuga ouă, fără a depăși limita maximă pe ramă
+    while (index < eggsByDay.size() && (currentSum += eggsByDay.get(index)) <= maxEggPerFrame) {
+        index++;
     }
+
+    // Eliminăm primele 'index' elemente din lista eggsByDay
+    eggsByDay.subList(0, index).clear();  // Elimină elementele de la începutul listei
+
+    numberOfEggFrames--; // Scade numărul de rame de ouă
+    logger.debug("Finishing method extractEggBatchesForFrame");
+}
 
 
 
@@ -162,14 +178,14 @@ public class EggFrames {
     }
 
 
-    public void hibernate() {
-        for (int i = 0; i < daysToHatch; i++) {
-            Integer sourceEggs = eggsByDay.get(i);
-            int eggsToMove = sourceEggs / numberOfEggFrames;
-            eggsByDay.set(i, sourceEggs - eggsToMove);
-        }
-        numberOfEggFrames--;
-    }
+//    public void hibernate() {
+//        for (int i = 0; i < daysToHatch; i++) {
+//            Integer sourceEggs = eggsByDay.get(i);
+//            int eggsToMove = sourceEggs / numberOfEggFrames;
+//            eggsByDay.set(i, sourceEggs - eggsToMove);
+//        }
+//        numberOfEggFrames--;
+//    }
 
     @Override
     public boolean equals(Object o) {

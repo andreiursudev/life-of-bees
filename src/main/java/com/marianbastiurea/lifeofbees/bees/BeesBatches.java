@@ -51,13 +51,9 @@ public class BeesBatches {
             beesBatches.set(i, bees - beesToTransfer);
             newHiveBeesBatches.add(beesToTransfer);
         }
-        return new BeesBatches(newHiveBeesBatches); // Returnează un obiect BeesBatches
+        return new BeesBatches(newHiveBeesBatches);
     }
 
-    public void removeBeesBatches() {
-        getBeesBatches().removeLast();
-        getBeesBatches().removeLast();
-    }
 
     @Override
     public boolean equals(Object o) {

@@ -173,9 +173,9 @@ public class Hives {
                 hive.setItWasSplit(false);
                 hive.getEggFrames().setWasMovedAnEggsFrame(false);
                 hive.getHoneyBatches().clear();
-                hive.getEggFrames().extractEggBatchesForFrame();
-                hive.getHoneyFrames().removeHoneyFrames();
-                hive.getBeesBatches().removeBeesBatches();
+                hive.getEggFrames().extractEggBatchesForOneFrame();
+                hive.getHoneyFrames().removeLastTwoHoneyFrames();
+                hive.getBeesBatches().removeLastTwoBeesBatches();
             });
             logger.debug("Completed hibernate method.");
             currentDate.changeYear();
