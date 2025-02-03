@@ -2,8 +2,9 @@ package com.marianbastiurea.lifeofbees.bees;
 
 import com.marianbastiurea.lifeofbees.time.BeeTime;
 
-import java.time.Month;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class Hive {
     public boolean itWasSplit;
@@ -14,20 +15,21 @@ public class Hive {
     private EggFrames eggFrames;
     private Queen queen;
     public HoneyFrames honeyFrames;
+    public RandomParameters randomParameters;
 
     public Hive() {
     }
 
     public Hive(int id, EggFrames eggFrames) {
         this(
-            id,
-            false,
-            eggFrames,
-            new HoneyFrames(),
-            new BeesBatches(),
-            new ArrayList<>(),
-            new Queen(),
-            false);
+                id,
+                false,
+                eggFrames,
+                new HoneyFrames(),
+                new BeesBatches(),
+                new ArrayList<>(),
+                new Queen(),
+                false);
     }
 
     public Hive(int id, BeesBatches beesBatches) {
@@ -42,46 +44,45 @@ public class Hive {
                 false);
     }
 
- public Hive (int id, HoneyFrames honeyFrames){
+    public Hive(int id, HoneyFrames honeyFrames) {
         this(
                 id,
                 false,
                 new EggFrames(),
-                honeyFrames,new BeesBatches(),
+                honeyFrames, new BeesBatches(),
                 new ArrayList<>(),
-                new Queen(),
-                false);
- }
+                new Queen(), false);
+    }
 
-    public Hive (int id, HoneyFrames honeyFrames, List<HoneyBatch> honeyBatches){
+    public Hive(int id, HoneyFrames honeyFrames, List<HoneyBatch> honeyBatches, boolean itWasHarvested) {
         this(
                 id,
                 false,
                 new EggFrames(),
-                honeyFrames,new BeesBatches(),
-                honeyBatches = new ArrayList<>(honeyBatches),
+                honeyFrames, new BeesBatches(),
+                new ArrayList<>(honeyBatches),
                 new Queen(),
-                false);
+                itWasHarvested);
     }
-    public Hive (int id,  List<HoneyBatch> honeyBatches){
+
+    public Hive(int id, List<HoneyBatch> honeyBatches) {
         this(
                 id,
                 false,
                 new EggFrames(),
-                new HoneyFrames() ,new BeesBatches(),
-                honeyBatches = new ArrayList<>(honeyBatches),
+                new HoneyFrames(), new BeesBatches(),
+                new ArrayList<>(honeyBatches),
                 new Queen(),
                 false);
     }
 
 
-
-    public Hive (int id, EggFrames eggFrames, boolean itWasSplit){
+    public Hive(int id, EggFrames eggFrames, boolean itWasSplit) {
         this(
                 id,
                 itWasSplit,
-               eggFrames,
-                new HoneyFrames(),new BeesBatches(),
+                eggFrames,
+                new HoneyFrames(), new BeesBatches(),
                 new ArrayList<>(),
                 new Queen(),
                 false);
@@ -201,55 +202,34 @@ public List<HoneyBatch> getHoneyBatches() {
 
     public void maybeChangeQueen(BeeTime currentDate) {
         double numberRandom = Math.random();
-        Month month = currentDate.getMonth();
-        int dayOfMonth = currentDate.getDayOfMonth();
-        if ((numberRandom < 0.3 && month == Month.MAY && dayOfMonth == 1) || queen.getAgeOfQueen() == 5) {
+        boolean isTimeToChangeQueen = currentDate.isTimeToChangeQueen();
+        if ((numberRandom < 0.3 && isTimeToChangeQueen) || queen.getAgeOfQueen() == 5) {
             queen = new Queen(0);
         }
     }
 
+
     public void iterateOneDay(BeeTime currentDate, double weatherIndex) {
         maybeChangeQueen(currentDate);
-        int numberOfEggs = queen.iterateOneDay(currentDate, weatherIndex);
-        int bees = eggFrames.iterateOneDay(numberOfEggs);
-        beesBatches.getBeesBatches().add(bees);
-        fillUpExistingHoneyFramesFromHive(currentDate);
-        beesBatches.getBeesBatches().removeFirst();
-        List<HoneyBatch> harvestedHoneyBatches = harvestHoney(currentDate);
-        addHoneyBatches(harvestedHoneyBatches);
-    }
-
-    public List<HoneyBatch> harvestHoney(BeeTime currentDate) {
-
-        double harvestedHoney = getHoneyFrames().harvestHoneyFromHoneyFrames();
-        if (harvestedHoney <= 0) {
-            return Collections.emptyList();
-        }
-
-        setItWasHarvested(true);
-        HoneyBatch honeyBatch = new HoneyBatch(
-                getId(),
-                harvestedHoney,
-                currentDate.honeyType(),
-                false
-        );
-        this.honeyBatches.add(honeyBatch);
-        setItWasHarvested(false);
-        return List.of(honeyBatch);
-    }
-
-    public void fillUpExistingHoneyFramesFromHive(BeeTime currentDate) {
-        Random random = new Random();
-        int numberOfFlight = random.nextInt(3, 6);
-        HoneyType honeyType = currentDate.honeyType();
-        double productivity = honeyType.getProductivity();
-        double totalBeesBatches = this.beesBatches.getBeesBatches().stream()
-                .mapToInt(Integer::intValue)
-                .sum();
-        double kgOfHoneyToAdd = totalBeesBatches * numberOfFlight * 0.00002 * productivity;
-
+        double productivity = currentDate.honeyType().getProductivity();
+        int numberOfEggs = queen.makeEggs(productivity, weatherIndex);
+        double kgOfHoneyToAdd = beesBatches.makeHoney(productivity, eggFrames.hatchBees(numberOfEggs), randomParameters.numberOfFlights());
         honeyFrames.fillUpAHoneyFrame(kgOfHoneyToAdd);
     }
+
+    public void harvestHoney(BeeTime currentDate) {
+        double harvestedHoney = getHoneyFrames().harvestHoneyFromHoneyFrames();
+        if (harvestedHoney >= 0) {
+            this.honeyBatches.add(new HoneyBatch(
+                    getId(),
+                    harvestedHoney,
+                    currentDate.honeyType(),
+                    false
+            ));
+            setItWasHarvested(true);
+        }
+    }
+
 
     @Override
     public boolean equals(Object o) {

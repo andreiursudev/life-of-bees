@@ -140,6 +140,13 @@ public boolean timeForInsectControl() {
     }
 
 
+    public boolean isTimeToChangeQueen() {
+        Month month = currentDate.getMonth();
+        int dayOfMonth = currentDate.getDayOfMonth();
+        return month == Month.MAY && dayOfMonth == 1;
+    }
+
+
     public void changeYear() {
         currentDate = currentDate.plusYears(1).withMonth(3).withDayOfMonth(1);
     }

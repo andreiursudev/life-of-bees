@@ -2,8 +2,6 @@ package com.marianbastiurea.lifeofbees.action;
 
 import com.marianbastiurea.lifeofbees.bees.Hive;
 import com.marianbastiurea.lifeofbees.game.LifeOfBees;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class FeedBeesConsumer implements ActionOfTheWeekConsumer<String> {
 
@@ -14,7 +12,7 @@ public class FeedBeesConsumer implements ActionOfTheWeekConsumer<String> {
             lifeOfBees.setMoneyInTheBank(lifeOfBees.getMoneyInTheBank() - cost);
         } else {
             for (Hive hive :lifeOfBees.getApiary().getHives().getHives()) {
-                hive.getBeesBatches().removeLastTwoBeesBatches();
+                hive.getBeesBatches().hibernateBeesBatches();
             }
         }
     }

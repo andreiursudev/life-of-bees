@@ -13,6 +13,7 @@ public class EggFrames {
     public LinkedList<Integer> eggsByDay;
     public boolean wasMovedAnEggsFrame;
     private static final Logger logger = LoggerFactory.getLogger(EggFrames.class);
+    public static RandomParameters randomParameters;
 
     public EggFrames(int numberOfEggFrames, LinkedList<Integer> eggsByDay) {
         this.numberOfEggFrames = numberOfEggFrames;
@@ -45,10 +46,10 @@ public class EggFrames {
     /*
     Use this constructor for tests only.
      */
-    public EggFrames(int numberOfEggFrames, int dailyEggs, boolean wasMovedAnEggsFrame){
+    public EggFrames(int numberOfEggFrames, int dailyEggs, boolean wasMovedAnEggsFrame) {
         this.numberOfEggFrames = numberOfEggFrames;
         this.eggsByDay = new LinkedList<>(Collections.nCopies(daysToHatch, dailyEggs));
-        this.wasMovedAnEggsFrame=wasMovedAnEggsFrame;
+        this.wasMovedAnEggsFrame = wasMovedAnEggsFrame;
     }
 
 
@@ -61,8 +62,8 @@ public class EggFrames {
 
     public static EggFrames getRandomEggFrames() {
         Random random = new Random();
-        EggFrames eggFrames = new EggFrames(random.nextInt(3, 5));
-        random.ints(daysToHatch, 800, 901).forEach(eggFrames::iterateOneDay);
+        EggFrames eggFrames = new EggFrames(randomParameters.numberOfEggFrames());
+        random.ints(daysToHatch, 800, 901).forEach(eggFrames::hatchBees);
         logger.debug("Finishing method getRandomEggFrames");
         return eggFrames;
     }
@@ -80,43 +81,13 @@ public class EggFrames {
         LinkedList<Integer> newEggBatches = new LinkedList<>();
         for (Integer eggs : eggsByDay) {
             int halfEggs = eggs / 2;
-            newEggBatches.add(halfEggs);}
+            newEggBatches.add(halfEggs);
+        }
         numberOfEggFrames = 3;
         EggFrames newEggFrames = new EggFrames(3, newEggBatches, false);
         logger.debug("Finishing method splitEggFrames");
         return newEggFrames;
     }
-
-
-//    public void extractEggBatchesForOneFrame() {
-//        logger.debug("starting extractEggBatchesForFrame with eggsByDay: {}",eggsByDay);
-//        int currentSum = 0;
-//        int index = 0;
-//        while (index < eggsByDay.size() && (currentSum += eggsByDay.get(index)) <= maxEggPerFrame) {
-//            index++;
-//        }
-//        eggsByDay.subList(0, index).replaceAll(x -> 0);
-//        numberOfEggFrames--;
-//        logger.debug("Finishing method extractEggBatchesForFrame");
-//    }
-public void extractEggBatchesForOneFrame() {
-    logger.debug("starting extractEggBatchesForFrame with eggsByDay: {}", eggsByDay);
-    int currentSum = 0;
-    int index = 0;
-
-    // Căutăm până unde putem adăuga ouă, fără a depăși limita maximă pe ramă
-    while (index < eggsByDay.size() && (currentSum += eggsByDay.get(index)) <= maxEggPerFrame) {
-        index++;
-    }
-
-    // Eliminăm primele 'index' elemente din lista eggsByDay
-    eggsByDay.subList(0, index).clear();  // Elimină elementele de la începutul listei
-
-    numberOfEggFrames--; // Scade numărul de rame de ouă
-    logger.debug("Finishing method extractEggBatchesForFrame");
-}
-
-
 
 
     public void addEggBatches(List<Integer> batchesToAdd) {
@@ -131,7 +102,7 @@ public void extractEggBatchesForOneFrame() {
     }
 
 
-    public int iterateOneDay(int eggsToAdd) {
+    public int hatchBees(int eggsToAdd) {
         eggsByDay.addFirst(Math.min(eggsToAdd, maxEggPerFrame * numberOfEggFrames - getEggs()));
         return eggsByDay.removeLast();
     }
@@ -150,9 +121,9 @@ public void extractEggBatchesForOneFrame() {
         return !isMaxNumberOfEggFrames() && isFull();
     }
 
-  public boolean checkIfAll6EggsFrameAre80PercentFull() {
-      return isMaxNumberOfEggFrames() || isFull();
-  }
+    public boolean checkIfAll6EggsFrameAre80PercentFull() {
+        return isMaxNumberOfEggFrames() || isFull();
+    }
 
     public boolean isFull() {
         logger.info("Checking if egg frames are full...");
@@ -178,14 +149,14 @@ public void extractEggBatchesForOneFrame() {
     }
 
 
-//    public void hibernate() {
-//        for (int i = 0; i < daysToHatch; i++) {
-//            Integer sourceEggs = eggsByDay.get(i);
-//            int eggsToMove = sourceEggs / numberOfEggFrames;
-//            eggsByDay.set(i, sourceEggs - eggsToMove);
-//        }
-//        numberOfEggFrames--;
-//    }
+    public void hibernateEggFrames() {
+        for (int i = 0; i < daysToHatch; i++) {
+            Integer sourceEggs = eggsByDay.get(i);
+            int eggsToMove = sourceEggs / numberOfEggFrames;
+            eggsByDay.set(i, sourceEggs - eggsToMove);
+        }
+        numberOfEggFrames--;
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import java.util.LinkedList;
 import java.util.Objects;
 
+import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.*;
+
 public class BeesBatches {
 
     LinkedList<Integer> beesBatches;
@@ -34,14 +36,18 @@ public class BeesBatches {
                 '}';
     }
 
-    public void removeLastTwoBeesBatches() {
-        logger.debug("Starting removeLastTwoBeesBatches method.");
-            if (beesBatches != null && beesBatches.size() >= 2) {
-                beesBatches.removeLast();
-                beesBatches.removeLast();
+    public void hibernateBeesBatches() {
+        logger.debug("Starting hibernateBeesBatches method.");
+        if (beesBatches != null && beesBatches.size() >= 2) {
+            for (int i = 0; i < daysToLiveForABee; i++) {
+                int beesDiedDueHibernate = (int) (beesBatches.get(i) * percentOfBeesDiedDueToHibernate);
+                int newBeeCount = beesBatches.get(i) - beesDiedDueHibernate;
+                beesBatches.set(i, Math.max(newBeeCount, 0));
             }
+        }
         logger.debug("Completed removeLastTwoBeesBatches method.");
     }
+
 
     public BeesBatches splitBeesBatches() {
         LinkedList<Integer> newHiveBeesBatches = new LinkedList<>();
@@ -71,6 +77,16 @@ public class BeesBatches {
 
     public void add(int e) {
         this.beesBatches.add(e);
+    }
+
+
+    public double makeHoney(double productivity, int bees, int numberOfFlight) {
+        beesBatches.add(bees);
+        double totalBeesBatches = beesBatches.stream()
+                .mapToInt(Integer::intValue)
+                .sum();
+        beesBatches.removeFirst();
+        return totalBeesBatches * numberOfFlight * pollenQuantityCarriedByABee * productivity;
     }
 }
 

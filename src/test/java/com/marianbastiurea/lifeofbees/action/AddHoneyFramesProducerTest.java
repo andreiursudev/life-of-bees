@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Optional;
 
+import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.maxKgOfHoneyPerFrame;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -41,7 +42,7 @@ class AddHoneyFramesProducerTest {
     void canAddHoneyFrameToHiveWhenHoneyFramesAreFull() {
         Optional<List<Integer>> result = new AddHoneyFramesProducer().produce(
                 new Hives(new Hive(1, new HoneyFrames(List.of(
-                        new HoneyFrame(4.5), new HoneyFrame(4.1),
+                        new HoneyFrame(maxKgOfHoneyPerFrame), new HoneyFrame(4.1),
                         new HoneyFrame(4.1), new HoneyFrame(4.5), new HoneyFrame(4.5)
                 ))))
         );

@@ -14,7 +14,7 @@ public class InsectControllerConsumer implements ActionOfTheWeekConsumer<String>
             lifeOfBees.setMoneyInTheBank(lifeOfBees.getMoneyInTheBank() - cost);
         } else {
             for (Hive hive : lifeOfBees.getApiary().getHives().getHives()) {
-                hive.getBeesBatches().removeLastTwoBeesBatches();
+                hive.getBeesBatches().hibernateBeesBatches();
             }
         }
     }

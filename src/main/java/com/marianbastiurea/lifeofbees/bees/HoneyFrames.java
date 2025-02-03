@@ -7,22 +7,27 @@ import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.*;
 public class HoneyFrames {
 
     public List<HoneyFrame> honeyFrame;
+    public static RandomParameters randomParameters;
 
     public HoneyFrames() {
     }
 
     public HoneyFrames(List<HoneyFrame> honeyFrame) {
-        this.honeyFrame = honeyFrame;
+        this.honeyFrame = new ArrayList<>(honeyFrame);
     }
 
+
     public HoneyFrames(int numberOfHoneyFrames, int honeyPerFrame) {
-        this.honeyFrame = new ArrayList<>(Collections.nCopies(numberOfHoneyFrames, new HoneyFrame(honeyPerFrame)));
+        this.honeyFrame = new ArrayList<>();
+        for (int i = 0; i < numberOfHoneyFrames; i++) {
+            this.honeyFrame.add(new HoneyFrame(honeyPerFrame));
+        }
     }
 
     public static HoneyFrames getRandomHoneyFrames() {
         Random random = new Random();
         HoneyFrames honeyFrames = new HoneyFrames(new ArrayList<>());
-        for (int k = 0; k < random.nextInt(3, 5); k++) {
+        for (int k = 0; k < randomParameters.numberOfHoneyFrames(); k++) {
             honeyFrames.getHoneyFrame().add(new HoneyFrame(random.nextDouble(2.5, 3)));
         }
         return honeyFrames;
@@ -68,17 +73,18 @@ public class HoneyFrames {
     public HoneyFrames splitHoneyFrames() {
         HoneyFrames newHiveHoneyFrames = new HoneyFrames(new ArrayList<>());
         for (int i = 0; i < 2; i++) {
-            HoneyFrame frameToMove = getHoneyFrame().removeLast();
+            HoneyFrame frameToMove = getHoneyFrame().remove(getHoneyFrame().size() - 1);
             newHiveHoneyFrames.getHoneyFrame().add(frameToMove);
         }
         return newHiveHoneyFrames;
     }
-
-    public void removeLastTwoHoneyFrames() {
-        for (int i = 0; i < 2 && !getHoneyFrame().isEmpty(); i++) {
-            getHoneyFrame().removeLast();
+    public void hibernateHoneyFrames() {
+        if (honeyFrame.size() > 1) {
+            honeyFrame.remove(honeyFrame.size() - 1);  // Elimină ultimul HoneyFrame
+            honeyFrame.remove(honeyFrame.size() - 1);  // Elimină penultimul HoneyFrame
         }
     }
+
 
 
     public void fillUpAHoneyFrame(double kgOfHoneyToAdd) {

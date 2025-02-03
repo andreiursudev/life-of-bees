@@ -4,23 +4,25 @@ import com.marianbastiurea.lifeofbees.game.LifeOfBees;
 import com.marianbastiurea.lifeofbees.time.BeeTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.daysToLiveForABee;
 import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.maxNumberOfEggFrames;
 
 public class Hives {
     private List<Hive> hives;
     private static final Logger logger = LoggerFactory.getLogger(Hives.class);
     private static final Random RANDOM = new Random();
-
+    private RandomParameters randomParameters;
     private BeeTime currentDate;
 
     public Hives() {
         this.hives = new ArrayList<>();
+        this.randomParameters = new RandomParameters();
     }
-
 
 
     public List<Hive> getHives() {
@@ -34,6 +36,10 @@ public class Hives {
     public Hives(List<Hive> hiveList, BeeTime date) {
         this.hives = hiveList;
         this.currentDate = date;
+    }
+
+    public List<Hive> getHivesList() {
+        return hives;
     }
 
     public Hives(List<Hive> hives) {
@@ -51,9 +57,10 @@ public class Hives {
             return;
         }
         hive.setItWasSplit(true);
+        //TODO fix reference problem
         EggFrames newEggFrames = hive.getEggFrames().splitEggFrames();
         hive.setEggFrames(newEggFrames);
-        HoneyFrames newHoneyFrames=hive.getHoneyFrames().splitHoneyFrames();
+        HoneyFrames newHoneyFrames = hive.getHoneyFrames().splitHoneyFrames();
         hive.setHoneyFrames(newHoneyFrames);
         hives.add(new Hive(
                 hives.size() + 1,
@@ -102,13 +109,11 @@ public class Hives {
         if (hives.isEmpty()) {
             return 0;
         }
-        int indexToRemove = RANDOM.nextInt(hives.size());
+        int indexToRemove = randomParameters.hiveIdToRemove(hives.size());
         Hive hiveToRemove = hives.remove(indexToRemove);
         logger.debug("Hive removed with hiveId: {}. Remaining hives: {}", hiveToRemove.getId(), hives.size());
         return hiveToRemove.getId();
     }
-
-
 
 
     public List<List<Integer>> checkIfCanMoveAnEggsFrame() {
@@ -172,10 +177,10 @@ public class Hives {
                 hive.getQueen().setAgeOfQueen(hive.getQueen().getAgeOfQueen() + 1);
                 hive.setItWasSplit(false);
                 hive.getEggFrames().setWasMovedAnEggsFrame(false);
+                hive.getEggFrames().hibernateEggFrames();
+                hive.getHoneyFrames().hibernateHoneyFrames();
+                hive.getBeesBatches().hibernateBeesBatches();
                 hive.getHoneyBatches().clear();
-                hive.getEggFrames().extractEggBatchesForOneFrame();
-                hive.getHoneyFrames().removeLastTwoHoneyFrames();
-                hive.getBeesBatches().removeLastTwoBeesBatches();
             });
             logger.debug("Completed hibernate method.");
             currentDate.changeYear();
@@ -189,7 +194,7 @@ public class Hives {
         List<Hive> hiveList = IntStream.rangeClosed(1, numberOfHives).mapToObj(i -> {
             logger.debug("Creating hive with id = {}", i);
             BeesBatches beesBatches = new BeesBatches(
-                    IntStream.range(0, 30)
+                    IntStream.range(0,daysToLiveForABee)
                             .mapToObj(k -> RANDOM.nextInt(600, 700))
                             .collect(Collectors.toCollection(LinkedList::new))
             );
@@ -228,4 +233,6 @@ public class Hives {
     public BeeTime getCurrentDate() {
         return currentDate;
     }
+
+
 }

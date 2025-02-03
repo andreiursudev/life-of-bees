@@ -1,8 +1,8 @@
 package com.marianbastiurea.lifeofbees.bees;
 
-import com.marianbastiurea.lifeofbees.time.BeeTime;
-
 import java.util.Objects;
+
+import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.maxEggsDailyLaidByQueen;
 
 public class Queen {
     private int ageOfQueen;
@@ -22,14 +22,11 @@ public class Queen {
         this.ageOfQueen = ageOfQueen;
     }
 
-    public int iterateOneDay(BeeTime currentDate, double weatherIndex) {
-        HoneyType honeyType = currentDate.honeyType();
-        double productivity = honeyType.getProductivity();
-        return (int) (2200 * this.ageOfQueenIndex() * productivity * weatherIndex);
+    public int makeEggs(double productivity, double weatherIndex) {
+        return (int) (maxEggsDailyLaidByQueen * this.ageOfQueenIndex() * productivity * weatherIndex);
     }
 
     public double ageOfQueenIndex() {
-        int ageOfQueen = this.getAgeOfQueen();
         return switch (ageOfQueen) {
             case 0, 1, 2, 3 -> 1;
             case 4 -> 0.75;
