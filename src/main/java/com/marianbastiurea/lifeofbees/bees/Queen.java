@@ -57,6 +57,7 @@ public class Queen {
     public String toString() {
         return "Queen{" +
                 "ageOfQueen=" + ageOfQueen +
+                ", feedBeesIndex=" + feedBeesIndex +
                 '}';
     }
 }

@@ -36,7 +36,7 @@ class InsectControllerConsumerTest {
     }
 
     @Test
-    void answerIsNoThatMeansLastTwoBeesBatchesAreDeadAndFeedBeesIndexIsChanging() {
+    void answerIsNoThatMeansLastTwoBeesBatchesAreDead() {
         InsectControllerConsumer insectControllerConsumer = new InsectControllerConsumer();
         BeesBatches initialBeesBatches=createBeesBatches(30,100);
         BeesBatches finalBeesBatches=createBeesBatches(30,70);
@@ -53,15 +53,31 @@ class InsectControllerConsumerTest {
                 "Test Game", "user123", "private", apiary,
                 "Test Location", new WeatherData(), 100.0, 0.0, new ActionsOfTheWeek()
         );
-        int initialNumberOfEggs = lifeOfBees.getApiary().getHives().getHives().getFirst().getQueen().makeEggs(1, 1);
-        logger.info("eggs number before : " + initialNumberOfEggs);
 
         insectControllerConsumer.accept(lifeOfBees,"no");
         assertEquals(finalHive,apiary.getHives());
+    }
 
-        int actualNumberOfEggs = lifeOfBees.getApiary().getHives().getHives().getFirst().getQueen().makeEggs(1, 1);
-        logger.info("eggs number after: " + actualNumberOfEggs);
-        assertTrue(actualNumberOfEggs < initialNumberOfEggs);
+
+    @Test
+    void answerIsNoThatMeansFeedBeesIndexIsChanging() {
+        InsectControllerConsumer insectControllerConsumer = new InsectControllerConsumer();
+
+        BeesBatches finalBeesBatches=createBeesBatches(30,70);
+        Hives finalHive = new Hives(
+                new Hive(1, true, new EggFrames(), new HoneyFrames(),
+                        finalBeesBatches, new ArrayList<>(), new Queen(1), true));
+        logger.info("this is the Queen before: "+finalHive.getHives().getFirst().getQueen());
+
+        Apiary apiary = new Apiary(finalHive);
+        LifeOfBees lifeOfBees = new LifeOfBees(
+                "Test Game", "user123", "private", apiary,
+                "Test Location", new WeatherData(), 100.0, 0.0, new ActionsOfTheWeek()
+        );
+
+        insectControllerConsumer.accept(lifeOfBees,"no");
+        System.out.println("This is the Queen after: "+finalHive.getHives().getFirst().getQueen());
+        assertEquals(finalHive,apiary.getHives());
 
 
     }

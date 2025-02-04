@@ -45,7 +45,7 @@ public class BeesBatches {
                 beesBatches.set(i, Math.max(newBeeCount, 0));
             }
         }
-        logger.debug("Completed removeLastTwoBeesBatches method.");
+        logger.debug("Completed hibernateBeesBatches method.");
     }
 
 
