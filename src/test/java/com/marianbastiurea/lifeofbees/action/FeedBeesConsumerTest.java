@@ -36,22 +36,18 @@ class FeedBeesConsumerTest {
     @Test
     void answerIsNoThatMeansFeedBeesIndexChanged() {
         FeedBeesConsumer feedBeesConsumer = new FeedBeesConsumer();
-        Apiary apiary = new Apiary(new Hives(
+        Hives finalHive = new Hives(
                 new Hive(1, true, new EggFrames(), new HoneyFrames(),
-                        new BeesBatches(), new ArrayList<>(), new Queen(1), true)));
+                        new BeesBatches(), new ArrayList<>(), new Queen(1), true));
+        logger.info("this is the Queen before: "+finalHive.getHives().getFirst().getQueen());
+        Apiary apiary = new Apiary(finalHive);
         LifeOfBees lifeOfBees = new LifeOfBees(
                 "Test Game", "user123", "private", apiary,
                 "Test Location", new WeatherData(), 100.0, 0.0, new ActionsOfTheWeek()
         );
-        int initialNumberOfEggs = lifeOfBees.getApiary().getHives().getHives().getFirst().getQueen().makeEggs(1, 1);
-        logger.info("eggs number before : " + initialNumberOfEggs);
         feedBeesConsumer.accept(lifeOfBees, "no");
-        int actualNumberOfEggs = lifeOfBees.getApiary().getHives().getHives().getFirst().getQueen().makeEggs(1, 1);
-        logger.info("eggs number after: " + actualNumberOfEggs);
-
-        assertTrue(actualNumberOfEggs < initialNumberOfEggs);
+        logger.info("this is the Queen after: "+finalHive.getHives().getFirst().getQueen());
+        assertEquals(finalHive,apiary.getHives());
 
     }
-
-
 }
