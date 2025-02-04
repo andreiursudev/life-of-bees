@@ -12,6 +12,14 @@ public class Queen {
         this.ageOfQueen = ageOfQueen;
         this.feedBeesIndex=1.0;
     }
+/*
+just for tests
+
+ */
+    public Queen(int ageOfQueen, double feedBeesIndex) {
+        this.ageOfQueen = ageOfQueen;
+        this.feedBeesIndex=feedBeesIndex
+    }
 
     public void setFeedBeesIndex(double feedBeesIndex) {
         this.feedBeesIndex = feedBeesIndex;
