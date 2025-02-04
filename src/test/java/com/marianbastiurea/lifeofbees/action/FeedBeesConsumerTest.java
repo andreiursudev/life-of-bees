@@ -2,8 +2,11 @@ package com.marianbastiurea.lifeofbees.action;
 
 import com.marianbastiurea.lifeofbees.bees.*;
 import com.marianbastiurea.lifeofbees.game.LifeOfBees;
+import com.marianbastiurea.lifeofbees.time.BeeTime;
 import com.marianbastiurea.lifeofbees.weather.WeatherData;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
@@ -11,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 class FeedBeesConsumerTest {
+    private static final Logger logger = LoggerFactory.getLogger(FeedBeesConsumerTest.class);
 
     @Test
     void answerIsYesThatMeansBeeKeeperHaveToPay() {
@@ -31,32 +35,24 @@ class FeedBeesConsumerTest {
     }
 
     @Test
-    void answerIsNoThatMeansLastTwoBeesBatchesAreDead() {
+    void answerIsNoThatMeansFeedBeesIndexChanged() {
         FeedBeesConsumer feedBeesConsumer = new FeedBeesConsumer();
-        BeesBatches initialBeesBatches = createBeesBatches(20, 10);
-        BeesBatches finalBeesBatches = createBeesBatches(18, 10);
-
         Apiary apiary = new Apiary(new Hives(
                 new Hive(1, true, new EggFrames(), new HoneyFrames(),
-                        initialBeesBatches, new ArrayList<>(), new Queen(1), true)));
+                        new BeesBatches(), new ArrayList<>(), new Queen(1), true)));
         LifeOfBees lifeOfBees = new LifeOfBees(
                 "Test Game", "user123", "private", apiary,
                 "Test Location", new WeatherData(), 100.0, 0.0, new ActionsOfTheWeek()
         );
+        int initialNumberOfEggs = lifeOfBees.getApiary().getHives().getHives().getFirst().getQueen().makeEggs(1, 1);
+        logger.info("eggs number before : " + initialNumberOfEggs);
         feedBeesConsumer.accept(lifeOfBees, "no");
-        assertEquals(new Hives(
-                new Hive(1, true, new EggFrames(), new HoneyFrames(),
-                        finalBeesBatches, new ArrayList<>(), new Queen(1), true)), apiary.getHives());
+        int actualNumberOfEggs = lifeOfBees.getApiary().getHives().getHives().getFirst().getQueen().makeEggs(1, 1);
+        logger.info("eggs number after: " + actualNumberOfEggs);
 
+        assertTrue(actualNumberOfEggs < initialNumberOfEggs);
 
     }
 
-    private static BeesBatches createBeesBatches(int x, int e) {
-        //BeesBatches beesBatches = new BeesBatches(numberOfBeeBatches, numberOfBeesPerBatch);
-        BeesBatches beesBatches = new BeesBatches();
-        for (int i = 0; i < x; i++) {
-            beesBatches.add(e);
-        }
-        return beesBatches;
-    }
+
 }

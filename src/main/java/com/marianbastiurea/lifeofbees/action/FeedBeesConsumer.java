@@ -12,7 +12,7 @@ public class FeedBeesConsumer implements ActionOfTheWeekConsumer<String> {
             lifeOfBees.setMoneyInTheBank(lifeOfBees.getMoneyInTheBank() - cost);
         } else {
             for (Hive hive :lifeOfBees.getApiary().getHives().getHives()) {
-                hive.getBeesBatches().hibernateBeesBatches();
+                hive.getQueen().setFeedBeesIndex(0.7);
             }
         }
     }

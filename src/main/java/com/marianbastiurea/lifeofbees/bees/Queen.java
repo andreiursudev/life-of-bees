@@ -6,9 +6,15 @@ import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.maxEggsDailyL
 
 public class Queen {
     private int ageOfQueen;
+    public double feedBeesIndex;
 
     public Queen(int ageOfQueen) {
         this.ageOfQueen = ageOfQueen;
+        this.feedBeesIndex=1.0;
+    }
+
+    public void setFeedBeesIndex(double feedBeesIndex) {
+        this.feedBeesIndex = feedBeesIndex;
     }
 
     public Queen() {
@@ -23,7 +29,7 @@ public class Queen {
     }
 
     public int makeEggs(double productivity, double weatherIndex) {
-        return (int) (maxEggsDailyLaidByQueen * this.ageOfQueenIndex() * productivity * weatherIndex);
+        return (int) (maxEggsDailyLaidByQueen * this.ageOfQueenIndex() * productivity * weatherIndex*feedBeesIndex);
     }
 
     public double ageOfQueenIndex() {
