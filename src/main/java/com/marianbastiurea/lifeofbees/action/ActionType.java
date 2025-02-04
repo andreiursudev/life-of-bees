@@ -6,7 +6,7 @@ public enum ActionType {
     MOVE_EGGS_FRAME(new MoveAnEggsFrameProducer(), new MoveAnEggsFrameConsumer()),
     FEED_BEES(new FeedBeesProducer(), new FeedBeesConsumer()),
     SPLIT_HIVE(new SplitHiveProducer(), new SplitHiveConsumer()),
-    INSECT_CONTROL(new InsectControlProducer(), new InsectControllerConsumer()),
+    INSECT_CONTROL(new InsectControlProducer(), new InsectControlConsumer()),
     HARVEST_HONEY(new HarvestHoneyProducer(), (o, o2) -> {
     });
 

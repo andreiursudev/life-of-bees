@@ -11,13 +11,13 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class InsectControllerConsumerTest {
-    private static final Logger logger = LoggerFactory.getLogger(InsectControllerConsumerTest.class);
+class InsectControlConsumerTest {
+    private static final Logger logger = LoggerFactory.getLogger(InsectControlConsumerTest.class);
 
 
     @Test
     void answerIsYesThatMeansBeeKeeperHaveToPay() {
-        InsectControllerConsumer insectControllerConsumer = new InsectControllerConsumer();
+        InsectControlConsumer insectControlConsumer = new InsectControlConsumer();
 
         Hives hives = new Hives(
                 new Hive(1, new HoneyFrames(4, 5)),
@@ -29,7 +29,7 @@ class InsectControllerConsumerTest {
                 "Test Game", "user123", "private", apiary,
                 "Test Location", new WeatherData(), 100.0, 0.0, new ActionsOfTheWeek()
         );
-        insectControllerConsumer.accept(lifeOfBees,"yes");
+        insectControlConsumer.accept(lifeOfBees,"yes");
         double result=lifeOfBees.getMoneyInTheBank();
         assertEquals(70,result);
 
@@ -37,7 +37,7 @@ class InsectControllerConsumerTest {
 
     @Test
     void answerIsNoThatMeansLastTwoBeesBatchesAreDead() {
-        InsectControllerConsumer insectControllerConsumer = new InsectControllerConsumer();
+        InsectControlConsumer insectControlConsumer = new InsectControlConsumer();
         BeesBatches initialBeesBatches=createBeesBatches(30,100);
         BeesBatches finalBeesBatches=createBeesBatches(30,70);
 
@@ -54,14 +54,14 @@ class InsectControllerConsumerTest {
                 "Test Location", new WeatherData(), 100.0, 0.0, new ActionsOfTheWeek()
         );
 
-        insectControllerConsumer.accept(lifeOfBees,"no");
+        insectControlConsumer.accept(lifeOfBees,"no");
         assertEquals(finalHive,apiary.getHives());
     }
 
 
     @Test
     void answerIsNoThatMeansFeedBeesIndexIsChanging() {
-        InsectControllerConsumer insectControllerConsumer = new InsectControllerConsumer();
+        InsectControlConsumer insectControlConsumer = new InsectControlConsumer();
 
         BeesBatches finalBeesBatches=createBeesBatches(30,70);
         Hives finalHive = new Hives(
@@ -75,7 +75,7 @@ class InsectControllerConsumerTest {
                 "Test Location", new WeatherData(), 100.0, 0.0, new ActionsOfTheWeek()
         );
 
-        insectControllerConsumer.accept(lifeOfBees,"no");
+        insectControlConsumer.accept(lifeOfBees,"no");
         System.out.println("This is the Queen after: "+finalHive.getHives().getFirst().getQueen());
         assertEquals(finalHive,apiary.getHives());
 
