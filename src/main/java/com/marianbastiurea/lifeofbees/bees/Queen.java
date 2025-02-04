@@ -18,7 +18,7 @@ just for tests
  */
     public Queen(int ageOfQueen, double feedBeesIndex) {
         this.ageOfQueen = ageOfQueen;
-        this.feedBeesIndex=feedBeesIndex
+        this.feedBeesIndex=feedBeesIndex;
     }
 
     public void setFeedBeesIndex(double feedBeesIndex) {
