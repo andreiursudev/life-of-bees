@@ -67,7 +67,7 @@ class InsectControllerConsumerTest {
         Hives finalHive = new Hives(
                 new Hive(1, true, new EggFrames(), new HoneyFrames(),
                         finalBeesBatches, new ArrayList<>(), new Queen(1), true));
-        logger.info("this is the Queen before: "+finalHive.getHives().getFirst().getQueen());
+        logger.info("this is the Queen before: {}", finalHive.getHives().getFirst().getQueen());
 
         Apiary apiary = new Apiary(finalHive);
         LifeOfBees lifeOfBees = new LifeOfBees(

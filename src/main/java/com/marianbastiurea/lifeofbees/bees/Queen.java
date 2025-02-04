@@ -45,14 +45,14 @@ public class Queen {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Queen queen = (Queen) o;
-        return ageOfQueen == queen.ageOfQueen;
+        return ageOfQueen == queen.ageOfQueen &&
+                Double.compare(queen.feedBeesIndex, feedBeesIndex) == 0;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ageOfQueen);
+        return Objects.hash(ageOfQueen, feedBeesIndex);
     }
-
     @Override
     public String toString() {
         return "Queen{" +
