@@ -15,6 +15,7 @@ public class InsectControllerConsumer implements ActionOfTheWeekConsumer<String>
         } else {
             for (Hive hive : lifeOfBees.getApiary().getHives().getHives()) {
                 hive.getBeesBatches().hibernateBeesBatches();
+                hive.getQueen().setFeedBeesIndex(0.7);
             }
         }
     }

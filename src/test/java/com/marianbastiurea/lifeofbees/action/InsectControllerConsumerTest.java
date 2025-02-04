@@ -4,12 +4,16 @@ import com.marianbastiurea.lifeofbees.bees.*;
 import com.marianbastiurea.lifeofbees.game.LifeOfBees;
 import com.marianbastiurea.lifeofbees.weather.WeatherData;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class InsectControllerConsumerTest {
+    private static final Logger logger = LoggerFactory.getLogger(InsectControllerConsumerTest.class);
+
 
     @Test
     void answerIsYesThatMeansBeeKeeperHaveToPay() {
@@ -32,10 +36,10 @@ class InsectControllerConsumerTest {
     }
 
     @Test
-    void answerIsNoThatMeansLastTwoBeesBatchesAreDead() {
+    void answerIsNoThatMeansLastTwoBeesBatchesAreDeadAndFeedBeesIndexIsChanging() {
         InsectControllerConsumer insectControllerConsumer = new InsectControllerConsumer();
-        BeesBatches initialBeesBatches=createBeesBatches(20,10);
-        BeesBatches finalBeesBatches=createBeesBatches(18,10);
+        BeesBatches initialBeesBatches=createBeesBatches(30,100);
+        BeesBatches finalBeesBatches=createBeesBatches(30,70);
 
         Hives initialHive = new Hives(
                 new Hive(1, true, new EggFrames(), new HoneyFrames(),
@@ -49,16 +53,23 @@ class InsectControllerConsumerTest {
                 "Test Game", "user123", "private", apiary,
                 "Test Location", new WeatherData(), 100.0, 0.0, new ActionsOfTheWeek()
         );
+        int initialNumberOfEggs = lifeOfBees.getApiary().getHives().getHives().getFirst().getQueen().makeEggs(1, 1);
+        logger.info("eggs number before : " + initialNumberOfEggs);
+
         insectControllerConsumer.accept(lifeOfBees,"no");
         assertEquals(finalHive,apiary.getHives());
+
+        int actualNumberOfEggs = lifeOfBees.getApiary().getHives().getHives().getFirst().getQueen().makeEggs(1, 1);
+        logger.info("eggs number after: " + actualNumberOfEggs);
+        assertTrue(actualNumberOfEggs < initialNumberOfEggs);
 
 
     }
 
-    private static BeesBatches createBeesBatches(int x, int e) {
+    private static BeesBatches createBeesBatches(int days, int eggs) {
         BeesBatches beesBatches = new BeesBatches();
-        for (int i = 0; i < x; i++) {
-            beesBatches.add(e);
+        for (int i = 0; i < days; i++) {
+            beesBatches.add(eggs);
         }
         return beesBatches;
     }
