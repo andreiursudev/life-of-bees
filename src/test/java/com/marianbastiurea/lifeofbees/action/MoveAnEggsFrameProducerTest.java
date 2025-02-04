@@ -128,11 +128,13 @@ class MoveAnEggsFrameProducerTest {
 
         EggFrames sourceEggFrames = new EggFrames(6, new LinkedList<>(Arrays.asList(6400, 6400, 6400, 6400, 6400, 6400)), false);
         Hive sourceHive = new Hive(1, sourceEggFrames, false);
+
         EggFrames targetEggFrames1 = new EggFrames(5, new LinkedList<>(Arrays.asList(6400, 6400, 6400, 6400, 6400)), false);
         Hive targetHive1 = new Hive(2, targetEggFrames1, true);
 
         EggFrames targetEggFrames2 = new EggFrames(3, new LinkedList<>(Arrays.asList(6400, 6400, 6400)), false);
         Hive targetHive2 = new Hive(3, targetEggFrames2, true);
+
         List<Hive> hives = Arrays.asList(sourceHive, targetHive1, targetHive2);
         Hives hiveCollection = new Hives(hives);
         MoveAnEggsFrameProducer producer = new MoveAnEggsFrameProducer();

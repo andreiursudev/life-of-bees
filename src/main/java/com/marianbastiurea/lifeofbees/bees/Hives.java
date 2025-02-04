@@ -33,10 +33,12 @@ public class Hives {
         this.hives = hives;
     }
 
-    public Hives(List<Hive> hiveList, BeeTime date) {
-        this.hives = hiveList;
-        this.currentDate = date;
+    public Hives(List<Hive> hives, BeeTime currentDate) {
+        this.hives = hives;
+        this.currentDate = currentDate;
+        this.randomParameters = new RandomParameters();
     }
+
 
     public List<Hive> getHivesList() {
         return hives;

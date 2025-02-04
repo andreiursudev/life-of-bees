@@ -3,6 +3,8 @@ package com.marianbastiurea.lifeofbees.bees;
 import com.marianbastiurea.lifeofbees.time.BeeTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ class HivesTest {
     private Hives actualHives;
     private BeeTime initialCurrentDate;
     private BeeTime actualCurrentDate;
+    private static final Logger logger = LoggerFactory.getLogger(HivesTest.class);
 
     @BeforeEach
     void setUpInitialHiveList() {
@@ -47,7 +50,8 @@ class HivesTest {
         initialHives = new Hives(initialHiveList, initialCurrentDate);
     }
 
-    void setUpActualHiveList() {
+    @BeforeEach
+    public void setUpActualHiveList() {
         actualCurrentDate = new BeeTime(LocalDate.of(2025, 3, 1));
 
         List<Hive> actualHiveList = new ArrayList<>();
@@ -76,11 +80,15 @@ class HivesTest {
     @Test
     void testHibernate() {
 
-
+        logger.info("this is initialHives before hibernate: {}", initialHives);
         Integer removedHive = initialHives.hibernate();
+        System.out.println();
+        logger.info("this is initialHives after hibernate:{}", initialHives);
+        System.out.println();
+        logger.info("this is actualHives: {}", actualHives);
         assertNotNull(removedHive);
         assertTrue(removedHive >= 1 && removedHive <= 3);
-        assertEquals(new BeeTime(2025, 3, 1), actualCurrentDate);
+        assertEquals(new BeeTime(2025, 3, 1), initialHives.getCurrentDate());
         compareHivesObjects(initialHives, actualHives, removedHive);
 
     }
@@ -117,5 +125,4 @@ class HivesTest {
 
         return true;
     }
-
 }
