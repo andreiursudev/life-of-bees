@@ -107,17 +107,6 @@ public class Hives {
     }
 
 
-    public Integer randomRemoveAHive() {
-        if (hives.isEmpty()) {
-            return 0;
-        }
-        int indexToRemove = randomParameters.hiveIdToRemove(hives.size());
-        Hive hiveToRemove = hives.remove(indexToRemove);
-        logger.debug("Hive removed with hiveId: {}. Remaining hives: {}", hiveToRemove.getId(), hives.size());
-        return hiveToRemove.getId();
-    }
-
-
     public List<MoveEggFramePairHives> checkIfCanMoveAnEggsFrame() {
         logger.debug("Starting checkIfCanMoveAnEggsFrame...");
         List<MoveEggFramePairHives> result = hives.stream()
@@ -171,6 +160,15 @@ public class Hives {
         logger.debug("Finished addHivesToApiary method");
     }
 
+    public Integer randomRemoveAHive() {
+        if (hives.isEmpty()) {
+            return 0;
+        }
+        int indexToRemove = randomParameters.hiveIdToRemove(hives.size());
+        Hive hiveToRemove = hives.remove(indexToRemove);
+        logger.debug("Hive removed with hiveId: {}. Remaining hives: {}", hiveToRemove.getId(), hives.size());
+        return hiveToRemove.getId();
+    }
 
     public Integer hibernate() {
         Integer removedHive = null;
@@ -183,6 +181,7 @@ public class Hives {
                 hive.getHoneyFrames().hibernateHoneyFrames();
                 hive.getBeesBatches().hibernateBeesBatches();
                 hive.getHoneyBatches().clear();
+                hive.setItWasHarvested(false);
             });
             logger.debug("Completed hibernate method.");
             currentDate.changeYear();
@@ -196,7 +195,7 @@ public class Hives {
         List<Hive> hiveList = IntStream.rangeClosed(1, numberOfHives).mapToObj(i -> {
             logger.debug("Creating hive with id = {}", i);
             BeesBatches beesBatches = new BeesBatches(
-                    IntStream.range(0,daysToLiveForABee)
+                    IntStream.range(0, daysToLiveForABee)
                             .mapToObj(k -> RANDOM.nextInt(600, 700))
                             .collect(Collectors.toCollection(LinkedList::new))
             );
