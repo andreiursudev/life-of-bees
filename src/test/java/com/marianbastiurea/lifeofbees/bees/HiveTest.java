@@ -50,5 +50,13 @@ public class HiveTest {
         assertEquals(0, hive.getQueen().getAgeOfQueen(), "New queen should have age 0");
     }
 
+    @Test
+    void returnProductivity1ForHoneyTypeAcacia(){
+        BeeTime currentDate=new BeeTime(2023,6,1);
+        double productivity=currentDate.honeyType().getProductivity();
+        assertEquals(1, productivity);
+
+    }
+
 }
 
