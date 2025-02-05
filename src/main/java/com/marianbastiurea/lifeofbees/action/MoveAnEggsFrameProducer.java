@@ -2,22 +2,22 @@ package com.marianbastiurea.lifeofbees.action;
 
 
 import com.marianbastiurea.lifeofbees.bees.Hives;
+import com.marianbastiurea.lifeofbees.bees.MoveEggFramePairHives;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
 
-public class MoveAnEggsFrameProducer implements ActionOfTheWeekProducer<List<List<Integer>>> {
+public class MoveAnEggsFrameProducer implements ActionOfTheWeekProducer<List<MoveEggFramePairHives>> {
     private static final Logger logger = LoggerFactory.getLogger(MoveAnEggsFrameProducer.class);
 
 
     @Override
-    public Optional<List<List<Integer>>> produce(Hives hives) {
+    public Optional<List<MoveEggFramePairHives>> produce(Hives hives) {
         logger.info("Starting produce method...");
 
-        List<List<Integer>> result = hives.checkIfCanMoveAnEggsFrame();
-
+        List<MoveEggFramePairHives> result = hives.checkIfCanMoveAnEggsFrame();
         if (result.isEmpty()) {
             logger.info("No valid hive pairs found.");
             return Optional.empty();
@@ -26,5 +26,4 @@ public class MoveAnEggsFrameProducer implements ActionOfTheWeekProducer<List<Lis
             return Optional.of(result);
         }
     }
-
 }

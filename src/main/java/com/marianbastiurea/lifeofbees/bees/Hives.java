@@ -118,9 +118,9 @@ public class Hives {
     }
 
 
-    public List<List<Integer>> checkIfCanMoveAnEggsFrame() {
+    public List<MoveEggFramePairHives> checkIfCanMoveAnEggsFrame() {
         logger.debug("Starting checkIfCanMoveAnEggsFrame...");
-        List<List<Integer>> result = hives.stream()
+        List<MoveEggFramePairHives> result = hives.stream()
                 .filter(sourceHive -> {
                     boolean isEggFrameFull = sourceHive.getEggFrames().checkIfAll6EggsFrameAre80PercentFull();
                     boolean isNotSplit = !sourceHive.itWasSplit;
@@ -131,7 +131,7 @@ public class Hives {
                         .filter(targetHive -> targetHive.itWasSplit
                                 && targetHive.getEggFrames().getNumberOfEggFrames() < maxNumberOfEggFrames)
                         .map(targetHive -> {
-                            return Arrays.asList(sourceHive.getId(), targetHive.getId());
+                            return new MoveEggFramePairHives(sourceHive.getId(), targetHive.getId());
                         })
                 )
                 .collect(Collectors.toList());
