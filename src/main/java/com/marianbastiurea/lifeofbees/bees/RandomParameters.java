@@ -4,8 +4,17 @@ import java.util.Random;
 
 public class RandomParameters {
     Random random = new Random();
+    private Double fixedChance=null;
 
+    public RandomParameters() {}
 
+    public RandomParameters(double fixedChance) { // Constructor pentru teste
+        this.fixedChance = fixedChance;
+    }
+
+    public double chanceToChangeQueen() {
+        return (fixedChance != null) ? fixedChance : random.nextDouble();
+    }
     public int numberOfFlights() {
         return random.nextInt(3, 6);
     }
@@ -20,4 +29,5 @@ public class RandomParameters {
     public  int numberOfEggFrames(){
         return random.nextInt(3, 5);
     }
+
 }

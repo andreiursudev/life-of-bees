@@ -88,6 +88,18 @@ public class Hive {
                 false);
     }
 
+    public Hive(Queen queen){
+   this (0,
+        false,
+        new EggFrames(),
+                new HoneyFrames(),
+                new BeesBatches(),
+                new ArrayList<>(),
+                queen,
+        false);
+
+    }
+
     public Hive(
             int id,
             boolean itWasSplit,
@@ -200,17 +212,16 @@ public List<HoneyBatch> getHoneyBatches() {
             this.honeyBatches.addAll(honeyBatches);
     }
 
-    public void maybeChangeQueen(BeeTime currentDate) {
-        double numberRandom = Math.random();
+    public void maybeChangeQueen(BeeTime currentDate, RandomParameters randomParameters) {
         boolean isTimeToChangeQueen = currentDate.isTimeToChangeQueen();
-        if ((numberRandom < 0.3 && isTimeToChangeQueen) || queen.getAgeOfQueen() == 5) {
+        if ((randomParameters.chanceToChangeQueen() < 0.3 && isTimeToChangeQueen) || queen.getAgeOfQueen() == 5) {
             queen = new Queen(0);
         }
     }
 
 
     public void iterateOneDay(BeeTime currentDate, double weatherIndex) {
-        maybeChangeQueen(currentDate);
+        maybeChangeQueen(currentDate, randomParameters);
         double productivity = currentDate.honeyType().getProductivity();
         int numberOfEggs = queen.makeEggs(productivity, weatherIndex);
         double kgOfHoneyToAdd = beesBatches.makeHoney(productivity, eggFrames.hatchBees(numberOfEggs), randomParameters.numberOfFlights());
