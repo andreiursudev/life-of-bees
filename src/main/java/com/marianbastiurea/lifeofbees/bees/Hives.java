@@ -24,6 +24,12 @@ public class Hives {
         this.randomParameters = new RandomParameters();
     }
 
+    public Hives(BeeTime currentDate, RandomParameters randomParameters, Hive... hives) {
+        this.hives = new ArrayList<>(Arrays.asList(hives));
+        this.currentDate = currentDate;
+        this.randomParameters = randomParameters;
+    }
+
 
     public List<Hive> getHives() {
         return hives;
@@ -164,7 +170,7 @@ public class Hives {
         if (hives.isEmpty()) {
             return 0;
         }
-        int indexToRemove = randomParameters.hiveIdToRemove(hives.size());
+        int indexToRemove = randomParameters.hiveIndexToRemove(hives.size());
         Hive hiveToRemove = hives.remove(indexToRemove);
         logger.debug("Hive removed with hiveId: {}. Remaining hives: {}", hiveToRemove.getId(), hives.size());
         return hiveToRemove.getId();
@@ -173,6 +179,7 @@ public class Hives {
     public Integer hibernate() {
         Integer removedHive = null;
         if (currentDate.isEndOfSeason()) {
+            removedHive = randomRemoveAHive();
             this.getHives().forEach(hive -> {
                 hive.getQueen().setAgeOfQueen(hive.getQueen().getAgeOfQueen() + 1);
                 hive.setItWasSplit(false);
@@ -185,7 +192,6 @@ public class Hives {
             });
             logger.debug("Completed hibernate method.");
             currentDate.changeYear();
-            removedHive = randomRemoveAHive();
         }
         return removedHive;
     }

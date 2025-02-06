@@ -119,6 +119,18 @@ public class Hive {
         this.itWasHarvested = itWasHarvested;
     }
 
+    public Hive(int id) {
+        this(
+                id,
+                false,
+                new EggFrames(),
+                new HoneyFrames(),
+                new BeesBatches(),
+                new ArrayList<>(),
+                new Queen(),
+                false);
+    }
+
     public boolean isItWasSplit() {
         return itWasSplit;
     }

@@ -58,5 +58,10 @@ public class HiveTest {
 
     }
 
+    @Test
+    void ifProductivityIs1AndWeatherIndexIs1QueenShouldMake1Eggs(){
+
+    }
+
 }
 

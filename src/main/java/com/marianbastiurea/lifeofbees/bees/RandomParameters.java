@@ -14,7 +14,7 @@ public class RandomParameters {
         return random.nextInt(3, 6);
     }
 
-    public int hiveIdToRemove(int hivesSize) {
+    public int hiveIndexToRemove(int hivesSize) {
         return hivesSize > 0 ? random.nextInt(hivesSize) : 0;
     }
 

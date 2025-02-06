@@ -3,6 +3,7 @@ package com.marianbastiurea.lifeofbees.bees;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -18,6 +19,10 @@ public class BeesBatches {
     }
     public BeesBatches(LinkedList<Integer> beesBatches) {
         this.beesBatches = beesBatches;
+    }
+
+    public BeesBatches(int beesPerBatch) {
+        beesBatches = new LinkedList<>(Collections.nCopies(daysToLiveForABee, beesPerBatch));
     }
 
     public LinkedList<Integer> getBeesBatches() {
