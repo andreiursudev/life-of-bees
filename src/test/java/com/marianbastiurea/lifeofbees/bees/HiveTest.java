@@ -51,15 +51,21 @@ public class HiveTest {
     }
 
     @Test
-    void returnProductivity1ForHoneyTypeAcacia(){
-        BeeTime currentDate=new BeeTime(2023,6,1);
-        double productivity=currentDate.honeyType().getProductivity();
+    void returnProductivity1ForHoneyTypeAcacia() {
+        BeeTime currentDate = new BeeTime(2023, 6, 1);
+        double productivity = currentDate.honeyType().getProductivity();
         assertEquals(1, productivity);
 
     }
 
+
     @Test
-    void ifProductivityIs1AndWeatherIndexIs1QueenShouldMake1Eggs(){
+    void ifProductivityIs1AndWeatherIndexIs1QueenShouldLaid2000Eggs() {
+        Queen queen = new Queen(1, 1);
+        int productivity=1;
+        int weatherIndex=1;
+        int numberOfEggs = queen.makeEggs(productivity, weatherIndex);
+        assertEquals(numberOfEggs,2000);
 
     }
 
