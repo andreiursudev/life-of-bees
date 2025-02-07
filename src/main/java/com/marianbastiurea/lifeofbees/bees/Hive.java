@@ -270,7 +270,11 @@ public List<HoneyBatch> getHoneyBatches() {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Hive hive = (Hive) o;
-        return itWasSplit == hive.itWasSplit && itWasHarvested == hive.itWasHarvested && id == hive.id && Objects.equals(honeyBatches, hive.honeyBatches) && Objects.equals(beesBatches, hive.beesBatches) && Objects.equals(eggFrames, hive.eggFrames) && Objects.equals(queen, hive.queen) && Objects.equals(honeyFrames, hive.honeyFrames);
+        return itWasSplit == hive.itWasSplit && itWasHarvested == hive.itWasHarvested &&
+                id == hive.id && Objects.equals(honeyBatches, hive.honeyBatches) &&
+                Objects.equals(beesBatches, hive.beesBatches) && Objects.equals(eggFrames, hive.eggFrames)
+                && Objects.equals(queen, hive.queen) && Objects.equals(honeyFrames, hive.honeyFrames)&&
+                Objects.equals(randomParameters,hive.randomParameters);
     }
 
     @Override

@@ -5,11 +5,13 @@ import java.util.Random;
 public class RandomParameters {
     Random random = new Random();
 
-    public RandomParameters() {}
+    public RandomParameters() {
+    }
 
     public double chanceToChangeQueen() {
         return random.nextDouble();
     }
+
     public int numberOfFlights() {
         return random.nextInt(3, 6);
     }
@@ -18,11 +20,25 @@ public class RandomParameters {
         return hivesSize > 0 ? random.nextInt(hivesSize) : 0;
     }
 
-    public  int numberOfHoneyFrames(){
-        return random.nextInt(3, 5);
-    }
-    public  int numberOfEggFrames(){
+    public int numberOfHoneyFrames() {
         return random.nextInt(3, 5);
     }
 
+    public int numberOfEggFrames() {
+        return random.nextInt(3, 5);
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return 1;
+
+    }
 }
