@@ -62,11 +62,30 @@ public class HiveTest {
     @Test
     void ifProductivityIs1AndWeatherIndexIs1QueenShouldLaid2000Eggs() {
         Queen queen = new Queen(1, 1);
-        int productivity=1;
-        int weatherIndex=1;
+        int productivity = 1;
+        int weatherIndex = 1;
         int numberOfEggs = queen.makeEggs(productivity, weatherIndex);
-        assertEquals(numberOfEggs,2000);
+        assertEquals(numberOfEggs, 2000);
 
+    }
+
+    @Test
+    void findKgOfHoney() {
+        Queen queen = new Queen(1, 1);
+        EggFrames eggFrames = new EggFrames(4);
+        System.out.println("acestea sunt ramele de oua: " + eggFrames);
+        BeesBatches beesBatches = new BeesBatches(1000);
+        System.out.println("acestea sunt beesBatches: " + beesBatches);
+        Hive hive = new Hive(1, beesBatches, queen, eggFrames);
+        int productivity = 1;
+        int weatherIndex = 1;
+        int numberOfEggs = queen.makeEggs(productivity, weatherIndex);
+        System.out.println("acesta e numarul de oua :" + numberOfEggs);
+        RandomParameters randomParameters = mock(RandomParameters.class);
+        when(randomParameters.numberOfFlights()).thenReturn(2);
+        double kgOfHoneyToAdd = beesBatches.makeHoney(productivity, eggFrames.hatchBees(numberOfEggs), randomParameters.numberOfFlights());
+        System.out.println("acesta e cantitatea de miere: " + kgOfHoneyToAdd);
+        assertEquals(kgOfHoneyToAdd, 1.24);
     }
 
 }

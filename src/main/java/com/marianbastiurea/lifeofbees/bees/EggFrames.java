@@ -40,7 +40,7 @@ public class EggFrames {
 
     public EggFrames(int numberOfEggFrames) {
         this.numberOfEggFrames = numberOfEggFrames;
-        this.eggsByDay = new LinkedList<>(Collections.nCopies(daysToHatch, 0));
+        this.eggsByDay = new LinkedList<>(Collections.nCopies(daysToHatch, 1000));
     }
 
     /*
