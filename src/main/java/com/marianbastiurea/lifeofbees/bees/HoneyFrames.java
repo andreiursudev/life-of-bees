@@ -80,8 +80,8 @@ public class HoneyFrames {
     }
     public void hibernateHoneyFrames() {
         if (honeyFrame.size() > 1) {
-            honeyFrame.remove(honeyFrame.size() - 1);  // Elimină ultimul HoneyFrame
-            honeyFrame.remove(honeyFrame.size() - 1);  // Elimină penultimul HoneyFrame
+            honeyFrame.remove(honeyFrame.size() - 1);
+            honeyFrame.remove(honeyFrame.size() - 1);
         }
     }
 

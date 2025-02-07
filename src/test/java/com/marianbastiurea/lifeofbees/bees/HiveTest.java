@@ -69,23 +69,50 @@ public class HiveTest {
 
     }
 
+
     @Test
-    void findKgOfHoney() {
-        Queen queen = new Queen(1, 1);
+    void findKgOfHoneyIfNumberOfEggsIs2000() {
         EggFrames eggFrames = new EggFrames(4);
-        System.out.println("acestea sunt ramele de oua: " + eggFrames);
         BeesBatches beesBatches = new BeesBatches(1000);
-        System.out.println("acestea sunt beesBatches: " + beesBatches);
-        Hive hive = new Hive(1, beesBatches, queen, eggFrames);
         int productivity = 1;
-        int weatherIndex = 1;
-        int numberOfEggs = queen.makeEggs(productivity, weatherIndex);
-        System.out.println("acesta e numarul de oua :" + numberOfEggs);
+        int numberOfEggs = 2000;
         RandomParameters randomParameters = mock(RandomParameters.class);
         when(randomParameters.numberOfFlights()).thenReturn(2);
         double kgOfHoneyToAdd = beesBatches.makeHoney(productivity, eggFrames.hatchBees(numberOfEggs), randomParameters.numberOfFlights());
-        System.out.println("acesta e cantitatea de miere: " + kgOfHoneyToAdd);
         assertEquals(kgOfHoneyToAdd, 1.24);
+    }
+
+    @Test
+    void IfNumberOfFlightIs0NoHoneyHarvested() {
+
+        EggFrames eggFrames = new EggFrames(4);
+        BeesBatches beesBatches = new BeesBatches(1000);
+        int productivity = 1;
+        int numberOfEggs = 2000;
+        RandomParameters randomParameters = mock(RandomParameters.class);
+        when(randomParameters.numberOfFlights()).thenReturn(0);
+        double kgOfHoneyToAdd = beesBatches.makeHoney(productivity, eggFrames.hatchBees(numberOfEggs), randomParameters.numberOfFlights());
+        assertEquals(kgOfHoneyToAdd, 0);
+    }
+
+    @Test
+    void ifKgOfHoneyToAddIs5AndNumberOfHoneyFramesIs5EachHoneyFrameHave1KgMore(){
+        double kgOfHoneyToAdd=5;
+        HoneyFrames initialHoneyFrames=new HoneyFrames(5,3);
+        initialHoneyFrames.fillUpAHoneyFrame(kgOfHoneyToAdd);
+        HoneyFrames actualHoneyFrames=new HoneyFrames(5,4);
+        assertEquals(initialHoneyFrames,actualHoneyFrames);
+
+    }
+
+    @Test
+    void ifKgOfHoneyToAddIs0AndNumberOfHoneyFramesIs5EachHoneyFrameHaveSameQuantity(){
+        double kgOfHoneyToAdd=0;
+        HoneyFrames initialHoneyFrames=new HoneyFrames(5,3);
+        initialHoneyFrames.fillUpAHoneyFrame(kgOfHoneyToAdd);
+        HoneyFrames actualHoneyFrames=new HoneyFrames(5,3);
+        assertEquals(initialHoneyFrames,actualHoneyFrames);
+
     }
 
 }

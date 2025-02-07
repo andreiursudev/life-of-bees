@@ -93,9 +93,6 @@ public class WeatherData {
         } else {
             windSpeedIndex = 0.7;
         }
-        System.out.println("Rain Index: " + rainIndex);
-        System.out.println("Temperature Index: " + temperatureIndex);
-        System.out.println("Wind Speed Index: " + windSpeedIndex);
         return rainIndex * temperatureIndex * windSpeedIndex;
     }
 
