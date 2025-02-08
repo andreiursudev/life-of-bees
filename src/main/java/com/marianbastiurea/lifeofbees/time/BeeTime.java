@@ -16,7 +16,7 @@ public class BeeTime {
     private int year;
     private int month;
     private int day;
-    private static final Logger logger = LoggerFactory.getLogger(Apiary.class);
+    private static final Logger logger = LoggerFactory.getLogger(BeeTime.class);
     public BeeTime(LocalDate currentDate) {
         this.currentDate = currentDate;
     }
@@ -72,10 +72,6 @@ public class BeeTime {
 
     public void setCurrentDate(LocalDate currentDate) {
         this.currentDate = currentDate;
-    }
-
-    public int getDayOfMonth() {
-        return currentDate.getDayOfMonth();
     }
 
     public Month getMonth() {

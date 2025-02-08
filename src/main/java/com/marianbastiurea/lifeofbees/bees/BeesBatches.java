@@ -79,11 +79,9 @@ public class BeesBatches {
         return Objects.hash(beesBatches);
     }
 
-
     public void add(int e) {
         this.beesBatches.add(e);
     }
-
 
     public double makeHoney(double productivity, int bees, int numberOfFlight) {
         beesBatches.add(bees);

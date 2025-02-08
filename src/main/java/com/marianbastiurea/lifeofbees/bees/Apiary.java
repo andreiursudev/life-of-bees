@@ -28,9 +28,6 @@ public class Apiary {
         return totalHarvestedHoney;
     }
 
-    public void setTotalHarvestedHoney(HarvestHoney totalHarvestedHoney) {
-        this.totalHarvestedHoney = totalHarvestedHoney;
-    }
 
     public Hives getHives() {
         return hives;

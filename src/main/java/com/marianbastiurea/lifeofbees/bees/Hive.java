@@ -229,11 +229,6 @@ public List<HoneyBatch> getHoneyBatches() {
         }
     }
 
-    public void addHoneyBatches
-            (List<HoneyBatch> honeyBatches) {
-        if (honeyBatches != null && !honeyBatches.isEmpty())
-            this.honeyBatches.addAll(honeyBatches);
-    }
 
     public void maybeChangeQueen(BeeTime currentDate, RandomParameters randomParameters) {
         boolean isTimeToChangeQueen = currentDate.isTimeToChangeQueen();

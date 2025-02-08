@@ -23,7 +23,8 @@ public class LifeOfBeesFactory {
         BeeTime date = new BeeTime(startingDate);
         double moneyInTheBank = 3000.0;
         double totalKgOfHoney = 0;
-        Hives hives = Hives.createHives(numberOfStartingHives, date);
+        Hives hives = new Hives();
+        hives = hives.createHives(numberOfStartingHives, date);
         Apiary apiary = new Apiary(hives);
         return new LifeOfBees(gameName, userId, gameType, apiary, location,
                 weatherData, moneyInTheBank, totalKgOfHoney, null);

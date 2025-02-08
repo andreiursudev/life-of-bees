@@ -15,7 +15,6 @@ import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.maxNumberOfEg
 public class Hives {
     private List<Hive> hives;
     private static final Logger logger = LoggerFactory.getLogger(Hives.class);
-    private static final Random RANDOM = new Random();
     private RandomParameters randomParameters;
     private BeeTime currentDate;
 
@@ -43,11 +42,6 @@ public class Hives {
         this.hives = hives;
         this.currentDate = currentDate;
         this.randomParameters = new RandomParameters();
-    }
-
-
-    public List<Hive> getHivesList() {
-        return hives;
     }
 
     public Hives(List<Hive> hives) {
@@ -97,7 +91,7 @@ public class Hives {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Hives hives1 = (Hives) o;
-        return Objects.equals(hives, hives1.hives);
+        return Objects.equals(hives, hives1.hives) && Objects.equals(currentDate, hives1.currentDate) && Objects.equals(randomParameters, hives1.randomParameters);
     }
 
     @Override
@@ -107,11 +101,9 @@ public class Hives {
                 '}';
     }
 
-
     public boolean isEmpty() {
         return hives.isEmpty();
     }
-
 
     public List<MoveEggFramePairHives> checkIfCanMoveAnEggsFrame() {
         logger.debug("Starting checkIfCanMoveAnEggsFrame...");
@@ -197,12 +189,12 @@ public class Hives {
     }
 
 
-    public static Hives createHives(int numberOfHives, BeeTime date) {
+    public Hives createHives(int numberOfHives, BeeTime date) {
         List<Hive> hiveList = IntStream.rangeClosed(1, numberOfHives).mapToObj(i -> {
             logger.debug("Creating hive with id = {}", i);
             BeesBatches beesBatches = new BeesBatches(
                     IntStream.range(0, daysToLiveForABee)
-                            .mapToObj(k -> RANDOM.nextInt(600, 700))
+                            .mapToObj(k -> randomParameters.numberOfBees())
                             .collect(Collectors.toCollection(LinkedList::new))
             );
             Hive hive = new Hive(
@@ -212,7 +204,7 @@ public class Hives {
                     HoneyFrames.getRandomHoneyFrames(),
                     beesBatches,
                     new ArrayList<>(),
-                    new Queen(RANDOM.nextInt(1, 6)),
+                    new Queen(randomParameters.ageOfQueen()),
                     false
             );
 

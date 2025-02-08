@@ -21,9 +21,6 @@ public class EggFrames {
     }
 
 
-    public boolean isWasMovedAnEggsFrame() {
-        return wasMovedAnEggsFrame;
-    }
 
     public void setWasMovedAnEggsFrame(boolean wasMovedAnEggsFrame) {
         this.wasMovedAnEggsFrame = wasMovedAnEggsFrame;
@@ -87,13 +84,6 @@ public class EggFrames {
         EggFrames newEggFrames = new EggFrames(3, newEggBatches, false);
         logger.debug("Finishing method splitEggFrames");
         return newEggFrames;
-    }
-
-
-    public void addEggBatches(List<Integer> batchesToAdd) {
-        for (int i = 0; i < batchesToAdd.size(); i++)
-            eggsByDay.set(i, eggsByDay.get(i) + batchesToAdd.get(i));
-        numberOfEggFrames++;
     }
 
 
