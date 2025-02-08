@@ -3,7 +3,10 @@ package com.marianbastiurea.lifeofbees.bees;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.Objects;
+import java.util.Random;
 
 import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.*;
 
@@ -19,7 +22,6 @@ public class EggFrames {
         this.numberOfEggFrames = numberOfEggFrames;
         this.eggsByDay = new LinkedList<>(eggsByDay);
     }
-
 
 
     public void setWasMovedAnEggsFrame(boolean wasMovedAnEggsFrame) {
@@ -76,9 +78,11 @@ public class EggFrames {
 
     public EggFrames splitEggFrames() {
         LinkedList<Integer> newEggBatches = new LinkedList<>();
-        for (Integer eggs : eggsByDay) {
-            int halfEggs = eggs / 2;
+        for (int i = 0; i < eggsByDay.size(); i++) {
+            int halfEggs = eggsByDay.get(i) / 2;
+            ;
             newEggBatches.add(halfEggs);
+            eggsByDay.set(i, halfEggs);
         }
         numberOfEggFrames = 3;
         EggFrames newEggFrames = new EggFrames(3, newEggBatches, false);
