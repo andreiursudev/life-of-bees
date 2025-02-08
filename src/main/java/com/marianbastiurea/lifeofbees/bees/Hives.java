@@ -59,7 +59,6 @@ public class Hives {
             return;
         }
         hive.setItWasSplit(true);
-        //TODO fix reference problem
         EggFrames newEggFrames = hive.getEggFrames().splitEggFrames();
         hive.setEggFrames(newEggFrames);
         HoneyFrames newHoneyFrames = hive.getHoneyFrames().splitHoneyFrames();
