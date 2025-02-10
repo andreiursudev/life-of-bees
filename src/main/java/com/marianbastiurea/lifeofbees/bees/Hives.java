@@ -55,14 +55,13 @@ public class Hives {
     public void splitHive(Integer hiveId) {
         logger.debug("Starting splitHive for hiveId: {}", hiveId);
         Hive hive = getHiveById(hiveId);
+
         if (!hive.getEggFrames().isMaxNumberOfEggFrames() || hive.isItWasSplit()) {
             return;
         }
         hive.setItWasSplit(true);
         EggFrames newEggFrames = hive.getEggFrames().splitEggFrames();
-        hive.setEggFrames(newEggFrames);
         HoneyFrames newHoneyFrames = hive.getHoneyFrames().splitHoneyFrames();
-        hive.setHoneyFrames(newHoneyFrames);
         hives.add(new Hive(
                 hives.size() + 1,
                 true,

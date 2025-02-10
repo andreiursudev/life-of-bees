@@ -84,9 +84,8 @@ public class EggFrames {
             eggsByDay.set(i, halfEggs);
         }
         numberOfEggFrames = 3;
-        EggFrames newEggFrames = new EggFrames(3, newEggBatches, false);
-        logger.debug("Finishing method splitEggFrames");
-        return newEggFrames;
+
+        return new EggFrames(3, newEggBatches, false);
     }
 
 

@@ -20,7 +20,6 @@ class SplitHiveConsumerTest {
         BeesBatches beesBatches = createBeesBatches(10, 100);
         BeesBatches halfBeesBatches = createBeesBatches(10, 50);
         Hives hives = new Hives(new Hive(1, false, eggFrames, honeyFrames, beesBatches, new ArrayList<>(), new Queen(1), true));
-
         hives.splitHive(1);
 
         Hives actual = new Hives(
