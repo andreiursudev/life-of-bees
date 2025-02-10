@@ -80,7 +80,6 @@ public class EggFrames {
         LinkedList<Integer> newEggBatches = new LinkedList<>();
         for (int i = 0; i < eggsByDay.size(); i++) {
             int halfEggs = eggsByDay.get(i) / 2;
-            ;
             newEggBatches.add(halfEggs);
             eggsByDay.set(i, halfEggs);
         }

@@ -55,7 +55,7 @@ public class ApiaryTest {
     }
 
     @Test
-    void testUpdateHoneyStock_successfulSale() {
+    void testUpdateHoneyStockSuccessfulSale() {
 
         HarvestHoney initialHarvest = new HarvestHoney(10.0, 5.0, 8.0, 12.0, 6.0, 4.0);
         Apiary apiary = new Apiary(initialHarvest);
