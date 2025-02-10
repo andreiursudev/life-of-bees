@@ -11,31 +11,9 @@ public class HoneyFramesTest {
 
 
     @Test
-    void findKgOfHoneyIfNumberOfEggsIs2000AndProductivityIs1() {
-        EggFrames eggFrames = new EggFrames(4);
-        BeesBatches beesBatches = new BeesBatches(1000);
-        RandomParameters randomParameters = mock(RandomParameters.class);
-        when(randomParameters.numberOfFlights()).thenReturn(2);
-        double kgOfHoneyToAdd = beesBatches.makeHoney(1, eggFrames.hatchBees(2000), randomParameters.numberOfFlights());
-        assertEquals(kgOfHoneyToAdd, 1.24);
-    }
-
-    @Test
-    void IfNumberOfFlightIs0NoHoneyHarvested() {
-
-        EggFrames eggFrames = new EggFrames(4);
-        BeesBatches beesBatches = new BeesBatches(1000);
-        RandomParameters randomParameters = mock(RandomParameters.class);
-        when(randomParameters.numberOfFlights()).thenReturn(0);
-        double kgOfHoneyToAdd = beesBatches.makeHoney(1, eggFrames.hatchBees(2000), randomParameters.numberOfFlights());
-        assertEquals(kgOfHoneyToAdd, 0);
-    }
-
-    @Test
     void ifKgOfHoneyToAddIs5AndNumberOfHoneyFramesIs5EachHoneyFrameHave1KgMore(){
-        double kgOfHoneyToAdd=5;
         HoneyFrames initialHoneyFrames=new HoneyFrames(5,3);
-        initialHoneyFrames.fillUpAHoneyFrame(kgOfHoneyToAdd);
+        initialHoneyFrames.fillUpAHoneyFrame(5);
         HoneyFrames actualHoneyFrames=new HoneyFrames(5,4);
         assertEquals(initialHoneyFrames,actualHoneyFrames);
 

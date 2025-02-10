@@ -18,7 +18,7 @@ public class QueenTest {
         initialQueen = new Queen(3);
     }
 
-    private void testQueenChange(double chance, BeeTime beeTime, boolean shouldChange) {
+    private void QueenChange(double chance, BeeTime beeTime, boolean shouldChange) {
         when(randomParameters.chanceToChangeQueen()).thenReturn(chance);
         Hive hive = new Hive(initialQueen);
         hive.maybeChangeQueen(beeTime, randomParameters);
@@ -29,17 +29,26 @@ public class QueenTest {
 
     @Test
     void wrongTimeToChangeQueen() {
-        testQueenChange(0.2, new BeeTime(2023, 5, 2), false);
+        QueenChange(0.2, new BeeTime(2023, 5, 2), false);
     }
 
     @Test
     void wrongAgeToChangeQueen() {
-        testQueenChange(0.5, new BeeTime(2023, 5, 1), false);
+        QueenChange(0.5, new BeeTime(2023, 5, 1), false);
     }
 
     @Test
-    void changeQueen() {
-        testQueenChange(0.2, new BeeTime(2023, 5, 1), true);
+    void wrightTimeChangeQueen() {
+        QueenChange(0.2, new BeeTime(2023, 5, 1), true);
+    }
+
+
+    @Test
+    void whenQueensAgeIs5ThanChangeQueen() {
+        when(randomParameters.chanceToChangeQueen()).thenReturn(0.9);
+        Hive hive = new Hive(new Queen(5));
+        hive.maybeChangeQueen(new BeeTime(2023, 7, 1), randomParameters);
+        assertEquals(0, hive.getQueen().getAgeOfQueen(), "New queen should have age 0");
     }
 
     @Test
