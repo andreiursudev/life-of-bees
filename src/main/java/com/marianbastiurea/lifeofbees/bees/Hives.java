@@ -96,6 +96,8 @@ public class Hives {
     public String toString() {
         return "Hives{" +
                 "hives=" + hives +
+                ", randomParameters=" + randomParameters +
+                ", currentDate=" + currentDate +
                 '}';
     }
 
