@@ -17,5 +17,5 @@ public enum HoneyType {
     public double getProductivity() {
         return productivity;
     }
-    
+
 }

@@ -9,6 +9,7 @@ import java.util.List;
 @Repository
 public interface GameHistoryRepository extends MongoRepository<GameHistory, String> {
     List<GameHistory> findByGameId(String gameId);
+
     boolean existsByGameId(String gameId);
 
 }

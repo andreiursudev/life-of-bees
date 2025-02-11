@@ -5,27 +5,28 @@ import java.util.Objects;
 import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.maxEggsDailyLaidByQueen;
 
 public class Queen {
-    private int ageOfQueen;
     public double feedBeesIndex;
+    private int ageOfQueen;
 
     public Queen(int ageOfQueen) {
         this.ageOfQueen = ageOfQueen;
-        this.feedBeesIndex=1.0;
+        this.feedBeesIndex = 1.0;
     }
-/*
-just for tests
 
- */
+    /*
+    just for tests
+
+     */
     public Queen(int ageOfQueen, double feedBeesIndex) {
         this.ageOfQueen = ageOfQueen;
-        this.feedBeesIndex=feedBeesIndex;
-    }
-
-    public void setFeedBeesIndex(double feedBeesIndex) {
         this.feedBeesIndex = feedBeesIndex;
     }
 
     public Queen() {
+    }
+
+    public void setFeedBeesIndex(double feedBeesIndex) {
+        this.feedBeesIndex = feedBeesIndex;
     }
 
     public int getAgeOfQueen() {
@@ -37,7 +38,7 @@ just for tests
     }
 
     public int makeEggs(double productivity, double weatherIndex) {
-        return (int) (maxEggsDailyLaidByQueen * this.ageOfQueenIndex() * productivity * weatherIndex*feedBeesIndex);
+        return (int) (maxEggsDailyLaidByQueen * this.ageOfQueenIndex() * productivity * weatherIndex * feedBeesIndex);
     }
 
     public double ageOfQueenIndex() {
@@ -61,6 +62,7 @@ just for tests
     public int hashCode() {
         return Objects.hash(ageOfQueen, feedBeesIndex);
     }
+
     @Override
     public String toString() {
         return "Queen{" +

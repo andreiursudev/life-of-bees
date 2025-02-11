@@ -28,11 +28,11 @@ public class RandomParameters {
         return random.nextInt(3, 5);
     }
 
-    public int numberOfBees(){
+    public int numberOfBees() {
         return random.nextInt(600, 700);
     }
 
-    public int ageOfQueen(){
+    public int ageOfQueen() {
         return random.nextInt(1, 6);
     }
 

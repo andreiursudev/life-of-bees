@@ -1,29 +1,25 @@
 package com.marianbastiurea.lifeofbees.action;
 
-import com.marianbastiurea.lifeofbees.bees.EggFrames;
-import com.marianbastiurea.lifeofbees.bees.Hive;
-import com.marianbastiurea.lifeofbees.bees.Hives;
 import com.marianbastiurea.lifeofbees.time.BeeTime;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class InsectControlProducerTest {
     @Test
     void cantDoInsectControlIfMonthIsMarch() {
         Optional<Boolean> result = new InsectControlProducer().produce(
-                        new BeeTime(2023, 3, 22)
+                new BeeTime(2023, 3, 22)
         );
-       assertTrue(result.isEmpty(), "Insect control should not be allowed in March.");
+        assertTrue(result.isEmpty(), "Insect control should not be allowed in March.");
     }
 
     @Test
     void cantDoInsectControlIfMonthIsAprilAndDayIs1() {
         Optional<Boolean> result = new InsectControlProducer().produce(
-                        new BeeTime(2023, 4, 1)
+                new BeeTime(2023, 4, 1)
         );
         assertTrue(result.isEmpty(), "Insect control should not be allowed in 1st April");
     }
@@ -31,7 +27,7 @@ class InsectControlProducerTest {
     @Test
     void canDoInsectControlIfMonthIsAprilAndDayIs10() {
         Optional<Boolean> result = new InsectControlProducer().produce(
-                        new BeeTime(2023, 4, 10)
+                new BeeTime(2023, 4, 10)
         );
         assertTrue(result.isPresent(), "Insect control should be allowed on the last valid day.");
         assertTrue(result.get(), "The result should contain true for the last valid day.");

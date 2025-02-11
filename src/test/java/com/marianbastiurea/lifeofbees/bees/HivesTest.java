@@ -7,8 +7,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 class HivesTest {
@@ -40,7 +41,7 @@ class HivesTest {
                         false,
                         new EggFrames(5, 1.0),
                         new HoneyFrames(4, 4),
-                        new BeesBatches( 140),
+                        new BeesBatches(140),
                         new ArrayList<>(),
                         new Queen(3),
                         false)), hives);

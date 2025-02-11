@@ -1,7 +1,9 @@
 package com.marianbastiurea.lifeofbees.bees;
 
-import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.*;
 import java.util.Objects;
+
+import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.maxKgOfHoneyPerFrame;
+import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.minKgOfHoneyToHarvestAHoneyFrame;
 
 public class HoneyFrame {
 

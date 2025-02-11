@@ -1,6 +1,5 @@
 package com.marianbastiurea.lifeofbees.time;
 
-import com.marianbastiurea.lifeofbees.bees.Apiary;
 import com.marianbastiurea.lifeofbees.bees.HoneyType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,11 +11,12 @@ import java.util.Objects;
 
 public class BeeTime {
 
+    private static final Logger logger = LoggerFactory.getLogger(BeeTime.class);
     private LocalDate currentDate;
     private int year;
     private int month;
     private int day;
-    private static final Logger logger = LoggerFactory.getLogger(BeeTime.class);
+
     public BeeTime(LocalDate currentDate) {
         this.currentDate = currentDate;
     }
@@ -47,7 +47,7 @@ public class BeeTime {
                 && (dayOfMonth == 10 || dayOfMonth == 20);
     }
 
-    public HoneyType honeyType( ) {
+    public HoneyType honeyType() {
         Month month = currentDate.getMonth();
         int dayOfMonth = currentDate.getDayOfMonth();
         return switch (month) {
@@ -91,13 +91,13 @@ public class BeeTime {
     }
 
 
-public boolean timeForInsectControl() {
-    int dayOfMonth = currentDate.getDayOfMonth();
-    int month = currentDate.getMonthValue();
-    boolean isValidMonth = (month >= 4 && month <= 8);
-    boolean isValidDay = (dayOfMonth >= 9 && dayOfMonth <= 16) || (dayOfMonth >= 19 && dayOfMonth <= 25);
-    return isValidMonth && isValidDay;
-}
+    public boolean timeForInsectControl() {
+        int dayOfMonth = currentDate.getDayOfMonth();
+        int month = currentDate.getMonthValue();
+        boolean isValidMonth = (month >= 4 && month <= 8);
+        boolean isValidDay = (dayOfMonth >= 9 && dayOfMonth <= 16) || (dayOfMonth >= 19 && dayOfMonth <= 25);
+        return isValidMonth && isValidDay;
+    }
 
 
     public boolean isEndOfSeason() {
@@ -118,10 +118,12 @@ public boolean timeForInsectControl() {
     public boolean canFeedBees() {
         return currentDate.getMonth() == Month.SEPTEMBER;
     }
+
     public boolean checkInsectControl() {
 
         return this.timeForInsectControl();
     }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

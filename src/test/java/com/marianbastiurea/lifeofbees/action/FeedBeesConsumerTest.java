@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 class FeedBeesConsumerTest {
@@ -47,7 +47,7 @@ class FeedBeesConsumerTest {
         );
         feedBeesConsumer.accept(lifeOfBees, "no");
         logger.info("this is the Queen after: {}", finalHive.getHives().getFirst().getQueen());
-        assertEquals(finalHive,apiary.getHives());
+        assertEquals(finalHive, apiary.getHives());
 
     }
 }

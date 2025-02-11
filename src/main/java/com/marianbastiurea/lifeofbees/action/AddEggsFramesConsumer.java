@@ -2,12 +2,11 @@ package com.marianbastiurea.lifeofbees.action;
 
 import com.marianbastiurea.lifeofbees.bees.Hive;
 import com.marianbastiurea.lifeofbees.bees.Hives;
-import com.marianbastiurea.lifeofbees.game.LifeOfBees;
 
 import java.util.List;
 
 
-public class AddEggsFramesConsumer extends  WeeklyConsumerAbstract <List<Integer>> {
+public class AddEggsFramesConsumer extends WeeklyConsumerAbstract<List<Integer>> {
 
     @Override
     public void accept(Hives hives, List<Integer> eggHiveIds) {

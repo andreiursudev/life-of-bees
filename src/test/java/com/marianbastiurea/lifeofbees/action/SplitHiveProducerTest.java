@@ -6,7 +6,10 @@ import com.marianbastiurea.lifeofbees.bees.Hives;
 import com.marianbastiurea.lifeofbees.time.BeeTime;
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,7 +30,7 @@ class SplitHiveProducerTest {
     @Test
     void couldNotSplitHiveBecauseWrongDate() {
         Hives hives = new Hives(
-                List.of(new Hive(1, new EggFrames(6, new LinkedList<>(Arrays.asList(6400,6400,6400,6400,6400,6400)), false))),
+                List.of(new Hive(1, new EggFrames(6, new LinkedList<>(Arrays.asList(6400, 6400, 6400, 6400, 6400, 6400)), false))),
                 new BeeTime(2025, 3, 10)
         );
         Optional<List<Integer>> result = new SplitHiveProducer().produce(hives);
@@ -38,16 +41,17 @@ class SplitHiveProducerTest {
     @Test
     void couldNotSplitHiveBecauseWasSplit() {
         Hives hives = new Hives(
-                List.of(new Hive(1, new EggFrames(6, new LinkedList<>(Arrays.asList(6400,6400,6400,6400,6400,6400)), false))),
+                List.of(new Hive(1, new EggFrames(6, new LinkedList<>(Arrays.asList(6400, 6400, 6400, 6400, 6400, 6400)), false))),
                 new BeeTime(2025, 4, 10)
         );
         hives.getHiveById(1).setItWasSplit(true);
         assertFalse(new SplitHiveProducer().produce(hives).isPresent());
     }
+
     @Test
     void couldNotSplitHiveEggsFrameNotFull() {
         Hives hives = new Hives(
-                List.of(new Hive(1, new EggFrames(6, new LinkedList<>(Arrays.asList(5000,5000,5000,5000,5000,5000)), false))),
+                List.of(new Hive(1, new EggFrames(6, new LinkedList<>(Arrays.asList(5000, 5000, 5000, 5000, 5000, 5000)), false))),
                 new BeeTime(2025, 4, 10)
         );
         Optional<List<Integer>> result = new SplitHiveProducer().produce(hives);
@@ -58,7 +62,7 @@ class SplitHiveProducerTest {
     @Test
     void splitHiveOk() {
         Hives hives = new Hives(
-                List.of(new Hive(1, new EggFrames(6, new LinkedList<>(Arrays.asList(6400,6400,6400,6400,6400,6400)), false))),
+                List.of(new Hive(1, new EggFrames(6, new LinkedList<>(Arrays.asList(6400, 6400, 6400, 6400, 6400, 6400)), false))),
                 new BeeTime(2025, 4, 10)
         );
         Optional<List<Integer>> result = new SplitHiveProducer().produce(hives);

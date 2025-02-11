@@ -5,7 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class QueenTest {
 
@@ -54,7 +55,7 @@ public class QueenTest {
     @Test
     void ifProductivityIs1AndWeatherIndexIs1QueenShouldLaid2000Eggs() {
         Queen queen = new Queen(1, 1);
-        int numberOfEggs = queen.makeEggs(1,1);
+        int numberOfEggs = queen.makeEggs(1, 1);
         assertEquals(numberOfEggs, 2000);
     }
 }

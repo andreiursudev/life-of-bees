@@ -13,7 +13,7 @@ public class SplitHiveProducer implements ActionOfTheWeekProducer<List<Integer>>
     public Optional<List<Integer>> produce(Hives hives) {
         List<Integer> hiveIds = new ArrayList<>();
         for (Hive hive : hives.getHives()) {
-            if (hive.checkIfHiveCouldBeSplit(hives.getCurrentDate())){
+            if (hive.checkIfHiveCouldBeSplit(hives.getCurrentDate())) {
                 hiveIds.add(hive.getId());
             }
         }

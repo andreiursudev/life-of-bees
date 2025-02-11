@@ -14,6 +14,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class InsectControlConsumerTest {
     private static final Logger logger = LoggerFactory.getLogger(InsectControlConsumerTest.class);
 
+    private static BeesBatches createBeesBatches(int days, int eggs) {
+        BeesBatches beesBatches = new BeesBatches();
+        for (int i = 0; i < days; i++) {
+            beesBatches.add(eggs);
+        }
+        return beesBatches;
+    }
 
     @Test
     void answerIsYesThatMeansBeeKeeperHaveToPay() {
@@ -46,7 +53,7 @@ class InsectControlConsumerTest {
                         initialBeesBatches, new ArrayList<>(), new Queen(1), true));
         Hives finalHive = new Hives(
                 new Hive(1, true, new EggFrames(), new HoneyFrames(),
-                        finalBeesBatches, new ArrayList<>(), new Queen(1,0.7), true));
+                        finalBeesBatches, new ArrayList<>(), new Queen(1, 0.7), true));
         Apiary apiary = new Apiary(initialHive);
         LifeOfBees lifeOfBees = new LifeOfBees(
                 "Test Game", "user123", "private", apiary,
@@ -56,7 +63,6 @@ class InsectControlConsumerTest {
         insectControlConsumer.accept(lifeOfBees, "no");
         assertEquals(finalHive, apiary.getHives());
     }
-
 
     @Test
     void answerIsNoThatMeansFeedBeesIndexIsChanging() {
@@ -79,14 +85,6 @@ class InsectControlConsumerTest {
         assertEquals(finalHive, apiary.getHives());
 
 
-    }
-
-    private static BeesBatches createBeesBatches(int days, int eggs) {
-        BeesBatches beesBatches = new BeesBatches();
-        for (int i = 0; i < days; i++) {
-            beesBatches.add(eggs);
-        }
-        return beesBatches;
     }
 
 }

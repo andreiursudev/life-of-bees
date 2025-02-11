@@ -13,8 +13,8 @@ import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.daysToLiveFor
 import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.maxNumberOfEggFrames;
 
 public class Hives {
-    private List<Hive> hives;
     private static final Logger logger = LoggerFactory.getLogger(Hives.class);
+    private List<Hive> hives;
     private RandomParameters randomParameters;
     private BeeTime currentDate;
 
@@ -30,14 +30,6 @@ public class Hives {
     }
 
 
-    public List<Hive> getHives() {
-        return hives;
-    }
-
-    public void setHives(List<Hive> hives) {
-        this.hives = hives;
-    }
-
     public Hives(List<Hive> hives, BeeTime currentDate) {
         this.hives = hives;
         this.currentDate = currentDate;
@@ -50,6 +42,14 @@ public class Hives {
 
     public Hives(Hive... hives) {
         this.hives = new ArrayList<>(Arrays.asList(hives));
+    }
+
+    public List<Hive> getHives() {
+        return hives;
+    }
+
+    public void setHives(List<Hive> hives) {
+        this.hives = hives;
     }
 
     public void splitHive(Integer hiveId) {

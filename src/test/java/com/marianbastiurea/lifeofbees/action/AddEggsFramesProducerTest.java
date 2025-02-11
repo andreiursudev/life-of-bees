@@ -1,6 +1,8 @@
 package com.marianbastiurea.lifeofbees.action;
 
-import com.marianbastiurea.lifeofbees.bees.*;
+import com.marianbastiurea.lifeofbees.bees.EggFrames;
+import com.marianbastiurea.lifeofbees.bees.Hive;
+import com.marianbastiurea.lifeofbees.bees.Hives;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -9,7 +11,7 @@ import java.util.Optional;
 
 import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.fullnessFactor;
 import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.maxNumberOfEggFrames;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AddEggsFramesProducerTest {
 

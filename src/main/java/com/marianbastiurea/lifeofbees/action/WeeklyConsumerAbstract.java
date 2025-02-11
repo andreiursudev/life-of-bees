@@ -2,11 +2,8 @@ package com.marianbastiurea.lifeofbees.action;
 
 import com.marianbastiurea.lifeofbees.bees.Hives;
 import com.marianbastiurea.lifeofbees.game.LifeOfBees;
-import com.marianbastiurea.lifeofbees.time.BeeTime;
 
-import java.util.Optional;
-
-public abstract class WeeklyConsumerAbstract <T> implements ActionOfTheWeekConsumer<T> {
+public abstract class WeeklyConsumerAbstract<T> implements ActionOfTheWeekConsumer<T> {
 
     @Override
     public void accept(LifeOfBees lifeOfBees, T data) {

@@ -27,7 +27,7 @@ public class GameHistoryService {
 
     public void deleteGameById(String gameId) {
         List<GameHistory> gameHistories = gameHistoryRepository.findByGameId(gameId);
-        System.out.println("acesta e GamesHistory for gameid: "+gameId+"  "+ gameHistories);
+        System.out.println("acesta e GamesHistory for gameid: " + gameId + "  " + gameHistories);
 
         if (!gameHistories.isEmpty()) {
             gameHistoryRepository.deleteAll(gameHistories);

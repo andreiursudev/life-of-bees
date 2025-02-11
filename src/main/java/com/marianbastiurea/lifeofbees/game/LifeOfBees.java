@@ -15,8 +15,8 @@ import java.util.Map;
 
 @Document(collection = "games")
 public class LifeOfBees {
-    private  String gameName;
-    private  String location;
+    private String gameName;
+    private String location;
     @Id
     private String gameId;
     private String userId;
@@ -74,7 +74,7 @@ public class LifeOfBees {
             apiary.honeyHarvestedByHoneyType();
             this.setTotalKgOfHoneyHarvested(apiary.getTotalKgHoneyHarvested());
             Integer removedHiveId = hives.hibernate();
-            if(removedHiveId != null){
+            if (removedHiveId != null) {
                 this.setRemovedHiveId(removedHiveId);
                 break;
             }
@@ -85,8 +85,6 @@ public class LifeOfBees {
         actionsOfTheWeek.createActions(apiary.getHives());
         this.setActionsOfTheWeek(actionsOfTheWeek);
     }
-
-
 
 
     public Apiary getApiary() {
@@ -170,7 +168,7 @@ public class LifeOfBees {
         this.removedHiveId = removedHiveId;
     }
 
-    public BeeTime getCurrentDate(){
+    public BeeTime getCurrentDate() {
         return this.getApiary().getHives().getCurrentDate();
     }
 }

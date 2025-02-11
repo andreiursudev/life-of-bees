@@ -11,11 +11,11 @@ public class Hive {
     public List<HoneyBatch> honeyBatches;
     public boolean itWasHarvested;
     public BeesBatches beesBatches;
+    public HoneyFrames honeyFrames;
+    public RandomParameters randomParameters;
     private int id;
     private EggFrames eggFrames;
     private Queen queen;
-    public HoneyFrames honeyFrames;
-    public RandomParameters randomParameters;
 
     public Hive() {
     }
@@ -43,6 +43,7 @@ public class Hive {
                 new Queen(),
                 false);
     }
+
     public Hive(int id, BeesBatches beesBatches, Queen queen, EggFrames eggFrames) {
         this(
                 id,
@@ -99,15 +100,15 @@ public class Hive {
                 false);
     }
 
-    public Hive(Queen queen){
-   this (0,
-        false,
-        new EggFrames(),
+    public Hive(Queen queen) {
+        this(0,
+                false,
+                new EggFrames(),
                 new HoneyFrames(),
                 new BeesBatches(),
                 new ArrayList<>(),
                 queen,
-        false);
+                false);
 
     }
 
@@ -268,8 +269,8 @@ public List<HoneyBatch> getHoneyBatches() {
         return itWasSplit == hive.itWasSplit && itWasHarvested == hive.itWasHarvested &&
                 id == hive.id && Objects.equals(honeyBatches, hive.honeyBatches) &&
                 Objects.equals(beesBatches, hive.beesBatches) && Objects.equals(eggFrames, hive.eggFrames)
-                && Objects.equals(queen, hive.queen) && Objects.equals(honeyFrames, hive.honeyFrames)&&
-                Objects.equals(randomParameters,hive.randomParameters);
+                && Objects.equals(queen, hive.queen) && Objects.equals(honeyFrames, hive.honeyFrames) &&
+                Objects.equals(randomParameters, hive.randomParameters);
     }
 
     @Override

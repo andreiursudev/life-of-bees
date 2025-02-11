@@ -11,12 +11,13 @@ import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.*;
 
 public class BeesBatches {
 
-    LinkedList<Integer> beesBatches;
     private static final Logger logger = LoggerFactory.getLogger(Apiary.class);
+    LinkedList<Integer> beesBatches;
 
     public BeesBatches() {
         this.beesBatches = new LinkedList<>();
     }
+
     public BeesBatches(LinkedList<Integer> beesBatches) {
         this.beesBatches = beesBatches;
     }

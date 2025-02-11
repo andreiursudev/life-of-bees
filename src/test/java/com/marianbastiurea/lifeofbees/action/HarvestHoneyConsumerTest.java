@@ -25,11 +25,11 @@ class HarvestHoneyConsumerTest {
 
 
         Hives initialHive = new Hives(Collections.singletonList(new Hive(1, beforeHarvestingHoneyFrames)), new BeeTime(2023, 5, 15));
-        System.out.println("Hives inainte de : "+initialHive);
+        System.out.println("Hives inainte de : " + initialHive);
         harvestHoneyConsumer.accept(initialHive, Collections.singletonList(1));
-        System.out.println("Hives dupa: "+initialHive);
+        System.out.println("Hives dupa: " + initialHive);
         assertEquals(initialHive, new Hives(Collections.singletonList(new Hive(1, afterHarvestingHoneyFrames,
-                List.of(new HoneyBatch(1, 4.0, HoneyType.Acacia, false)),true)),new BeeTime(2023, 5, 15)));
+                List.of(new HoneyBatch(1, 4.0, HoneyType.Acacia, false)), true)), new BeeTime(2023, 5, 15)));
 
     }
 
@@ -54,12 +54,13 @@ class HarvestHoneyConsumerTest {
                 new HoneyBatch(1, 17.5, HoneyType.Acacia, false),
                 new HoneyBatch(1, 13.5, HoneyType.Acacia, false));
 
-        Hives initialHive = new Hives(Collections.singletonList(new Hive(1, beforeHarvestingHoneyFrames,acaciaHoneyBatches,false)), new BeeTime(2023, 5, 15));
+        Hives initialHive = new Hives(Collections.singletonList(new Hive(1, beforeHarvestingHoneyFrames, acaciaHoneyBatches, false)), new BeeTime(2023, 5, 15));
         harvestHoneyConsumer.accept(initialHive, Collections.singletonList(1));
-        Hives afterHarvestingHive = new Hives(Collections.singletonList(new Hive(1, afterHarvestingHoneyFrames, doubleAcaciaHoneyBatches,true)),new BeeTime(2023, 5, 15));
+        Hives afterHarvestingHive = new Hives(Collections.singletonList(new Hive(1, afterHarvestingHoneyFrames, doubleAcaciaHoneyBatches, true)), new BeeTime(2023, 5, 15));
         assertEquals(initialHive, afterHarvestingHive);
 
     }
+
     @Test
     void addSecondHoneyBatchDifferentHoneyType() {
         HarvestHoneyConsumer harvestHoneyConsumer = new HarvestHoneyConsumer();
@@ -80,9 +81,9 @@ class HarvestHoneyConsumerTest {
         List<HoneyBatch> doubleDifferentHoneyTypeHoneyBatches = List.of(
                 new HoneyBatch(1, 17.5, HoneyType.Acacia, false),
                 new HoneyBatch(1, 13.5, HoneyType.Rapeseed, false));
-        Hives initialHive = new Hives(Collections.singletonList(new Hive(1, beforeHarvestingHoneyFrames,acaciaHoneyBatches,false)), new BeeTime(2023, 4, 15));
+        Hives initialHive = new Hives(Collections.singletonList(new Hive(1, beforeHarvestingHoneyFrames, acaciaHoneyBatches, false)), new BeeTime(2023, 4, 15));
         harvestHoneyConsumer.accept(initialHive, Collections.singletonList(1));
-        Hives afterHarvestingHive = new Hives(Collections.singletonList(new Hive(1, afterHarvestingHoneyFrames, doubleDifferentHoneyTypeHoneyBatches,true)),new BeeTime(2023, 4, 15));
+        Hives afterHarvestingHive = new Hives(Collections.singletonList(new Hive(1, afterHarvestingHoneyFrames, doubleDifferentHoneyTypeHoneyBatches, true)), new BeeTime(2023, 4, 15));
         assertEquals(initialHive, afterHarvestingHive);
 
     }

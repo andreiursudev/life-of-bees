@@ -3,7 +3,8 @@ package com.marianbastiurea.lifeofbees.bees;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -70,7 +71,6 @@ public class Apiary {
     }
 
 
-
     public void updateHoneyStock(HarvestHoney soldHoneyData) {
         logger.debug("Starting updateHoneyStock method with soldHoneyData = {}", soldHoneyData);
 
@@ -82,7 +82,6 @@ public class Apiary {
 
         logger.debug("Finished updateHoneyStock. Updated totalHarvestedHoney = {}", totalHarvestedHoney);
     }
-
 
 
 }

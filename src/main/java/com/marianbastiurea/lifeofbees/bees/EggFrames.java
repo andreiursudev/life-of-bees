@@ -12,21 +12,17 @@ import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.*;
 
 public class EggFrames {
 
-    private int numberOfEggFrames;
-    public LinkedList<Integer> eggsByDay;
-    public boolean wasMovedAnEggsFrame;
     private static final Logger logger = LoggerFactory.getLogger(EggFrames.class);
     public static RandomParameters randomParameters;
+    public LinkedList<Integer> eggsByDay;
+    public boolean wasMovedAnEggsFrame;
+    private int numberOfEggFrames;
 
     public EggFrames(int numberOfEggFrames, LinkedList<Integer> eggsByDay) {
         this.numberOfEggFrames = numberOfEggFrames;
         this.eggsByDay = new LinkedList<>(eggsByDay);
     }
 
-
-    public void setWasMovedAnEggsFrame(boolean wasMovedAnEggsFrame) {
-        this.wasMovedAnEggsFrame = wasMovedAnEggsFrame;
-    }
 
     public EggFrames(int numberOfEggFrames, LinkedList<Integer> eggsByDay, boolean wasMovedAnEggsFrame) {
         this.numberOfEggFrames = numberOfEggFrames;
@@ -51,13 +47,11 @@ public class EggFrames {
         this.wasMovedAnEggsFrame = wasMovedAnEggsFrame;
     }
 
-
     public EggFrames(int numberOfEggFrames, double eggFramesFillPercentage) {
         this.numberOfEggFrames = numberOfEggFrames;
         double o = numberOfEggFrames * maxEggPerFrame * eggFramesFillPercentage / daysToHatch;
         this.eggsByDay = new LinkedList<>(Collections.nCopies(daysToHatch, (int) o));
     }
-
 
     public static EggFrames getRandomEggFrames() {
         Random random = new Random();
@@ -67,6 +61,9 @@ public class EggFrames {
         return eggFrames;
     }
 
+    public void setWasMovedAnEggsFrame(boolean wasMovedAnEggsFrame) {
+        this.wasMovedAnEggsFrame = wasMovedAnEggsFrame;
+    }
 
     public int getNumberOfEggFrames() {
         return numberOfEggFrames;

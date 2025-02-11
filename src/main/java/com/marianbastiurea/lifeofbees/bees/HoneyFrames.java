@@ -1,13 +1,16 @@
 package com.marianbastiurea.lifeofbees.bees;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Random;
 
-import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.*;
+import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.maxNumberOfHoneyFrames;
 
 public class HoneyFrames {
 
-    public List<HoneyFrame> honeyFrame;
     public static RandomParameters randomParameters;
+    public List<HoneyFrame> honeyFrame;
 
     public HoneyFrames() {
     }
@@ -78,13 +81,13 @@ public class HoneyFrames {
         }
         return newHiveHoneyFrames;
     }
+
     public void hibernateHoneyFrames() {
         if (honeyFrame.size() > 1) {
             honeyFrame.remove(honeyFrame.size() - 1);
             honeyFrame.remove(honeyFrame.size() - 1);
         }
     }
-
 
 
     public void fillUpAHoneyFrame(double kgOfHoneyToAdd) {
@@ -113,7 +116,6 @@ public class HoneyFrames {
                 "honeyFrame=" + honeyFrame +
                 '}';
     }
-
 
 
 }
