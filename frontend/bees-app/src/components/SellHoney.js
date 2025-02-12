@@ -23,7 +23,7 @@ const RowText = ({ honeyType, quantity, price, onQuantityChange }) => {
         setSellQuantity(value);
         onQuantityChange(value, honeyType, price);
     };
-    
+
 
     const totalValue = (sellQuantity * price).toFixed(2);
 
@@ -116,7 +116,7 @@ const SellHoney = () => {
                 totalValue: parseFloat(totalSoldValue),
             };
 
-            console.log('Payload trimis din SellHoney:', JSON.stringify(payload, null, 2));
+            console.log('Payload from SellHoney:', JSON.stringify(payload, null, 2));
 
             await sendSellHoneyQuantities.updateHoneyStock(gameId, formattedSoldData, parseFloat(totalSoldValue));
             navigate('/gameView', { state: { gameId } });

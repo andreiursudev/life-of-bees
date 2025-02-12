@@ -44,7 +44,7 @@ const AuthModal = ({ handleClose, handleSubmit, handleInputChange, formData, isS
             localStorage.setItem('userId', response.userId);
             localStorage.setItem('username', response.username);
 
-            console.log('Autentificare cu GitHub reușită:', {
+            console.log('GitHub authentication success', {
                 username: response.username,
                 token: response.token,
                 userId: response.userId,

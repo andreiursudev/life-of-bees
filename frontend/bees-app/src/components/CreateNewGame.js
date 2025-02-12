@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { createGame, fetchLocations, fetchWeatherForStartDate, getGame } from './BeesApiService';
 
 
-const NewGameModal = ({ handleClose, gameType, userId,username }) => {
+const NewGameModal = ({ handleClose, gameType, userId, username }) => {
     useEffect(() => {
         console.log('Received userId in NewGameModal:', userId);
     }, [userId]);
@@ -31,22 +31,22 @@ const NewGameModal = ({ handleClose, gameType, userId,username }) => {
                 gameType,
                 username
             };
-            console.log('jocul este setat ca', gameType)
+            console.log('Game Type', gameType)
             console.log('Game data for createNewGame sent:', gameData);
             const response = await createGame(gameData);
-            console.log('Răspunsul primit de la createGame:', response);
+            console.log('response from createGame:', response);
             const { gameId, token } = response;
-            console.log('ID-ul jocului este:', gameId);
-            console.log('Tokenul JWT este:', token);
+            console.log(' game ID:', gameId);
+            console.log('Tokenul JWT:', token);
             const gameDetails = await getGame(gameId);
-            console.log('Detaliile jocului sunt:', gameDetails);
+            console.log('game details:', gameDetails);
             navigate('/GameView', {
                 state: {
                     gameId: gameId,
                 }
             });
         } catch (error) {
-            console.error('Eroare la pornirea jocului în CreateNewGame:', error);
+            console.error('Error starting game in CreateNewGame:', error);
         }
     };
 

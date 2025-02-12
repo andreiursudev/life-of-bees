@@ -22,7 +22,7 @@ const HiveHistory = () => {
         const fetchHiveHistory = async () => {
             try {
                 const data = await getHiveHistory(gameId, hiveId);
-                console.log('acestea sunt datele pentru HiveHistory', data)
+                console.log('Data', data)
                 setHiveHistoryData(data);
             } catch (err) {
                 console.error('Error fetching hive history:', err);

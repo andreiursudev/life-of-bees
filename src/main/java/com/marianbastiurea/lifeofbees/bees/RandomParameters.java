@@ -1,6 +1,8 @@
 package com.marianbastiurea.lifeofbees.bees;
 
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class RandomParameters {
     Random random = new Random();
@@ -34,6 +36,12 @@ public class RandomParameters {
 
     public int ageOfQueen() {
         return random.nextInt(1, 6);
+    }
+
+    public List<Integer> getRandomEggCounts(int count) {
+        return random.ints(count, 800, 901)
+                .boxed()
+                .collect(Collectors.toList());
     }
 
     @Override

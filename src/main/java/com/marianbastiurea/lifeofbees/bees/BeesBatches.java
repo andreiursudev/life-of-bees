@@ -11,7 +11,7 @@ import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.*;
 
 public class BeesBatches {
 
-    private static final Logger logger = LoggerFactory.getLogger(Apiary.class);
+    private static final Logger logger = LoggerFactory.getLogger(BeesBatches.class);
     LinkedList<Integer> beesBatches;
 
     public BeesBatches() {

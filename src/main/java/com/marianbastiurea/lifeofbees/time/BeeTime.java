@@ -1,8 +1,6 @@
 package com.marianbastiurea.lifeofbees.time;
 
 import com.marianbastiurea.lifeofbees.bees.HoneyType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -11,11 +9,7 @@ import java.util.Objects;
 
 public class BeeTime {
 
-    private static final Logger logger = LoggerFactory.getLogger(BeeTime.class);
     private LocalDate currentDate;
-    private int year;
-    private int month;
-    private int day;
 
     public BeeTime(LocalDate currentDate) {
         this.currentDate = currentDate;

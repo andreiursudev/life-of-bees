@@ -3,7 +3,7 @@ package com.marianbastiurea.lifeofbees.action;
 import com.marianbastiurea.lifeofbees.bees.Hives;
 import com.marianbastiurea.lifeofbees.game.LifeOfBees;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -11,7 +11,7 @@ public class ActionsOfTheWeek {
     private Map<ActionType, Object> actions;
 
     public ActionsOfTheWeek() {
-        this.actions = new HashMap<>();
+        this.actions = new EnumMap<>(ActionType.class);
     }
 
     @Override

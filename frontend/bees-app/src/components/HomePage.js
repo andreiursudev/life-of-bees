@@ -90,7 +90,7 @@ const HomePage = () => {
             localStorage.setItem('userId', response.userId);
             localStorage.setItem('username', username);
             console.log('Username saved to localStorage in SignIn:', username);
-            console.log('User signed in signIn:', {userId, username });
+            console.log('User signed in signIn:', { userId, username });
             setIsAuthenticated(true);
             setShowAuthModal(false);
             setUsername(username);
@@ -132,14 +132,14 @@ const HomePage = () => {
 
     const handleDelete = async (gameId) => {
         try {
-            await deleteGame(gameId); 
-            setGames((prevGames) => prevGames.filter((game) => game.id !== gameId)); 
-            console.log(`Jocul cu ID-ul ${gameId} a fost șters.`);
+            await deleteGame(gameId);
+            setGames((prevGames) => prevGames.filter((game) => game.id !== gameId));
+            console.log(`Game with ID ${gameId} has been deleted.`);
         } catch (error) {
-            console.error(`Eroare la ștergerea jocului cu ID-ul ${gameId}:`, error.message);
+            console.error(`Error deleting game ${gameId}:`, error.message);
         }
     };
-    
+
 
     return (
         <div className="container">
@@ -194,30 +194,30 @@ const HomePage = () => {
                     </li>
                 </ul>
 
-                    <div className="tab-content pt-3">
-                        {activeTab === "Public Game" && (
-                                <ApiaryCardsRow
-                                    gameType="public"
-                                    isAuthenticated={isAuthenticated}
-                                    userId={userId}
-                                    onGameClick={handleGameClick}
-                                    handleDelete={handleDelete}
-                                />
-                        )}
+                <div className="tab-content pt-3">
+                    {activeTab === "Public Game" && (
+                        <ApiaryCardsRow
+                            gameType="public"
+                            isAuthenticated={isAuthenticated}
+                            userId={userId}
+                            onGameClick={handleGameClick}
+                            handleDelete={handleDelete}
+                        />
+                    )}
 
-                        {activeTab === "Private Game" && isAuthenticated && (
-                                <div>
-                                    <ApiaryCardsRow
-                                        gameType="private"
-                                        isAuthenticated={isAuthenticated}
-                                        userId={userId}
-                                        onGameClick={handleGameClick}
-                                        handleDelete={handleDelete}
-                                    />
-                                </div>
-                        )}
-                    </div>
-                
+                    {activeTab === "Private Game" && isAuthenticated && (
+                        <div>
+                            <ApiaryCardsRow
+                                gameType="private"
+                                isAuthenticated={isAuthenticated}
+                                userId={userId}
+                                onGameClick={handleGameClick}
+                                handleDelete={handleDelete}
+                            />
+                        </div>
+                    )}
+                </div>
+
             </div>
 
             {showPublicModal && (

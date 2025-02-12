@@ -44,20 +44,27 @@ public class Apiary {
 
     public void honeyHarvestedByHoneyType() {
         logger.debug("Starting honeyHarvestedByHoneyType method.");
+
         List<Hive> hiveList = hives.getHives();
-        Map<HoneyType, Double> honeyHarvested = hiveList.stream()
+        hiveList.stream()
                 .flatMap(hive -> hive.getHoneyBatches().stream())
                 .filter(honeyBatch -> !honeyBatch.isProcessed())
-                .peek(honeyBatch -> honeyBatch.setProcessed(true))
+                .forEach(honeyBatch -> honeyBatch.setProcessed(true));
+
+        Map<HoneyType, Double> honeyHarvested = hiveList.stream()
+                .flatMap(hive -> hive.getHoneyBatches().stream())
+                .filter(HoneyBatch::isProcessed)
                 .collect(Collectors.groupingBy(
                         HoneyBatch::getHoneyType,
                         Collectors.summingDouble(HoneyBatch::getKgOfHoney)
                 ));
 
+
         honeyHarvested.forEach((honeyType, amount) -> {
             double currentAmount = totalHarvestedHoney.getHoneyAmount(honeyType);
             totalHarvestedHoney.setHoneyAmount(honeyType, currentAmount + amount);
         });
+
         logger.debug("Completed honeyHarvestedByHoneyType method.");
     }
 

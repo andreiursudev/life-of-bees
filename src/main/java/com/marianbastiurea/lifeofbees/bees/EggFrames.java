@@ -54,9 +54,10 @@ public class EggFrames {
     }
 
     public static EggFrames getRandomEggFrames() {
-        Random random = new Random();
         EggFrames eggFrames = new EggFrames(randomParameters.numberOfEggFrames());
-        random.ints(daysToHatch, 800, 901).forEach(eggFrames::hatchBees);
+        randomParameters.getRandomEggCounts(daysToHatch)
+                .forEach(eggFrames::hatchBees);
+
         logger.debug("Finishing method getRandomEggFrames");
         return eggFrames;
     }
