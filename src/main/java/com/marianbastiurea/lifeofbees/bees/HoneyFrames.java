@@ -9,8 +9,9 @@ import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.maxNumberOfHo
 
 public class HoneyFrames {
 
-    public static RandomParameters randomParameters;
     public List<HoneyFrame> honeyFrame;
+
+    public static RandomParameters randomParameters = new RandomParameters();
 
     public HoneyFrames() {
     }
@@ -96,6 +97,7 @@ public class HoneyFrames {
             honeyFrame.fill(kgOfHoneyToAdd / numberOfHoneyFrameNotFull);
         }
     }
+
 
     @Override
     public boolean equals(Object o) {

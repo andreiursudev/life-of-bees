@@ -215,10 +215,9 @@ const GameView = () => {
             const harvestKey = `HARVEST_HONEY-${hiveId}`;
             const isHarvesting = !newSelectedActions[harvestKey];
 
-            // Actualizăm starea pentru HARVEST_HONEY
+
             newSelectedActions[harvestKey] = isHarvesting;
 
-            // Dacă recoltăm mierea, dezactivăm ADD_EGGS_FRAME și ADD_HONEY_FRAME pentru acel stup
             if (isHarvesting) {
                 newSelectedActions[`ADD_EGGS_FRAME-${hiveId}`] = false;
                 newSelectedActions[`ADD_HONEY_FRAME-${hiveId}`] = false;
@@ -396,6 +395,7 @@ const GameView = () => {
                                                             case "ADD_EGGS_FRAME":
                                                             case "ADD_HONEY_FRAME":
                                                             case "SPLIT_HIVE":
+                                                            case "HARVEST_HONEY":
                                                                 return actionData.map((hiveId, index) => (
                                                                     <div key={`${actionType}-${index}`} className="form-check">
                                                                         <input
@@ -413,9 +413,9 @@ const GameView = () => {
 
                                                             case "MOVE_EGGS_FRAME":
                                                                 return actionData.map((pair, index) => {
-                                                                    const checkboxKey = `${actionType}-${pair[0]}-${pair[1]}`;
+                                                                    const checkboxKey = `${actionType}-${pair.sourceHiveId}-${pair.destinationHiveId}`;
                                                                     const isInactive = Object.keys(selectedActions).some(key =>
-                                                                        key.startsWith(`${actionType}-${pair[0]}-`) && selectedActions[key]
+                                                                        key.startsWith(`${actionType}-${pair.sourceHiveId}-`) && selectedActions[key]
                                                                     );
                                                                     return (
                                                                         <div key={`${actionType}-${index}`}>
@@ -439,7 +439,8 @@ const GameView = () => {
                                                                                     }}
                                                                                     disabled={isInactive}
                                                                                 />
-                                                                                Move frame from hive {pair[0]} to hive {pair[1]}
+                                                                                Move frame from hive {pair.sourceHiveId} to hive {pair.destinationHiveId}
+
                                                                             </label>
                                                                         </div>
                                                                     );
@@ -472,17 +473,6 @@ const GameView = () => {
                                                                             </label>
                                                                         </div>
                                                                     </div>
-                                                                );
-
-                                                            case "HARVEST_HONEY":
-                                                                return (
-                                                                    <p>
-                                                                        {actionData.map((hiveId, index) => (
-                                                                            <span key={`${actionType}-${index}`}>
-                                                                                Hive {hiveId}{index < actionData.length - 1 ? ', ' : ''}
-                                                                            </span>
-                                                                        ))}
-                                                                    </p>
                                                                 );
 
                                                             default:

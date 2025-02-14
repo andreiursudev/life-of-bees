@@ -50,10 +50,10 @@ class InsectControlConsumerTest {
 
         Hives initialHive = new Hives(
                 new Hive(1, true, new EggFrames(), new HoneyFrames(),
-                        initialBeesBatches, new ArrayList<>(), new Queen(1), true));
+                        initialBeesBatches, new ArrayList<>(), new Queen(1)));
         Hives finalHive = new Hives(
                 new Hive(1, true, new EggFrames(), new HoneyFrames(),
-                        finalBeesBatches, new ArrayList<>(), new Queen(1, 0.7), true));
+                        finalBeesBatches, new ArrayList<>(), new Queen(1, 0.7)));
         Apiary apiary = new Apiary(initialHive);
         LifeOfBees lifeOfBees = new LifeOfBees(
                 "Test Game", "user123", "private", apiary,
@@ -71,7 +71,7 @@ class InsectControlConsumerTest {
         BeesBatches finalBeesBatches = createBeesBatches(30, 70);
         Hives finalHive = new Hives(
                 new Hive(1, true, new EggFrames(), new HoneyFrames(),
-                        finalBeesBatches, new ArrayList<>(), new Queen(1), true));
+                        finalBeesBatches, new ArrayList<>(), new Queen(1)));
         logger.info("this is the Queen before: {}", finalHive.getHives().getFirst().getQueen());
 
         Apiary apiary = new Apiary(finalHive);

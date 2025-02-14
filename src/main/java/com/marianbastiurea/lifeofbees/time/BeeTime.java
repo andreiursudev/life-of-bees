@@ -36,10 +36,15 @@ public class BeeTime {
     }
 
     public boolean timeToHarvestHive() {
-        int dayOfMonth = currentDate.getDayOfMonth();
-        return (currentDate.getMonthValue() >= 4 && currentDate.getMonthValue() <= 8)
-                && (dayOfMonth == 10 || dayOfMonth == 20);
+        int month = currentDate.getMonthValue();
+        int day = currentDate.getDayOfMonth();
+
+        boolean isHarvestMonth = (month >= 4 && month <= 8);
+        boolean isHarvestDay = (day >= 9 && day <= 17) || (day >= 19 && day <= 26);
+
+        return isHarvestMonth && isHarvestDay;
     }
+
 
     public HoneyType honeyType() {
         Month month = currentDate.getMonth();

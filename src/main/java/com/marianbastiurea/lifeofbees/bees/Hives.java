@@ -15,8 +15,8 @@ import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.maxNumberOfEg
 public class Hives {
     private static final Logger logger = LoggerFactory.getLogger(Hives.class);
     private List<Hive> hives;
-    private RandomParameters randomParameters;
     private BeeTime currentDate;
+    public static RandomParameters randomParameters = new RandomParameters();
 
     public Hives() {
         this.hives = new ArrayList<>();
@@ -69,8 +69,7 @@ public class Hives {
                 newHoneyFrames,
                 hive.getBeesBatches().splitBeesBatches(),
                 new ArrayList<>(),
-                new Queen(0),
-                false));
+                new Queen(0)));
         logger.debug("Completed splitHive for hiveId: {}", hiveId);
 
     }
@@ -180,7 +179,6 @@ public class Hives {
                 hive.getHoneyFrames().hibernateHoneyFrames();
                 hive.getBeesBatches().hibernateBeesBatches();
                 hive.getHoneyBatches().clear();
-                hive.setItWasHarvested(false);
             });
             logger.debug("Completed hibernate method.");
             currentDate.changeYear();
@@ -204,8 +202,7 @@ public class Hives {
                     HoneyFrames.getRandomHoneyFrames(),
                     beesBatches,
                     new ArrayList<>(),
-                    new Queen(randomParameters.ageOfQueen()),
-                    false
+                    new Queen(randomParameters.ageOfQueen())
             );
 
             logger.debug("Hive created: {}", hive);

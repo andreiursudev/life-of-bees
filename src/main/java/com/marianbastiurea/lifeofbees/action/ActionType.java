@@ -7,8 +7,7 @@ public enum ActionType {
     FEED_BEES(new FeedBeesProducer(), new FeedBeesConsumer()),
     SPLIT_HIVE(new SplitHiveProducer(), new SplitHiveConsumer()),
     INSECT_CONTROL(new InsectControlProducer(), new InsectControlConsumer()),
-    HARVEST_HONEY(new HarvestHoneyProducer(), (o, o2) -> {
-    });
+    HARVEST_HONEY(new HarvestHoneyProducer(), new HarvestHoneyConsumer());
 
     private final ActionOfTheWeekProducer producer;
     private final ActionOfTheWeekConsumer biConsumer;

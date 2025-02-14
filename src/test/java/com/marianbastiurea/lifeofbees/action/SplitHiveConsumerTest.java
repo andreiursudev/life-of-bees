@@ -27,12 +27,12 @@ class SplitHiveConsumerTest {
         HoneyFrames halfHoneyFrames = new HoneyFrames(2, 3);
         BeesBatches beesBatches = createBeesBatches(10, 100);
         BeesBatches halfBeesBatches = createBeesBatches(10, 50);
-        Hives hives = new Hives(new Hive(1, false, eggFrames, honeyFrames, beesBatches, new ArrayList<>(), new Queen(1), true));
+        Hives hives = new Hives(new Hive(1, false, eggFrames, honeyFrames, beesBatches, new ArrayList<>(), new Queen(1)));
         hives.splitHive(1);
 
         Hives actual = new Hives(
-                new Hive(1, true, halfEggFrames, halfHoneyFrames, halfBeesBatches, new ArrayList<>(), new Queen(1), true),
-                new Hive(2, true, halfEggFrames, halfHoneyFrames, halfBeesBatches, new ArrayList<>(), new Queen(0), false));
+                new Hive(1, true, halfEggFrames, halfHoneyFrames, halfBeesBatches, new ArrayList<>(), new Queen(1)),
+                new Hive(2, true, halfEggFrames, halfHoneyFrames, halfBeesBatches, new ArrayList<>(), new Queen(0)));
 
         assertEquals(actual, hives);
     }

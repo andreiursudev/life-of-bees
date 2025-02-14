@@ -1,10 +1,13 @@
 package com.marianbastiurea.lifeofbees.bees;
 
+import org.springframework.data.annotation.Transient;
+
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
 public class RandomParameters {
+    @Transient
     Random random = new Random();
 
     public RandomParameters() {

@@ -12,11 +12,11 @@ public class Hive {
     public boolean itWasHarvested;
     public BeesBatches beesBatches;
     public HoneyFrames honeyFrames;
-    public RandomParameters randomParameters;
     private int id;
     private EggFrames eggFrames;
     private Queen queen;
 
+    public static RandomParameters randomParameters = new RandomParameters();
     public Hive() {
     }
 
@@ -28,8 +28,7 @@ public class Hive {
                 new HoneyFrames(),
                 new BeesBatches(),
                 new ArrayList<>(),
-                new Queen(),
-                false);
+                new Queen());
     }
 
     public Hive(int id, BeesBatches beesBatches) {
@@ -40,8 +39,7 @@ public class Hive {
                 new HoneyFrames(),
                 beesBatches,
                 new ArrayList<>(),
-                new Queen(),
-                false);
+                new Queen());
     }
 
     public Hive(int id, BeesBatches beesBatches, Queen queen, EggFrames eggFrames) {
@@ -52,8 +50,7 @@ public class Hive {
                 new HoneyFrames(),
                 beesBatches,
                 new ArrayList<>(),
-                queen,
-                false);
+                queen);
     }
 
     public Hive(int id, HoneyFrames honeyFrames) {
@@ -63,7 +60,7 @@ public class Hive {
                 new EggFrames(),
                 honeyFrames, new BeesBatches(),
                 new ArrayList<>(),
-                new Queen(), false);
+                new Queen());
     }
 
     public Hive(int id, HoneyFrames honeyFrames, List<HoneyBatch> honeyBatches, boolean itWasHarvested) {
@@ -73,8 +70,7 @@ public class Hive {
                 new EggFrames(),
                 honeyFrames, new BeesBatches(),
                 new ArrayList<>(honeyBatches),
-                new Queen(),
-                itWasHarvested);
+                new Queen());
     }
 
     public Hive(int id, List<HoneyBatch> honeyBatches) {
@@ -84,8 +80,7 @@ public class Hive {
                 new EggFrames(),
                 new HoneyFrames(), new BeesBatches(),
                 new ArrayList<>(honeyBatches),
-                new Queen(),
-                false);
+                new Queen());
     }
 
 
@@ -96,8 +91,7 @@ public class Hive {
                 eggFrames,
                 new HoneyFrames(), new BeesBatches(),
                 new ArrayList<>(),
-                new Queen(),
-                false);
+                new Queen());
     }
 
     public Hive(Queen queen) {
@@ -107,8 +101,7 @@ public class Hive {
                 new HoneyFrames(),
                 new BeesBatches(),
                 new ArrayList<>(),
-                queen,
-                false);
+                queen);
 
     }
 
@@ -119,8 +112,7 @@ public class Hive {
             HoneyFrames honeyFrames,
             BeesBatches beesBatches,
             List<HoneyBatch> honeyBatches,
-            Queen queen,
-            boolean itWasHarvested) {
+            Queen queen) {
         this.id = id;
         this.itWasSplit = itWasSplit;
         this.eggFrames = eggFrames;
@@ -128,7 +120,6 @@ public class Hive {
         this.beesBatches = beesBatches;
         this.honeyBatches = honeyBatches;
         this.queen = queen;
-        this.itWasHarvested = itWasHarvested;
     }
 
     public Hive(int id) {
@@ -139,8 +130,7 @@ public class Hive {
                 new HoneyFrames(),
                 new BeesBatches(),
                 new ArrayList<>(),
-                new Queen(),
-                false);
+                new Queen());
     }
 
     public boolean isItWasSplit() {
@@ -208,13 +198,6 @@ public List<HoneyBatch> getHoneyBatches() {
         this.beesBatches = beesBatches;
     }
 
-    public boolean isItWasHarvested() {
-        return itWasHarvested;
-    }
-
-    public void setItWasHarvested(boolean itWasHarvested) {
-        this.itWasHarvested = itWasHarvested;
-    }
 
     public boolean checkIfHiveCouldBeSplit(BeeTime currentDate) {
         return !this.itWasSplit &&
@@ -256,7 +239,6 @@ public List<HoneyBatch> getHoneyBatches() {
                     currentDate.honeyType(),
                     false
             ));
-            setItWasHarvested(true);
         }
     }
 
@@ -266,7 +248,7 @@ public List<HoneyBatch> getHoneyBatches() {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Hive hive = (Hive) o;
-        return itWasSplit == hive.itWasSplit && itWasHarvested == hive.itWasHarvested &&
+        return itWasSplit == hive.itWasSplit &&
                 id == hive.id && Objects.equals(honeyBatches, hive.honeyBatches) &&
                 Objects.equals(beesBatches, hive.beesBatches) && Objects.equals(eggFrames, hive.eggFrames)
                 && Objects.equals(queen, hive.queen) && Objects.equals(honeyFrames, hive.honeyFrames) &&
@@ -276,11 +258,10 @@ public List<HoneyBatch> getHoneyBatches() {
     @Override
     public String toString() {
         return "Hive{" +
-                "itWasSplit=" + itWasSplit +
+                " id=" + id +
+                ", itWasSplit=" + itWasSplit +
                 ", honeyBatches=" + honeyBatches +
-                ", itWasHarvested=" + itWasHarvested +
                 ", beesBatches=" + beesBatches +
-                ", id=" + id +
                 ", eggFrames=" + eggFrames +
                 ", queen=" + queen +
                 ", honeyFrames=" + honeyFrames +

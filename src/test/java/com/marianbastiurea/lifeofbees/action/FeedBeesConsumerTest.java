@@ -38,7 +38,7 @@ class FeedBeesConsumerTest {
         FeedBeesConsumer feedBeesConsumer = new FeedBeesConsumer();
         Hives finalHive = new Hives(
                 new Hive(1, true, new EggFrames(), new HoneyFrames(),
-                        new BeesBatches(), new ArrayList<>(), new Queen(1), true));
+                        new BeesBatches(), new ArrayList<>(), new Queen(1)));
         logger.info("this is the Queen before: {}", finalHive.getHives().getFirst().getQueen());
         Apiary apiary = new Apiary(finalHive);
         LifeOfBees lifeOfBees = new LifeOfBees(

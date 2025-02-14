@@ -27,8 +27,7 @@ class HivesTest {
                         new HoneyFrames(6, 4),
                         new BeesBatches(200),
                         new ArrayList<>(List.of(new HoneyBatch(1, 10.0, HoneyType.Acacia, false))),
-                        new Queen(2),
-                        true),
+                        new Queen(2)),
                 new Hive(5));
 
         Integer removedHiveId = hives.hibernate();
@@ -43,7 +42,6 @@ class HivesTest {
                         new HoneyFrames(4, 4),
                         new BeesBatches(140),
                         new ArrayList<>(),
-                        new Queen(3),
-                        false)), hives);
+                        new Queen(3))), hives);
     }
 }

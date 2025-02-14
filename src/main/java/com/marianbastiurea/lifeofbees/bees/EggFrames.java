@@ -13,7 +13,6 @@ import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.*;
 public class EggFrames {
 
     private static final Logger logger = LoggerFactory.getLogger(EggFrames.class);
-    public static RandomParameters randomParameters;
     public LinkedList<Integer> eggsByDay;
     public boolean wasMovedAnEggsFrame;
     private int numberOfEggFrames;
@@ -22,6 +21,7 @@ public class EggFrames {
         this.numberOfEggFrames = numberOfEggFrames;
         this.eggsByDay = new LinkedList<>(eggsByDay);
     }
+    public static RandomParameters randomParameters = new RandomParameters();
 
 
     public EggFrames(int numberOfEggFrames, LinkedList<Integer> eggsByDay, boolean wasMovedAnEggsFrame) {
