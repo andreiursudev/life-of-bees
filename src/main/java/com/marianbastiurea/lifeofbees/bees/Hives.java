@@ -14,9 +14,9 @@ import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.maxNumberOfEg
 
 public class Hives {
     private static final Logger logger = LoggerFactory.getLogger(Hives.class);
+    public static RandomParameters randomParameters = new RandomParameters();
     private List<Hive> hives;
     private BeeTime currentDate;
-    public static RandomParameters randomParameters = new RandomParameters();
 
     public Hives() {
         this.hives = new ArrayList<>();

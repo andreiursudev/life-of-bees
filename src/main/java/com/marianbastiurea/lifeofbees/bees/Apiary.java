@@ -45,47 +45,46 @@ public class Apiary {
                 '}';
     }
 
-public void honeyHarvestedByHoneyType() {
-    logger.debug("Starting honeyHarvestedByHoneyType method.");
+    public void honeyHarvestedByHoneyType() {
+        logger.debug("Starting honeyHarvestedByHoneyType method.");
 
-    List<Hive> hiveList = hives.getHives();
-    logger.info("Initial honey batches: {}", hiveList.stream()
-            .flatMap(hive -> hive.getHoneyBatches().stream())
-            .collect(Collectors.toList()));
+        List<Hive> hiveList = hives.getHives();
+        logger.info("Initial honey batches: {}", hiveList.stream()
+                .flatMap(hive -> hive.getHoneyBatches().stream())
+                .collect(Collectors.toList()));
 
-    List<HoneyBatch> unprocessedBatches = hiveList.stream()
-            .flatMap(hive -> hive.getHoneyBatches().stream())
-            .filter(honeyBatch -> !honeyBatch.isProcessed()) // Doar cele neprocesate
-            .collect(Collectors.toList());
+        List<HoneyBatch> unprocessedBatches = hiveList.stream()
+                .flatMap(hive -> hive.getHoneyBatches().stream())
+                .filter(honeyBatch -> !honeyBatch.isProcessed()) // Doar cele neprocesate
+                .collect(Collectors.toList());
 
-    unprocessedBatches.forEach(honeyBatch -> {
-        logger.info("Processing honey batch: {}", honeyBatch);
-        honeyBatch.setProcessed(true);
-    });
-    logger.info("Honey batches after processing:");
-    hiveList.forEach(hive -> {
-        logger.info("Hive {}: {}", hive.getId(), hive.getHoneyBatches());
-    });
+        unprocessedBatches.forEach(honeyBatch -> {
+            logger.info("Processing honey batch: {}", honeyBatch);
+            honeyBatch.setProcessed(true);
+        });
+        logger.info("Honey batches after processing:");
+        hiveList.forEach(hive -> {
+            logger.info("Hive {}: {}", hive.getId(), hive.getHoneyBatches());
+        });
 
-    Map<HoneyType, Double> honeyHarvested = unprocessedBatches.stream()
-            .collect(Collectors.groupingBy(
-                    HoneyBatch::getHoneyType,
-                    Collectors.summingDouble(HoneyBatch::getKgOfHoney)
-            ));
+        Map<HoneyType, Double> honeyHarvested = unprocessedBatches.stream()
+                .collect(Collectors.groupingBy(
+                        HoneyBatch::getHoneyType,
+                        Collectors.summingDouble(HoneyBatch::getKgOfHoney)
+                ));
 
-    honeyHarvested.forEach((honeyType, amount) -> {
-        logger.info("Harvested {} kg of {} honey", amount, honeyType);
-    });
+        honeyHarvested.forEach((honeyType, amount) -> {
+            logger.info("Harvested {} kg of {} honey", amount, honeyType);
+        });
 
-    honeyHarvested.forEach((honeyType, amount) -> {
-        double currentAmount = totalHarvestedHoney.getHoneyAmount(honeyType);
-        logger.info("Current amount for {}: {}, adding: {}", honeyType, currentAmount, amount);
-        totalHarvestedHoney.setHoneyAmount(honeyType, currentAmount + amount);
-    });
+        honeyHarvested.forEach((honeyType, amount) -> {
+            double currentAmount = totalHarvestedHoney.getHoneyAmount(honeyType);
+            logger.info("Current amount for {}: {}, adding: {}", honeyType, currentAmount, amount);
+            totalHarvestedHoney.setHoneyAmount(honeyType, currentAmount + amount);
+        });
 
-    logger.debug("Completed honeyHarvestedByHoneyType method. Total harvested: {}", totalHarvestedHoney);
-}
-
+        logger.debug("Completed honeyHarvestedByHoneyType method. Total harvested: {}", totalHarvestedHoney);
+    }
 
 
     public double getTotalKgHoneyHarvested() {

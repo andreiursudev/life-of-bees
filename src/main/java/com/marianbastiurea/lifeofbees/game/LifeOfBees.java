@@ -2,7 +2,6 @@ package com.marianbastiurea.lifeofbees.game;
 
 import com.marianbastiurea.lifeofbees.action.ActionType;
 import com.marianbastiurea.lifeofbees.action.ActionsOfTheWeek;
-import com.marianbastiurea.lifeofbees.action.HarvestHoneyConsumer;
 import com.marianbastiurea.lifeofbees.bees.Apiary;
 import com.marianbastiurea.lifeofbees.bees.Hives;
 import com.marianbastiurea.lifeofbees.time.BeeTime;
@@ -18,6 +17,7 @@ import java.util.Map;
 
 @Document(collection = "games")
 public class LifeOfBees {
+    private static final Logger logger = LoggerFactory.getLogger(LifeOfBees.class);
     private String gameName;
     private String location;
     @Id
@@ -30,7 +30,6 @@ public class LifeOfBees {
     private double moneyInTheBank;
     private double totalKgOfHoneyHarvested;
     private String gameType;
-    private static final Logger logger = LoggerFactory.getLogger(LifeOfBees.class);
 
     public LifeOfBees(String gameName, String userId, String gameType, Apiary apiary,
                       String location, WeatherData weatherData,
@@ -67,7 +66,7 @@ public class LifeOfBees {
     }
 
     public void iterateOneWeek(Map<ActionType, Object> actions, List<WeatherData> weatherDataNextWeek) {
-       logger.info("actions of the week: {}", actions);
+        logger.info("actions of the week: {}", actions);
         actionsOfTheWeek.executeActions(this, actions);
         WeatherData currentWeatherData = null;
         for (int dailyIterator = 0; dailyIterator < 7; dailyIterator++) {

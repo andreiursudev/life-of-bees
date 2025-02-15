@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Hive {
+    public static RandomParameters randomParameters = new RandomParameters();
     public boolean itWasSplit;
     public List<HoneyBatch> honeyBatches;
     public boolean itWasHarvested;
@@ -16,7 +17,6 @@ public class Hive {
     private EggFrames eggFrames;
     private Queen queen;
 
-    public static RandomParameters randomParameters = new RandomParameters();
     public Hive() {
     }
 

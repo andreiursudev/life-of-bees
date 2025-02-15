@@ -21,7 +21,7 @@ public class HarvestHoneyConsumer extends WeeklyConsumerAbstract<List<Integer>> 
                 Hive hive = hives.getHiveById(hiveId);
                 if (hive != null) {
                     hive.harvestHoney(hives.getCurrentDate());
-                    logger.info("this is honeyBatch {} from hive {}",hive.getHoneyBatches(),hiveId);
+                    logger.info("this is honeyBatch {} from hive {}", hive.getHoneyBatches(), hiveId);
                 }
             });
         }

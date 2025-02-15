@@ -9,9 +9,8 @@ import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.maxNumberOfHo
 
 public class HoneyFrames {
 
-    public List<HoneyFrame> honeyFrame;
-
     public static RandomParameters randomParameters = new RandomParameters();
+    public List<HoneyFrame> honeyFrame;
 
     public HoneyFrames() {
     }
