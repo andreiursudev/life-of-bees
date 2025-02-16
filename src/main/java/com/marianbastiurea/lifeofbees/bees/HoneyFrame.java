@@ -1,13 +1,18 @@
 package com.marianbastiurea.lifeofbees.bees;
 
-class HoneyFrame {
-    private double maxKgOfHoneyPerFrame = 4.5;
+import java.util.Objects;
+
+import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.maxKgOfHoneyPerFrame;
+import static com.marianbastiurea.lifeofbees.bees.ApiaryParameters.minKgOfHoneyToHarvestAHoneyFrame;
+
+public class HoneyFrame {
+
+
     private double kgOfHoney;
 
     public HoneyFrame(double kgOfHoney) {
         this.kgOfHoney = kgOfHoney;
     }
-
 
     public void fill(double kgOfHoneyToAdd) {
         if (kgOfHoney < maxKgOfHoneyPerFrame) {
@@ -16,7 +21,7 @@ class HoneyFrame {
     }
 
     public boolean isHarvestable() {
-        return kgOfHoney > 4;
+        return kgOfHoney >= minKgOfHoneyToHarvestAHoneyFrame;
     }
 
     public boolean isFull() {
@@ -30,9 +35,23 @@ class HoneyFrame {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HoneyFrame that = (HoneyFrame) o;
+        return Double.compare(kgOfHoney, that.kgOfHoney) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(maxKgOfHoneyPerFrame, kgOfHoney);
+    }
+
+    @Override
     public String toString() {
-        return "{" +
-                "kgOfHoney=" + kgOfHoney +
+        return "HoneyFrame{" +
+                "maxKgOfHoneyPerFrame=" + maxKgOfHoneyPerFrame +
+                ", kgOfHoney=" + kgOfHoney +
                 '}';
     }
 }

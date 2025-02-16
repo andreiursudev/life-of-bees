@@ -4,7 +4,7 @@ import { getHiveHistory } from './BeesApiService';
 
 const HiveHistory = () => {
     const location = useLocation();
-    const { gameId, hiveId } = location.state || {}; 
+    const { gameId, hiveId } = location.state || {};
 
     const [hiveHistoryData, setHiveHistoryData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -22,7 +22,7 @@ const HiveHistory = () => {
         const fetchHiveHistory = async () => {
             try {
                 const data = await getHiveHistory(gameId, hiveId);
-                console.log('acestea sunt datele pentru HiveHistory', data)
+                console.log('Data', data)
                 setHiveHistoryData(data);
             } catch (err) {
                 console.error('Error fetching hive history:', err);
@@ -63,20 +63,24 @@ const HiveHistory = () => {
                         {hiveHistoryData.length > 0 ? (
                             hiveHistoryData.map((entry, index) => {
                                 const hive = entry.hive;
-                                const beesNumber = hive.beesBatches.reduce((total, batch) => total + batch, 0);
-                                const honeyKg = hive.honeyBatches.reduce((total, batch) => total + batch, 0); // Assume each full honey frame equals 1.5 kg
+                                const beesNumber = hive.beesBatches?.beesBatches?.reduce((sum, batch) => sum + (batch || 0), 0) || 0;
+
+                                const honeyKg = hive.honeyBatches.reduce((total, batch) => total + batch.kgOfHoney, 0);
+
                                 const eggsFrameNo = hive.eggFrames.numberOfEggFrames;
-                                const honeyFrameNo = hive.honeyFrames.length;
+                                const honeyFrameNo = hive.honeyFrames.honeyFrame.length;
 
                                 return (
                                     <tr key={index}>
-                                        <td>{entry.currentDate}</td>
+                                        <td>{entry.currentDate.currentDate}</td>
                                         <td>{entry.weatherData.temperature}°C</td>
                                         <td>{entry.weatherData.windSpeed} km/h</td>
                                         <td>{entry.weatherData.precipitation} mm</td>
                                         <td>{beesNumber}</td>
                                         <td>{hive.queen.ageOfQueen}</td>
-                                        <td>{hive.honeyBatches.length > 0 ? hive.honeyBatches.join(', ') : 'N/A'}</td>
+                                        <td>{hive.honeyBatches.map((batch, index) => (
+                                            <p key={index}>{batch.honeyType}</p>
+                                        ))}</td>
                                         <td>{honeyKg}</td>
                                         <td>${entry.moneyInTheBank}</td>
                                         <td>{eggsFrameNo}</td>

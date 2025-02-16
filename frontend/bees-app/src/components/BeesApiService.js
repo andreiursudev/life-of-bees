@@ -12,8 +12,8 @@ export const getAuthToken = () => {
 
 apiClient.interceptors.request.use(
     (config) => {
-        const token = getAuthToken(); 
-        console.log('acesta e tokenul din apiClient',token)
+        const token = getAuthToken();
+        console.log('This is Token from API Client', token)
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
@@ -26,8 +26,8 @@ apiClient.interceptors.request.use(
 export const registerUser = async (registerData) => {
     try {
         const response = await apiClient.post('/auth/register', registerData);
-        const { token, userId } = response.data; 
-        console.log('datele din Java in resgisterUser:',response.data);
+        const { token, userId } = response.data;
+        console.log('Register User from Java:', response.data);
         return { token, userId };
     } catch (error) {
         console.error('Error in registerUser:', error.response?.data || error.message);
@@ -39,7 +39,7 @@ export const registerUser = async (registerData) => {
 export const getGoogleClientId = async () => {
     try {
         const response = await apiClient.get('/auth/google-client-id');
-        console.log('datele din Java pentru Google:', response.data);
+        console.log('Google Id :', response.data);
         return response.data;
     } catch (error) {
         console.error('Error in getGoogleClientId:', error.response?.data || error.message);
@@ -49,7 +49,7 @@ export const getGoogleClientId = async () => {
 
 export const handleGoogleLogin = async (googleToken) => {
     try {
-       
+
         const res = await apiClient.post('/auth/oauth/google', { token: googleToken.credential });
         localStorage.setItem('authToken', res.data.token);
         localStorage.setItem('userId', res.data.userId);
@@ -64,7 +64,7 @@ export const handleGoogleLogin = async (googleToken) => {
 export const getGitHubClientId = async () => {
     try {
         const response = await apiClient.get('/auth/github-client-id');
-        console.log('Datele din Java pentru GitHub:', response.data);
+        console.log('GitHub:', response.data);
         return response.data.clientId;
     } catch (error) {
         console.error('Error getting GitHub clientId:', error.response?.data || error.message);
@@ -76,7 +76,10 @@ export const getGitHubClientId = async () => {
 export const handleGitHubLogin = async () => {
     try {
         const clientId = await getGitHubClientId();
-        const redirectUri = "http://localhost:8080/login/oauth2/code/github"; 
+        if (!clientId) {
+            throw new Error('Client ID not found in localStorage');
+        }
+        const redirectUri = "http://localhost:8080/login/oauth2/code/github";
         const oauthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=user`;
         window.location.href = oauthUrl;
     } catch (error) {
@@ -85,7 +88,7 @@ export const handleGitHubLogin = async () => {
     }
 };
 
-export const authenticateWithGitHub = async (code) => {
+/* export const authenticateWithGitHub = async (code) => {
     try {
         const response = await apiClient.post('/auth/oauth/github', { code });
         const { token, email, userId } = response.data;
@@ -96,13 +99,13 @@ export const authenticateWithGitHub = async (code) => {
         console.error('GitHub authentication failed:', error.response?.data || error.message);
         throw error;
     }
-};
+};*/
 
 
 export const authenticateUser = async (authData) => {
     try {
         const response = await apiClient.post('/auth/signin', authData);
-        const { token, userId } = response.data; 
+        const { token, userId } = response.data;
         return { token, userId };
     } catch (error) {
         console.error('Error in authenticateUser:', error.response?.data || error.message);
@@ -113,7 +116,7 @@ export const authenticateUser = async (authData) => {
 export const createGame = async (gameData) => {
     try {
         const response = await apiClient.post('/bees/game', gameData);
-        return response.data; 
+        return response.data;
     } catch (error) {
         console.error('Error in createGame:', error.response?.data || error.message);
         throw error;
@@ -130,10 +133,12 @@ export const getGame = async (gameId) => {
     }
 };
 
+
 export const iterateWeek = async (gameId, requestData) => {
     try {
         const response = await apiClient.post(`/bees/iterate/${gameId}`, requestData);
-        console.log('acesta e tokenul din iterateWeek', localStorage.getItem('authToken'))
+
+        console.log('token from iterateWeek', localStorage.getItem('authToken'))
         return response.data;
     } catch (error) {
         console.error('Error iterating week:', error);
@@ -142,20 +147,7 @@ export const iterateWeek = async (gameId, requestData) => {
 };
 
 
-export const submitActionsOfTheWeek = async (gameId, actionsData) => {
-    console.log('Actions data being sent:', actionsData);
-    try {
-       
-        const response = await apiClient.post(`/bees/submitActionsOfTheWeek/${gameId}`, actionsData);
-        if (response.status !== 200) {
-            throw new Error(`Failed to submit actions, status: ${response.status}`);
-        }
-        return response.data;
-    } catch (error) {
-        console.error('Error sending actionOfTheWeek:', error);
-        throw error;
-    }
-};
+
 
 export const getHoneyQuantities = async (gameId) => {
     try {
@@ -166,11 +158,13 @@ export const getHoneyQuantities = async (gameId) => {
         throw error;
     }
 };
-
 export const sendSellHoneyQuantities = {
-    updateHoneyStock: async (gameId, soldData, totalValue) => {
+    updateHoneyStock: async (gameId, honeyTypeToAmount, totalValue) => {
         try {
-            const payload = { ...soldData, totalValue };
+            const payload = {
+                honeyTypeToAmount,
+                totalValue,
+            };
             console.log('Payload din BeesApiService:', JSON.stringify(payload, null, 2));
             const response = await apiClient.post(`/bees/sellHoney/${gameId}`, payload);
             return response.data;
@@ -180,6 +174,7 @@ export const sendSellHoneyQuantities = {
         }
     },
 };
+
 
 export const buyHives = async (gameId, numberOfHives) => {
     try {
@@ -249,7 +244,7 @@ export const fetchWeatherForStartDate = async (location) => {
     }
 };
 */
-
+/*
 export const getJohnDoeGames = async () => {
     try {
         const response = await apiClient.get('/bees/JohnDoeGames');
@@ -258,7 +253,24 @@ export const getJohnDoeGames = async () => {
         console.error('Eroare la obținerea jocurilor recente:', error);
         throw error;
     }
+}; */
+
+export const getJohnDoeGames = async () => {
+    try {
+        const userId = localStorage.getItem('userId');
+        if (!userId) {
+            throw new Error(' No User ID in localStorage.');
+        }
+        const response = await apiClient.get(`/bees/JohnDoeGames`, {
+            params: { userId },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Erorr in getting recent games:', error);
+        throw error;
+    }
 };
+
 
 export const getGamesForUserByType = async (userId, gameType) => {
     const response = await apiClient.get('/bees/gamesForUser', {
@@ -275,8 +287,9 @@ export const getHiveHistory = async (gameId, hiveId) => {
     try {
         const response = await apiClient.get(
             `/bees/HiveHistory/${gameId}`,
-            {params: { hiveId: hiveId }
-        });
+            {
+                params: { hiveId: hiveId }
+            });
         return response.data;
     } catch (error) {
         console.error('Error getting data in getHiveHistory:', error);
@@ -300,3 +313,18 @@ export const getApiaryHistory = async (gameId) => {
         );
     }
 };
+
+export const deleteGame = async (gameId) => {
+    try {
+        const response = await apiClient.delete(`/bees/deleteGame/${gameId}`);
+        console.log('This game will be deleted:', response);
+        if (!response || !response.data) {
+            throw new Error('No data returned from the server');
+        }
+        return response.data;
+    } catch (error) {
+        console.error('Error on delete game:', error.message);
+        throw error;
+    }
+};
+

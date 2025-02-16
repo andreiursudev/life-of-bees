@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../App.css';
 import NewGameModal from './CreateNewGame';
 import ApiaryCardsRow from './ApiaryCardsRow';
 import AuthModal from './AuthModal';
-import { authenticateUser, registerUser } from './BeesApiService';
+import { authenticateUser, registerUser, deleteGame } from './BeesApiService';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 
@@ -18,12 +18,23 @@ const HomePage = () => {
     const [username, setUsername] = useState(null);
     const [gameType, setGameType] = useState(null);
     const [activeTab, setActiveTab] = useState("Public Game");
+    const [games, setGames] = useState([]);
 
     const [formData, setFormData] = useState({
         username: '',
         password: '',
         confirmPassword: '',
     });
+
+    useEffect(() => {
+        const storedToken = localStorage.getItem('authToken');
+        const storedUsername = localStorage.getItem('username');
+        console.log('Rehydrating auth state:', { storedToken, storedUsername });
+        if (storedToken && storedUsername) {
+            setIsAuthenticated(true);
+            setUsername(storedUsername);
+        }
+    }, []);
 
     const handlePublicGameClick = () => {
         setGameType("public");
@@ -55,6 +66,7 @@ const HomePage = () => {
     const handleLogout = () => {
         localStorage.removeItem('authToken');
         localStorage.removeItem('userId');
+        localStorage.removeItem('username');
         setIsAuthenticated(false);
         setUsername(null);
     };
@@ -73,9 +85,12 @@ const HomePage = () => {
     const handleSignIn = async (username, password) => {
         try {
             const response = await authenticateUser({ username, password });
-
+            console.log('Response from server in SignIn:', response);
             localStorage.setItem('authToken', response.token);
             localStorage.setItem('userId', response.userId);
+            localStorage.setItem('username', username);
+            console.log('Username saved to localStorage in SignIn:', username);
+            console.log('User signed in signIn:', { userId, username });
             setIsAuthenticated(true);
             setShowAuthModal(false);
             setUsername(username);
@@ -89,9 +104,11 @@ const HomePage = () => {
     const handleSignUp = async (username, password) => {
         try {
             const { token, userId } = await registerUser({ username, password });
-
             localStorage.setItem('authToken', token);
             localStorage.setItem('userId', userId);
+            localStorage.setItem('username', username);
+            console.log('Username saved to localStorage in SignUp:', username);
+            console.log('User signed up:', { token, userId, username });
             setIsAuthenticated(true);
             setShowAuthModal(false);
             setUsername(username);
@@ -112,6 +129,17 @@ const HomePage = () => {
     const handleGameClick = (gameId) => {
         navigate(`/GameView/${gameId}`);
     };
+
+    const handleDelete = async (gameId) => {
+        try {
+            await deleteGame(gameId);
+            setGames((prevGames) => prevGames.filter((game) => game.id !== gameId));
+            console.log(`Game with ID ${gameId} has been deleted.`);
+        } catch (error) {
+            console.error(`Error deleting game ${gameId}:`, error.message);
+        }
+    };
+
 
     return (
         <div className="container">
@@ -166,30 +194,30 @@ const HomePage = () => {
                     </li>
                 </ul>
 
-                    <div className="tab-content pt-3">
-                        {activeTab === "Public Game" && (
-                                <ApiaryCardsRow
-                                    gameType="public"
-                                    isAuthenticated={isAuthenticated}
-                                    userId={userId}
-                                    onGameClick={handleGameClick}
-                                />
-                        )}
+                <div className="tab-content pt-3">
+                    {activeTab === "Public Game" && (
+                        <ApiaryCardsRow
+                            gameType="public"
+                            isAuthenticated={isAuthenticated}
+                            userId={userId}
+                            onGameClick={handleGameClick}
+                            handleDelete={handleDelete}
+                        />
+                    )}
 
-                        {activeTab === "Private Game" && isAuthenticated && (
-                                <div>
-                                    <ApiaryCardsRow
-                                        gameType="private"
-                                        isAuthenticated={isAuthenticated}
-                                        userId={userId}
-                                        onGameClick={handleGameClick}
-                                    />
-                                </div>
-                        )}
+                    {activeTab === "Private Game" && isAuthenticated && (
+                        <div>
+                            <ApiaryCardsRow
+                                gameType="private"
+                                isAuthenticated={isAuthenticated}
+                                userId={userId}
+                                onGameClick={handleGameClick}
+                                handleDelete={handleDelete}
+                            />
+                        </div>
+                    )}
+                </div>
 
-                        {activeTab === "Map" && <div>Map content goes here.</div>}
-                    </div>
-                
             </div>
 
             {showPublicModal && (

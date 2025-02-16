@@ -1,10 +1,9 @@
 package com.marianbastiurea.lifeofbees.history;
 
 import com.marianbastiurea.lifeofbees.game.LifeOfBees;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-import java.util.ArrayList;
+
+import java.util.List;
 
 
 @Service
@@ -16,26 +15,31 @@ public class GameHistoryService {
         this.gameHistoryRepository = gameHistoryRepository;
     }
 
-    public GameHistory findGameBygameId(String gameId){
-        GameHistory gameHistory = gameHistoryRepository.findByGameId(gameId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found"));
-        return gameHistory;
+    public List<GameHistory> findGameHistoriesByGameId(String gameId) {
+        return gameHistoryRepository.findByGameId(gameId);
     }
 
 
-    public void saveGameHistory(LifeOfBees savedGame) {
-        GameHistory gameHistory = new GameHistory();
-        gameHistory.setGameId(savedGame.getGameId());
-        gameHistory.setGamesHistory(new ArrayList<>());
-        gameHistory.getGamesHistory().add(savedGame);
+    public void saveGameHistory(LifeOfBees lifeOfBeesGame) {
+        GameHistory gameHistory = new GameHistory(lifeOfBeesGame.getGameId(), lifeOfBeesGame);
         gameHistoryRepository.save(gameHistory);
     }
 
+    public void deleteGameById(String gameId) {
+        List<GameHistory> gameHistories = gameHistoryRepository.findByGameId(gameId);
+        System.out.println("acesta e GamesHistory for gameid: " + gameId + "  " + gameHistories);
 
-    public  void addGameInGameHistory (LifeOfBees lifeOfBeesGame) {
-        GameHistory gameHistory = gameHistoryRepository.findByGameId(lifeOfBeesGame.getGameId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Game history not found"));
-        gameHistory.getGamesHistory().add(lifeOfBeesGame);
-        gameHistoryRepository.save(gameHistory);
+        if (!gameHistories.isEmpty()) {
+            gameHistoryRepository.deleteAll(gameHistories);
+            System.out.println("Game with ID " + gameId + " has been deleted from history.");
+        } else {
+            throw new IllegalArgumentException("Game with ID " + gameId + " does not exist in history.");
+        }
     }
+
+    public boolean existsByGameId(String gameId) {
+        return gameHistoryRepository.existsByGameId(gameId);
+    }
+
+
 }

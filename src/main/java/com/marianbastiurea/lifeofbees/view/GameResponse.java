@@ -1,6 +1,6 @@
 package com.marianbastiurea.lifeofbees.view;
 
-import com.marianbastiurea.lifeofbees.action.ActionOfTheWeek;
+import com.marianbastiurea.lifeofbees.action.ActionsOfTheWeek;
 import com.marianbastiurea.lifeofbees.weather.WeatherData;
 
 import java.time.LocalDate;
@@ -11,13 +11,14 @@ public class GameResponse {
 
     private String id;
     private List<HivesView> hives = new ArrayList<>();
-    private List<ActionOfTheWeek> actionOfTheWeek;
     private double temperature;
     private double windSpeed;
     private double precipitation;
     private double moneyInTheBank;
     private LocalDate currentDate;
     private double totalKgOfHoneyHarvested;
+    private ActionsOfTheWeek actions;
+    private Integer removedHiveId;
 
     public String getId() {
         return id;
@@ -41,14 +42,6 @@ public class GameResponse {
 
     public void setHives(List<HivesView> hives) {
         this.hives = hives;
-    }
-
-    public List<ActionOfTheWeek> getActionOfTheWeek() {
-        return actionOfTheWeek;
-    }
-
-    public void setActionOfTheWeek(List<ActionOfTheWeek> actionOfTheWeek) {
-        this.actionOfTheWeek = actionOfTheWeek;
     }
 
     public double getTemperature() {
@@ -99,19 +92,35 @@ public class GameResponse {
         }
     }
 
+    public ActionsOfTheWeek getActions() {
+        return actions;
+    }
+
+    public void setActions(ActionsOfTheWeek actions) {
+        this.actions = actions;
+    }
+
     @Override
     public String toString() {
         return "GameResponse{" +
                 "id='" + id + '\'' +
                 ", hives=" + hives +
-                ", actionOfTheWeek=" + actionOfTheWeek +
                 ", temperature=" + temperature +
                 ", windSpeed=" + windSpeed +
                 ", precipitation=" + precipitation +
                 ", moneyInTheBank=" + moneyInTheBank +
                 ", currentDate=" + currentDate +
                 ", totalKgOfHoneyHarvested=" + totalKgOfHoneyHarvested +
+                ", actionsOfTheWeek=" + actions +
                 '}';
+    }
+
+    public Integer getRemovedHiveId() {
+        return removedHiveId;
+    }
+
+    public void setRemovedHiveId(Integer removedHiveId) {
+        this.removedHiveId = removedHiveId;
     }
 }
 

@@ -28,7 +28,9 @@ jobs:
       - name: Build Spring Boot Application
         run: |
           mvn package spring-boot:repackage
-
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          
       # Step 4: Build Docker Image
       - name: Build Docker Image
         run: |
@@ -65,4 +67,4 @@ jobs:
             docker rm spring-boot-app || true
 
             # Run the new container
-            docker run -d --name spring-boot-app --network host -e SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} -e SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} spring-boot-app:latest
+            docker run -d --name spring-boot-app --network host -e SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} -e SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} -e JWT_SECRET=${{ secrets.JWT_SECRET }} spring-boot-app:latest

@@ -1,14 +1,9 @@
 package com.marianbastiurea.lifeofbees.game;
 
-import com.marianbastiurea.lifeofbees.action.ActionOfTheWeek;
 import com.marianbastiurea.lifeofbees.bees.Apiary;
-import com.marianbastiurea.lifeofbees.bees.Hive;
+import com.marianbastiurea.lifeofbees.bees.Hives;
+import com.marianbastiurea.lifeofbees.time.BeeTime;
 import com.marianbastiurea.lifeofbees.weather.WeatherData;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.time.LocalDate;
-import java.util.Map;
 
 public class LifeOfBeesFactory {
 
@@ -19,18 +14,15 @@ public class LifeOfBeesFactory {
             int numberOfStartingHives,
             String userId,
             String gameType,
-           WeatherData weatherData
+            WeatherData weatherData
     ) {
-        LocalDate date = LocalDate.parse(startingDate);
-        List<ActionOfTheWeek> actionOfTheWeek = new ArrayList<>();
+        BeeTime date = new BeeTime(startingDate);
         double moneyInTheBank = 3000.0;
         double totalKgOfHoney = 0;
-        Apiary apiary = new Apiary(new ArrayList<>());
-        List<Hive> newHives = apiary.createHive(numberOfStartingHives, date);
-        apiary.getHives().addAll(newHives);
-
-
-        return new LifeOfBees(gameName, userId, gameType, apiary, actionOfTheWeek, location, date,
-                weatherData, moneyInTheBank, totalKgOfHoney);
+        Hives hives = new Hives();
+        hives = hives.createHives(numberOfStartingHives, date);
+        Apiary apiary = new Apiary(hives);
+        return new LifeOfBees(gameName, userId, gameType, apiary, location,
+                weatherData, moneyInTheBank, totalKgOfHoney, null);
     }
 }

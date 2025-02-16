@@ -1,96 +1,144 @@
 package com.marianbastiurea.lifeofbees.bees;
 
-import com.marianbastiurea.lifeofbees.game.LifeOfBees;
-import com.marianbastiurea.lifeofbees.action.ActionOfTheWeek;
+import com.marianbastiurea.lifeofbees.time.BeeTime;
 
-import java.time.LocalDate;
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class Hive {
+    public static RandomParameters randomParameters = new RandomParameters();
+    public boolean itWasSplit;
+    public List<HoneyBatch> honeyBatches;
+    public boolean itWasHarvested;
+    public BeesBatches beesBatches;
+    public HoneyFrames honeyFrames;
     private int id;
-    private boolean itWasSplit;
-    private boolean wasMovedAnEggsFrame;
     private EggFrames eggFrames;
     private Queen queen;
-    LinkedList<Integer> beesBatches = new LinkedList<>();
-    //TODO Create class HoneyFrames
-    private List<HoneyFrame> honeyFrames;
-    private List<HoneyBatch> honeyBatches;
-
-    //TODO remove actionOfTheWeek
-    private ActionOfTheWeek actionOfTheWeek;
-
-    public Hive(EggFrames eggFrames, LinkedList<Integer> beesBatches, List<HoneyFrame> honeyFrames, List<HoneyBatch> honeyBatches) {
-        this.eggFrames = eggFrames;
-        this.beesBatches = beesBatches;
-        this.honeyFrames = honeyFrames;
-        this.honeyBatches = honeyBatches;
-    }
 
     public Hive() {
-        this.actionOfTheWeek = new ActionOfTheWeek();
     }
 
-    public Hive(int id, boolean itWasSplit, Queen queen) {
-        this.id = id;
-        this.itWasSplit = itWasSplit;
-        this.queen = queen;
+    public Hive(int id, EggFrames eggFrames) {
+        this(
+                id,
+                false,
+                eggFrames,
+                new HoneyFrames(),
+                new BeesBatches(),
+                new ArrayList<>(),
+                new Queen());
     }
 
-    public Hive(boolean wasMovedAnEggsFrame) {
-        this.wasMovedAnEggsFrame = wasMovedAnEggsFrame;
+    public Hive(int id, BeesBatches beesBatches) {
+        this(
+                id,
+                false,
+                new EggFrames(),
+                new HoneyFrames(),
+                beesBatches,
+                new ArrayList<>(),
+                new Queen());
+    }
+
+    public Hive(int id, BeesBatches beesBatches, Queen queen, EggFrames eggFrames) {
+        this(
+                id,
+                false,
+                eggFrames,
+                new HoneyFrames(),
+                beesBatches,
+                new ArrayList<>(),
+                queen);
+    }
+
+    public Hive(int id, HoneyFrames honeyFrames) {
+        this(
+                id,
+                false,
+                new EggFrames(),
+                honeyFrames, new BeesBatches(),
+                new ArrayList<>(),
+                new Queen());
+    }
+
+    public Hive(int id, HoneyFrames honeyFrames, List<HoneyBatch> honeyBatches, boolean itWasHarvested) {
+        this(
+                id,
+                false,
+                new EggFrames(),
+                honeyFrames, new BeesBatches(),
+                new ArrayList<>(honeyBatches),
+                new Queen());
+    }
+
+    public Hive(int id, List<HoneyBatch> honeyBatches) {
+        this(
+                id,
+                false,
+                new EggFrames(),
+                new HoneyFrames(), new BeesBatches(),
+                new ArrayList<>(honeyBatches),
+                new Queen());
+    }
+
+
+    public Hive(int id, EggFrames eggFrames, boolean itWasSplit) {
+        this(
+                id,
+                itWasSplit,
+                eggFrames,
+                new HoneyFrames(), new BeesBatches(),
+                new ArrayList<>(),
+                new Queen());
+    }
+
+    public Hive(Queen queen) {
+        this(0,
+                false,
+                new EggFrames(),
+                new HoneyFrames(),
+                new BeesBatches(),
+                new ArrayList<>(),
+                queen);
+
     }
 
     public Hive(
-            int hiveIdCounter,
+            int id,
             boolean itWasSplit,
-            boolean wasMovedAnEggsFrame,
             EggFrames eggFrames,
-            List<HoneyFrame> honeyFrames,
-            LinkedList<Integer> beesBatches,
+            HoneyFrames honeyFrames,
+            BeesBatches beesBatches,
             List<HoneyBatch> honeyBatches,
             Queen queen) {
-        this.id = hiveIdCounter;
+        this.id = id;
         this.itWasSplit = itWasSplit;
-        this.wasMovedAnEggsFrame = wasMovedAnEggsFrame;
         this.eggFrames = eggFrames;
         this.honeyFrames = honeyFrames;
         this.beesBatches = beesBatches;
         this.honeyBatches = honeyBatches;
         this.queen = queen;
+    }
+
+    public Hive(int id) {
+        this(
+                id,
+                false,
+                new EggFrames(),
+                new HoneyFrames(),
+                new BeesBatches(),
+                new ArrayList<>(),
+                new Queen());
     }
 
     public boolean isItWasSplit() {
         return itWasSplit;
     }
 
-    public void setWasMovedAnEggsFrame(boolean wasMovedAnEggsFrame) {
-        this.wasMovedAnEggsFrame = wasMovedAnEggsFrame;
-    }
-
-    public boolean isWasMovedAnEggsFrame() {
-        return wasMovedAnEggsFrame;
-    }
-
     public void setItWasSplit(boolean itWasSplit) {
         this.itWasSplit = itWasSplit;
-    }
-
-    @Override
-    public String toString() {
-        return "Hive{" +
-                "id=" + id +
-                ", itWasSplit=" + this.itWasSplit +
-                ",wasMovedAnEggsFrame=" + this.wasMovedAnEggsFrame +
-                ", numberOfHoneyFrame=" + this.honeyFrames.size() +
-                ", numberOfEggsFrame=" + this.eggFrames.getNumberOfEggFrames() + "\n" +
-                ", eggFrames=" + this.eggFrames + "\n" +
-                ", age of queen=" + this.queen.getAgeOfQueen() +
-                ", beesBatches=" + this.beesBatches +
-                ", honeyFrames=" + this.honeyFrames +
-                ", honeyBatches=" + this.honeyBatches +
-                '}';
     }
 
     public EggFrames getEggFrames() {
@@ -101,21 +149,11 @@ public class Hive {
         this.eggFrames = eggFrames;
     }
 
-    public void setHoneyFrames(List<HoneyFrame> honeyFrames) {
-        this.honeyFrames = honeyFrames;
-    }
-
-    public void setHoneyBatches(List<HoneyBatch> honeyBatches) {
-        this.honeyBatches = honeyBatches;
-    }
-
     public Queen getQueen() {
-
         return queen;
     }
 
     public void setQueen(Queen queen) {
-
         this.queen = queen;
     }
 
@@ -135,56 +173,39 @@ public class Hive {
         return honeyBatches;
     }
 
-    public List<HoneyFrame> getHoneyFrames() {
+    /* use for test only
+public List<HoneyBatch> getHoneyBatches() {
+    return new ArrayList<>(honeyBatches);
+} */
+
+    public void setHoneyBatches(List<HoneyBatch> honeyBatches) {
+        this.honeyBatches = honeyBatches;
+    }
+
+    public HoneyFrames getHoneyFrames() {
         return honeyFrames;
     }
 
+    public void setHoneyFrames(HoneyFrames honeyFrames1) {
+        this.honeyFrames = honeyFrames1;
+    }
 
-    public LinkedList<Integer> getBeesBatches() {
+    public BeesBatches getBeesBatches() {
         return beesBatches;
     }
 
-    public void setBeesBatches(LinkedList<Integer> beesBatches) {
+    public void setBeesBatches(BeesBatches beesBatches) {
         this.beesBatches = beesBatches;
     }
 
-    public ActionOfTheWeek getAction() {
-        return actionOfTheWeek;
+
+    public boolean checkIfHiveCouldBeSplit(BeeTime currentDate) {
+        return !this.itWasSplit &&
+                currentDate.timeToSplitHive() &&
+                this.eggFrames.isMaxNumberOfEggFrames() &&
+                this.eggFrames.isFull();
     }
 
-    public void setAction(ActionOfTheWeek actionOfTheWeek) {
-        this.actionOfTheWeek = actionOfTheWeek;
-    }
-
-    public void checkAndAddEggsToBees(int bees) {
-        this.getBeesBatches().add(bees);
-    }
-
-    public List<ActionOfTheWeek> checkIfHiveCouldBeSplit(HarvestingMonths month, int dayOfMonth, List<ActionOfTheWeek> actionsOfTheWeek, LifeOfBees lifeOfBeesGame) {
-        if (!this.itWasSplit && lifeOfBeesGame.getApiary().getHives().size() < 10) {
-            if (timeToSplitHive(month, dayOfMonth) && this.eggFrames.isFullEggFrames()) {
-                if (this.eggFrames.is80PercentFull()) {
-                    ActionOfTheWeek.addOrUpdateAction("SPLIT_HIVE", getId(), actionsOfTheWeek);
-                }
-            }
-        }
-        return actionsOfTheWeek;
-    }
-
-    private static boolean timeToSplitHive(HarvestingMonths month, int dayOfMonth) {
-        return (month.equals(HarvestingMonths.APRIL) || month.equals(HarvestingMonths.MAY)) &&
-                (dayOfMonth == 1 || dayOfMonth == 10);
-    }
-
-    public void checkIfCanAddNewEggsFrameInHive(List<ActionOfTheWeek> actionsOfTheWeek) {
-        if (canAddNewEggsFrame()) {
-            ActionOfTheWeek.addOrUpdateAction("ADD_EGGS_FRAME", getId(), actionsOfTheWeek);
-        }
-    }
-    //TODO move to EggFrames
-    private boolean canAddNewEggsFrame() {
-        return !this.eggFrames.isFullEggFrames() && this.eggFrames.is80PercentFull();
-    }
 
     public void addNewEggsFrameInHive() {
         if (this.eggFrames != null) {
@@ -192,99 +213,58 @@ public class Hive {
         }
     }
 
-    public List<ActionOfTheWeek> checkIfCanAddANewHoneyFrameInHive(List<ActionOfTheWeek> actionsOfTheWeek) {
-        long honeyFrameFull = this.honeyFrames.stream()
-                .filter(HoneyFrame::isHarvestable)
-                .count();
 
-        if (this.honeyFrames.size() < 6) {
-            if (honeyFrameFull == this.honeyFrames.size()) {
-                Map<String, Object> data = ActionOfTheWeek.findOrCreateAction("ADD_HONEY_FRAME", actionsOfTheWeek).getData();
-                ActionOfTheWeek actionInstance = new ActionOfTheWeek();
-                //actionInstance.addOrUpdateAction("ADD_HONEY_FRAME", getId(), data, actionsOfTheWeek);
-            }
-        }
-        return actionsOfTheWeek;
-    }
-
-
-    public List<ActionOfTheWeek> addHoneyBatches
-            (List<HoneyBatch> honeyBatches, List<ActionOfTheWeek> actionsOfTheWeek) {
-        if (honeyBatches != null && !honeyBatches.isEmpty()) {
-            this.honeyBatches.addAll(honeyBatches);
-            ActionOfTheWeek.addOrUpdateAction("HARVEST_HONEY", getId(), actionsOfTheWeek);
-        }
-        return actionsOfTheWeek;
-    }
-
-    public void fillUpExistingHoneyFrameFromHive(LocalDate currentDate) {
-
-        Random random = new Random();
-        Honey honey = new Honey();
-        int day = currentDate.getDayOfMonth();
-        int monthValue = currentDate.getMonthValue();
-        HarvestingMonths month = HarvestingMonths.values()[monthValue - 3];
-        int numberOfHoneyFrameNotFull = honeyFrames.size() - this.getNumberOfFullHoneyFrame();
-        int numberOfFlight = random.nextInt(3, 6);
-        double kgOfHoneyToAdd = this.getBeesBatches().stream().mapToInt(Integer::intValue).sum() * numberOfFlight * 0.00002 * honey.honeyProductivity(honey.honeyType(month, day));//0.02gr/flight/bee
-        for (HoneyFrame honeyFrame : honeyFrames) {
-            honeyFrame.fill(kgOfHoneyToAdd / numberOfHoneyFrameNotFull);
+    public void maybeChangeQueen(BeeTime currentDate, RandomParameters randomParameters) {
+        boolean isTimeToChangeQueen = currentDate.isTimeToChangeQueen();
+        if ((randomParameters.chanceToChangeQueen() < 0.3 && isTimeToChangeQueen) || queen.getAgeOfQueen() == 5) {
+            queen = new Queen(0);
         }
     }
 
 
-    public void addNewHoneyFrameInHive() {
-        if (honeyFrames.size() < 6) {
-            honeyFrames.add(new HoneyFrame(0));
-            System.out.println("New honey frame added. Total: " + this.honeyFrames.size());
+    public void iterateOneDay(BeeTime currentDate, double weatherIndex) {
+        maybeChangeQueen(currentDate, randomParameters);
+        double productivity = currentDate.honeyType().getProductivity();
+        int numberOfEggs = queen.makeEggs(productivity, weatherIndex);
+        double kgOfHoneyToAdd = beesBatches.makeHoney(productivity, eggFrames.hatchBees(numberOfEggs), randomParameters.numberOfFlights());
+        honeyFrames.fillUpAHoneyFrame(kgOfHoneyToAdd);
+    }
+
+    public void harvestHoney(BeeTime currentDate) {
+        double harvestedHoney = getHoneyFrames().harvestHoneyFromHoneyFrames();
+        if (harvestedHoney >= 0) {
+            this.honeyBatches.add(new HoneyBatch(
+                    getId(),
+                    harvestedHoney,
+                    currentDate.honeyType(),
+                    false
+            ));
         }
     }
 
 
-    public int getNumberOfFullHoneyFrame() {
-        int honeyFrameFull = 0;
-        for (int i = 0; i < this.honeyFrames.size(); i++) {
-            if (this.honeyFrames.get(i).isFull() && honeyFrameFull < this.honeyFrames.size()) {
-                honeyFrameFull += 1;
-            }
-        }
-        return honeyFrameFull;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Hive hive = (Hive) o;
+        return itWasSplit == hive.itWasSplit &&
+                id == hive.id && Objects.equals(honeyBatches, hive.honeyBatches) &&
+                Objects.equals(beesBatches, hive.beesBatches) && Objects.equals(eggFrames, hive.eggFrames)
+                && Objects.equals(queen, hive.queen) && Objects.equals(honeyFrames, hive.honeyFrames) &&
+                Objects.equals(randomParameters, hive.randomParameters);
     }
 
-
-    public List<ActionOfTheWeek> checkIfCanMoveAnEggsFrame(List<ActionOfTheWeek> actionsOfTheWeek, LifeOfBees
-            lifeOfBeesGame) {
-        List<Integer> hiveIdPair;
-
-        if (this.getEggFrames().checkIfAll6EggsFrameAre80PercentFull() && !this.itWasSplit && !this.wasMovedAnEggsFrame) {
-            List<Hive> hives = lifeOfBeesGame.getApiary().getHives();
-            for (Hive hive : hives) {
-                if (hive.itWasSplit && hive.getQueen().getAgeOfQueen() == 0) {
-                    hiveIdPair = Arrays.asList(this.getId(), hive.getId());
-                    Map<String, Object> data = ActionOfTheWeek.findOrCreateAction("MOVE_EGGS_FRAME", actionsOfTheWeek).getData();
-                    ActionOfTheWeek actionInstance = new ActionOfTheWeek();
-                    actionInstance.addOrUpdateAction1("MOVE_EGGS_FRAME", hiveIdPair, data, actionsOfTheWeek);
-                }
-            }
-        }
-        return actionsOfTheWeek;
-    }
-
-    public void changeQueen() {
-
-        queen = new Queen(0);
-    }
-
-    public static void addHivesToApiary(List<Hive> newHives, LifeOfBees lifeOfBeesgame) {
-        List<Hive> existingHives = lifeOfBeesgame.getApiary().getHives();
-        for (Hive hive : newHives) {
-            hive.setId(existingHives.size() + 1);
-            existingHives.add(hive);
-        }
-    }
-
-    public void ageOneDay(int numberOfEggs) {
-        int bees = getEggFrames().ageOneDay(numberOfEggs);
-        getBeesBatches().add(bees);
+    @Override
+    public String toString() {
+        return "Hive{" +
+                " id=" + id +
+                ", itWasSplit=" + itWasSplit +
+                ", honeyBatches=" + honeyBatches +
+                ", beesBatches=" + beesBatches +
+                ", eggFrames=" + eggFrames +
+                ", queen=" + queen +
+                ", honeyFrames=" + honeyFrames +
+                '}';
     }
 }

@@ -1,21 +1,24 @@
 package com.marianbastiurea.lifeofbees.weather;
 
-import java.time.LocalDate;
+import com.marianbastiurea.lifeofbees.time.BeeTime;
 
 public class WeatherData {
     private double windSpeed;// in km/h
     private double temperature;// in Celsius Degree
     private double precipitation;//in mm
-    private LocalDate date;//
+    private BeeTime date;//
 
-    public WeatherData( double windSpeed, double temperature, double precipitation) {
+    public WeatherData(double windSpeed, double temperature, double precipitation) {
         this.windSpeed = windSpeed;
         this.temperature = temperature;
         this.precipitation = precipitation;
 
     }
 
-    public WeatherData(LocalDate date) {
+    public WeatherData() {
+    }
+
+    public WeatherData(BeeTime date) {
         this.date = date;
     }
 
@@ -43,11 +46,11 @@ public class WeatherData {
         this.precipitation = precipitation;
     }
 
-    public LocalDate getDate() {
+    public BeeTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(BeeTime date) {
         this.date = date;
     }
 
@@ -57,40 +60,40 @@ public class WeatherData {
                 "windSpeed=" + windSpeed +
                 ", temperature=" + temperature +
                 ", precipitation=" + precipitation +
+                ", date=" + date +
                 '}';
     }
 
-    public double weatherIndex(WeatherData weatherData) {
-        double rainIndex = 0;
-        double temperatureIndex = 0;
-        double speedWindIndex = 0;
-        double whetherIndex = 0;
-        if (weatherData.getPrecipitation() <= 4) {
-            rainIndex = 1;
-        } else if (weatherData.getPrecipitation() > 4 && weatherData.getPrecipitation() <= 16) {
+    public double weatherIndex() {
+        double rainIndex;
+        double temperatureIndex;
+        double windSpeedIndex;
+        if (getPrecipitation() <= 4) {
+            rainIndex = 1.1;
+        } else if (getPrecipitation() <= 16) {
             rainIndex = 0.95;
-        } else if (weatherData.getPrecipitation() > 16 && weatherData.getPrecipitation() <= 50) {
+        } else if (getPrecipitation() <= 50) {
             rainIndex = 0.9;
-        } else if (weatherData.getPrecipitation() > 50) {
+        } else {
             rainIndex = 0.7;
         }
-        if (weatherData.getTemperature() <= 10) {
+        if (getTemperature() <= 10) {
             temperatureIndex = 0.8;
-        } else if (weatherData.getPrecipitation() > 10 && weatherData.getTemperature() < 30) {
-            temperatureIndex = 1;
-        } else if (weatherData.getTemperature() >= 30) {
+        } else if (getTemperature() < 30) {
+            temperatureIndex = 1.2;
+        } else {
             temperatureIndex = 0.8;
         }
-        if (weatherData.getWindSpeed() <= 10) {
-            speedWindIndex = 1;
-        } else if (weatherData.getWindSpeed() > 10 && weatherData.getWindSpeed() <= 20) {
-            speedWindIndex = .8;
-        } else if (weatherData.getWindSpeed() > 20 && weatherData.getWindSpeed() <= 30) {
-            speedWindIndex = 0.75;
-        } else if (weatherData.getWindSpeed() > 30) {
-            speedWindIndex = 0.7;
+        if (getWindSpeed() <= 10) {
+            windSpeedIndex = 1.1;
+        } else if (getWindSpeed() <= 20) {
+            windSpeedIndex = 0.8;
+        } else if (getWindSpeed() <= 30) {
+            windSpeedIndex = 0.75;
+        } else {
+            windSpeedIndex = 0.7;
         }
-        whetherIndex = rainIndex * temperatureIndex * speedWindIndex;
-        return whetherIndex;
+        return rainIndex * temperatureIndex * windSpeedIndex;
     }
+
 }

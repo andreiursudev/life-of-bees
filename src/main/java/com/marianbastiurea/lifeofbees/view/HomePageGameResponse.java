@@ -8,6 +8,16 @@ public class HomePageGameResponse {
     private double totalKgOfHoneyHarvested;
     private String gameId;
 
+    public HomePageGameResponse(String gameName, String location, int hivesNumber, double moneyInTheBank,
+                                double totalKgOfHoneyHarvested, String gameId) {
+        this.gameName = gameName;
+        this.location = location;
+        this.hivesNumber = hivesNumber;
+        this.moneyInTheBank = moneyInTheBank;
+        this.totalKgOfHoneyHarvested = totalKgOfHoneyHarvested;
+        this.gameId = gameId;
+    }
+
     public String getGameName() {
         return gameName;
     }
@@ -66,15 +76,5 @@ public class HomePageGameResponse {
                 ", totalKgOfHoneyHarvested=" + totalKgOfHoneyHarvested +
                 ", gameId='" + gameId + '\'' +
                 '}';
-    }
-
-    public HomePageGameResponse(String gameName, String location, int hivesNumber, double moneyInTheBank,
-                                double totalKgOfHoneyHarvested, String gameId) {
-        this.gameName = gameName;
-        this.location = location;
-        this.hivesNumber = hivesNumber;
-        this.moneyInTheBank = moneyInTheBank;
-        this.totalKgOfHoneyHarvested = totalKgOfHoneyHarvested;
-        this.gameId = gameId;
     }
 }

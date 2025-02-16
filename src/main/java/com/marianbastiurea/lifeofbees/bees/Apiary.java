@@ -1,27 +1,40 @@
 package com.marianbastiurea.lifeofbees.bees;
 
-import com.marianbastiurea.lifeofbees.game.LifeOfBees;
-import com.marianbastiurea.lifeofbees.action.ActionOfTheWeek;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.time.LocalDate;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 
 public class Apiary {
 
-    private List<Hive> hives;
+    private static final Logger logger = LoggerFactory.getLogger(Apiary.class);
+    private Hives hives;
     private HarvestHoney totalHarvestedHoney;
+
+    public Apiary(Hives hives) {
+        this.hives = hives;
+        this.totalHarvestedHoney = new HarvestHoney(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+    }
+
+    public Apiary() {
+    }
+
+    /* use only for test */
+    public Apiary(HarvestHoney harvestHoney) {
+        this.totalHarvestedHoney = harvestHoney;
+    }
+
 
     public HarvestHoney getTotalHarvestedHoney() {
         return totalHarvestedHoney;
     }
 
-    public List<Hive> getHives() {
-        return hives;
-    }
 
-    public Apiary(List<Hive> hives) {
-        this.hives = hives;
-        this.totalHarvestedHoney = new HarvestHoney(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+    public Hives getHives() {
+        return hives;
     }
 
     @Override
@@ -32,221 +45,68 @@ public class Apiary {
                 '}';
     }
 
-    public Hive getHiveById(Integer hiveId) {
-        for (Hive hive : hives) {
-            if (hive.getId() == hiveId) {
-                return hive;
-            }
-        }
-        return null;
+    public void honeyHarvestedByHoneyType() {
+        logger.debug("Starting honeyHarvestedByHoneyType method.");
+
+        List<Hive> hiveList = hives.getHives();
+        logger.info("Initial honey batches: {}", hiveList.stream()
+                .flatMap(hive -> hive.getHoneyBatches().stream())
+                .collect(Collectors.toList()));
+
+        List<HoneyBatch> unprocessedBatches = hiveList.stream()
+                .flatMap(hive -> hive.getHoneyBatches().stream())
+                .filter(honeyBatch -> !honeyBatch.isProcessed()) // Doar cele neprocesate
+                .collect(Collectors.toList());
+
+        unprocessedBatches.forEach(honeyBatch -> {
+            logger.info("Processing honey batch: {}", honeyBatch);
+            honeyBatch.setProcessed(true);
+        });
+        logger.info("Honey batches after processing:");
+        hiveList.forEach(hive -> {
+            logger.info("Hive {}: {}", hive.getId(), hive.getHoneyBatches());
+        });
+
+        Map<HoneyType, Double> honeyHarvested = unprocessedBatches.stream()
+                .collect(Collectors.groupingBy(
+                        HoneyBatch::getHoneyType,
+                        Collectors.summingDouble(HoneyBatch::getKgOfHoney)
+                ));
+
+        honeyHarvested.forEach((honeyType, amount) -> {
+            logger.info("Harvested {} kg of {} honey", amount, honeyType);
+        });
+
+        honeyHarvested.forEach((honeyType, amount) -> {
+            double currentAmount = totalHarvestedHoney.getHoneyAmount(honeyType);
+            logger.info("Current amount for {}: {}, adding: {}", honeyType, currentAmount, amount);
+            totalHarvestedHoney.setHoneyAmount(honeyType, currentAmount + amount);
+        });
+
+        logger.debug("Completed honeyHarvestedByHoneyType method. Total harvested: {}", totalHarvestedHoney);
     }
 
-
-    public void splitHive(Hive hive) {
-        List<Hive> newHives = new ArrayList<>();
-        EggFrames eggFrames = hive.getEggFrames();
-        if (eggFrames.isFullEggFrames() && !hive.isItWasSplit()) {
-            hive.setItWasSplit(true);
-            Hive newHive = new Hive(this.getHives().size() + 1, true, new Queen(0));
-            newHive.setWasMovedAnEggsFrame(false);
-            EggFrames newHiveEggFrames = hive.getEggFrames().splitEggFrames();
-            newHive.setEggFrames(newHiveEggFrames);
-
-            List<HoneyFrame> newHiveHoneyFrames = new ArrayList<>();
-            for (int i = 0; i < 3; i++) {
-                HoneyFrame frameToMove = hive.getHoneyFrames().remove(hive.getHoneyFrames().size() - 1);
-                newHiveHoneyFrames.add(frameToMove);
-            }
-            newHive.setHoneyFrames(newHiveHoneyFrames);
-
-            LinkedList<Integer> hiveBeesBatches = hive.getBeesBatches();
-            LinkedList<Integer> newHiveBeesBatches = new LinkedList<>(hiveBeesBatches);
-            for (int i = 0; i < hiveBeesBatches.size(); i++) {
-                int bees = hiveBeesBatches.get(i);
-                int beesToTransfer = bees / 2;
-                hiveBeesBatches.set(i, bees - beesToTransfer);
-                newHiveBeesBatches.add(beesToTransfer);
-            }
-            newHive.setBeesBatches(newHiveBeesBatches);
-            newHive.setHoneyBatches(new ArrayList<>());
-            newHives.add(newHive);
-            System.out.println("acesta e stupul vechi: " + hive);
-            System.out.println("acesta e stupul nou: " + newHive);
-        }
-        hives.addAll(newHives);
-    }
-
-
-    public List<ActionOfTheWeek> hibernate(LifeOfBees lifeOfBeesGame, List<ActionOfTheWeek> actionsOfTheWeek) {
-        LocalDate date = lifeOfBeesGame.getCurrentDate();
-        Apiary apiary = lifeOfBeesGame.getApiary();
-        System.out.println("aceasta e apiary inainte de hibernate: " + apiary);
-        List<Hive> hives = lifeOfBeesGame.getApiary().getHives();
-        for (Hive hive : hives) {
-            hive.getQueen().setAgeOfQueen(hive.getQueen().getAgeOfQueen() + 1);
-            hive.setItWasSplit(false);
-            hive.setWasMovedAnEggsFrame(false);
-            hive.getHoneyBatches().clear();
-            hive.getEggFrames().extractEggBatchesForFrame();
-            hive.getHoneyFrames().remove(hive.getHoneyFrames().size() - 1);
-            hive.getHoneyFrames().remove(hive.getHoneyFrames().size() - 1);
-            hive.getBeesBatches().removeLast();
-            hive.getBeesBatches().removeLast();
-        }
-        Random random = new Random();
-        int indexToRemove = random.nextInt(hives.size());
-        Hive hiveToRemove = hives.get(indexToRemove);
-        int hiveIdRemoved = hiveToRemove.getId();
-        hives.remove(hiveToRemove);
-        Map<String, Object> data = new HashMap<>();
-        data.put("totalHives", apiary.getHives().size());
-        data.put("hibernateStartDate", date.toString());
-        data.put("hiveIds", List.of(hiveIdRemoved));
-        ActionOfTheWeek actionInstance = new ActionOfTheWeek();
-       // actionInstance.addOrUpdateAction("HIBERNATE", hiveIdRemoved, data, actionsOfTheWeek);
-        System.out.println("aceasta e apiary dupa hibernate: " + apiary);
-
-        return actionsOfTheWeek;
-    }
-
-    public List<ActionOfTheWeek> checkInsectControl(HarvestingMonths month, int dayOfMonth, List<ActionOfTheWeek> actionsOfTheWeek) {
-        if ((month.equals(HarvestingMonths.APRIL) || month.equals(HarvestingMonths.MAY) ||
-                month.equals(HarvestingMonths.JUNE) || month.equals(HarvestingMonths.JULY) || month.equals(HarvestingMonths.AUGUST) &&
-                (dayOfMonth == 11 || dayOfMonth == 21))) {
-            ActionOfTheWeek.addOrUpdateAction("INSECT_CONTROL", this.getHives().size(), actionsOfTheWeek);
-        }
-        return actionsOfTheWeek;
-    }
-
-    public void doInsectControl(String answer, LifeOfBees lifeOfBeesGame) {
-        if ("yes".equals(answer)) {
-            lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() - (lifeOfBeesGame.getApiary().getHives().size() * 10));
-        } else {
-            for (Hive hive : hives) {
-                hive.getBeesBatches().removeLast();
-                hive.getBeesBatches().removeLast();
-            }
-        }
-    }
-
-    public List<ActionOfTheWeek> checkFeedBees(HarvestingMonths month, int dayOfMonth, List<ActionOfTheWeek> actionsOfTheWeek) {
-        if (month.equals(HarvestingMonths.SEPTEMBER) &&
-                (dayOfMonth == 1)) {
-            ActionOfTheWeek.addOrUpdateAction("FEED_BEES", this.getHives().size(),  actionsOfTheWeek);
-
-        }
-        return actionsOfTheWeek;
-    }
-
-    public void doFeedBees(String answer, LifeOfBees lifeOfBeesGame) {
-        if ("yes".equals(answer)) {
-            lifeOfBeesGame.setMoneyInTheBank(lifeOfBeesGame.getMoneyInTheBank() - lifeOfBeesGame.getApiary().getHives().size() * 7);
-        } else {
-            for (Hive hive : hives) {
-                for (int day = 0; day < 7; day++) {
-                    hive.getBeesBatches().removeLast();
-                    hive.getBeesBatches().removeLast();
-                }
-            }
-        }
-    }
-
-    public Map<HoneyType, Double> honeyHarvestedByHoneyType() {
-        Map<HoneyType, Double> honeyHarvested = new HashMap<>();
-        for (Hive hive : hives) {
-            for (HoneyBatch honeyBatch : hive.getHoneyBatches()) {
-                if (!honeyBatch.isProcessed()) {
-                    HoneyType honeyType = honeyBatch.getHoneyType();
-                    double kgOfHoney = honeyBatch.getKgOfHoney();
-                    honeyHarvested.put(honeyType, honeyHarvested.getOrDefault(honeyType, 0.0) + kgOfHoney);
-                    honeyBatch.setProcessed(true);
-                }
-            }
-        }
-        totalHarvestedHoney.setAcacia(totalHarvestedHoney.getAcacia() + honeyHarvested.getOrDefault(HoneyType.Acacia, 0.0));
-        totalHarvestedHoney.setRapeseed(totalHarvestedHoney.getRapeseed() + honeyHarvested.getOrDefault(HoneyType.Rapeseed, 0.0));
-        totalHarvestedHoney.setWildFlower(totalHarvestedHoney.getWildFlower() + honeyHarvested.getOrDefault(HoneyType.WildFlower, 0.0));
-        totalHarvestedHoney.setLinden(totalHarvestedHoney.getLinden() + honeyHarvested.getOrDefault(HoneyType.Linden, 0.0));
-        totalHarvestedHoney.setSunFlower(totalHarvestedHoney.getSunFlower() + honeyHarvested.getOrDefault(HoneyType.SunFlower, 0.0));
-        totalHarvestedHoney.setFalseIndigo(totalHarvestedHoney.getFalseIndigo() + honeyHarvested.getOrDefault(HoneyType.FalseIndigo, 0.0));
-
-        return honeyHarvested;
-    }
 
     public double getTotalKgHoneyHarvested() {
-        return totalHarvestedHoney.getAcacia()
-                + totalHarvestedHoney.getRapeseed()
-                + totalHarvestedHoney.getWildFlower()
-                + totalHarvestedHoney.getLinden()
-                + totalHarvestedHoney.getSunFlower()
-                + totalHarvestedHoney.getFalseIndigo();
+        double totalKg = totalHarvestedHoney.getHoneyTypeToAmount().values().stream()
+                .mapToDouble(Double::doubleValue)
+                .sum();
+        logger.debug("Finished getTotalKgHoneyHarvested. Total kg of honey harvested: {}", totalKg);
+        return totalKg;
     }
+
 
     public void updateHoneyStock(HarvestHoney soldHoneyData) {
-        totalHarvestedHoney.setAcacia(totalHarvestedHoney.getAcacia() - soldHoneyData.Acacia);
-        totalHarvestedHoney.setRapeseed(totalHarvestedHoney.getRapeseed() - soldHoneyData.Rapeseed);
-        totalHarvestedHoney.setWildFlower(totalHarvestedHoney.getWildFlower() - soldHoneyData.WildFlower);
-        totalHarvestedHoney.setLinden(totalHarvestedHoney.getLinden() - soldHoneyData.Linden);
-        totalHarvestedHoney.setSunFlower(totalHarvestedHoney.getSunFlower() - soldHoneyData.SunFlower);
-        totalHarvestedHoney.setFalseIndigo(totalHarvestedHoney.getFalseIndigo() - soldHoneyData.FalseIndigo);
+        logger.debug("Starting updateHoneyStock method with soldHoneyData = {}", soldHoneyData);
+
+        soldHoneyData.getHoneyTypeToAmount().forEach((honeyType, amountSold) -> {
+            double currentAmount = totalHarvestedHoney.getHoneyAmount(honeyType);
+            totalHarvestedHoney.setHoneyAmount(honeyType, currentAmount - amountSold);
+            logger.debug("Updated honey stock for {}: current amount = {}, amount sold = {}", honeyType, currentAmount, amountSold);
+        });
+
+        logger.debug("Finished updateHoneyStock. Updated totalHarvestedHoney = {}", totalHarvestedHoney);
     }
 
-    public List<Hive> createHive(int numberOfHives, LocalDate date) {
-        Random random = new Random();
-        List<Hive> newHives = new ArrayList<>();
-        for (int i = 1; i <= numberOfHives; i++) {
-            int ageOfQueen = random.nextInt(1, 6);
-            EggFrames eggFrames = EggFrames.getRandomEggFrames();
-            LinkedList<Integer> beesBatches = new LinkedList<>();
-            for (int k = 0; k < 30; k++) {
-                beesBatches.add(random.nextInt(600, 700));
-            }
-            List<HoneyFrame> honeyFrames = new ArrayList<>();
-            for (int k = 0; k < random.nextInt(3, 5); k++) {
-                honeyFrames.add(new HoneyFrame(random.nextDouble(2.5, 3)));
-            }
-            Hive hive = new Hive(
-                    newHives.size() + 1,
-                    false,
-                    false,
-                    eggFrames,
-                    honeyFrames,
-                    beesBatches,
-                    new ArrayList<>(),
-                    new Queen(ageOfQueen)
-            );
-            newHives.add(hive);
-        }
-        return newHives;
-
-    }
-
-    public void moveAnEggsFrame(List<List<Integer>> hiveIdPair) {
-        for (List<Integer> hiveIds : hiveIdPair) {
-            int sourceHiveId = hiveIds.get(0);
-            int destinationHiveId = hiveIds.get(1);
-            Hive sourceHive = this.getHiveById(sourceHiveId);
-            Hive destinationHive = this.getHiveById(destinationHiveId);
-            EggFrames sourceEggFrames = sourceHive.getEggFrames();
-            EggFrames destinationEggFrames = destinationHive.getEggFrames();
-            List<Integer> eggBatchesToMove = sourceEggFrames.extractEggBatchesForFrame();
-            destinationEggFrames.addEggBatches(eggBatchesToMove);
-            sourceHive.setWasMovedAnEggsFrame(true);
-            System.out.println("acesta e stupul sursa "+sourceEggFrames);
-            System.out.println("acestea sunt ramele destinatie"+destinationEggFrames);
-        }
-    }
-
-    public List<String> getFormattedTotalHarvestedHoney() {
-        List<String> formattedHoney = new ArrayList<>();
-        formattedHoney.add("Acacia " + totalHarvestedHoney.getAcacia() + " kg");
-        formattedHoney.add("Rapeseed " + totalHarvestedHoney.getRapeseed() + " kg");
-        formattedHoney.add("WildFlower " + totalHarvestedHoney.getWildFlower() + " kg");
-        formattedHoney.add("Linden " + totalHarvestedHoney.getLinden() + " kg");
-        formattedHoney.add("SunFlower " + totalHarvestedHoney.getSunFlower() + " kg");
-        formattedHoney.add("FalseIndigo " + totalHarvestedHoney.getFalseIndigo() + " kg");
-        return formattedHoney;
-    }
 
 }
-

@@ -1,6 +1,8 @@
 package com.marianbastiurea.lifeofbees.bees;
 
 
+import java.util.Objects;
+
 public class HoneyBatch {
     private final int hiveId;
     private final double kgOfHoney;
@@ -30,7 +32,6 @@ public class HoneyBatch {
         return isProcessed;
     }
 
-
     public void setProcessed(boolean processed) {
         isProcessed = processed;
     }
@@ -43,5 +44,18 @@ public class HoneyBatch {
                 ", honeyType='" + honeyType + '\'' +
                 ", isProcessed=" + isProcessed +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HoneyBatch that = (HoneyBatch) o;
+        return hiveId == that.hiveId && Double.compare(kgOfHoney, that.kgOfHoney) == 0 && isProcessed == that.isProcessed && honeyType == that.honeyType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(hiveId, kgOfHoney, honeyType, isProcessed);
     }
 }

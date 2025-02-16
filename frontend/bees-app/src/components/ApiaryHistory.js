@@ -59,26 +59,25 @@ const ApiaryHistory = () => {
                         {Array.isArray(historyData) && historyData.length > 0 ? (
                             historyData.map((entry, index) => (
                                 <React.Fragment key={index}>
-                                    {/* Primul rând combinat cu primul stup */}
                                     <tr>
-                                        <td>{entry.currentDate}</td>
+                                        <td>{entry.currentDate.localDate}</td>
                                         <td>{entry.weatherData?.temperature?.toFixed(2) || '0.00'}°C</td>
                                         <td>{entry.weatherData?.windSpeed?.toFixed(2) || '0.00'}m/s</td>
                                         <td>{entry.weatherData?.precipitation?.toFixed(2) || '0.00'}mm</td>
-                                        {entry.hive && entry.hive.length > 0 ? (
+                                        {entry.hives.hives && entry.hives.hives.length > 0 ? (
                                             <>
-                                                <td>{entry.hive[0].id}</td>
-                                                <td>{entry.hive[0].beesBatches.reduce((sum, batch) => sum + batch, 0)}</td>
-                                                <td>{entry.hive[0].queen.ageOfQueen}</td>
+                                                <td>{entry.hives.hives[0].id}</td>
+                                                <td>{entry.hives.hives[0].beesBatches.beesBatches.reduce((sum, batch) => sum + batch, 0)}</td>
+                                                <td>{entry.hives.hives[0].queen.ageOfQueen}</td>
                                                 <td>
-                                                    {entry.hive[0].honeyBatches.length > 0 ? entry.hive[0].honeyBatches[0].honeyType : ''}
+                                                    {entry.hives.hives[0].honeyBatches.length > 0 ? entry.hives.hives[0].honeyBatches[0].honeyType : ''}
                                                 </td>
                                                 <td>
-                                                    {entry.hive[0].honeyBatches.reduce((sum, batch) => sum + batch.kgOfHoney, 0).toFixed(2)} kg
+                                                    {entry.hives.hives[0].honeyBatches.reduce((sum, batch) => sum + batch.kgOfHoney, 0).toFixed(2)} kg
                                                 </td>
-                                                <td>{entry.hive[0].eggFrames.numberOfEggFrames}</td>
-                                                <td>{entry.hive[0].honeyFrames.length}</td>
-                                                <td>{entry.hive[0].itWasSplit ? 'Yes' : 'No'}</td>
+                                                <td>{entry.hives.hives[0].eggFrames.numberOfEggFrames}</td>
+                                                <td>{entry.hives.hives[0].honeyFrames.honeyFrame.length}</td>
+                                                <td>{entry.hives.hives[0].itWasSplit ? 'Yes' : 'No'}</td>
                                             </>
                                         ) : (
                                             <>
@@ -90,32 +89,29 @@ const ApiaryHistory = () => {
                                                 <td></td>
                                             </>
                                         )}
-                                       
+
 
                                         <td>${entry.moneyInTheBank}</td>
                                         <td>
-                                            {Array.isArray(entry.actionOfTheWeek) && entry.actionOfTheWeek.length > 0 ? (
-                                                <ul className="list-unstyled mb-0">
-                                                    {entry.actionOfTheWeek.map((action, i) => (
-                                                        <li key={i}>{action}</li>
-                                                    ))}
-                                                </ul>
-                                            ) : (
-                                                ''
-                                            )}
+                                            {entry.actionsOfTheWeek?.actions
+                                                ? Object.entries(entry.actionsOfTheWeek.actions)
+                                                    .map(([action, hives]) =>
+                                                        Array.isArray(hives) ? `${action}: ${hives.join(', ')}` : `${action}: ${hives}`
+                                                    )
+                                                    .join('; ')
+                                                : 'No actions'}
                                         </td>
-                                    </tr>
 
-                                    {/* Restul stupilor */}
-                                    {Array.isArray(entry.hive) &&
-                                        entry.hive.slice(1).map((hive) => (
+
+                                    </tr>
+                                    {Array.isArray(entry.hives.hives) &&
+                                        entry.hives.hives.slice(1).map((hive) => (
                                             <tr key={hive.id}>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
                                                 <td>{hive.id}</td>
-                                                <td>{hive.beesBatches.reduce((sum, batch) => sum + batch, 0)}</td>
                                                 <td>{hive.queen.ageOfQueen}</td>
                                                 <td>
                                                     {hive.honeyBatches.length > 0 ? hive.honeyBatches[0].honeyType : ''}
@@ -124,13 +120,14 @@ const ApiaryHistory = () => {
                                                     {hive.honeyBatches.reduce((sum, batch) => sum + batch.kgOfHoney, 0).toFixed(2)} kg
                                                 </td>
                                                 <td>{hive.eggFrames.numberOfEggFrames}</td>
-                                                <td>{hive.honeyFrames.length}</td>
+                                                <td>{hive.honeyFrames.honeyFrame.length}</td>
                                                 <td>{hive.itWasSplit ? 'Yes' : 'No'}</td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
                                             </tr>
-                                        ))}
+                                        ))
+                                    }
                                 </React.Fragment>
                             ))
                         ) : (

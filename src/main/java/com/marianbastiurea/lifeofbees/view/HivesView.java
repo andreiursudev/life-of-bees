@@ -45,6 +45,7 @@ public class HivesView {
         this.itWasSplit = itWasSplit;
     }
 
+
     @Override
     public String toString() {
         return "HivesView{" +
