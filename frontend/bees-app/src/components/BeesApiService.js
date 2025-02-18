@@ -79,7 +79,7 @@ export const handleGitHubLogin = async () => {
         if (!clientId) {
             throw new Error('Client ID not found in localStorage');
         }
-        const redirectUri = "http://localhost:8080/login/oauth2/code/github";
+        const redirectUri = "http://lifeofbees.co.uk/login/oauth2/code/github";
         const oauthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=user`;
         window.location.href = oauthUrl;
     } catch (error) {
