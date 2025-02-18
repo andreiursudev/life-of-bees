@@ -31,8 +31,8 @@ public class BeeTime {
         Month month = currentDate.getMonth();
         int dayOfMonth = currentDate.getDayOfMonth();
         return (month == Month.APRIL || month == Month.MAY)
-                && (dayOfMonth >= 9 && dayOfMonth <= 16) ||
-                (dayOfMonth >= 19 && dayOfMonth <= 25);
+                && ((dayOfMonth >= 9 && dayOfMonth <= 16) ||
+                (dayOfMonth >= 19 && dayOfMonth <= 25));
     }
 
     public boolean timeToHarvestHive() {
