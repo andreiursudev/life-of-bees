@@ -27,9 +27,11 @@ export const registerUser = async (registerData) => {
     try {
         const response = await apiClient.post('/auth/register', registerData);
         const { token, userId } = response.data;
-        console.log('Register User from Java:', response.data);
         return { token, userId };
     } catch (error) {
+        if (error.response?.status === 409) {
+            return { error: error.response.data.error };
+        }
         console.error('Error in registerUser:', error.response?.data || error.message);
         throw error;
     }
