@@ -21,11 +21,12 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+
     public String registerUser(RegisterRequest registerRequest) {
         String username = registerRequest.getUsername().toLowerCase().trim();
 
         if (userRepository.findByUsername(username).isPresent()) {
-            return "Username already exists";
+            throw new IllegalArgumentException("Username already exists");
         }
 
         String encodedPassword = passwordEncoder.encode(registerRequest.getPassword());
@@ -33,11 +34,12 @@ public class UserService {
 
         try {
             User savedUser = userRepository.save(user);
-            return "User registered successfully: " + savedUser.getUserId();
+            return savedUser.getUserId();
         } catch (DuplicateKeyException e) {
-            return "Username already exists";
+            throw new IllegalArgumentException("Username already exists");
         }
     }
+
 
 
 

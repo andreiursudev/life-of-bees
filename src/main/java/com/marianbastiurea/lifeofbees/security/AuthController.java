@@ -45,23 +45,24 @@ public class AuthController {
         System.out.println("Received request for: " + request.getRequestURI());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Endpoint not found");
     }
-
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest) {
         try {
             String userId = userService.registerUser(registerRequest);
-            System.out.println("Acesta e userId din /register: " + userId);
+            System.out.println("This is UserId from method /register: " + userId);
             String token = jwtTokenProvider.generateToken(userId);
             return ResponseEntity.ok(Map.of("userId", userId, "token", token));
         } catch (IllegalArgumentException e) {
             System.err.println("Validation error: " + e.getMessage());
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(Map.of("error", e.getMessage())); // Trimite mesaj JSON clar
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("An error occurred during the registration process");
+                    .body(Map.of("error", "An error occurred during the registration process"));
         }
     }
+
 
     @GetMapping("/google-client-id")
     public ResponseEntity<String> getGoogleClientId() {
