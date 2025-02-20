@@ -23,7 +23,7 @@ public class UserService {
 
 
     public String registerUser(RegisterRequest registerRequest) {
-        String username = registerRequest.getUsername().toLowerCase().trim();
+        String username = registerRequest.getUsername().trim();
 
         if (userRepository.findByUsername(username).isPresent()) {
             throw new IllegalArgumentException("Username already exists. Try another username.");
@@ -57,9 +57,9 @@ public class UserService {
             user = new User();
             user.setUsername(gameRequest.getUsername());
             userRepository.save(user);
-            System.out.println("Utilizator creat cu numele in createGame: " + user);
+            System.out.println("User create in CreateGame: " + user);
         } else {
-            System.out.println("Utilizator găsit in createGame: " + user);
+            System.out.println("User find in createGame: " + user);
         }
         return user;
     }
