@@ -50,7 +50,6 @@ const ApiaryCardsRow = ({ isAuthenticated, userId, gameType, onGameClick, handle
                 const recentGames = isAuthenticated && userId && gameType
                 await getGamesForUserByType(userId, gameType)
                 console.log('these are games for user ', recentGames);
-
                 setGames(recentGames);
                 console.log('games:', games);
             } catch (error) {
