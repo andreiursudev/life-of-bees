@@ -90,18 +90,6 @@ export const handleGitHubLogin = async () => {
     }
 };
 
-/* export const authenticateWithGitHub = async (code) => {
-    try {
-        const response = await apiClient.post('/auth/oauth/github', { code });
-        const { token, email, userId } = response.data;
-        localStorage.setItem('authToken', token);
-        console.log('User authenticated with GitHub:', { email, userId });
-        window.location.href = '/homePage';
-    } catch (error) {
-        console.error('GitHub authentication failed:', error.response?.data || error.message);
-        throw error;
-    }
-};*/
 
 
 export const authenticateUser = async (authData) => {
