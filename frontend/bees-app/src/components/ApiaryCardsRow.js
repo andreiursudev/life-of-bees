@@ -47,7 +47,7 @@ const ApiaryCardsRow = ({ isAuthenticated, userId, gameType, onGameClick, handle
     useEffect(() => {
         const fetchGames = async () => {
             try {
-                const recentGames = isAuthenticated && gameType && userId
+                const recentGames = isAuthenticated && userId
                     ? await getGamesForUserByType(userId, gameType)
                     : await getJohnDoeGames();
                 setGames(recentGames);
