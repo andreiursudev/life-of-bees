@@ -247,6 +247,12 @@ export const getJohnDoeGames = async () => {
 
 export const getJohnDoeGames = async () => {
     try {
+        const username = 'JohnDoe';
+        const password = 'JohnDoe123';
+        const userDetails = await authenticateUser({ username, password });
+        localStorage.setItem('authToken', userDetails.token);
+        localStorage.setItem('userId', userDetails.userId);
+        localStorage.setItem('username', username);
         const userId = localStorage.getItem('userId');
         if (!userId) {
             throw new Error(' No User ID in localStorage.');
