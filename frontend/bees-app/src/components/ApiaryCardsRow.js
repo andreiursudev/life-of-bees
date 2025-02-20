@@ -47,11 +47,14 @@ const ApiaryCardsRow = ({ isAuthenticated, userId, gameType, onGameClick, handle
     useEffect(() => {
         const fetchGames = async () => {
             try {
-                const recentGames = isAuthenticated && userId && gameType
-                await getGamesForUserByType(userId, gameType)
-                console.log('these are games for user ', recentGames);
+                let recentGames;
+                if (isAuthenticated && userId && gameType) {
+                    recentGames = await getGamesForUserByType(userId, gameType);
+                } else {
+                    recentGames = await getJohnDoeGames();
+                }
+                console.log('these are games for user:', recentGames);
                 setGames(recentGames);
-                console.log('games:', games);
             } catch (error) {
                 console.error('Error loading recent games:', error);
             }
@@ -59,6 +62,7 @@ const ApiaryCardsRow = ({ isAuthenticated, userId, gameType, onGameClick, handle
 
         fetchGames();
     }, [isAuthenticated, userId, gameType]);
+
 
     const handleGameDelete = (gameId) => {
         handleDelete(gameId);

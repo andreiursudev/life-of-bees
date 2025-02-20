@@ -250,23 +250,30 @@ export const getJohnDoeGames = async () => {
         const username = 'JohnDoe';
         const password = 'JohnDoe123';
         const userDetails = await authenticateUser({ username, password });
+
+
         localStorage.setItem('authToken', userDetails.token);
         localStorage.setItem('userId', userDetails.userId);
-        console.log("acesta e userId pentru johnDoe: ", userId);
         localStorage.setItem('username', username);
-        const userId = localStorage.getItem('userId');
+
+        console.log("acesta e userId pentru johnDoe: ", userDetails.userId);
+
+        const userId = userDetails.userId;
         if (!userId) {
-            throw new Error(' No User ID in localStorage.');
+            throw new Error('No User ID found for JohnDoe.');
         }
+
         const response = await apiClient.get(`/bees/JohnDoeGames`, {
             params: { userId },
         });
+
         return response.data;
     } catch (error) {
-        console.error('Erorr in getting recent games:', error);
+        console.error('Error in getting recent games:', error);
         throw error;
     }
 };
+
 
 
 export const getGamesForUserByType = async (userId, gameType) => {
