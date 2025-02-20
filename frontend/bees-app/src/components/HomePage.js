@@ -284,7 +284,7 @@ const HomePage = () => {
                     setIsSignUp={setIsSignUp}
                 />
             )}
-            {authMessage && <p className="auth-message">{authMessage}</p>}
+
         </div>
     );
 };
