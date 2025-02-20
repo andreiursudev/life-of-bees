@@ -52,7 +52,7 @@ const ApiaryCardsRow = ({ isAuthenticated, userId, gameType, onGameClick, handle
                 console.log('these are games for user ', username);
                 console.log('games: ', recentGames);
                 setGames(recentGames);
-                console.log('games:', games)
+                console.log('games:', games);
             } catch (error) {
                 console.error('Error loading recent games:', error);
             }
