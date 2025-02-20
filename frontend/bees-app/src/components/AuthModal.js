@@ -102,7 +102,7 @@ const AuthModal = ({ handleClose, handleSubmit, handleInputChange, formData, isS
                                 try {
                                     handleGitHubSuccess();
                                 } catch (error) {
-                                    handleGitHubFailure(error); 
+                                    handleGitHubFailure(error);
                                 }
                             }}
                             className="btn btn-dark w-100"
@@ -170,6 +170,7 @@ const AuthModal = ({ handleClose, handleSubmit, handleInputChange, formData, isS
                             </div>
 
                         </form>
+                        {errorMessage && <p className="auth-error">{errorMessage}</p>}
                     </div>
                 </div>
             </div>
