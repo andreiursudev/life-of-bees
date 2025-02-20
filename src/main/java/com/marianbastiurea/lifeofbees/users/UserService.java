@@ -26,7 +26,7 @@ public class UserService {
         String username = registerRequest.getUsername().toLowerCase().trim();
 
         if (userRepository.findByUsername(username).isPresent()) {
-            throw new IllegalArgumentException("Username already exists");
+            throw new IllegalArgumentException("Username already exists. Try another username.");
         }
 
         String encodedPassword = passwordEncoder.encode(registerRequest.getPassword());

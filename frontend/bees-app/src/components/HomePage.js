@@ -122,21 +122,32 @@ const HomePage = () => {
 
     const handleSignUp = async (username, password) => {
         try {
-            const { token, userId } = await registerUser({ username, password });
+            const response = await registerUser({ username, password });
+
+            if (response.error) {
+                setAuthMessage(response.error);
+                setIsAuthenticated(false);
+                return;
+            }
+
+            const { token, userId } = response;
             localStorage.setItem('authToken', token);
             localStorage.setItem('userId', userId);
             localStorage.setItem('username', username);
-            console.log('Username saved to localStorage in SignUp:', username);
+
             console.log('User signed up:', { token, userId, username });
+
             setIsAuthenticated(true);
             setShowAuthModal(false);
             setUsername(username);
+            setAuthMessage('');
         } catch (error) {
             console.error('Error in SignUp:', error);
-            setAuthMessage(error.response?.data?.error || 'Failed to register. Please try again.');
+            setAuthMessage('An unexpected error occurred. Please try again.');
             setIsAuthenticated(false);
         }
     };
+
 
     const handleTabClick = (tab) => {
         setActiveTab(tab);
