@@ -4,7 +4,6 @@ import NewGameModal from './CreateNewGame';
 import ApiaryCardsRow from './ApiaryCardsRow';
 import AuthModal from './AuthModal';
 import { authenticateUser, registerUser, deleteGame } from './BeesApiService';
-import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -26,34 +25,16 @@ const HomePage = () => {
         confirmPassword: '',
     });
 
+
     useEffect(() => {
         const storedToken = localStorage.getItem('authToken');
         const storedUsername = localStorage.getItem('username');
-
         console.log('Rehydrating auth state:', { storedToken, storedUsername });
-
         if (storedToken && storedUsername) {
             setIsAuthenticated(true);
             setUsername(storedUsername);
-        } else {
-            const autoLogin = async () => {
-                try {
-                    const username = 'JohnDoe';
-                    const password = 'JohnDoe123';
-                    const response = await authenticateUser({ username, password });
-                    localStorage.setItem('authToken', response.token);
-                    localStorage.setItem('userId', response.userId);
-                    localStorage.setItem('username', username);
-                    setIsAuthenticated(true);
-                    setUsername(username);
-                } catch (error) {
-                    console.error('Error in automatic login:', error);
-                }
-            };
-            autoLogin();
         }
-    }, [])
-        ;
+    }, []);
 
     const handlePublicGameClick = () => {
         setGameType("public");
