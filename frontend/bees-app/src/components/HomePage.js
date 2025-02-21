@@ -151,6 +151,11 @@ const HomePage = () => {
         }
     };
 
+    useEffect(() => {
+        if (isAuthenticated) {
+            setShowAuthModal(false);
+        }
+    }, [isAuthenticated]);
 
     return (
         <div className="container">

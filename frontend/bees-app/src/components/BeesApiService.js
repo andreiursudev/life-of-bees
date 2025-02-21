@@ -234,16 +234,7 @@ export const fetchWeatherForStartDate = async (location) => {
     }
 };
 */
-/*
-export const getJohnDoeGames = async () => {
-    try {
-        const response = await apiClient.get('/bees/JohnDoeGames');
-        return response.data;
-    } catch (error) {
-        console.error('Eroare la obținerea jocurilor recente:', error);
-        throw error;
-    }
-}; */
+
 
 export const getJohnDoeGames = async () => {
     try {
@@ -256,7 +247,6 @@ export const getJohnDoeGames = async () => {
         throw error;
     }
 };
-
 
 
 export const getGamesForUserByType = async (userId, gameType) => {
