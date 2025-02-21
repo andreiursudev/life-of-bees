@@ -251,11 +251,6 @@ export const getJohnDoeGames = async () => {
         const password = 'JohnDoe123';
         const userDetails = await authenticateUser({ username, password });
 
-
-        localStorage.setItem('authToken', userDetails.token);
-        localStorage.setItem('userId', userDetails.userId);
-        localStorage.setItem('username', username);
-
         console.log("acesta e userId pentru johnDoe: ", userDetails.userId);
 
         const userId = userDetails.userId;
