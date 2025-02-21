@@ -283,7 +283,7 @@ public class LifeOfBeesController {
 
     @GetMapping("/JohnDoeGames")
     public List<HomePageGameResponse> getJohnDoeGames(@RequestParam String username) {
-        String userId = userService.findUserIdByUsername(username);  
+        String userId = userService.findUserIdByUsername(username);
         List<LifeOfBees> userGames = lifeOfBeesService.getGamesForJohnDoe(userId);
 
         if (userGames.isEmpty()) {
