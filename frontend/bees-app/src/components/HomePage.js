@@ -25,35 +25,15 @@ const HomePage = () => {
         confirmPassword: '',
     });
 
-
     useEffect(() => {
         const storedToken = localStorage.getItem('authToken');
         const storedUsername = localStorage.getItem('username');
-
         console.log('Rehydrating auth state:', { storedToken, storedUsername });
-
         if (storedToken && storedUsername) {
             setIsAuthenticated(true);
             setUsername(storedUsername);
-        } else {
-            const autoLogin = async () => {
-                try {
-                    const username = 'JohnDoe';
-                    const password = 'JohnDoe123';
-                    const response = await authenticateUser({ username, password });
-                    localStorage.setItem('authToken', response.token);
-                    localStorage.setItem('userId', response.userId);
-                    localStorage.setItem('username', username);
-                    setIsAuthenticated(true);
-                    setUsername(username);
-                } catch (error) {
-                    console.error('Error in automatic login:', error);
-                }
-            };
-            autoLogin();
         }
-    }, [])
-        ;
+    }, []);
 
     const handlePublicGameClick = () => {
         setGameType("public");
@@ -123,31 +103,25 @@ const HomePage = () => {
     const handleSignUp = async (username, password) => {
         try {
             const response = await registerUser({ username, password });
-
             if (response.error) {
                 setAuthMessage(response.error);
                 setIsAuthenticated(false);
                 return;
             }
-
-            const { token, userId } = response;
             localStorage.setItem('authToken', token);
             localStorage.setItem('userId', userId);
             localStorage.setItem('username', username);
-
+            console.log('Username saved to localStorage in SignUp:', username);
             console.log('User signed up:', { token, userId, username });
-
             setIsAuthenticated(true);
             setShowAuthModal(false);
             setUsername(username);
-            setAuthMessage('');
         } catch (error) {
             console.error('Error in SignUp:', error);
-            setAuthMessage('An unexpected error occurred. Please try again.');
+            setAuthMessage(error.response?.data?.error || 'Failed to register. Please try again.');
             setIsAuthenticated(false);
         }
     };
-
 
     const handleTabClick = (tab) => {
         setActiveTab(tab);
@@ -233,7 +207,7 @@ const HomePage = () => {
                     {activeTab === "Public Game" && (
                         <ApiaryCardsRow
                             gameType="public"
-
+                            isAuthenticated={isAuthenticated}
                             userId={userId}
                             onGameClick={handleGameClick}
                             handleDelete={handleDelete}
