@@ -247,24 +247,12 @@ export const getJohnDoeGames = async () => {
 
 export const getJohnDoeGames = async () => {
     try {
-        const username = 'JohnDoe';
-        const password = 'JohnDoe123';
-        const userDetails = await authenticateUser({ username, password });
-
-        console.log("acesta e userId pentru johnDoe: ", userDetails.userId);
-
-        const userId = userDetails.userId;
-        if (!userId) {
-            throw new Error('No User ID found for JohnDoe.');
-        }
-
-        const response = await apiClient.get(`/bees/JohnDoeGames`, {
-            params: { userId },
+        const response = await apiClient.get('/bees/JohnDoeGames', {
+            params: { username: 'JohnDoe' }
         });
-
         return response.data;
     } catch (error) {
-        console.error('Error in getting recent games:', error);
+        console.error('Error in getting JohnDoe games:', error);
         throw error;
     }
 };

@@ -41,8 +41,6 @@ public class UserService {
     }
 
 
-
-
     public User findUserByUsername(String username) {
         return userRepository.findByUsername(username).orElse(null);
     }
@@ -64,6 +62,10 @@ public class UserService {
         return user;
     }
 
-
+    public String findUserIdByUsername(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
+        return user.map(User::getUserId)
+                .orElseThrow(() -> new RuntimeException("User not found: " + username));
+    }
 }
 

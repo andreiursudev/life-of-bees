@@ -282,13 +282,16 @@ public class LifeOfBeesController {
     }
 
     @GetMapping("/JohnDoeGames")
-    public List<HomePageGameResponse> getJohnDoeGames(@RequestParam String userId) {
+    public List<HomePageGameResponse> getJohnDoeGames(@RequestParam String username) {
+        String userId = userService.findUserIdByUsername(username);  
         List<LifeOfBees> userGames = lifeOfBeesService.getGamesForJohnDoe(userId);
+
         if (userGames.isEmpty()) {
-            logger.info("No games for JohnDoe.");
+            logger.info("No games for {}", username);
         } else {
-            logger.info("JohnDoe's games: {}", userGames);
+            logger.info("{}'s games: {}", username, userGames);
         }
+
         return userGames.stream()
                 .map(game -> new HomePageGameResponse(
                         game.getGameName(),
@@ -299,7 +302,6 @@ public class LifeOfBeesController {
                         game.getGameId()
                 ))
                 .collect(Collectors.toList());
-
     }
 
     @GetMapping("/gamesForUser")
