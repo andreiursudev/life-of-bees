@@ -108,11 +108,11 @@ const HomePage = () => {
                 setIsAuthenticated(false);
                 return;
             }
-            localStorage.setItem('authToken', response.authToken);
+            localStorage.setItem('authToken', response.token);
             localStorage.setItem('userId', response.userId);
-            localStorage.setItem('username', response.username);
+            localStorage.setItem('username', username);
             console.log('Username saved to localStorage in SignUp:', username);
-            console.log('User signed up:', { authToken, userId, username });
+            console.log('User signed up:', { token: response.token, userId: response.userId, username });
             setIsAuthenticated(true);
             setShowAuthModal(false);
             setUsername(username);
