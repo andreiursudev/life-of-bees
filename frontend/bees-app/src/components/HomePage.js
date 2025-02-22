@@ -108,7 +108,7 @@ const HomePage = () => {
                 setIsAuthenticated(false);
                 return;
             }
-            localStorage.setItem('authToken', response.token);
+            localStorage.setItem('authToken', response.authToken);
             localStorage.setItem('userId', response.userId);
             localStorage.setItem('username', response.username);
             console.log('Username saved to localStorage in SignUp:', username);
