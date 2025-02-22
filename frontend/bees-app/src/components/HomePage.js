@@ -112,7 +112,7 @@ const HomePage = () => {
             localStorage.setItem('userId', response.userId);
             localStorage.setItem('username', response.username);
             console.log('Username saved to localStorage in SignUp:', username);
-            console.log('User signed up:', { token, userId, username });
+            console.log('User signed up:', { authToken, userId, username });
             setIsAuthenticated(true);
             setShowAuthModal(false);
             setUsername(username);
