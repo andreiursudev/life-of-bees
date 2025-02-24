@@ -1,9 +1,13 @@
 import React from 'react';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { handleGitHubLogin, handleGoogleLogin } from './BeesApiService';
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+
 
 const AuthModal = ({ handleClose, handleSubmit, handleInputChange, formData, isSignUp, setIsSignUp, errorMessage, setIsAuthenticated, setUsername, setAuthMessage, setFormData }) => {
     const [passwordError, setPasswordError] = React.useState(null);
+    const location = useLocation();
 
     const validatePasswords = () => {
         if (isSignUp && formData.password !== formData.confirmPassword) {
@@ -31,6 +35,16 @@ const AuthModal = ({ handleClose, handleSubmit, handleInputChange, formData, isS
             console.error('Error sending Google token to backend:', error);
         }
     };
+
+    useEffect(() => {
+        const searchParams = new URLSearchParams(location.search);
+        const code = searchParams.get("code");
+
+        if (code) {
+            handleGitHubSuccess(code);
+        }
+    }, [location]);
+
 
     const handleGitHubSuccess = async (code) => {
         console.log('GitHub Login Success. Authorization code:', code);

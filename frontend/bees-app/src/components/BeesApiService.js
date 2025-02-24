@@ -74,7 +74,15 @@ export const getGitHubClientId = async () => {
     }
 };
 
+export const handleGitHubLogin = async () => {
+    const clientId = await getGitHubClientId();
+    const redirectUri = "http://lifeofbees.co.uk/login/oauth2/code/github";
+    const oauthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=user`;
 
+    window.location.href = oauthUrl; // Redirecționează utilizatorul către GitHub
+};
+
+/*
 export const handleGitHubLogin = async () => {
     try {
         const clientId = await getGitHubClientId();
@@ -89,19 +97,27 @@ export const handleGitHubLogin = async () => {
         throw error;
     }
 };
+*/
+
+
 
 export const authenticateWithGitHub = async (code) => {
     try {
         const response = await apiClient.post('/auth/oauth/github', { code });
-        const { token, email, userId } = response.data;
+        const { token, username, userId } = response.data;
+
         localStorage.setItem('authToken', token);
-        console.log('User authenticated with GitHub:', { email, userId });
+        localStorage.setItem('userId', userId);
+        localStorage.setItem('username', username);
+
+        console.log('User authenticated with GitHub:', { username, userId });
         window.location.href = '/homePage';
     } catch (error) {
         console.error('GitHub authentication failed:', error.response?.data || error.message);
         throw error;
     }
 };
+
 
 
 
