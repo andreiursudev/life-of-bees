@@ -45,7 +45,7 @@ const HomePage = () => {
             const password = 'JohnDoe123';
 
             try {
-                const response = await handleSignUp(username, password);
+                const response = await handleSignIn(username, password);
 
                 if (response && response.userId) {
                     localStorage.setItem("authToken", response.token);
