@@ -42,7 +42,7 @@ const HomePage = () => {
         } else {
             const username = 'JohnDoe';
             const password = 'JohnDoe123';
-            handleSignUp(username, password);
+            handleSignIn(username, password);
             setShowPublicModal(true);
         }
     };
