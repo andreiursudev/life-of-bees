@@ -35,17 +35,37 @@ const HomePage = () => {
         }
     }, []);
 
-    const handlePublicGameClick = () => {
+    const handlePublicGameClick = async () => {
         setGameType("public");
+
         if (isAuthenticated) {
             setShowPublicModal(true);
         } else {
             const username = 'JohnDoe';
             const password = 'JohnDoe123';
-            handleSignUp(username, password);
-            setShowPublicModal(true);
+
+            try {
+                const response = await handleSignUp(username, password);
+
+                if (response && response.userId) {
+                    localStorage.setItem("authToken", response.token);
+                    localStorage.setItem("userId", response.userId);
+                    localStorage.setItem("username", response.username);
+
+                    setUsername(response.username);
+                    setIsAuthenticated(true);
+
+                    console.log("User JohnDoe autentificat cu succes:", response);
+                    setShowPublicModal(true);
+                } else {
+                    console.error("Autentificare eșuată pentru JohnDoe.");
+                }
+            } catch (error) {
+                console.error("Eroare la autentificarea JohnDoe:", error);
+            }
         }
     };
+
 
     const handlePrivateGameClick = () => {
         setGameType("private");
