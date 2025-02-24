@@ -281,18 +281,17 @@ public class LifeOfBeesController {
         return ResponseEntity.ok("Hives bought successfully.");
     }
 
-    @GetMapping("/JohnDoeGames")
-    public List<HomePageGameResponse> getJohnDoeGames(@RequestParam String username) {
-        String userId = userService.findUserIdByUsername(username);
-        List<LifeOfBees> userGames = lifeOfBeesService.getGamesForJohnDoe(userId);
+    @GetMapping("/PublicGames")
+    public List<HomePageGameResponse> getPublicGames(@RequestParam String gameType) {
+        List<LifeOfBees> publicGames = lifeOfBeesService.getPublicGames(gameType);
 
-        if (userGames.isEmpty()) {
-            logger.info("No games for {}", username);
+        if (publicGames.isEmpty()) {
+            logger.info("No public games");
         } else {
-            logger.info("{}'s games: {}", username, userGames);
+            logger.info("public games: {}", publicGames);
         }
 
-        return userGames.stream()
+        return publicGames.stream()
                 .map(game -> new HomePageGameResponse(
                         game.getGameName(),
                         game.getLocation(),

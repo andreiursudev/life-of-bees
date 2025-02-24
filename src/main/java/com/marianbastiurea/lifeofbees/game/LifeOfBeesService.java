@@ -23,9 +23,9 @@ public class LifeOfBeesService {
         return lifeOfBeesRepository.findByGameId(gameId);
     }
 
-    public List<LifeOfBees> getGamesForJohnDoe(String userId) {
+    public List<LifeOfBees> getPublicGames(String userId) {
         return Optional.ofNullable(userId)
-                .map(lifeOfBeesRepository::findByUserId)
+                .map(lifeOfBeesRepository::findByGameType)
                 .orElse(Collections.emptyList());
     }
 

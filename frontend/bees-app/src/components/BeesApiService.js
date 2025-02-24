@@ -90,6 +90,19 @@ export const handleGitHubLogin = async () => {
     }
 };
 
+export const authenticateWithGitHub = async (code) => {
+    try {
+        const response = await apiClient.post('/auth/oauth/github', { code });
+        const { token, email, userId } = response.data;
+        localStorage.setItem('authToken', token);
+        console.log('User authenticated with GitHub:', { email, userId });
+        window.location.href = '/homePage';
+    } catch (error) {
+        console.error('GitHub authentication failed:', error.response?.data || error.message);
+        throw error;
+    }
+};
+
 
 
 export const authenticateUser = async (authData) => {
@@ -236,14 +249,14 @@ export const fetchWeatherForStartDate = async (location) => {
 */
 
 
-export const getJohnDoeGames = async () => {
+export const getPublicGames = async () => {
     try {
-        const response = await apiClient.get('/bees/JohnDoeGames', {
-            params: { username: 'JohnDoe' }
+        const response = await apiClient.get('/bees/PublicGames', {
+            params: { gameType: 'public' }
         });
         return response.data;
     } catch (error) {
-        console.error('Error in getting JohnDoe games:', error);
+        console.error('Error in getting public games:', error);
         throw error;
     }
 };

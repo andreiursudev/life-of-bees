@@ -13,5 +13,6 @@ public interface LifeOfBeesRepository extends MongoRepository<LifeOfBees, String
     List<LifeOfBees> findByUserId(String userId);
 
     List<LifeOfBees> findByUserIdAndGameType(String userId, String gameType);
+    List<LifeOfBees> findByGameType(String gameType);
 
 }

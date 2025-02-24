@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getJohnDoeGames, getGamesForUserByType } from './BeesApiService';
+import { getPublicGames, getGamesForUserByType } from './BeesApiService';
 
 const GameCard = ({ game, onDelete, onClick }) => (
     <div className="col-md-4 col-lg-3 mb-3">
@@ -51,7 +51,7 @@ const ApiaryCardsRow = ({ isAuthenticated, userId, gameType, onGameClick, handle
                 if (isAuthenticated && userId && gameType) {
                     recentGames = await getGamesForUserByType(userId, gameType);
                 } else {
-                    recentGames = await getJohnDoeGames();
+                    recentGames = await getPublicGames();
                 }
                 console.log('these are games for user:', recentGames);
                 setGames(recentGames);
