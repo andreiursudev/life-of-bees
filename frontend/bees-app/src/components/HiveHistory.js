@@ -63,16 +63,15 @@ const HiveHistory = () => {
                         {hiveHistoryData.length > 0 ? (
                             hiveHistoryData.map((entry, index) => {
                                 const hive = entry.hive;
+                                if (!hive) return null;
                                 const beesNumber = hive.beesBatches?.beesBatches?.reduce((sum, batch) => sum + (batch || 0), 0) || 0;
-
                                 const honeyKg = hive.honeyBatches.reduce((total, batch) => total + batch.kgOfHoney, 0);
-
                                 const eggsFrameNo = hive.eggFrames.numberOfEggFrames;
                                 const honeyFrameNo = hive.honeyFrames.honeyFrame.length;
 
                                 return (
                                     <tr key={index}>
-                                        <td>{entry.currentDate.currentDate}</td>
+                                        <td>{entry.currentDate.localDate}</td>
                                         <td>{entry.weatherData.temperature}°C</td>
                                         <td>{entry.weatherData.windSpeed} km/h</td>
                                         <td>{entry.weatherData.precipitation} mm</td>

@@ -1,8 +1,6 @@
 import axios from 'axios';
 
-/* const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;*/
-
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:8080/";
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:8080";
 
 const apiClient = axios.create({
     baseURL: API_BASE_URL + '/api',
@@ -65,62 +63,6 @@ export const handleGoogleLogin = async (googleToken) => {
 };
 
 
-export const getGitHubClientId = async () => {
-    try {
-        const response = await apiClient.get('/auth/github-client-id');
-        console.log('GitHub:', response.data);
-        return response.data.clientId;
-    } catch (error) {
-        console.error('Error getting GitHub clientId:', error.response?.data || error.message);
-        throw error;
-    }
-};
-
-export const handleGitHubLogin = async () => {
-    const clientId = await getGitHubClientId();
-    const redirectUri = "http://lifeofbees.co.uk/login/oauth2/code/github";
-    const oauthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=user`;
-
-    window.location.href = oauthUrl; // Redirecționează utilizatorul către GitHub
-};
-
-/*
-export const handleGitHubLogin = async () => {
-    try {
-        const clientId = await getGitHubClientId();
-        if (!clientId) {
-            throw new Error('Client ID not found in localStorage');
-        }
-        const redirectUri = "http://lifeofbees.co.uk/login/oauth2/code/github";
-        const oauthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=user`;
-        window.location.href = oauthUrl;
-    } catch (error) {
-        console.error('Error during GitHub login:', error);
-        throw error;
-    }
-};
-*/
-
-
-
-export const authenticateWithGitHub = async (code) => {
-    try {
-        const response = await apiClient.post('/auth/oauth/github', { code });
-        const { token, username, userId } = response.data;
-
-        localStorage.setItem('authToken', token);
-        localStorage.setItem('userId', userId);
-        localStorage.setItem('username', username);
-
-        console.log('User authenticated with GitHub:', { username, userId });
-        window.location.href = '/homePage';
-    } catch (error) {
-        console.error('GitHub authentication failed:', error.response?.data || error.message);
-        throw error;
-    }
-};
-
-
 
 
 export const authenticateUser = async (authData) => {
@@ -166,9 +108,6 @@ export const iterateWeek = async (gameId, requestData) => {
         throw error;
     }
 };
-
-
-
 
 export const getHoneyQuantities = async (gameId) => {
     try {

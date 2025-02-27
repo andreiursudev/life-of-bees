@@ -8,12 +8,12 @@ import GameView from './components/GameView';
 import SellHoney from './components/SellHoney';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import HiveHistory from './components/HiveHistory';
-import { getGoogleClientId, getGitHubClientId} from './components/BeesApiService';
+import { getGoogleClientId, getGitHubClientId } from './components/BeesApiService';
 import ApiaryHistory from './components/ApiaryHistory';
 
 function App() {
   const [googleClientId, setGoogleClientId] = useState(null);
-  const [gitHubClientId, setGitHubClientId] = useState(null);
+
 
   useEffect(() => {
     const fetchGoogleClientId = async () => {
@@ -28,19 +28,7 @@ function App() {
     fetchGoogleClientId();
   }, []);
 
-  useEffect(() => {
-  const fetchGitHubClientId = async () => {
-    try {
-      const clientId = await getGitHubClientId();
-      localStorage.setItem('clientId', clientId);
-      setGitHubClientId(clientId);
-    } catch (error) {
-      console.error('Failed to fetch GitHub Client ID:', error);
-    }
-  };
 
-  fetchGitHubClientId();
-}, []);
 
 
   return (
@@ -51,9 +39,9 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/gameView" element={<GameView />} />
             <Route path="/sell-honey" element={<SellHoney />} />
-            <Route path="/HiveHistory" element={<HiveHistory />}/>
+            <Route path="/HiveHistory" element={<HiveHistory />} />
             <Route path="/gameView/:gameId" element={<GameView />} />
-            <Route path="/apiaryHistory" element={<ApiaryHistory />}/>
+            <Route path="/apiaryHistory" element={<ApiaryHistory />} />
           </Routes>
         </div>
       </Router>

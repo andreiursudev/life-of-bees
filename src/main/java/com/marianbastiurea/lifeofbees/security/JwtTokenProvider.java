@@ -22,16 +22,16 @@ public class JwtTokenProvider {
     private long expiration;
 
     public String generateToken(String userId) {
-        System.out.println("Generare token pentru userId: " + userId);
+        System.out.println("Create token for userId: " + userId);
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, userId);
     }
 
     private String createToken(Map<String, Object> claims, String subject) {
-        System.out.println("Cheia secretă utilizată in createToken: " + secretKey);
+        System.out.println("secret key used in createToken: " + secretKey);
 
         if (secretKey == null || secretKey.trim().isEmpty()) {
-            throw new IllegalStateException("Cheia secretă nu este configurată corect!");
+            throw new IllegalStateException("Secret Key wrong configuration !");
         }
 
         return Jwts.builder()
@@ -46,7 +46,7 @@ public class JwtTokenProvider {
 
     public boolean isTokenValid(String token) {
         if (token == null || token.trim().isEmpty()) {
-            System.out.println("Tokenul este null sau gol. Validarea a eșuat.");
+            System.out.println("Token is  null or empty. Validation failed.");
             return false;
         }
 
@@ -57,25 +57,25 @@ public class JwtTokenProvider {
                     .getBody();
             boolean isExpired = isTokenExpired(token);
             if (isExpired) {
-                System.out.println("Tokenul este expirat.");
+                System.out.println("Token expired.");
                 return false;
             }
             return true;
 
         } catch (JwtException e) {
-            System.out.println("Eroare la validarea token-ului JWT: " + e.getMessage());
+            System.out.println("Error on validation of JWT token: " + e.getMessage());
             System.out.println("Stack Trace: ");
             e.printStackTrace();
             return false;
 
         } catch (IllegalArgumentException e) {
-            System.out.println("Argument invalid la validarea token-ului: " + e.getMessage());
+            System.out.println("Invalid argument on token validation: " + e.getMessage());
             System.out.println("Stack Trace: ");
             e.printStackTrace();
             return false;
 
         } catch (Exception e) {
-            System.out.println("Eroare neașteptată la validarea token-ului: " + e.getMessage());
+            System.out.println("Unexpected error on token validation: " + e.getMessage());
             System.out.println("Stack Trace: ");
             e.printStackTrace();
             return false;
