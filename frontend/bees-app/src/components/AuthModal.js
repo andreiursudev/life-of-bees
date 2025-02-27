@@ -1,6 +1,6 @@
 import React from 'react';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
-import { handleGitHubLogin, handleGoogleLogin } from './BeesApiService';
+import { handleGoogleLogin } from './BeesApiService';
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 

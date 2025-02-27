@@ -8,7 +8,7 @@ import GameView from './components/GameView';
 import SellHoney from './components/SellHoney';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import HiveHistory from './components/HiveHistory';
-import { getGoogleClientId, getGitHubClientId } from './components/BeesApiService';
+import { getGoogleClientId } from './components/BeesApiService';
 import ApiaryHistory from './components/ApiaryHistory';
 
 function App() {
