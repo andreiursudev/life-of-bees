@@ -13,8 +13,7 @@ public class OAuth2Config {
     @Bean
     public ClientRegistrationRepository clientRegistrationRepository() {
         ClientRegistration google = googleClientRegistration();
-        ClientRegistration github = githubClientRegistration();
-        return new InMemoryClientRegistrationRepository(google, github);
+        return new InMemoryClientRegistrationRepository(google);
     }
 
     private ClientRegistration googleClientRegistration() {
@@ -22,8 +21,4 @@ public class OAuth2Config {
                 .clientSecret(System.getenv("SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_SECRET")).build();
     }
 
-    private ClientRegistration githubClientRegistration() {
-        return CommonOAuth2Provider.GITHUB.getBuilder("github").clientId(System.getenv("SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_CLIENT_ID"))
-                .clientSecret(System.getenv("SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_CLIENT_SECRET")).build();
-    }
 }
